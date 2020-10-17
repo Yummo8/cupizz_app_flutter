@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'src/app.dart';
 import 'src/base/base.dart';
 
 void main() {
   var configuredApp = new AppConfig(
-    appName: 'Cubizz Production',
-    flavorName: AppFlavor.PRODUCTION,
+    appName: 'Cubiz Development',
+    flavorName: AppFlavor.DEVELOPMENT,
     apiUrl: 'https://cubizz.cf',
     child: App(),
   );
