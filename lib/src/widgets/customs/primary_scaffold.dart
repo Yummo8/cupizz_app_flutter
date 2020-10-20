@@ -45,9 +45,11 @@ class _PrimaryScaffoldState extends State<PrimaryScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colorScheme.background,
-      body: _buildBody(context),
+    return momentum.RouterPage(
+      child: Scaffold(
+        backgroundColor: context.colorScheme.background,
+        body: _buildBody(context),
+      ),
     );
   }
 

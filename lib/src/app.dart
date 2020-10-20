@@ -1,37 +1,53 @@
 library app;
 
-import 'package:flutter/material.dart';
+import 'package:cubizz_app/src/components/theme/theme.controller.dart';
+import 'package:cubizz_app/src/components/theme/theme.model.dart';
+import 'package:cubizz_app/src/screens/login/login_screen.dart';
+import 'package:cubizz_app/src/widgets/customs/custom_theme.dart';
+import 'package:cubizz_app/src/widgets/indicators/loading_indicator.dart';
+import 'package:flutter/material.dart' hide Router;
+import 'package:momentum/momentum.dart';
 
 import 'base/base.dart';
-import 'screens/splash/splash_screen.dart';
 
 class App extends AppBase {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner:
-          AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
-      title: 'nBiz',
-      navigatorKey: AppConfig.navigatorKey,
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        colorScheme: ColorScheme(
-          primary: Color(0xffFF5C05),
-          primaryVariant: Color(0xff212862),
-          secondary: Color(0xffF2F2F2),
-          secondaryVariant: Color(0xffFFF8F3),
-          brightness: Brightness.light,
-          error: Colors.red,
-          onBackground: Color(0xff060606),
-          onError: Colors.white,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onSurface: Color(0xff7f7f7f),
-          surface: Color(0xffE5E5E5),
-          background: Colors.white,
-        ),
-      ),
-      home: SplashScreen(),
+    return Momentum(
+      controllers: [ThemeController()],
+      services: [
+        Router([
+          LoginScreen(),
+        ])
+      ],
+      appLoader: LoadingIndicator(),
+      child: _MyApp(),
     );
+  }
+}
+
+class _MyApp extends StatelessWidget {
+  const _MyApp({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MomentumBuilder(
+        controllers: [ThemeController],
+        builder: (context, snapshot) {
+          final theme = snapshot<ThemeModel>().controller.selectedTheme();
+          return CustomTheme(
+            theme: theme,
+            child: MaterialApp(
+              debugShowCheckedModeBanner:
+                  AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
+              title: 'Cubizz',
+              navigatorKey: AppConfig.navigatorKey,
+              theme: theme,
+              home: Router.getActivePage(context),
+            ),
+          );
+        });
   }
 }
