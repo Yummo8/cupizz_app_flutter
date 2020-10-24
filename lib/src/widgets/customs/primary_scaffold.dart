@@ -5,13 +5,15 @@ class PrimaryScaffold extends StatefulWidget {
   final bool isLoading;
   final ScrollController scrollController;
   final Widget footer;
+  final Widget bottomNavigationBar;
 
   PrimaryScaffold(
       {Key key,
       this.body,
       this.isLoading = false,
       this.scrollController,
-      this.footer})
+      this.footer,
+      this.bottomNavigationBar})
       : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class _PrimaryScaffoldState extends State<PrimaryScaffold> {
       child: Scaffold(
         backgroundColor: context.colorScheme.background,
         body: _buildBody(context),
+        bottomNavigationBar: widget.bottomNavigationBar,
       ),
     );
   }

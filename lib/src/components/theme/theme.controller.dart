@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 import './theme.data.dart';
@@ -17,16 +19,20 @@ class ThemeController extends MomentumController<ThemeModel> {
     model.update(activeTheme: index);
   }
 
-  ThemeData selectedTheme() {
-    return themes[model.activeTheme];
+  void randomTheme() {
+    model.update(activeTheme: Random().nextInt(themes.length));
   }
+
+  ThemeData get selectedTheme => themes[model.activeTheme];
 
   List<ThemeData> get themes {
     return [
       indigoPinkLight,
-      tealPurpleLight,
       indigoPinkDark,
+      tealPurpleLight,
       tealPurpleDark,
+      yellowBlueLight,
+      yellowBlueDark
     ];
   }
 }

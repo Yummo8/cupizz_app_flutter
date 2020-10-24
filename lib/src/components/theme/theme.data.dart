@@ -1,45 +1,70 @@
 import 'package:flutter/material.dart';
 
-final indigoPinkLight = ThemeData(
-  primaryColor: Colors.indigo,
-  accentColor: Colors.pink,
-  colorScheme: ColorScheme.light(
-    primary: Colors.indigo,
-    primaryVariant: Colors.indigoAccent,
-    secondary: Colors.pink,
-    secondaryVariant: Colors.pinkAccent,
-  ),
+ThemeData _themeData(
+  Color primary,
+  Color secondary, {
+  bool isDark = false,
+  Color primaryVariant,
+  Color secondaryVariant,
+}) =>
+    ThemeData(
+        primaryColor: primary,
+        accentColor: secondary,
+        colorScheme: !isDark
+            ? ColorScheme.light(
+                primary: primary,
+                primaryVariant: primaryVariant,
+                secondary: secondary,
+                secondaryVariant: secondaryVariant,
+              )
+            : ColorScheme.dark(
+                primary: primary,
+                primaryVariant: primaryVariant,
+                secondary: secondary,
+                secondaryVariant: secondaryVariant,
+              ));
+
+final indigoPinkLight = _themeData(
+  Color(0xfffb6c6d),
+  Color(0xff666f80),
+  primaryVariant: Color(0xffdc4444),
+  secondaryVariant: Color(0xff147070),
 );
 
-final indigoPinkDark = ThemeData(
-  primaryColor: Colors.indigo,
-  accentColor: Colors.pink,
-  colorScheme: ColorScheme.dark(
-    primary: Colors.indigo,
-    primaryVariant: Colors.indigoAccent,
-    secondary: Colors.pink,
-    secondaryVariant: Colors.pinkAccent,
-  ),
+final indigoPinkDark = _themeData(
+  Color(0xfffb6c6d),
+  Color(0xff666f80),
+  primaryVariant: Color(0xffdc4444),
+  secondaryVariant: Color(0xff147070),
+  isDark: true,
 );
 
-final tealPurpleLight = ThemeData(
-  primaryColor: Colors.teal,
-  accentColor: Colors.purple,
-  colorScheme: ColorScheme.light(
-    primary: Colors.teal,
-    primaryVariant: Colors.tealAccent,
-    secondary: Colors.purple,
-    secondaryVariant: Colors.purpleAccent,
-  ),
+final tealPurpleLight = _themeData(
+  Colors.teal,
+  Colors.purple,
+  primaryVariant: Colors.tealAccent,
+  secondaryVariant: Colors.purpleAccent,
 );
 
-final tealPurpleDark = ThemeData(
-  primaryColor: Colors.teal,
-  accentColor: Colors.purple,
-  colorScheme: ColorScheme.dark(
-    primary: Colors.teal,
-    primaryVariant: Colors.tealAccent,
-    secondary: Colors.purple,
-    secondaryVariant: Colors.purpleAccent,
-  ),
+final tealPurpleDark = _themeData(
+  Colors.teal,
+  Colors.purple,
+  primaryVariant: Colors.tealAccent,
+  secondaryVariant: Colors.purpleAccent,
+  isDark: true,
+);
+
+final yellowBlueLight = _themeData(
+  Color(0xffffb300),
+  Color(0xff1e4bff),
+  primaryVariant: Color(0xffa77500),
+  secondaryVariant: Color(0xff001672),
+);
+
+final yellowBlueDark = _themeData(
+  Color(0xffffb300),
+  Color(0xff1e4bff),
+  primaryVariant: Color(0xffa77500),
+  secondaryVariant: Color(0xff001672),
+  isDark: true,
 );

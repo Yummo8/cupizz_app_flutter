@@ -17,6 +17,12 @@ dependencies:
   flutter_secure_storage: ^3.3.1+1
   intl: ^0.16.1
   equatable: ^1.2.5
+  flare_flutter: ^2.0.6
+  page_transition: ^1.1.7+2
+  flutter_spinkit: ^4.1.2
+  animated_text_kit: ^2.4.1
+  avatar_glow: ^1.2.0
+  google_fonts: ^1.1.1
   connectivity_widget: 
     git:
       url: https://github.com/hienlh/flutter_connectivity_widget.git
@@ -28,3 +34,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/flares/
