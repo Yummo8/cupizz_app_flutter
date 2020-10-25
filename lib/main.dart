@@ -5,9 +5,9 @@ import 'src/base/base.dart';
 
 void main() {
   var configuredApp = new AppConfig(
-    appName: 'Cubizz Production',
+    appName: 'Cupizz Production',
     flavorName: AppFlavor.PRODUCTION,
-    apiUrl: 'https://cubizz.cf',
+    apiUrl: 'https://cupizz.cf',
     child: App(),
   );
 

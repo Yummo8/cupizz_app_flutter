@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:cubizz_app/src/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
-import './theme.data.dart';
 
+import './theme.data.dart';
+import '../../services/index.dart';
 import 'index.dart';
 
 class ThemeController extends MomentumController<ThemeModel> {

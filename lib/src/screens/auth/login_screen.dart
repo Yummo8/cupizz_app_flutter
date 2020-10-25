@@ -13,12 +13,33 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode emailFocus = FocusNode();
   final FocusNode passwordFocus = FocusNode();
   final FlareControls controls = FlareControls();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  initState() {
+    super.initState();
+    if (AppConfig.instance.isDev) {
+      email.text = 'hienlh1298@gmail.com';
+      password.text = 'abc123456';
+    }
+  }
 
   _getDisposeController() {
     email.clear();
     password.clear();
     emailFocus.unfocus();
     passwordFocus.unfocus();
+  }
+
+  Future _onLogin() async {
+    if (formKey.currentState.validate()) {
+      final authCtl = Momentum.of<AuthController>(context);
+      try {
+        await authCtl.login(email.text, password.text);
+      } catch (e) {
+        Fluttertoast.showToast(msg: e.toString());
+      }
+    }
   }
 
   _onGoToRegister() {
@@ -30,7 +51,17 @@ class _LoginScreenState extends State<LoginScreen> {
         duration: Duration(milliseconds: 800),
         child: RegisterScreen(),
       ),
-    ).then((_) {
+    )
+        // Router.goto(
+        //   context,
+        //   RegisterScreen,
+        //   transition: (ctx, widget) => PageTransition(
+        //     type: PageTransitionType.rightToLeft,
+        //     duration: Duration(milliseconds: 800),
+        //     child: widget,
+        //   ),
+        // )
+        .then((_) {
       Future.delayed(Duration(milliseconds: 300), () {
         setState(() {
           width = 190;
@@ -49,7 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
     return PrimaryScaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: Form(
+          key: formKey,
           child: Stack(
             children: <Widget>[
               Container(
@@ -69,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
               AnimatedPositioned(
                 duration: Duration(milliseconds: 500),
                 curve: Curves.easeOutQuad,
-//                top: keyboardOpen ? -size.height / 3.2 : 0.0,
                 child: AnimationBuildLogin(
                   size: size,
                   yOffset: size.height / 1.36,
@@ -89,11 +120,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     Container(
                       child: TextFieldWidget(
-                        hintText: 'Email',
+                        hintText: Strings.common.email,
                         obscureText: false,
                         prefixIconData: Icons.mail_outline,
                         textEditingController: email,
                         focusNode: emailFocus,
+                        validator: Validator.email,
                       ),
                     ),
                     SizedBox(
@@ -101,17 +133,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       child: TextFieldWidget(
-                        hintText: 'Mật khẩu',
+                        hintText: Strings.common.password,
                         obscureText: true,
                         prefixIconData: Icons.lock,
                         textEditingController: password,
                         focusNode: passwordFocus,
+                        validator: Validator.password,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 8, top: 18),
                       child: Text(
-                        "Quên mật khẩu?",
+                        Strings.button.forgotPassword,
                         textAlign: TextAlign.end,
                         style: TextStyle(
                           fontSize: 18,
@@ -130,12 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         bottom: (20),
                       ),
                       child: AuthButton(
-                        text: "Đăng nhập",
-                        onPressed: () async {
-                          await Future.delayed(Duration(seconds: 2));
-                          Momentum.controller<ThemeController>(context)
-                              .randomTheme();
-                        },
+                        text: Strings.button.login,
+                        onPressed: _onLogin,
                       ),
                     ),
                   ],
@@ -193,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: <Widget>[
                               Container(
                                 child: AutoSizeText(
-                                  "Bạn chưa có tài khoản?",
+                                  Strings.login.dontHaveAccount,
                                   textAlign: TextAlign.end,
                                   minFontSize: 8,
                                   style: TextStyle(
@@ -206,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(height: 5),
                               Container(
                                 child: Text(
-                                  "Đăng ký ngay",
+                                  Strings.login.registerNow,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                     fontSize: 16,

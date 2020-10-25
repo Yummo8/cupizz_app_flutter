@@ -14,4 +14,5 @@ part 'buttons/argon_button.dart';
 part 'customs/custom_theme.dart';
 part 'customs/primary_scaffold.dart';
 part 'customs/text_field.dart';
+part 'customs/rotate_animated_text_kit.dart';
 part 'indicators/loading_indicator.dart';

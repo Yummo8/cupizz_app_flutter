@@ -1,4 +1,4 @@
-name: cubizz_app
+name: cupizz_app
 description: A new Flutter project.
 
 publish_to: "none"
@@ -23,14 +23,12 @@ dependencies:
   avatar_glow: ^1.2.0
   google_fonts: ^1.1.1
   auto_size_text: ^2.1.0
+  graphql_flutter: ^3.1.0
   momentum: 
     git:
       url: https://github.com/hienlh/momentum.git
       ref: v1.3.2
-  connectivity_widget: 
-    git:
-      url: https://github.com/hienlh/flutter_connectivity_widget.git
-      ref: v0.1.7
+  fluttertoast: ^7.1.1
 
 dev_dependencies:
   flutter_test:

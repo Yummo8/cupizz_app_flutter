@@ -8,6 +8,7 @@ class TextFieldWidget extends StatelessWidget {
   final Function onChanged;
   final FocusNode focusNode;
   final TextEditingController textEditingController;
+  final FormFieldValidator<String> validator;
 
   TextFieldWidget({
     this.hintText,
@@ -17,16 +18,18 @@ class TextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.textEditingController,
     this.focusNode,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       onChanged: onChanged,
       obscureText: obscureText,
       controller: textEditingController,
       cursorColor: context.colorScheme.primary,
       focusNode: focusNode,
+      validator: validator,
       style: TextStyle(
         color: context.colorScheme.onPrimary,
         fontWeight: FontWeight.w600,

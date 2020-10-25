@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cf.cubizz.cubizz_app">
+    package="cf.cupizz.cupizz_app">
    <application
-        android:label="cubizz_app"
+        android:label="cupizz_app"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

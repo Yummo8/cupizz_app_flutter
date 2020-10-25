@@ -9,6 +9,8 @@ class AppConfig extends InheritedWidget {
   static GlobalKey _globalKey;
   static GlobalKey get globalKey => _globalKey;
 
+  bool get isDev => flavorName == AppFlavor.DEVELOPMENT;
+
   AppConfig({
     @required this.appName,
     @required this.flavorName,

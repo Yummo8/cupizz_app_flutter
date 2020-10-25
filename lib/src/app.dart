@@ -2,32 +2,48 @@ library app;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cubizz_app/src/components/theme/theme.controller.dart';
-import 'package:cubizz_app/src/components/theme/theme.model.dart';
-import 'package:cubizz_app/src/services/storage_service.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:momentum/momentum.dart';
 
 import 'base/base.dart';
+import 'components/auth/index.dart';
+import 'components/theme/index.dart';
 import 'components/theme/theme.data.dart';
 import 'screens/auth/index.dart';
+import 'screens/main/home_screen.dart';
+import 'services/index.dart';
 import 'widgets/index.dart';
 
 class App extends AppBase {
   @override
   Widget build(BuildContext context) {
     return Momentum(
-      controllers: [ThemeController()],
+      maxTimeTravelSteps: 200,
+      controllers: [
+        ThemeController(),
+        AuthController(),
+      ],
       services: [
         Router([
           LoginScreen(),
           RegisterScreen(),
+          HomeScreen(),
         ]),
         StorageService(),
+        AuthService(),
+        GraphqlService(),
       ],
       appLoader: AppLoader(),
       child: _MyApp(),
+      persistSave: (context, key, value) async {
+        await FlutterSecureStorage().write(key: key, value: value);
+        return true;
+      },
+      persistGet: (context, key) async {
+        return await FlutterSecureStorage().read(key: key);
+      },
     );
   }
 }
@@ -57,7 +73,7 @@ class AppLoader extends StatelessWidget {
             width: 250.0,
             child: ColorizeAnimatedTextKit(
               text: [
-                "Cubizz",
+                "Cupizz",
                 "Loading...",
               ],
               repeatForever: true,
@@ -90,7 +106,7 @@ class _MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
-        controllers: [ThemeController],
+        controllers: [ThemeController, AuthController],
         builder: (context, snapshot) {
           final theme = snapshot<ThemeModel>().controller.selectedTheme;
           return CustomTheme(
@@ -98,7 +114,7 @@ class _MyApp extends StatelessWidget {
             child: MaterialApp(
               debugShowCheckedModeBanner:
                   AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
-              title: 'Cubizz',
+              title: 'Cupizz',
               navigatorKey: AppConfig.navigatorKey,
               theme: theme,
               home: Router.getActivePage(context),

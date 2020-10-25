@@ -36,6 +36,29 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  _backToLogin() {
+    Navigator.pop(
+      context,
+      // ignore: missing_required_param
+      PageTransition(
+        type: PageTransitionType.leftToRight,
+        duration: Duration(milliseconds: 800),
+      ),
+    );
+    // Router.pop(
+    //   context,
+    //   transition: (ctx, widget) => PageTransition(
+    //     type: PageTransitionType.leftToRight,
+    //     duration: Duration(milliseconds: 800),
+    //     child: Container(),
+    //   ),
+    // );
+    setState(() {
+      width = 500;
+      widthIcon = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -81,7 +104,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   children: <Widget>[
                     Container(
                       child: TextFieldWidget(
-                        hintText: 'Tên',
+                        hintText: Strings.common.name,
                         obscureText: false,
                         prefixIconData: Icons.account_circle,
                         textEditingController: name,
@@ -93,7 +116,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     ),
                     Container(
                       child: TextFieldWidget(
-                        hintText: 'Email',
+                        hintText: Strings.common.email,
                         obscureText: false,
                         prefixIconData: Icons.email,
                         textEditingController: email,
@@ -105,7 +128,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     ),
                     Container(
                       child: TextFieldWidget(
-                        hintText: 'Mật khẩu',
+                        hintText: Strings.common.password,
                         obscureText: true,
                         prefixIconData: Icons.lock,
                         focusNode: passwordFocus,
@@ -122,7 +145,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         bottom: (20),
                       ),
                       child: AuthButton(
-                        text: 'Đăng ký',
+                        text: Strings.button.register,
                         onPressed: () async {
                           await Future.delayed(Duration(seconds: 2));
                           Momentum.controller<ThemeController>(context)
@@ -147,19 +170,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 InkWell(
-                  onTap: () {
-                    Navigator.pop(
-                        context,
-                        // ignore: missing_required_param
-                        PageTransition(
-                          type: PageTransitionType.leftToRight,
-                          duration: Duration(milliseconds: 800),
-                        ));
-                    setState(() {
-                      width = 500;
-                      widthIcon = 0;
-                    });
-                  },
+                  onTap: _backToLogin,
                   child: AnimatedContainer(
                     height: 65.0,
                     width: width,
@@ -174,9 +185,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-//                          margin: EdgeInsets.only(right: 8,top: 15),
                                 child: Text(
-                                  "Đã có tài khoản",
+                                  Strings.register.haveAccount,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -189,9 +199,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               ),
                               SizedBox(height: 5),
                               Container(
-//                          margin: EdgeInsets.only(right: 8,top: 15),
                                 child: Text(
-                                  "Đăng nhập ngay",
+                                  Strings.register.loginNow,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                     fontSize: 16,
@@ -245,12 +254,6 @@ class RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
-
-//      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-//      floatingActionButton: FloatingActionButton.extended(
-//
-//          icon: Icon(Icons.update),
-//          label: Text("Transform")),
     );
   }
 }

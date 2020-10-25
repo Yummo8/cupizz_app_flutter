@@ -1,4 +1,4 @@
-package cf.cubizz.cubizz_app
+package cf.cupizz.cupizz_app
 
 import io.flutter.embedding.android.FlutterActivity
 

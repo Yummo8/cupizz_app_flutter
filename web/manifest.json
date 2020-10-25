@@ -1,6 +1,6 @@
 {
-    "name": "cubizz_app",
-    "short_name": "cubizz_app",
+    "name": "cupizz_app",
+    "short_name": "cupizz_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

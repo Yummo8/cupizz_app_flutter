@@ -1,4 +1,4 @@
-# cubizz_app
+# cupizz_app
 
 A new Flutter project.
 

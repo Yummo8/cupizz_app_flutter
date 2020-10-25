@@ -7,7 +7,7 @@ void main() {
   var configuredApp = new AppConfig(
     appName: 'Cubiz Development',
     flavorName: AppFlavor.DEVELOPMENT,
-    apiUrl: 'https://cubizz.cf',
+    apiUrl: 'http://cupizz.cf/graphql',
     child: App(),
   );
 
