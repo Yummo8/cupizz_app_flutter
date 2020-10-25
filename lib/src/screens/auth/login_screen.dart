@@ -1,16 +1,4 @@
-import 'dart:math';
-
-import 'package:cubizz_app/src/assets.dart';
-import 'package:cubizz_app/src/widgets/customs/text_field.dart';
-import 'package:cubizz_app/src/widgets/widgets.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:flare_flutter/flare_controls.dart';
-import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-
-import './widgets/animation_build_login.dart';
-import '../../base/base.dart';
-import 'widgets/auth_button.dart';
+part of 'index.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -31,6 +19,29 @@ class _LoginScreenState extends State<LoginScreen> {
     password.clear();
     emailFocus.unfocus();
     passwordFocus.unfocus();
+  }
+
+  _onGoToRegister() {
+    _getDisposeController();
+    Navigator.push(
+      context,
+      PageTransition(
+        type: PageTransitionType.rightToLeft,
+        duration: Duration(milliseconds: 800),
+        child: RegisterScreen(),
+      ),
+    ).then((_) {
+      Future.delayed(Duration(milliseconds: 300), () {
+        setState(() {
+          width = 190;
+          widthIcon = 200;
+        });
+      });
+    });
+    setState(() {
+      width = 400.0;
+      widthIcon = 0;
+    });
   }
 
   @override
@@ -65,42 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: context.colorScheme.background,
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {
-                    final name = 'Heart${Random().nextInt(2) + 1}';
-                    controls.play(name);
-                  },
-                  child: SizedBox(
-                    width: 200,
-                    height: 200,
-                    child: FlareActor(
-                      Assets.flares.logo,
-                      fit: BoxFit.cover,
-                      animation: "Cloud",
-                      controller: controls,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 200),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Welcome Back !',
-                      style: TextStyle(
-                        color: context.colorScheme.background,
-                        fontSize: 24.0,
-                        letterSpacing: 2,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              AuthHeader(controls: controls),
               Padding(
                 padding: EdgeInsets.only(
                   right: 22,
@@ -125,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       child: TextFieldWidget(
-                        hintText: 'Password',
+                        hintText: 'Mật khẩu',
                         obscureText: true,
                         prefixIconData: Icons.lock,
                         textEditingController: password,
@@ -135,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       margin: EdgeInsets.only(right: 8, top: 18),
                       child: Text(
-                        "Forget Password ?",
+                        "Quên mật khẩu?",
                         textAlign: TextAlign.end,
                         style: TextStyle(
                           fontSize: 18,
@@ -153,7 +129,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         left: (8),
                         bottom: (20),
                       ),
-                      child: AuthButton(),
+                      child: AuthButton(
+                        text: "Đăng nhập",
+                        onPressed: () async {
+                          await Future.delayed(Duration(seconds: 2));
+                          Momentum.controller<ThemeController>(context)
+                              .randomTheme();
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -178,40 +161,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      _buildSocialButton(
-                        Assets.icons.google,
+                      SocialButton(
+                        imageName: Assets.icons.google,
                         margin: EdgeInsets.only(left: 30.0),
                       ),
-                      _buildSocialButton(
-                        Assets.icons.facebook,
+                      SocialButton(
+                        imageName: Assets.icons.facebook,
                         margin: EdgeInsets.only(right: 30.0),
                       ),
                     ],
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    _getDisposeController();
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        duration: Duration(milliseconds: 800),
-                        child: Container(),
-                      ),
-                    ).then((value) {
-                      Future.delayed(Duration(milliseconds: 300), () {
-                        setState(() {
-                          width = 190;
-                          widthIcon = 200;
-                        });
-                      });
-                    });
-                    setState(() {
-                      width = 400.0;
-                      widthIcon = 0;
-                    });
-                  },
+                  onTap: _onGoToRegister,
                   child: AnimatedContainer(
                     height: 65.0,
                     width: width,
@@ -230,13 +192,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-//                          margin: EdgeInsets.only(right: 8,top: 15),
-                                child: Text(
-                                  "Not Yet Register ?",
+                                child: AutoSizeText(
+                                  "Bạn chưa có tài khoản?",
                                   textAlign: TextAlign.end,
+                                  minFontSize: 8,
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    letterSpacing: 1,
                                     color: context.colorScheme.onPrimary
                                         .withOpacity(0.9),
                                     fontWeight: FontWeight.w400,
@@ -245,9 +205,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               SizedBox(height: 5),
                               Container(
-//                          margin: EdgeInsets.only(right: 8,top: 15),
                                 child: Text(
-                                  "Sign Up",
+                                  "Đăng ký ngay",
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                     fontSize: 16,
@@ -276,25 +235,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton(String imageName, {EdgeInsetsGeometry margin}) {
-    return Container(
-//    margin: EdgeInsets.only(left: 35.0),
-      margin: margin,
-      decoration: BoxDecoration(
-        color: context.colorScheme.primary.withOpacity(0.1),
-        shape: BoxShape.circle,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Image.asset(
-          imageName,
-          height: 28,
-          width: 28,
         ),
       ),
     );

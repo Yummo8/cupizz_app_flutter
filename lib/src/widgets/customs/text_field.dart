@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import '../../base/base.dart';
+part of '../index.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String hintText;

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'dart:math' as Math;
+part of '../index.dart';
 
 class AnimationBuildLogin extends StatefulWidget {
   final Size size;
@@ -31,13 +30,13 @@ class _AnimationBuildLoginState extends State<AnimationBuildLogin>
             wavePoints.clear();
 
             final double waveSpeed = animationController.value * 1080;
-            final double fullSphere = animationController.value * Math.pi * 2;
-            final double normalizer = Math.cos(fullSphere);
-            final double waveWidth = Math.pi / 270;
+            final double fullSphere = animationController.value * pi * 2;
+            final double normalizer = cos(fullSphere);
+            final double waveWidth = pi / 270;
             final double waveHeight = 30.0;
 
             for (int i = 0; i <= widget.size.width.toInt(); ++i) {
-              double calc = Math.sin((waveSpeed - i) * waveWidth);
+              double calc = sin((waveSpeed - i) * waveWidth);
               wavePoints.add(
                 Offset(
                   i.toDouble(), //X

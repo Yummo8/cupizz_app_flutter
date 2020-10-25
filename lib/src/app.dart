@@ -4,14 +4,14 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cubizz_app/src/components/theme/theme.controller.dart';
 import 'package:cubizz_app/src/components/theme/theme.model.dart';
-import 'package:cubizz_app/src/screens/login/login_screen.dart';
-import 'package:cubizz_app/src/widgets/customs/custom_theme.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:momentum/momentum.dart';
 
 import 'base/base.dart';
 import 'components/theme/theme.data.dart';
+import 'screens/auth/index.dart';
+import 'widgets/index.dart';
 
 class App extends AppBase {
   @override
@@ -21,9 +21,9 @@ class App extends AppBase {
       services: [
         Router([
           LoginScreen(),
+          RegisterScreen(),
         ])
       ],
-      minimumBootstrapTime: 3550,
       appLoader: AppLoader(),
       child: _MyApp(),
     );
@@ -47,7 +47,7 @@ class AppLoader extends StatelessWidget {
             glowColor: indigoPinkLight.primaryColor,
             duration: Duration(milliseconds: 1000),
             repeatPauseDuration: Duration(milliseconds: 100),
-            child: SpinKitPumpingHeart(
+            child: LoadingIndicator(
               color: indigoPinkLight.colorScheme.primaryVariant,
             ),
           ),
@@ -58,9 +58,9 @@ class AppLoader extends StatelessWidget {
                 "Cubizz",
                 "Loading...",
               ],
-              textStyle: TextStyle(
+              repeatForever: true,
+              textStyle: GoogleFonts.pacifico(
                 fontSize: 30.0,
-                fontFamily: "Horizon",
                 color: indigoPinkLight.primaryColor,
               ),
               colors: [
