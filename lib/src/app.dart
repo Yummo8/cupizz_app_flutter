@@ -4,6 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cubizz_app/src/components/theme/theme.controller.dart';
 import 'package:cubizz_app/src/components/theme/theme.model.dart';
+import 'package:cubizz_app/src/services/storage_service.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:momentum/momentum.dart';
@@ -22,7 +23,8 @@ class App extends AppBase {
         Router([
           LoginScreen(),
           RegisterScreen(),
-        ])
+        ]),
+        StorageService(),
       ],
       appLoader: AppLoader(),
       child: _MyApp(),

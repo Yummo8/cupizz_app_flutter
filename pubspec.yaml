@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.0
-  flutter_secure_storage: ^3.3.1+1
+  flutter_secure_storage: ^3.3.5
   intl: ^0.16.1
   equatable: ^1.2.5
   flare_flutter: ^2.0.6
