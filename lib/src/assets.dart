@@ -16,6 +16,8 @@ class _Flares {
 class _Icon {
   final facebook = _ICON_PATH + 'facebook.png';
   final google = _ICON_PATH + 'google.png';
+  final likeUser = _ICON_PATH + 'like_user.svg';
+  final dislikeUser = _ICON_PATH + 'dislike_user.svg';
 }
 
 class _Image {}

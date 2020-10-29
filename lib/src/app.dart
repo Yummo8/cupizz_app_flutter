@@ -20,6 +20,7 @@ class App extends AppBase {
   @override
   Widget build(BuildContext context) {
     return Momentum(
+      key: UniqueKey(),
       maxTimeTravelSteps: 200,
       controllers: [
         ThemeController(),

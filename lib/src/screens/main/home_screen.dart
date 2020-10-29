@@ -1,7 +1,25 @@
 library home_screen;
 
-import '../../widgets/index.dart';
+import 'dart:async';
+import 'dart:math' as math;
+
+import 'package:cupizz_app/src/helpers/index.dart';
+import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/physics.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
+
+import '../../assets.dart';
+import '../../base/base.dart';
+import '../../widgets/index.dart';
+
+part 'widgets/animated_background.dart';
+part 'widgets/c_card.dart';
+part 'widgets/options_button.dart';
+part 'widgets/options_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,43 +27,62 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _drawerController = OptionsDrawerController();
+  final _headerHeight = 75.0;
+
   @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
-      body: Container(
-        child: Center(
-          child: CustomPaint(
-            size: Size(350,
-                696), //You can Replace this with your desired WIDTH and HEIGHT
-            painter: RPSCustomPainter(),
-          ),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          children: [
+            AnimatedBackground(),
+            Positioned(right: 0, top: 30, child: _buildHeader()),
+            Positioned.fill(child: _buildCards()),
+            OptionsDrawer(controller: _drawerController),
+          ],
         ),
       ),
     );
   }
-}
 
-class RPSCustomPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = new Paint()
-      ..color = Color.fromARGB(255, 33, 150, 243)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-
-    Path path = Path();
-    path.moveTo(size.width * 0.8, 0);
-    path.quadraticBezierTo(
-        size.width * 0.80, size.height * 0.10, size.width, size.height * 0.10);
-    path.quadraticBezierTo(
-        size.width * 1.00, size.height * 0.00, size.width, 0);
-    path.lineTo(size.width * 0.80, 0);
-
-    canvas.drawPath(path, paint);
+  Widget _buildHeader() {
+    return Builder(builder: (context) {
+      return OptionsButton(
+        onPressed: () {
+          _drawerController.openMenu();
+        },
+      );
+    });
   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  Widget _buildCards() {
+    return CCard(
+      padding: EdgeInsets.only(top: _headerHeight + 50),
+      size: Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height,
+      ),
+      cards: [
+        Image.network(
+          'https://loremflickr.com/888/851/girl?lock=7585',
+          fit: BoxFit.cover,
+        ),
+        Image.network(
+          'https://loremflickr.com/958/610/girl?lock=3435',
+          fit: BoxFit.cover,
+        ),
+        Image.network(
+          'https://loremflickr.com/431/1243/girl?lock=3461',
+          fit: BoxFit.cover,
+        ),
+      ]
+          .map((e) => ClipRRect(
+                child: e,
+                borderRadius: BorderRadius.circular(15),
+              ))
+          .toList(),
+    );
   }
 }

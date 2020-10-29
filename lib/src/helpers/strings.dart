@@ -6,6 +6,7 @@ class Strings {
   static final _Common common = _Common();
   static final _Button button = _Button();
   static final _Error error = _Error();
+  static final _Drawer drawer = _Drawer();
   static final _LoginScreen login = _LoginScreen();
   static final _RegisterScreen register = _RegisterScreen();
 }
@@ -14,6 +15,11 @@ class _Common {
   final email = 'Email';
   final password = 'Mật khẩu';
   final name = 'Tên';
+  final hobbies = 'Sở thích';
+  final distance = 'Khoảng cách';
+  final age = 'Tuổi';
+  final man = 'Nam';
+  final woman = 'Nữ';
 }
 
 class _Error {
@@ -36,4 +42,11 @@ class _LoginScreen {
 class _RegisterScreen {
   final haveAccount = 'Đã có tài khoản';
   final loginNow = 'Đăng nhập ngay';
+}
+
+class _Drawer {
+  final filter = 'Bộ lọc tìm kiếm';
+  final whoAreYouLookingFor = 'Giới tính của người bạn cần tìm?';
+  final upTo5Pieces = 'Tối đa 5 sở thích';
+  final chooseOtherHoddies = 'Chọn sở thích khác';
 }

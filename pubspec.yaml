@@ -29,6 +29,10 @@ dependencies:
       url: https://github.com/hienlh/momentum.git
       ref: v1.3.2
   fluttertoast: ^7.1.1
+  flutter_svg: ^0.19.1
+  wave: ^0.1.0
+  shrink_sidemenu: ^1.0.0+3
+  flutter_xlider: ^3.4.0
 
 dev_dependencies:
   flutter_test:
