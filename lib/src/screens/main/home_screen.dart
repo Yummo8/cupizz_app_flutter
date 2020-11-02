@@ -3,12 +3,14 @@ library home_screen;
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:cupizz_app/src/components/theme/theme.controller.dart';
 import 'package:cupizz_app/src/helpers/index.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:momentum/momentum.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 

@@ -9,6 +9,7 @@ import '../base/base.dart';
 import '../screens/index.dart';
 import '../services/graphql_query.dart';
 
+import '../screens/main/main_screen.dart';
 part 'auth_service.dart';
 part 'graphql_service.dart';
 part 'storage_service.dart';

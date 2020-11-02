@@ -17,7 +17,7 @@ class AuthService extends MomentumService {
 
   Future<void> gotoHome() async {
     await Router.clearHistoryWithContext(AppConfig.navigatorKey.currentContext);
-    await Router.goto(AppConfig.navigatorKey.currentContext, HomeScreen);
+    await Router.goto(AppConfig.navigatorKey.currentContext, MainScreen);
   }
 
   Future<void> gotoAuth() async {

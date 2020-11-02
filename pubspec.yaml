@@ -33,6 +33,8 @@ dependencies:
   wave: ^0.1.0
   shrink_sidemenu: ^1.0.0+3
   flutter_xlider: ^3.4.0
+  google_nav_bar: ^3.1.0
+  extended_tabs: ^0.2.3
 
 dev_dependencies:
   flutter_test:

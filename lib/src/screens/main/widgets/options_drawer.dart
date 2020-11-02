@@ -84,7 +84,8 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
             children: <Widget>[
               CustomPaint(
                 size: Size(widget.sidebarSize, size.height),
-                painter: _DrawerPainter(offset: _offset),
+                painter: _DrawerPainter(
+                    offset: _offset, color: context.colorScheme.background),
               ),
               _buildBody()
             ],
@@ -95,9 +96,9 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   }
 
   Widget _buildBody() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: SafeArea(
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -122,16 +123,32 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
           style:
               context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
         ),
-        InkWell(
-          enableFeedback: true,
-          child: Icon(
-            Icons.arrow_right_alt,
-            color: context.colorScheme.onBackground,
-            size: 30,
-          ),
-          onTap: () {
-            controller.closeMenu();
-          },
+        Row(
+          children: [
+            InkWell(
+              enableFeedback: true,
+              child: Icon(
+                Icons.color_lens,
+                color: context.colorScheme.primary,
+                size: 20,
+              ),
+              onTap: () {
+                Momentum.of<ThemeController>(context).randomTheme();
+              },
+            ),
+            const SizedBox(width: 10),
+            InkWell(
+              enableFeedback: true,
+              child: Icon(
+                Icons.arrow_right_alt,
+                color: context.colorScheme.onBackground,
+                size: 30,
+              ),
+              onTap: () {
+                controller.closeMenu();
+              },
+            ),
+          ],
         ),
       ],
     );
@@ -304,7 +321,7 @@ class _DrawerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.white
+      ..color = color
       ..style = PaintingStyle.fill
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 2.0);
     Path path = Path();
