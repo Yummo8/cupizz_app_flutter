@@ -1,4 +1,4 @@
-library home_screen;
+library home_page;
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -14,21 +14,21 @@ import 'package:momentum/momentum.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-import '../../assets.dart';
-import '../../base/base.dart';
-import '../../widgets/index.dart';
+import '../../../../assets.dart';
+import '../../../../base/base.dart';
+import '../../../../widgets/index.dart';
 
 part 'widgets/animated_background.dart';
 part 'widgets/c_card.dart';
 part 'widgets/options_button.dart';
 part 'widgets/options_drawer.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomePageState extends State<HomePage> {
   final _drawerController = OptionsDrawerController();
   final _headerHeight = 75.0;
 

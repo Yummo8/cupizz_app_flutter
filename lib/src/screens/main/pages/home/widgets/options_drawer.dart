@@ -1,4 +1,4 @@
-part of '../home_screen.dart';
+part of '../home_page.dart';
 
 class OptionsDrawerController extends ChangeNotifier {
   bool _isMenuOpen = false;

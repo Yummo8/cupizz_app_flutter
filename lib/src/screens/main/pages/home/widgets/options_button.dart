@@ -1,4 +1,4 @@
-part of '../home_screen.dart';
+part of '../home_page.dart';
 
 class OptionsButton extends StatelessWidget {
   final Function onPressed;

@@ -1,11 +1,11 @@
 import 'package:extended_tabs/extended_tabs.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import 'home_screen.dart';
-import '../../widgets/index.dart';
 import '../../base/base.dart';
+import '../../widgets/index.dart';
+import 'pages/chat/chat_page.dart';
+import 'pages/home/home_page.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -14,20 +14,16 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
-  int _selectedIndex = 0;
   TabController _tabController;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _tabs = <Widget>[
-    HomeScreen(),
+    HomePage(),
     Text(
       'Index 1: Likes',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Chat',
-      style: optionStyle,
-    ),
+    ChatPage(),
     Text(
       'Index 3: Profile',
       style: optionStyle,
@@ -48,7 +44,7 @@ class _MainScreenState extends State<MainScreen>
     return PrimaryScaffold(
       body: ExtendedTabBarView(
         cacheExtent: 4,
-        physics: _tabController.index == 0
+        physics: [0, 2].contains(_tabController.index)
             ? NeverScrollableScrollPhysics()
             : BouncingScrollPhysics(),
         controller: _tabController,

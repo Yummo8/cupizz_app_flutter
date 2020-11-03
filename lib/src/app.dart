@@ -13,7 +13,6 @@ import 'components/auth/index.dart';
 import 'components/theme/index.dart';
 import 'components/theme/theme.data.dart';
 import 'screens/auth/index.dart';
-import 'screens/main/home_screen.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
 

@@ -1,2 +1,2 @@
 export 'auth/index.dart';
-export 'main/home_screen.dart';
+export 'main/pages/home/home_page.dart';

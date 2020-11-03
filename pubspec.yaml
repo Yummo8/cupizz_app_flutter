@@ -35,6 +35,8 @@ dependencies:
   flutter_xlider: ^3.4.0
   google_nav_bar: ^3.1.0
   extended_tabs: ^0.2.3
+  flutter_sequence_animation: ^3.0.1
+  dotted_border: ^1.0.6
 
 dev_dependencies:
   flutter_test:
@@ -46,3 +48,4 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/flares/
+    - assets/
