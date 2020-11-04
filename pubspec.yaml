@@ -37,6 +37,7 @@ dependencies:
   extended_tabs: ^0.2.3
   flutter_sequence_animation: ^3.0.1
   dotted_border: ^1.0.6
+  dash_chat: ^1.1.15
 
 dev_dependencies:
   flutter_test:

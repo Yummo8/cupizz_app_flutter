@@ -157,6 +157,10 @@ class _CardTileWidgetState extends State<CardTileWidget>
           });
   }
 
+  _onItemPressed() {
+    Router.goto(context, MessagesScreen);
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -244,6 +248,7 @@ class _CardTileWidgetState extends State<CardTileWidget>
       child: Opacity(
         opacity: opacityAnimation.value,
         child: GestureDetector(
+          onTap: _onItemPressed,
           onPanStart: (details) {
             widget.bringToTop(widget);
             widget.iconsTopPosition((widget.topPosition + 100 + 14));

@@ -226,7 +226,7 @@ class _SlidingListActionState extends State<SlidingListAction>
     return SingleChildScrollView(
       physics: AlwaysScrollableScrollPhysics(),
       child: _list == null
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: LoadingIndicator())
           : Container(
               height: _totalHeight < (MediaQuery.of(context).size.height - 190)
                   ? (MediaQuery.of(context).size.height - 190)
