@@ -107,8 +107,8 @@ class MessageContainer extends StatelessWidget {
                     color: message.user.containerColor != null
                         ? message.user.containerColor
                         : isUser
-                            ? Theme.of(context).accentColor
-                            : Color.fromRGBO(225, 225, 225, 1),
+                            ? Theme.of(context).primaryColor
+                            : context.colorScheme.background.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
         margin: EdgeInsets.only(
@@ -121,13 +121,13 @@ class MessageContainer extends StatelessWidget {
               isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: <Widget>[
             if (this.textBeforeImage)
-              _buildMessageText()
+              _buildMessageText(context)
             else
               _buildMessageImage(),
             if (this.textBeforeImage)
               _buildMessageImage()
             else
-              _buildMessageText(),
+              _buildMessageText(context),
             if (buttons != null)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,7 +162,9 @@ class MessageContainer extends StatelessWidget {
                     fontSize: 10.0,
                     color: message.user.color != null
                         ? message.user.color
-                        : isUser ? Colors.white70 : Colors.black87,
+                        : isUser
+                            ? context.colorScheme.onPrimary
+                            : context.colorScheme.onBackground,
                   ),
                 ),
               )
@@ -172,7 +174,7 @@ class MessageContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageText() {
+  Widget _buildMessageText(BuildContext context) {
     if (messageTextBuilder != null)
       return messageTextBuilder(message.text, message);
     else
@@ -182,7 +184,9 @@ class MessageContainer extends StatelessWidget {
         style: TextStyle(
           color: message.user.color != null
               ? message.user.color
-              : isUser ? Colors.white70 : Colors.black87,
+              : isUser
+                  ? context.colorScheme.onPrimary
+                  : context.colorScheme.onBackground,
         ),
       );
   }

@@ -22,7 +22,7 @@ class DateBuilder extends StatelessWidget {
     } else {
       return Container(
         decoration: BoxDecoration(
-          color: Colors.grey,
+          color: context.colorScheme.surface,
           borderRadius: BorderRadius.circular(10.0),
         ),
         padding: EdgeInsets.only(
@@ -37,7 +37,7 @@ class DateBuilder extends StatelessWidget {
               ? dateFormat.format(date)
               : DateFormat('yyyy-MMM-dd').format(date),
           style: TextStyle(
-            color: Colors.white,
+            color: context.colorScheme.onSurface,
             fontSize: 12.0,
           ),
         ),

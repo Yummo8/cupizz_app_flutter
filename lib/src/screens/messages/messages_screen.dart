@@ -24,6 +24,14 @@ class _MessagesScreenState extends State<MessagesScreen> {
         messages: [
           ChatMessage(
               text: 'Welcome', user: ChatUser(uid: '002', name: 'Cupid')),
+          ChatMessage(
+              text: 'Welcome', user: ChatUser(uid: '002', name: 'Cupid')),
+          ChatMessage(
+              text: 'Welcome', user: ChatUser(uid: '003', name: '2Cupid')),
+          ChatMessage(
+              text: 'Welcome', user: ChatUser(uid: '001', name: 'Cupid')),
+          ChatMessage(
+              text: 'Welcome2', user: ChatUser(uid: '001', name: 'Cupid')),
         ],
         onSend: (ChatMessage message) {},
       ),

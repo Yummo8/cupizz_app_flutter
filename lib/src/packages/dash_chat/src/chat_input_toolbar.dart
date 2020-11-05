@@ -80,7 +80,7 @@ class ChatInputToolbar extends StatelessWidget {
       margin: inputToolbarMargin,
       decoration: inputContainerStyle != null
           ? inputContainerStyle
-          : BoxDecoration(color: Colors.white),
+          : BoxDecoration(color: context.colorScheme.background),
       child: Column(
         children: <Widget>[
           Row(
