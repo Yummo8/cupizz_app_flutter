@@ -1,9 +1,9 @@
 library messages_screen;
 
 import 'package:flutter/material.dart' hide Router;
-import '../../base/base.dart';
-import '../../widgets/index.dart';
+
 import '../../packages/dash_chat/dash_chat.dart';
+import '../../widgets/index.dart';
 
 class MessagesScreen extends StatefulWidget {
   @override

@@ -33,6 +33,7 @@ class GraphqlService extends MomentumService {
     if (result.hasException) {
       if (result.exception.clientException != null &&
           result.exception.clientException.message.isExistAndNotEmpty) {
+        debugPrint(result.exception.clientException.message);
         throw result.exception.clientException.message;
       } else if (result.exception.graphqlErrors != null &&
           result.exception.graphqlErrors.isNotEmpty) {

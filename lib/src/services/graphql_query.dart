@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../models/index.dart';
 
 class GraphqlQuery {
   static loginMutation({@required String email, @required String password}) =>
@@ -13,4 +14,7 @@ mutation login(\$email: String, \$password: String){
     '''),
         variables: {'email': email, 'password': password},
       );
+
+  static meQuery() =>
+      MutationOptions(documentNode: gql('{ me ${User.graphqlQuery} }'));
 }

@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       try {
         await authCtl.login(email.text, password.text);
       } catch (e) {
+        debugPrint(e.toString());
         Fluttertoast.showToast(msg: e.toString());
       }
     }

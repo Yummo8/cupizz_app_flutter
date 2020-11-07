@@ -2,6 +2,7 @@ library app;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cupizz_app/src/components/current_user/current_user.controller.dart';
 import 'package:cupizz_app/src/screens/main/main_screen.dart';
 import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
 import 'package:flutter/material.dart' hide Router;
@@ -26,6 +27,7 @@ class App extends AppBase {
       controllers: [
         ThemeController(),
         AuthController(),
+        CurrentUserController(),
       ],
       services: [
         Router([
@@ -37,6 +39,7 @@ class App extends AppBase {
         StorageService(),
         AuthService(),
         GraphqlService(),
+        UserService(),
       ],
       appLoader: AppLoader(),
       child: _MyApp(),

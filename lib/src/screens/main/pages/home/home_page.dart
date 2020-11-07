@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:cupizz_app/src/components/theme/theme.controller.dart';
 import 'package:cupizz_app/src/helpers/index.dart';
+import 'package:cupizz_app/src/models/index.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
@@ -66,22 +67,9 @@ class _HomePageState extends State<HomePage> {
         MediaQuery.of(context).size.width,
         MediaQuery.of(context).size.height,
       ),
-      cards: [
-        Image.network(
-          'https://loremflickr.com/888/851/girl?lock=7585',
-          fit: BoxFit.cover,
-        ),
-        Image.network(
-          'https://loremflickr.com/958/610/girl?lock=3435',
-          fit: BoxFit.cover,
-        ),
-        Image.network(
-          'https://loremflickr.com/431/1243/girl?lock=3461',
-          fit: BoxFit.cover,
-        ),
-      ]
+      cards: Fake.users
           .map((e) => ClipRRect(
-                child: e,
+                child: UserCard(simpleUser: e),
                 borderRadius: BorderRadius.circular(15),
               ))
           .toList(),

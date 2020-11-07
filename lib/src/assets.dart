@@ -20,4 +20,6 @@ class _Icon {
   final dislikeUser = _ICON_PATH + 'dislike_user.svg';
 }
 
-class _Image {}
+class _Image {
+  final test = _IMAGE_PATH;
+}

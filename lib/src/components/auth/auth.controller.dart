@@ -1,3 +1,4 @@
+import 'package:cupizz_app/src/components/current_user/current_user.controller.dart';
 import 'package:momentum/momentum.dart';
 
 import '../../services/index.dart';
@@ -19,8 +20,10 @@ class AuthController extends MomentumController<AuthModel> {
   Future<bool> get isAuthenticated async =>
       (await getService<StorageService>().getToken) != null;
 
-  Future<void> login(String email, String password) =>
-      getService<AuthService>().login(email, password);
+  Future<void> login(String email, String password) async {
+    await getService<AuthService>().login(email, password);
+    await dependOn<CurrentUserController>().getCurrentUser();
+  }
 
   Future<void> logout() => getService<AuthService>().logout();
 }

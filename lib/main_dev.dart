@@ -1,3 +1,4 @@
+import 'package:cupizz_app/src/models/index.dart';
 import 'package:flutter/material.dart';
 
 import 'src/app.dart';
@@ -11,5 +12,6 @@ void main() {
     child: App(),
   );
 
+  objectMapping();
   runApp(configuredApp);
 }

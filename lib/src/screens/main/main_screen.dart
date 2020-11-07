@@ -6,6 +6,7 @@ import '../../base/base.dart';
 import '../../widgets/index.dart';
 import 'pages/chat/chat_page.dart';
 import 'pages/home/home_page.dart';
+import 'pages/profile/profile_page.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -24,10 +25,7 @@ class _MainScreenState extends State<MainScreen>
       style: optionStyle,
     ),
     ChatPage(),
-    Text(
-      'Index 3: Profile',
-      style: optionStyle,
-    ),
+    ProfilePage(),
   ];
 
   @override

@@ -124,7 +124,7 @@ class _ArgonButtonState extends State<ArgonButton>
   }
 
   void animateReverse() {
-    _controller.reverse();
+    if (mounted) _controller.reverse();
   }
 
   lerpWidth(a, b, t) {
