@@ -7,7 +7,6 @@ import 'package:cupizz_app/src/components/recommendable_users/index.dart';
 import 'package:cupizz_app/src/components/recommendable_users/recommendable_users.controller.dart';
 import 'package:cupizz_app/src/components/theme/theme.controller.dart';
 import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/models/index.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
@@ -70,10 +69,13 @@ class _HomePageState extends State<HomePage> {
           if (model.isLoading) {
             return LoadingIndicator();
           } else if (model.error.isExistAndNotEmpty) {
-            return ErrorIndicator(onReload: () {
-              Momentum.of<RecommendableUsersController>(context)
-                  .fetchRecommendableUsers();
-            });
+            return ErrorIndicator(
+              moreErrorDetail: model.error,
+              onReload: () {
+                Momentum.of<RecommendableUsersController>(context)
+                    .fetchRecommendableUsers();
+              },
+            );
           }
 
           return CCard(

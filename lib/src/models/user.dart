@@ -9,7 +9,6 @@ class User extends SimpleUser {
   bool _isPrivate;
   bool _showActive;
   List<Gender> _genderPrefer;
-  FriendType _friendType;
 
   DateTime get birthday => _birthday;
   int get minAgePrefer => _minAgePrefer;
@@ -19,7 +18,6 @@ class User extends SimpleUser {
   bool get isPrivate => _isPrivate;
   bool get showActive => _showActive;
   List<Gender> get genderPrefer => _genderPrefer;
-  FriendType get friendType => _friendType;
 
   User({
     String id,
@@ -51,7 +49,6 @@ class User extends SimpleUser {
         _isPrivate = isPrivate,
         _showActive = showActive,
         _genderPrefer = genderPrefer,
-        _friendType = friendType,
         super(
           id: id,
           age: age,
@@ -65,6 +62,7 @@ class User extends SimpleUser {
           lastOnline: lastOnline,
           onlineStatus: onlineStatus,
           phoneNumber: phoneNumber,
+          friendType: friendType,
         );
 
   @override
@@ -80,8 +78,6 @@ class User extends SimpleUser {
         (v) => _allowMatching = v);
     map('data.settings.isPrivate', _isPrivate, (v) => _isPrivate = v);
     map('data.settings.showActive', _showActive, (v) => _showActive = v);
-    map('data.friendType.status', _friendType, (v) => _friendType = v,
-        EnumTransform<FriendType, String>());
   }
 
   static String get graphqlQuery => '''

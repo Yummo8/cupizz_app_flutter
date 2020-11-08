@@ -12,7 +12,7 @@ class SimpleUser extends BaseModel {
   File _avatar;
   OnlineStatus _onlineStatus;
   DateTime _lastOnline;
-  // TODO friend status
+  FriendType _friendType;
 
   String get displayName => nickName;
   String get nickName => _nickName;
@@ -26,6 +26,40 @@ class SimpleUser extends BaseModel {
   File get avatar => _avatar;
   OnlineStatus get onlineStatus => _onlineStatus;
   DateTime get lastOnline => _lastOnline;
+  FriendType get friendType => _friendType;
+
+  List<HobbyWithIsSelect> _sameHobbies;
+  List<HobbyWithIsSelect> getSameHobbies(BuildContext context) {
+    if (_sameHobbies == null) {
+      final currentUserHobbies = Momentum.of<CurrentUserController>(context)
+              .model
+              .currentUser
+              ?.hobbies ??
+          [];
+
+      _sameHobbies = [];
+      List<Hobby> userHobbies = [..._hobbies] ?? [];
+
+      for (var hobby in userHobbies) {
+        if (_sameHobbies.length >= 5) break;
+        if (currentUserHobbies.firstWhere((e) => e.id == hobby.id,
+                orElse: () => null) !=
+            null) {
+          _sameHobbies.add(HobbyWithIsSelect(hobby, true));
+        }
+      }
+
+      if (_sameHobbies.length < 5) {
+        _sameHobbies.addAll(userHobbies
+            .takeWhile((e) => !currentUserHobbies.contains(e))
+            .take(5 - _sameHobbies.length)
+            .map((e) => HobbyWithIsSelect(e, false))
+            .toList());
+      }
+      _sameHobbies.shuffle();
+    }
+    return _sameHobbies;
+  }
 
   SimpleUser({
     String id,
@@ -40,6 +74,7 @@ class SimpleUser extends BaseModel {
     int height,
     OnlineStatus onlineStatus,
     DateTime lastOnline,
+    FriendType friendType,
   })  : _nickName = nickname,
         _age = age,
         _introduction = introduction,
@@ -51,6 +86,7 @@ class SimpleUser extends BaseModel {
         _height = height,
         _onlineStatus = onlineStatus,
         _lastOnline = lastOnline,
+        _friendType = friendType,
         super(id: id);
 
   @override
@@ -70,6 +106,8 @@ class SimpleUser extends BaseModel {
         EnumTransform<OnlineStatus, String>());
     map('data.lastOnline', _lastOnline, (v) => _lastOnline = v,
         DateTransform());
+    map('data.friendType.status', _friendType, (v) => _friendType = v,
+        EnumTransform<FriendType, String>());
   }
 
   static String get graphqlQuery => '''

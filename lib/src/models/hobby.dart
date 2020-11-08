@@ -5,3 +5,12 @@ class Hobby extends KeyValue {
 
   static String get graphqlQuery => '{id value}';
 }
+
+class HobbyWithIsSelect implements Comparable<HobbyWithIsSelect> {
+  final bool isSelected;
+  final Hobby hobby;
+
+  HobbyWithIsSelect(this.hobby, this.isSelected);
+
+  compareTo(HobbyWithIsSelect other) => this.hobby.compareTo(other.hobby);
+}

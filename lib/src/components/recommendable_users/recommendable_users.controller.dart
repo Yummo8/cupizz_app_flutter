@@ -18,7 +18,7 @@ class RecommendableUsersController
       final users = await getService<UserService>().getRecommendableUsers();
       this.model.update(users: users, isLoading: false);
     } catch (e) {
-      this.model.update(error: e.toString());
+      this.model.update(error: e.toString(), isLoading: false);
     }
   }
 }

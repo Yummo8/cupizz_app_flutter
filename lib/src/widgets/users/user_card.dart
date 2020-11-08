@@ -35,8 +35,7 @@ class UserCard extends StatelessWidget {
               ),
             ),
           ),
-          Positioned.fill(
-              child: NetwordImage(simpleUser.avatar.url, isAvatar: true)),
+          Positioned.fill(child: NetwordImage(simpleUser.avatar.url)),
           Positioned(
             bottom: 0,
             child: Container(
@@ -67,35 +66,52 @@ class UserCard extends StatelessWidget {
             left: 20,
             right: 20,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Wrap(
-                  spacing: 5,
-                  crossAxisAlignment: WrapCrossAlignment.end,
+                Row(
                   children: [
-                    Text(
-                      simpleUser.displayName,
-                      style: context.textTheme.subtitle1.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: context.colorScheme.primary,
+                    SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: NetwordImage(simpleUser.avatar.thumbnail,
+                          isAvatar: true),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Wrap(
+                            spacing: 5,
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            children: [
+                              Text(
+                                simpleUser.displayName,
+                                style: context.textTheme.subtitle1.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: context.colorScheme.primary,
+                                ),
+                              ),
+                              if (simpleUser.age != null)
+                                Text(
+                                  simpleUser.age.toString(),
+                                  style: context.textTheme.caption,
+                                ),
+                            ],
+                          ),
+                          if (simpleUser.introduction.isExistAndNotEmpty)
+                            Text(
+                              simpleUser.introduction,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textTheme.caption.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                    if (simpleUser.age != null)
-                      Text(
-                        simpleUser.age.toString(),
-                        style: context.textTheme.caption,
-                      ),
                   ],
                 ),
-                if (simpleUser.introduction.isExistAndNotEmpty)
-                  Text(
-                    simpleUser.introduction,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.textTheme.caption.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                 if (showHobbies) ..._buildHobbyList(context)
               ],
             ),
@@ -106,26 +122,8 @@ class UserCard extends StatelessWidget {
   }
 
   List<Widget> _buildHobbyList(BuildContext context) {
-    final currentUserPreferHobbies = Fake.currentUser.hobbies ?? [];
-
-    List<_HobbyWithIsSelect> hobbiesToShow = [];
-    List<Hobby> userHobbies = [...simpleUser.hobbies] ?? [];
-
-    for (var hobby in userHobbies) {
-      if (hobbiesToShow.length >= 5) break;
-      if (currentUserPreferHobbies.contains(hobby)) {
-        hobbiesToShow.add(_HobbyWithIsSelect(hobby, true));
-      }
-    }
-
-    if (hobbiesToShow.length < 5) {
-      hobbiesToShow.addAll(userHobbies
-          .takeWhile((e) => !currentUserPreferHobbies.contains(e))
-          .take(5 - hobbiesToShow.length)
-          .map((e) => _HobbyWithIsSelect(e, false))
-          .toList());
-    }
-    hobbiesToShow.shuffle();
+    List<HobbyWithIsSelect> hobbiesToShow =
+        simpleUser.getSameHobbies(context) ?? [];
 
     return hobbiesToShow.isEmpty
         ? []
@@ -156,13 +154,4 @@ class UserCard extends StatelessWidget {
                         .toList()))
           ];
   }
-}
-
-class _HobbyWithIsSelect implements Comparable<_HobbyWithIsSelect> {
-  final bool isSelected;
-  final Hobby hobby;
-
-  _HobbyWithIsSelect(this.hobby, this.isSelected);
-
-  compareTo(_HobbyWithIsSelect other) => this.hobby.compareTo(other.hobby);
 }

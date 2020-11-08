@@ -2,7 +2,9 @@ library models;
 
 import 'dart:math';
 
+import 'package:cupizz_app/src/components/current_user/index.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:momentum/momentum.dart';
 
 import '../packages/object_mapper/object_mapper.dart';
 
