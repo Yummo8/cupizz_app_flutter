@@ -8,6 +8,8 @@ class User extends SimpleUser {
   bool _allowMatching;
   bool _isPrivate;
   bool _showActive;
+  List<Gender> _genderPrefer;
+  FriendType _friendType;
 
   DateTime get birthday => _birthday;
   int get minAgePrefer => _minAgePrefer;
@@ -16,6 +18,8 @@ class User extends SimpleUser {
   bool get allowMatching => _allowMatching;
   bool get isPrivate => _isPrivate;
   bool get showActive => _showActive;
+  List<Gender> get genderPrefer => _genderPrefer;
+  FriendType get friendType => _friendType;
 
   User({
     String id,
@@ -37,6 +41,8 @@ class User extends SimpleUser {
     bool allowMatching,
     bool isPrivate,
     bool showActive,
+    List<Gender> genderPrefer,
+    FriendType friendType,
   })  : _birthday = birthday,
         _minAgePrefer = minAgePrefer,
         _maxAgePrefer = maxAgePrefer,
@@ -44,6 +50,8 @@ class User extends SimpleUser {
         _allowMatching = allowMatching,
         _isPrivate = isPrivate,
         _showActive = showActive,
+        _genderPrefer = genderPrefer,
+        _friendType = friendType,
         super(
           id: id,
           age: age,
@@ -66,10 +74,14 @@ class User extends SimpleUser {
     map('data.minAgePrefer', _minAgePrefer, (v) => _minAgePrefer = v);
     map('data.maxAgePrefer', _maxAgePrefer, (v) => _maxAgePrefer = v);
     map('data.distancePrefer', _distancePrefer, (v) => _distancePrefer = v);
+    map<Gender>('data.genderPrefer', _genderPrefer, (v) => _genderPrefer = v,
+        EnumTransform<Gender, String>());
     map('data.settings.allowMatching', _allowMatching,
         (v) => _allowMatching = v);
     map('data.settings.isPrivate', _isPrivate, (v) => _isPrivate = v);
     map('data.settings.showActive', _showActive, (v) => _showActive = v);
+    map('data.friendType.status', _friendType, (v) => _friendType = v,
+        EnumTransform<FriendType, String>());
   }
 
   static String get graphqlQuery => '''

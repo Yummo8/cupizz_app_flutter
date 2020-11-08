@@ -149,10 +149,28 @@ class Mapper {
     }
 
     final List<String> subFields = field.split('.');
-    for (var i = subFields.length - 1; i > 0; i--) {
-      data = {subFields[i]: data};
+    this.json = _addSubFieldValue(this.json, subFields, data);
+  }
+
+  Map<String, dynamic> _addSubFieldValue(
+      Map<String, dynamic> json, List<String> subFields, dynamic value) {
+    assert(subFields.isNotEmpty);
+    assert(json != null);
+
+    final field = subFields[0];
+    subFields.removeAt(0);
+
+    if (subFields.isEmpty) {
+      json[field] = value;
+    } else {
+      Map<String, dynamic> currentData = json[field] is! Map ? {} : json[field];
+
+      currentData.addAll(_addSubFieldValue(currentData, subFields, value));
+
+      json[field] = currentData;
     }
-    this.json[subFields[0]] = data;
+
+    return json;
   }
 
   ValueType _getValueType(object) {

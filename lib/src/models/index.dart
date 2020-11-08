@@ -19,6 +19,7 @@ part 'user.dart';
 objectMapping() {
   Mappable.factories = {
     FileType: (v) => FileType(rawValue: v),
+    FriendType: (v) => FriendType(rawValue: v),
     Gender: (v) => Gender(rawValue: v),
     OnlineStatus: (v) => OnlineStatus(rawValue: v),
     File: () => File(),

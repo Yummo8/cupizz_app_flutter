@@ -7,6 +7,17 @@ class FileType extends Enumerable<String> {
   static const image = const FileType(rawValue: 'image');
 }
 
+class FriendType extends Enumerable<String> {
+  final String rawValue;
+  const FriendType({@required this.rawValue});
+
+  static const none = const FriendType(rawValue: 'none');
+  static const sent = const FriendType(rawValue: 'sent');
+  static const received = const FriendType(rawValue: 'received');
+  static const friend = const FriendType(rawValue: 'friend');
+  static const me = const FriendType(rawValue: 'me');
+}
+
 class OnlineStatus extends Enumerable<String> {
   final String rawValue;
   const OnlineStatus({@required this.rawValue});

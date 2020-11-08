@@ -17,7 +17,7 @@ class DateUnit extends Enumerable<int> {
   }
 }
 
-class DateTransform implements Transformable<DateTime, double> {
+class DateTransform implements Transformable<DateTime, String> {
   DateUnit unit;
   DateTransform({this.unit = DateUnit.seconds});
 
@@ -37,9 +37,9 @@ class DateTransform implements Transformable<DateTime, double> {
   }
 
   @override
-  double toJson(DateTime value) {
+  String toJson(DateTime value) {
     if (value == null) return null;
 
-    return unit.removeScale(value.millisecondsSinceEpoch.toDouble());
+    return value.toUtc().toIso8601String();
   }
 }
