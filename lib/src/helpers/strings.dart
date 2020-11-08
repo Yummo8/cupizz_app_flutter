@@ -26,12 +26,15 @@ class _Error {
   final unknownError = 'Lỗi không xác định';
   final invalidEmail = 'Email không đúng định dạng';
   final invalidPassword = 'Mật khẩu phải lớn hơn 8 ký tự';
+  final errorClick = 'Đã xảy ra lỗi. Click để xem chi tiết.';
+  final error = 'Đã xảy ra lỗi.';
 }
 
 class _Button {
   final login = "Đăng nhập";
   final register = 'Đăng ký';
   final forgotPassword = 'Quên mật khẩu?';
+  final reload = 'Tải lại';
 }
 
 class _LoginScreen {

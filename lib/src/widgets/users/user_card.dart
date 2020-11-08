@@ -3,9 +3,14 @@ part of '../index.dart';
 class UserCard extends StatelessWidget {
   final Function onPressed;
   final SimpleUser simpleUser;
+  final bool showHobbies;
 
-  const UserCard({Key key, this.onPressed, @required this.simpleUser})
-      : assert(simpleUser != null),
+  const UserCard({
+    Key key,
+    this.onPressed,
+    @required this.simpleUser,
+    this.showHobbies = true,
+  })  : assert(simpleUser != null),
         super(key: key);
 
   @override
@@ -91,7 +96,7 @@ class UserCard extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                ..._buildHobbyList(context)
+                if (showHobbies) ..._buildHobbyList(context)
               ],
             ),
           )
@@ -102,8 +107,6 @@ class UserCard extends StatelessWidget {
 
   List<Widget> _buildHobbyList(BuildContext context) {
     final currentUserPreferHobbies = Fake.currentUser.hobbies ?? [];
-    debugPrint(
-        currentUserPreferHobbies.map((e) => e.value).toList().toString());
 
     List<_HobbyWithIsSelect> hobbiesToShow = [];
     List<Hobby> userHobbies = [...simpleUser.hobbies] ?? [];

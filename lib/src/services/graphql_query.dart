@@ -16,5 +16,8 @@ mutation login(\$email: String, \$password: String){
       );
 
   static meQuery() =>
-      MutationOptions(documentNode: gql('{ me ${User.graphqlQuery} }'));
+      QueryOptions(documentNode: gql('{ me ${User.graphqlQuery} }'));
+
+  static recommendableUsersQuery() => QueryOptions(
+      documentNode: gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }'));
 }

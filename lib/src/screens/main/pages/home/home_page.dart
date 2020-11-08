@@ -3,6 +3,8 @@ library home_page;
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:cupizz_app/src/components/recommendable_users/index.dart';
+import 'package:cupizz_app/src/components/recommendable_users/recommendable_users.controller.dart';
 import 'package:cupizz_app/src/components/theme/theme.controller.dart';
 import 'package:cupizz_app/src/helpers/index.dart';
 import 'package:cupizz_app/src/models/index.dart';
@@ -61,18 +63,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCards() {
-    return CCard(
-      padding: EdgeInsets.only(top: _headerHeight + 50),
-      size: Size(
-        MediaQuery.of(context).size.width,
-        MediaQuery.of(context).size.height,
-      ),
-      cards: Fake.users
-          .map((e) => ClipRRect(
-                child: UserCard(simpleUser: e),
-                borderRadius: BorderRadius.circular(15),
-              ))
-          .toList(),
-    );
+    return MomentumBuilder(
+        controllers: [RecommendableUsersController],
+        builder: (context, snapshot) {
+          var model = snapshot<RecommendableUsersModel>();
+          if (model.isLoading) {
+            return LoadingIndicator();
+          } else if (model.error.isExistAndNotEmpty) {
+            return ErrorIndicator(onReload: () {
+              Momentum.of<RecommendableUsersController>(context)
+                  .fetchRecommendableUsers();
+            });
+          }
+
+          return CCard(
+            padding: EdgeInsets.only(top: _headerHeight + 50),
+            size: Size(
+              MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height,
+            ),
+            cards: model.users
+                .map((e) => ClipRRect(
+                      child: UserCard(simpleUser: e),
+                      borderRadius: BorderRadius.circular(15),
+                    ))
+                .toList(),
+          );
+        });
   }
 }

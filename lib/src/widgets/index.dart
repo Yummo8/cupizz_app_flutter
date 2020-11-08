@@ -20,3 +20,4 @@ part 'customs/rotate_animated_text_kit.dart';
 part 'customs/netword_image.dart';
 part 'indicators/loading_indicator.dart';
 part 'users/user_card.dart';
+part 'errors/error_indicator.dart';
