@@ -9,12 +9,9 @@ import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:momentum/momentum.dart';
 
 import '../../assets.dart';
 import '../../base/base.dart';
-import '../../components/auth/index.dart';
-import '../../components/theme/index.dart';
 import '../../packages/page_transition/page_transition.dart';
 import '../../widgets/index.dart';
 import '../../helpers/index.dart';

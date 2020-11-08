@@ -1,11 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:momentum/momentum.dart';
-
-import './theme.data.dart';
-import '../../services/index.dart';
-import 'index.dart';
+part of '../index.dart';
 
 class ThemeController extends MomentumController<ThemeModel> {
   StorageService _storage;

@@ -1,8 +1,4 @@
-import 'package:cupizz_app/src/components/current_user/current_user.controller.dart';
-import 'package:momentum/momentum.dart';
-
-import '../../services/index.dart';
-import 'index.dart';
+part of '../index.dart';
 
 class AuthController extends MomentumController<AuthModel> {
   @override

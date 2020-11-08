@@ -7,7 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:momentum/momentum.dart';
 
 import '../base/base.dart';
 import '../models/index.dart';

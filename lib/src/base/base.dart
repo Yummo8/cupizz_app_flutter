@@ -2,12 +2,14 @@ library base;
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
-import 'package:momentum/momentum.dart';
 
-export '../packages/index.dart';
 export '../helpers/index.dart';
+export '../packages/index.dart';
+export '../models/index.dart';
+export '../services/index.dart';
+export '../components/index.dart';
 
 part 'src/app_base.dart';
 part 'src/app_config.dart';

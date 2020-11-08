@@ -1,7 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:momentum/momentum.dart';
-
-import 'index.dart';
+part of '../index.dart';
 
 class AuthModel extends MomentumModel<AuthController> with EquatableMixin {
   AuthModel(AuthController controller, {this.token}) : super(controller);

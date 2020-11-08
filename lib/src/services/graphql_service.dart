@@ -5,6 +5,10 @@ class GraphqlService extends MomentumService {
   GraphQLClient get client => _client;
 
   GraphqlService() {
+    reset();
+  }
+
+  void reset() {
     final HttpLink httpLink = HttpLink(
       uri: AppConfig.instance.apiUrl,
     );
@@ -61,7 +65,7 @@ class GraphqlService extends MomentumService {
 
   Stream<FetchResult> _processFetchResult(Stream<FetchResult> stream) async* {
     await for (final result in stream) {
-      // TODO handle exception
+      // TODO handle realtime exception
       yield result;
     }
   }

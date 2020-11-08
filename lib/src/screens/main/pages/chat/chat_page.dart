@@ -6,7 +6,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
-import 'package:momentum/momentum.dart';
 
 import '../../../../models/index.dart';
 import '../../../../base/base.dart';

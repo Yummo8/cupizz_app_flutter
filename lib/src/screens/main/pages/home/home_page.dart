@@ -3,16 +3,12 @@ library home_page;
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:cupizz_app/src/components/recommendable_users/index.dart';
-import 'package:cupizz_app/src/components/recommendable_users/recommendable_users.controller.dart';
-import 'package:cupizz_app/src/components/theme/theme.controller.dart';
 import 'package:cupizz_app/src/helpers/index.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
-import 'package:momentum/momentum.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -76,6 +72,13 @@ class _HomePageState extends State<HomePage> {
                     .fetchRecommendableUsers();
               },
             );
+          } else if (model.users == null || model.users.isEmpty) {
+            // TODO handle no users.
+            if (model.users == null) {
+              Momentum.of<RecommendableUsersController>(context)
+                  .fetchRecommendableUsers();
+            }
+            return Center(child: Text('Notfound'));
           }
 
           return CCard(

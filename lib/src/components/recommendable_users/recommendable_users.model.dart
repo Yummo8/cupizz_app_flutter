@@ -1,13 +1,9 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/models/index.dart';
-import 'package:momentum/momentum.dart';
-
-import 'index.dart';
+part of '../index.dart';
 
 class RecommendableUsersModel
     extends MomentumModel<RecommendableUsersController> {
   RecommendableUsersModel(RecommendableUsersController controller,
-      {this.users, this.isLoading, this.error})
+      {this.users, this.isLoading = false, this.error})
       : super(controller);
 
   final List<SimpleUser> users;

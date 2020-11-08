@@ -1,9 +1,7 @@
 library profile_page;
 
-import 'package:cupizz_app/src/components/auth/auth.controller.dart';
-import 'package:cupizz_app/src/components/current_user/index.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:momentum/momentum.dart';
+import '../../../../base/base.dart';
 
 class ProfilePage extends StatefulWidget {
   @override

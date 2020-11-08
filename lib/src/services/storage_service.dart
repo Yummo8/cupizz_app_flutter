@@ -12,10 +12,15 @@ class StorageService extends MomentumService {
   Future<int> get getTheme async =>
       int.parse(await _storage.read(key: _THEME_KEY) ?? '', onError: (_) => 0);
 
-  Future<void> saveToken(String token) =>
-      _storage.write(key: _TOKEN_KEY, value: token);
+  Future<void> saveToken(String token) async {
+    await _storage.write(key: _TOKEN_KEY, value: token);
+    getService<GraphqlService>().reset();
+  }
 
-  Future<void> deleteToken() => _storage.delete(key: _TOKEN_KEY);
+  Future<void> deleteToken() async {
+    await _storage.delete(key: _TOKEN_KEY);
+    getService<GraphqlService>().reset();
+  }
 
   Future<String> get getToken async => await _storage.read(key: _TOKEN_KEY);
 }
