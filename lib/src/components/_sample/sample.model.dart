@@ -9,4 +9,12 @@ class SampleModel extends MomentumModel<SampleController> {
       controller,
     ).updateMomentum();
   }
+
+  @override
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+    return SampleModel(controller);
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {};
 }

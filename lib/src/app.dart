@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'base/base.dart';
 import 'screens/auth/index.dart';
+import 'screens/main/components/main_screen.controller.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
 
@@ -22,6 +23,7 @@ Momentum momentum() {
       AuthController(),
       CurrentUserController(),
       RecommendableUsersController()..config(lazy: true),
+      MainScreenController(),
     ],
     services: [
       Router([
