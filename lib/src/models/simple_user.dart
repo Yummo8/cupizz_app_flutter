@@ -10,6 +10,7 @@ class SimpleUser extends BaseModel {
   String _job;
   int _height;
   File _avatar;
+  File _cover;
   OnlineStatus _onlineStatus;
   DateTime _lastOnline;
   FriendType _friendType;
@@ -24,6 +25,7 @@ class SimpleUser extends BaseModel {
   String get job => _job;
   int get height => _height;
   File get avatar => _avatar;
+  File get cover => _cover;
   OnlineStatus get onlineStatus => _onlineStatus;
   DateTime get lastOnline => _lastOnline;
   FriendType get friendType => _friendType;
@@ -67,6 +69,7 @@ class SimpleUser extends BaseModel {
     int age,
     String introduction,
     File avatar,
+    File cover,
     List<Hobby> hobbies,
     Gender gender,
     String phoneNumber,
@@ -79,6 +82,7 @@ class SimpleUser extends BaseModel {
         _age = age,
         _introduction = introduction,
         _avatar = avatar,
+        _cover = cover,
         _hobbies = hobbies,
         _gender = gender,
         _phoneNumber = phoneNumber,
@@ -102,6 +106,7 @@ class SimpleUser extends BaseModel {
     map('data.job', _job, (v) => _job = v);
     map('data.height', _height, (v) => _height = v);
     map<File>('data.avatar', _avatar, (v) => _avatar = v);
+    map<File>('data.cover', _cover, (v) => _cover = v);
     map('data.onlineStatus', _onlineStatus, (v) => _onlineStatus = v,
         EnumTransform<OnlineStatus, String>());
     map('data.lastOnline', _lastOnline, (v) => _lastOnline = v,
@@ -123,6 +128,7 @@ class SimpleUser extends BaseModel {
       job
       height
       avatar ${File.graphqlQuery}
+      cover ${File.graphqlQuery}
       friendType {status}
       onlineStatus
       lastOnline

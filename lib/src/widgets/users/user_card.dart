@@ -35,7 +35,9 @@ class UserCard extends StatelessWidget {
               ),
             ),
           ),
-          Positioned.fill(child: NetwordImage(simpleUser.avatar.url)),
+          Positioned.fill(
+              child: NetwordImage(
+                  simpleUser.cover?.url ?? simpleUser.avatar?.url)),
           Positioned(
             bottom: 0,
             child: Container(
