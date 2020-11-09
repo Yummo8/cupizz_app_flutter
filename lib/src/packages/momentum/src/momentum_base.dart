@@ -724,6 +724,10 @@ abstract class MomentumController<M> with _ControllerBase {
       _currentActiveModel = init();
       _setMomentum(init());
     }
+    if (_lazy) {
+      _booted = false;
+      _bootedAsync = false;
+    }
     if (_momentumLogging) {
       print(_formatMomentumLog('[$this] has been reset.'));
     }
