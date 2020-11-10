@@ -87,7 +87,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                 painter: _DrawerPainter(
                     offset: _offset, color: context.colorScheme.background),
               ),
-              _buildBody()
+              Positioned.fill(child: _buildBody())
             ],
           ),
         ),
@@ -107,19 +107,31 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                     .getCurrentUser,
               );
             }
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildTitle(),
-                  const SizedBox(height: 10),
-                  _buildGender(model.currentUser),
-                  _buildHobbies(),
-                  _buildDistance(),
-                  _buildAge(),
-                ],
-              ),
+            return Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: _buildTitle(),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildGender(model.currentUser),
+                        _buildHobbies(model.currentUser),
+                        _buildDistance(model.currentUser),
+                        _buildAge(model.currentUser),
+                        const SizedBox(height: 56),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             );
           }),
     );
@@ -195,7 +207,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     );
   }
 
-  Widget _buildHobbies() {
+  Widget _buildHobbies(User currentUser) {
     return _buildItem(
       title: Strings.common.hobbies,
       actions:
@@ -205,9 +217,9 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
         children: [
           Wrap(
             spacing: 10,
-            children: ['Đá banh', 'Đá bóng', 'Đá lông nheo', 'Đá gà', 'Đập đá']
+            children: currentUser.hobbies
                 .map(
-                  (e) => _buildOptionButton(title: e, isSelected: true),
+                  (e) => _buildOptionButton(title: e.value, isSelected: true),
                 )
                 .toList(),
           ),
@@ -222,7 +234,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     );
   }
 
-  Widget _buildDistance() {
+  Widget _buildDistance(User currentUser) {
     return _buildItem(
       title: Strings.common.distance,
       actions: Row(
@@ -233,12 +245,16 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
             color: Colors.grey[500],
           ),
           const SizedBox(width: 5),
-          Text('5 km', style: context.textTheme.caption),
+          Text('${currentUser.distancePrefer} km',
+              style: context.textTheme.caption),
         ],
       ),
       body: FlutterSlider(
-        values: [300],
-        max: 1000,
+        values: [currentUser.distancePrefer.toDouble()],
+        max: (1000 < currentUser.distancePrefer
+                ? currentUser.distancePrefer
+                : 1000)
+            .toDouble(),
         min: 0,
         trackBar: FlutterSliderTrackBar(
           activeTrackBar: BoxDecoration(color: context.colorScheme.primary),
@@ -250,14 +266,21 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     );
   }
 
-  Widget _buildAge() {
+  Widget _buildAge(User currentUser) {
     return _buildItem(
       title: Strings.common.age,
-      actions: Text('18 - 23 tuổi', style: context.textTheme.caption),
+      actions: Text(
+          '${currentUser.minAgePrefer} - ${currentUser.maxAgePrefer} tuổi',
+          style: context.textTheme.caption),
       body: FlutterSlider(
-        values: [18, 23],
-        max: 60,
-        min: 18,
+        values: [
+          currentUser.minAgePrefer.toDouble(),
+          currentUser.maxAgePrefer.toDouble()
+        ],
+        max: (60 < currentUser.maxAgePrefer ? currentUser.maxAgePrefer : 60)
+            .toDouble(),
+        min: (18 > currentUser.minAgePrefer ? currentUser.minAgePrefer : 18)
+            .toDouble(),
         rangeSlider: true,
         minimumDistance: 1,
         trackBar: FlutterSliderTrackBar(
