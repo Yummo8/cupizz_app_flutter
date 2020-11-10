@@ -20,6 +20,7 @@ class _Common {
   final age = 'Tuổi';
   final man = 'Nam';
   final woman = 'Nữ';
+  final other = 'Khác';
 }
 
 class _Error {

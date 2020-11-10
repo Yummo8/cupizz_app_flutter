@@ -97,20 +97,31 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
 
   Widget _buildBody() {
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildTitle(),
-            const SizedBox(height: 10),
-            _buildGender(),
-            _buildHobbies(),
-            _buildDistance(),
-            _buildAge(),
-          ],
-        ),
-      ),
+      child: MomentumBuilder(
+          controllers: [CurrentUserController],
+          builder: (context, snapshot) {
+            final model = snapshot<CurrentUserModel>();
+            if (model.currentUser == null) {
+              return ErrorIndicator(
+                onReload: Momentum.controller<CurrentUserController>(context)
+                    .getCurrentUser,
+              );
+            }
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildTitle(),
+                  const SizedBox(height: 10),
+                  _buildGender(model.currentUser),
+                  _buildHobbies(),
+                  _buildDistance(),
+                  _buildAge(),
+                ],
+              ),
+            );
+          }),
     );
   }
 
@@ -154,18 +165,31 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     );
   }
 
-  Widget _buildGender() {
+  Widget _buildGender(User user) {
     return _buildItem(
       title: Strings.drawer.whoAreYouLookingFor,
       body: Row(
         children: [
-          Expanded(child: _buildOptionButton(title: Strings.common.man)),
+          Expanded(
+            child: _buildOptionButton(
+              title: Gender.male.displayValue,
+              isSelected: user.genderPrefer.contains(Gender.male),
+            ),
+          ),
           const SizedBox(width: 10),
           Expanded(
-              child: _buildOptionButton(
-            title: Strings.common.woman,
-            isSelected: true,
-          )),
+            child: _buildOptionButton(
+              title: Gender.female.displayValue,
+              isSelected: user.genderPrefer.contains(Gender.female),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: _buildOptionButton(
+              title: Gender.other.displayValue,
+              isSelected: user.genderPrefer.contains(Gender.other),
+            ),
+          ),
         ],
       ),
     );

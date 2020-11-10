@@ -30,14 +30,14 @@ class Gender extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  const Gender({@required this.rawValue})
+  Gender({@required this.rawValue})
       : displayValue = rawValue == 'male'
-            ? 'Nam'
+            ? Strings.common.man
             : rawValue == 'female'
-                ? 'Nữ'
-                : 'Khác';
+                ? Strings.common.woman
+                : Strings.common.other;
 
-  static const male = const FileType(rawValue: 'male');
-  static const female = const FileType(rawValue: 'female');
-  static const other = const FileType(rawValue: 'other');
+  static final male = Gender(rawValue: 'male');
+  static final female = Gender(rawValue: 'female');
+  static final other = Gender(rawValue: 'other');
 }

@@ -19,8 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
   initState() {
     super.initState();
     if (AppConfig.instance.isDev) {
-      email.text = 'hienlh1298@gmail.com';
-      password.text = 'abc123456';
+      email.text = 'test12@gmail.com';
+      password.text = '123456789';
     }
   }
 
