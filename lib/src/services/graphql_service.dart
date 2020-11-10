@@ -42,9 +42,11 @@ class GraphqlService extends MomentumService {
       } else if (result.exception.graphqlErrors != null &&
           result.exception.graphqlErrors.isNotEmpty) {
         final unauthenticatedError = result.exception.graphqlErrors.firstWhere(
-            (element) => element.extensions['code'] == 'UNAUTHENTICATED');
+            (element) => element.extensions['code'] == 'UNAUTHENTICATED',
+            orElse: () => null);
         final clientError = result.exception.graphqlErrors.firstWhere(
-            (element) => element.extensions['code'] == 'CLIENT_ERROR');
+            (element) => element.extensions['code'] == 'CLIENT_ERROR',
+            orElse: () => null);
         if (unauthenticatedError != null) {
           await getService<AuthService>().logout();
           throw 'UNAUTHENTICATED';
