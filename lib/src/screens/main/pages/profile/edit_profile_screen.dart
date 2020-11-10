@@ -244,9 +244,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
-        leading: GestureDetector(
-          onTap: () {/* Write listener code here */},
-          child: Icon(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
             Icons.arrow_back,
             color: Colors.black, // add custom icons also
           ),

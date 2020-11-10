@@ -1,7 +1,7 @@
+import 'package:cupizz_app/src/helpers/index.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_clipper.dart';
-import 'top_bar.dart';
 
 class StackContainer extends StatelessWidget {
   const StackContainer({Key key}) : super(key: key);
@@ -9,9 +9,9 @@ class StackContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+    SizeHelper sizeHelper = SizeHelper(context);
     return Container(
-      height: MediaQuery.of(context).size.height / 10 * 4.5,
+      height: sizeHelper.rH(45),
       child: Stack(
         children: [
           ClipPath(
@@ -49,7 +49,6 @@ class StackContainer extends StatelessWidget {
               ),
             ),
           ),
-          TopBar(),
           Positioned(
             bottom: 0,
             left: MediaQuery.of(context).size.width / 12,

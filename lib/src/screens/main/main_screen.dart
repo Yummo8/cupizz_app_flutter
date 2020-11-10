@@ -1,6 +1,7 @@
 library main_screen;
 
 import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
+import 'package:cupizz_app/src/screens/main/pages/profile/profile_screen.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -10,7 +11,6 @@ import '../../widgets/index.dart';
 import 'components/main_screen.controller.dart';
 import 'pages/chat/chat_page.dart';
 import 'pages/home/home_page.dart';
-import 'pages/profile/profile_page.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _MainScreenState extends MomentumState<MainScreen>
     HomePage(),
     FriendPage(),
     ChatPage(),
-    ProfilePage(),
+    ProfileScreen(),
   ];
 
   TabController _tabController;
