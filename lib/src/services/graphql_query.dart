@@ -20,4 +20,37 @@ mutation login(\$email: String, \$password: String){
 
   static recommendableUsersQuery() => QueryOptions(
       documentNode: gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }'));
+
+  static updateMySetting({
+    int minAgePrefer,
+    int maxAgePrefer,
+    int minHeightPrefer,
+    int maxHeightPrefer,
+    List<Gender> genderPrefer,
+    int distancePrefer,
+    List<String> mustHaveFields,
+  }) =>
+      QueryOptions(documentNode: gql('''
+    mutation updateMySetting(
+        minAgePrefer: Int
+        maxAgePrefer: Int
+        minHeightPrefer: Int
+        maxHeightPrefer: Int
+        genderPrefer: [Gender!]
+        distancePrefer: Int
+        mustHaveFields: [MustHaveEnum!]
+      )  {
+      updateMySetting(
+        minAgePrefer: \$minAgePrefer
+        maxAgePrefer: \$maxAgePrefer
+        minHeightPrefer: \$minHeightPrefer
+        maxHeightPrefer: \$maxHeightPrefer
+        genderPrefer: \$genderPrefer
+        distancePrefer: \$distancePrefer
+        mustHaveFields: \$mustHaveFields
+      ) {
+        ${User.graphqlQuery}
+      }
+    }
+  '''));
 }
