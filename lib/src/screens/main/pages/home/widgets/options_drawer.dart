@@ -183,24 +183,15 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
       body: Row(
         children: [
           Expanded(
-            child: _buildOptionButton(
-              title: Gender.male.displayValue,
-              isSelected: user.genderPrefer.contains(Gender.male),
-            ),
+            child: _buildGenderButton(user, Gender.male),
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: _buildOptionButton(
-              title: Gender.female.displayValue,
-              isSelected: user.genderPrefer.contains(Gender.female),
-            ),
+            child: _buildGenderButton(user, Gender.female),
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: _buildOptionButton(
-              title: Gender.other.displayValue,
-              isSelected: user.genderPrefer.contains(Gender.other),
-            ),
+            child: _buildGenderButton(user, Gender.other),
           ),
         ],
       ),
@@ -323,6 +314,18 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
       ],
     );
   }
+
+  Widget _buildGenderButton(User user, Gender gender) => _buildOptionButton(
+      title: gender.displayValue,
+      isSelected: user.genderPrefer.contains(gender),
+      onPressed: () {
+        try {
+          Momentum.controller<CurrentUserController>(context)
+              .toggleGenderButton(gender);
+        } catch (e) {
+          Fluttertoast.showToast(msg: e);
+        }
+      });
 
   Widget _buildOptionButton({
     @required String title,

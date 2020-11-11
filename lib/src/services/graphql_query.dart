@@ -21,7 +21,7 @@ mutation login(\$email: String, \$password: String){
   static recommendableUsersQuery() => QueryOptions(
       documentNode: gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }'));
 
-  static updateMySetting({
+  static updateMySetting([
     int minAgePrefer,
     int maxAgePrefer,
     int minHeightPrefer,
@@ -29,16 +29,16 @@ mutation login(\$email: String, \$password: String){
     List<Gender> genderPrefer,
     int distancePrefer,
     List<String> mustHaveFields,
-  }) =>
+  ]) =>
       QueryOptions(documentNode: gql('''
     mutation updateMySetting(
-        minAgePrefer: Int
-        maxAgePrefer: Int
-        minHeightPrefer: Int
-        maxHeightPrefer: Int
-        genderPrefer: [Gender!]
-        distancePrefer: Int
-        mustHaveFields: [MustHaveEnum!]
+        \$minAgePrefer: Int
+        \$maxAgePrefer: Int
+        \$minHeightPrefer: Int
+        \$maxHeightPrefer: Int
+        \$genderPrefer: [Gender!]
+        \$distancePrefer: Int
+        \$mustHaveFields: [MustHaveEnum!]
       )  {
       updateMySetting(
         minAgePrefer: \$minAgePrefer
@@ -48,9 +48,15 @@ mutation login(\$email: String, \$password: String){
         genderPrefer: \$genderPrefer
         distancePrefer: \$distancePrefer
         mustHaveFields: \$mustHaveFields
-      ) {
-        ${User.graphqlQuery}
-      }
+      ) ${User.graphqlQuery}
     }
-  '''));
+  '''), variables: {
+        'minAgePrefer': minAgePrefer,
+        'maxAgePrefer': maxAgePrefer,
+        'minHeightPrefer': minHeightPrefer,
+        'maxHeightPrefer': maxHeightPrefer,
+        'genderPrefer': genderPrefer.map((e) => e.rawValue).toList(),
+        'distancePrefer': distancePrefer,
+        'mustHaveFields': mustHaveFields,
+      });
 }

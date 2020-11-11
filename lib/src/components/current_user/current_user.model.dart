@@ -33,7 +33,6 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
       'currentUser': currentUser?.toJson(),
       'isLoading': isLoading,
     };
-    debugPrint(result.toString());
     return result;
   }
 }

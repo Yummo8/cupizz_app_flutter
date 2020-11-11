@@ -27,15 +27,17 @@ class UserService extends MomentumService {
     List<String> mustHaveFields,
   }) async {
     final graphql = getService<GraphqlService>();
-    final result = await graphql.query(GraphqlQuery.updateMySetting(
-      minAgePrefer: minAgePrefer,
-      maxAgePrefer: maxAgePrefer,
-      minHeightPrefer: minHeightPrefer,
-      maxHeightPrefer: maxHeightPrefer,
-      genderPrefer: genderPrefer,
-      distancePrefer: distancePrefer,
-      mustHaveFields: mustHaveFields,
-    ));
+    final result = await graphql.query(
+      GraphqlQuery.updateMySetting(
+        minAgePrefer,
+        maxAgePrefer,
+        minHeightPrefer,
+        maxHeightPrefer,
+        genderPrefer,
+        distancePrefer,
+        mustHaveFields,
+      ),
+    );
     final user =
         Mapper.fromJson(result.data['updateMySetting']).toObject<User>();
     return user;
