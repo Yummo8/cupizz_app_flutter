@@ -47,7 +47,7 @@ class TestInfo with Mappable {
   void mapping(Mapper map) {
     map("id", id, (v) => id = v);
     map("is_admin", isAdmin, (v) => isAdmin = v);
-    map("numbers", numbers, (v) => numbers = v);
+    map("numbers", numbers, (v) => numbers = v.cast<int>());
     map("name", name, (v) => name = v);
     map("rate", rate, (v) => rate = v);
     map("meta", meta, (v) => meta = v);
@@ -75,7 +75,7 @@ class NestedInfo with Mappable {
   void mapping(Mapper map) {
     map("id", id, (v) => id = v);
     map("is_admin", isAdmin, (v) => isAdmin = v);
-    map("numbers", numbers, (v) => numbers = v);
+    map("numbers", numbers, (v) => numbers = v.cast<int>());
     map("name", name, (v) => name = v);
     map("rate", rate, (v) => rate = v);
     map("meta", meta, (v) => meta = v);
@@ -91,8 +91,10 @@ void expectInfo(Map<String, dynamic> json, info) {
   expect(info.name, json["name"]);
   expect(info.rate, json["rate"]);
   expect(info.numbers, json["numbers"]);
-  expect(info.time,
-      DateTime.fromMillisecondsSinceEpoch(json["time"].toInt() * 1000));
+  expect(
+      DateTime.fromMillisecondsSinceEpoch(json["time"] * 1000)
+          ?.compareTo(info.time),
+      0);
   expect(info.isAdmin, json["is_admin"]);
   expect(info.meta["empty"], "no");
 }
@@ -102,8 +104,7 @@ void expectJson(Map<String, dynamic> json, info) {
   expect(json["name"], info.name);
   expect(json["rate"], info.rate);
   expect(json["numbers"], info.numbers);
-  expect(DateTime.fromMillisecondsSinceEpoch(json["time"].toInt() * 1000),
-      info.time);
+  expect(DateTime.tryParse(json["time"].toString())?.compareTo(info.time), 0);
   expect(json["is_admin"], info.isAdmin);
   expect(json["meta"]["empty"], "no");
 }
@@ -222,6 +223,12 @@ void main() {
       expect(nests.length, json["nests"].length);
       nests.asMap().forEach((i, o) => expectInfo(json["nests"][i], o));
     });
+
+    test("#3 Clone & compare", () {
+      final info = Mapper.fromJson(jsonInput).toObject<TestInfo>();
+      final clone = info.clone<TestInfo>();
+      expect(clone == info, true);
+    });
   });
 
   test("toJson", () {
@@ -265,7 +272,10 @@ void main() {
     expectJson(jsonOutput, info);
     expect(jsonOutput["times"], isNotNull);
     expect(jsonOutput["times"].length, equals(2));
-    expect(jsonOutput["times"][0], 324);
+    expect(
+        DateTime.tryParse(jsonOutput["times"][0])
+            .compareTo(DateTime.fromMillisecondsSinceEpoch(324 * 1000)),
+        0);
     expect(jsonOutput["setting"]["notification"]["like"], false);
 
     final nested = info.nested;

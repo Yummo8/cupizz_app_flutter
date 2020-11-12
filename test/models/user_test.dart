@@ -40,7 +40,11 @@ final Map<String, dynamic> json = {
     "friendType": {"status": "me"},
     "onlineStatus": "offline",
     "lastOnline": "2020-11-07T16:34:53.931Z",
-    "settings": {"allowMatching": true, "isPrivate": false, "showActive": false}
+    "settings": {
+      "allowMatching": true,
+      "isPrivate": false,
+      "showActive": false
+    },
   }
 };
 
@@ -84,6 +88,14 @@ void main() {
       final currentJson = info.toJson();
 
       expect(currentJson, json);
+    });
+
+    test('Test compare', () {
+      var mapper = Mapper.fromJson(json);
+      final user = mapper.toObject<User>();
+      final clone = user.clone<User>();
+
+      expect(clone == user, true);
     });
   });
 }

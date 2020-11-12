@@ -56,7 +56,7 @@ class Mapper {
     List<String> subFields = field.split('.');
     var v = json[subFields[0]];
     for (var i = 1; i < subFields.length; i++) {
-      v = v[subFields[i]];
+      v = v != null ? v[subFields[i]] : null;
     }
     final type = _getValueType(v);
 

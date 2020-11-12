@@ -46,7 +46,7 @@ void main() {
     final info = mapper.toObject<SimpleUser>();
 
     expect(info.id, json['id']);
-    expect(info.nickName, json['data']['nickname']);
+    expect(info.nickName, json['data']['nickName']);
     expect(info.age, json['data']['age']);
     expect(info.introduction, json['data']['introduction']);
     expect(info.gender.rawValue, json['data']['gender']);
@@ -58,5 +58,14 @@ void main() {
     expect(info.avatar.toJson(), json['data']['avatar']);
     expect(info.onlineStatus.rawValue, json['data']['onlineStatus']);
     expect(info.lastOnline, DateTime.tryParse(json['data']['lastOnline']));
+    expect(info.friendType.rawValue, json['data']['friendType']['status']);
+  });
+
+  test('Test compare', () {
+    var mapper = Mapper.fromJson(json);
+    final user = mapper.toObject<User>();
+    final clone = user.clone<User>();
+
+    expect(clone == user, true);
   });
 }

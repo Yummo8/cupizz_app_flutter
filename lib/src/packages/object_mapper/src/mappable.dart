@@ -16,6 +16,21 @@ abstract class Mappable {
     return Mapper().toJson(this);
   }
 
+  T clone<T extends Mappable>() {
+    final json = this.toJson();
+    return Mapper.fromJson(json).toObject<T>();
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Mappable &&
+          runtimeType == other.runtimeType &&
+          this.toJsonString() == this.toJsonString();
+
+  @override
+  int get hashCode => runtimeType.hashCode ^ this.toJson().hashCode;
+
   String toJsonString() {
     return json.encode(this.toJson());
   }
