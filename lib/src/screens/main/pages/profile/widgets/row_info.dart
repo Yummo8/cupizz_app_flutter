@@ -12,6 +12,7 @@ class RowInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final ThemeData _theme = Theme.of(context);
     return InkWell(
       onTap: () => {
         if (onClick != null) {onClick()}
@@ -21,7 +22,7 @@ class RowInfo extends StatelessWidget {
         children: [
           Icon(
             this.iconData,
-            color: Colors.pink,
+            color: _theme.primaryColor,
             size: 18.0,
             semanticLabel: this.semanticLabel,
           ),

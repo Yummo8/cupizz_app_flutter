@@ -38,6 +38,8 @@ dependencies:
   onesignal_flutter: ^2.0.0
   sliding_sheet: ^0.4.1
   font_awesome_flutter: ^8.10.0
+  material_design_icons_flutter: 4.0.5755
+  direct_select: "^1.0.3"
 
 dev_dependencies:
   flutter_test:

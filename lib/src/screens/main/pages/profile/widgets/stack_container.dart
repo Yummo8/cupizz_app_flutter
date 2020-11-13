@@ -8,6 +8,8 @@ class StackContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _theme = Theme.of(context);
+    const opacity = 0.3;
     // TODO: implement build
     SizeHelper sizeHelper = SizeHelper(context);
     return Container(
@@ -18,7 +20,7 @@ class StackContainer extends StatelessWidget {
             clipper: BackgroudClipper(),
             child: Container(
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.pink[300])),
+                border: Border(bottom: BorderSide(color: _theme.primaryColor)),
                 image: DecorationImage(
                   image: NetworkImage(
                       "https://static.onecms.io/wp-content/uploads/sites/20/2017/05/alexandra-daddario-womens-health-1-2000.jpg"),
@@ -32,9 +34,9 @@ class StackContainer extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Colors.pink[300]),
+                  bottom: BorderSide(color: _theme.primaryColor),
                 ),
-                color: Color.fromRGBO(190, 114, 149, 0.6),
+                color: _theme.primaryColor.withOpacity(opacity),
               ),
             ),
           ),
@@ -45,7 +47,7 @@ class StackContainer extends StatelessWidget {
                 border: Border(
                   bottom: BorderSide(color: Colors.pink[300]),
                 ),
-                color: Color.fromRGBO(190, 114, 149, 0.6),
+                color: _theme.primaryColor.withOpacity(opacity),
               ),
             ),
           ),
