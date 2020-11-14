@@ -318,9 +318,9 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   Widget _buildGenderButton(User user, Gender gender) => _buildOptionButton(
       title: gender.displayValue,
       isSelected: user.genderPrefer.contains(gender),
-      onPressed: () {
+      onPressed: () async {
         try {
-          Momentum.controller<CurrentUserController>(context)
+          await Momentum.controller<CurrentUserController>(context)
               .toggleGenderButton(gender);
         } catch (e) {
           Fluttertoast.showToast(msg: e);

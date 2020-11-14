@@ -53,7 +53,7 @@ class GraphqlService extends MomentumService {
         } else if (clientError != null) {
           throw clientError.message;
         } else {
-          debugPrint(result.exception.toString());
+          inspect(result.exception);
           throw 'Lỗi server';
         }
       } else {

@@ -16,5 +16,5 @@ part 'current_user/current_user.model.dart';
 part 'recommendable_users/recommendable_users.controller.dart';
 part 'recommendable_users/recommendable_users.model.dart';
 part 'theme/theme.controller.dart';
-part 'theme/theme.model.dart';
 part 'theme/theme.data.dart';
+part 'theme/theme.model.dart';

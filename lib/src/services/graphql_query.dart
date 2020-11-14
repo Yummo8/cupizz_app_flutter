@@ -29,34 +29,14 @@ mutation login(\$email: String, \$password: String){
     List<Gender> genderPrefer,
     int distancePrefer,
     List<String> mustHaveFields,
-  ]) =>
-      QueryOptions(documentNode: gql('''
-    mutation updateMySetting(
-        \$minAgePrefer: Int
-        \$maxAgePrefer: Int
-        \$minHeightPrefer: Int
-        \$maxHeightPrefer: Int
-        \$genderPrefer: [Gender!]
-        \$distancePrefer: Int
-        \$mustHaveFields: [MustHaveEnum!]
-      )  {
+  ]) {
+    final query = '''
+    mutation {
       updateMySetting(
-        minAgePrefer: \$minAgePrefer
-        maxAgePrefer: \$maxAgePrefer
-        minHeightPrefer: \$minHeightPrefer
-        maxHeightPrefer: \$maxHeightPrefer
-        genderPrefer: \$genderPrefer
-        distancePrefer: \$distancePrefer
-        mustHaveFields: \$mustHaveFields
+        genderPrefer: ${genderPrefer.map((e) => e.rawValue).toList()}
       ) ${User.graphqlQuery}
     }
-  '''), variables: {
-        'minAgePrefer': minAgePrefer,
-        'maxAgePrefer': maxAgePrefer,
-        'minHeightPrefer': minHeightPrefer,
-        'maxHeightPrefer': maxHeightPrefer,
-        'genderPrefer': genderPrefer.map((e) => e.rawValue).toList(),
-        'distancePrefer': distancePrefer,
-        'mustHaveFields': mustHaveFields,
-      });
+  ''';
+    return QueryOptions(documentNode: gql(query));
+  }
 }
