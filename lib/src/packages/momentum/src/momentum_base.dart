@@ -815,6 +815,8 @@ abstract class MomentumService {
   BuildContext _context;
   MomentumTester _tester;
 
+  BuildContext get context => _context;
+
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.

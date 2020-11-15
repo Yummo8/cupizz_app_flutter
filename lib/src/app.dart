@@ -14,7 +14,7 @@ import 'screens/main/components/main_screen.controller.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
 
-Momentum momentum() {
+Momentum momentum({bool isTesting = false}) {
   return Momentum(
     key: UniqueKey(),
     maxTimeTravelSteps: 200,
@@ -32,9 +32,13 @@ Momentum momentum() {
         MainScreen(),
         MessagesScreen(),
       ]),
-      StorageService(),
+      StorageService(isTesting: isTesting),
       AuthService(),
-      GraphqlService(),
+      GraphqlService(
+        !isTesting
+            ? AppConfig.instance.apiUrl
+            : 'http://cupizz.cf/graphql', //192.168.1.242:2020
+      ),
       UserService(),
     ],
     appLoader: AppLoader(),
@@ -107,6 +111,9 @@ class AppLoader extends StatelessWidget {
 }
 
 class _MyApp extends StatelessWidget {
+  final bool isTesting;
+
+  const _MyApp({Key key, this.isTesting = false}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
@@ -119,7 +126,7 @@ class _MyApp extends StatelessWidget {
               debugShowCheckedModeBanner:
                   AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
               title: 'Cupizz',
-              navigatorKey: AppConfig.navigatorKey,
+              navigatorKey: isTesting ? null : AppConfig.navigatorKey,
               theme: theme,
               home: Router.getActivePage(context),
             ),

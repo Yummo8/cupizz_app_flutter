@@ -226,65 +226,75 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   }
 
   Widget _buildDistance(User currentUser) {
-    return _buildItem(
-      title: Strings.common.distance,
-      actions: Row(
-        children: [
-          Icon(
-            Icons.room,
-            size: 12,
-            color: Colors.grey[500],
-          ),
-          const SizedBox(width: 5),
-          Text('${currentUser.distancePrefer} km',
-              style: context.textTheme.caption),
-        ],
-      ),
-      body: FlutterSlider(
-        values: [currentUser.distancePrefer.toDouble()],
-        max: (1000 < currentUser.distancePrefer
-                ? currentUser.distancePrefer
-                : 1000)
-            .toDouble(),
-        min: 0,
-        trackBar: FlutterSliderTrackBar(
-          activeTrackBar: BoxDecoration(color: context.colorScheme.primary),
-        ),
-        handler: HeartSliderHandler(context),
-        tooltip: CustomSliderTooltip(context, unit: 'km'),
-        onDragging: (handlerIndex, lowerValue, upperValue) {},
-      ),
-    );
+    return currentUser.distancePrefer == null
+        ? const SizedBox.shrink()
+        : _buildItem(
+            title: Strings.common.distance,
+            actions: Row(
+              children: [
+                Icon(
+                  Icons.room,
+                  size: 12,
+                  color: Colors.grey[500],
+                ),
+                const SizedBox(width: 5),
+                Text('${currentUser.distancePrefer} km',
+                    style: context.textTheme.caption),
+              ],
+            ),
+            body: FlutterSlider(
+              values: [currentUser.distancePrefer.toDouble()],
+              max: (1000 < currentUser.distancePrefer
+                      ? currentUser.distancePrefer
+                      : 1000)
+                  .toDouble(),
+              min: 0,
+              trackBar: FlutterSliderTrackBar(
+                activeTrackBar:
+                    BoxDecoration(color: context.colorScheme.primary),
+              ),
+              handler: HeartSliderHandler(context),
+              tooltip: CustomSliderTooltip(context, unit: 'km'),
+              onDragging: (handlerIndex, lowerValue, upperValue) {},
+            ),
+          );
   }
 
   Widget _buildAge(User currentUser) {
-    return _buildItem(
-      title: Strings.common.age,
-      actions: Text(
-          '${currentUser.minAgePrefer} - ${currentUser.maxAgePrefer} tuổi',
-          style: context.textTheme.caption),
-      body: FlutterSlider(
-        values: [
-          currentUser.minAgePrefer.toDouble(),
-          currentUser.maxAgePrefer.toDouble()
-        ],
-        max: (60 < currentUser.maxAgePrefer ? currentUser.maxAgePrefer : 60)
-            .toDouble(),
-        min: (18 > currentUser.minAgePrefer ? currentUser.minAgePrefer : 18)
-            .toDouble(),
-        rangeSlider: true,
-        minimumDistance: 1,
-        trackBar: FlutterSliderTrackBar(
-          activeTrackBar: BoxDecoration(color: context.colorScheme.primary),
-        ),
-        handlerWidth: 18,
-        handlerHeight: 18,
-        handler: HeartSliderHandler(context, iconSize: 14),
-        rightHandler: HeartSliderHandler(context, iconSize: 14),
-        tooltip: CustomSliderTooltip(context, unit: 'tuổi'),
-        onDragging: (handlerIndex, lowerValue, upperValue) {},
-      ),
-    );
+    return currentUser.minAgePrefer == null || currentUser.maxAgePrefer == null
+        ? const SizedBox.shrink()
+        : _buildItem(
+            title: Strings.common.age,
+            actions: Text(
+                '${currentUser.minAgePrefer} - ${currentUser.maxAgePrefer} tuổi',
+                style: context.textTheme.caption),
+            body: FlutterSlider(
+              values: [
+                currentUser.minAgePrefer.toDouble(),
+                currentUser.maxAgePrefer.toDouble()
+              ],
+              max: (60 < currentUser.maxAgePrefer
+                      ? currentUser.maxAgePrefer
+                      : 60)
+                  .toDouble(),
+              min: (18 > currentUser.minAgePrefer
+                      ? currentUser.minAgePrefer
+                      : 18)
+                  .toDouble(),
+              rangeSlider: true,
+              minimumDistance: 1,
+              trackBar: FlutterSliderTrackBar(
+                activeTrackBar:
+                    BoxDecoration(color: context.colorScheme.primary),
+              ),
+              handlerWidth: 18,
+              handlerHeight: 18,
+              handler: HeartSliderHandler(context, iconSize: 14),
+              rightHandler: HeartSliderHandler(context, iconSize: 14),
+              tooltip: CustomSliderTooltip(context, unit: 'tuổi'),
+              onDragging: (handlerIndex, lowerValue, upperValue) {},
+            ),
+          );
   }
 
   Widget _buildItem({

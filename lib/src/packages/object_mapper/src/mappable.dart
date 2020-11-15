@@ -26,7 +26,7 @@ abstract class Mappable {
       identical(this, other) ||
       other is Mappable &&
           runtimeType == other.runtimeType &&
-          this.toJsonString() == this.toJsonString();
+          this.toJsonString() == other.toJsonString();
 
   @override
   int get hashCode => runtimeType.hashCode ^ this.toJson().hashCode;

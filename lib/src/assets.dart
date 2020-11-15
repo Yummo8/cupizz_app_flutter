@@ -21,5 +21,5 @@ class _Icon {
 }
 
 class _Image {
-  final test = _IMAGE_PATH;
+  final defaultAvatar = _IMAGE_PATH + 'default_avatar.png';
 }

@@ -40,4 +40,27 @@ class Gender extends Enumerable<String> {
   static final male = Gender(rawValue: 'male');
   static final female = Gender(rawValue: 'female');
   static final other = Gender(rawValue: 'other');
+
+  static List<Gender> getAll() => [male, female, other];
+}
+
+class SocialProviderType extends Enumerable<String> {
+  final String rawValue;
+  final String displayValue;
+
+  SocialProviderType({@required this.rawValue, String displayValue})
+      : this.displayValue = displayValue ??
+            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue;
+
+  static final email =
+      SocialProviderType(rawValue: 'email', displayValue: 'Email');
+  static final facebook =
+      SocialProviderType(rawValue: 'facebook', displayValue: 'Facebook');
+  static final google =
+      SocialProviderType(rawValue: 'google', displayValue: 'Google');
+  static final instagram =
+      SocialProviderType(rawValue: 'instagram', displayValue: 'Instagram');
+
+  static List<SocialProviderType> getAll() =>
+      [email, facebook, google, instagram];
 }

@@ -35,6 +35,8 @@ final Map<String, dynamic> json = {
     "height": 183,
     "minAgePrefer": 51,
     "maxAgePrefer": 67,
+    "minHeightPrefer": 150,
+    "maxHeightPrefer": 160,
     "genderPrefer": ["male", "other"],
     "distancePrefer": 322,
     "friendType": {"status": "me"},
@@ -45,57 +47,62 @@ final Map<String, dynamic> json = {
       "isPrivate": false,
       "showActive": false
     },
+    "socialProviders": [
+      {"id": "hienlh1298@gmail.com", "type": "email"}
+    ]
   }
 };
 
 void main() {
   setUp(objectMapping);
 
-  group('Test User Model', () {
-    test("Test from json", () {
-      var mapper = Mapper.fromJson(json);
-      final info = mapper.toObject<User>();
+  test("Test from json", () {
+    var mapper = Mapper.fromJson(json);
+    final user = mapper.toObject<User>();
 
-      expect(info.id, json['id']);
-      expect(info.nickName, json['data']['nickName']);
-      expect(info.age, json['data']['age']);
-      expect(info.introduction, json['data']['introduction']);
-      expect(info.gender.rawValue, json['data']['gender']);
-      expect(info.hobbies.map((e) => e.toJson()).toList(),
-          json['data']['hobbies']);
-      expect(info.phoneNumber, json['data']['phoneNumber']);
-      expect(info.job, json['data']['job']);
-      expect(info.height, json['data']['height']);
-      expect(info.avatar.toJson(), json['data']['avatar']);
-      expect(info.onlineStatus.rawValue, json['data']['onlineStatus']);
-      expect(info.lastOnline, DateTime.tryParse(json['data']['lastOnline']));
+    expect(user.id, json['id']);
+    expect(user.nickName, json['data']['nickName']);
+    expect(user.age, json['data']['age']);
+    expect(user.introduction, json['data']['introduction']);
+    expect(user.gender.rawValue, json['data']['gender']);
+    expect(
+        user.hobbies.map((e) => e.toJson()).toList(), json['data']['hobbies']);
+    expect(user.phoneNumber, json['data']['phoneNumber']);
+    expect(user.job, json['data']['job']);
+    expect(user.height, json['data']['height']);
+    expect(user.avatar.toJson(), json['data']['avatar']);
+    expect(user.onlineStatus.rawValue, json['data']['onlineStatus']);
+    expect(user.lastOnline, DateTime.tryParse(json['data']['lastOnline']));
 
-      expect(info.birthday, DateTime.tryParse(json['data']['birthday']));
-      expect(info.minAgePrefer, json['data']['minAgePrefer']);
-      expect(info.maxAgePrefer, json['data']['maxAgePrefer']);
-      expect(info.distancePrefer, json['data']['distancePrefer']);
-      expect(info.genderPrefer.map((e) => e.rawValue).toList(),
-          json['data']['genderPrefer']);
-      expect(info.friendType.rawValue, json['data']['friendType']['status']);
-      expect(info.allowMatching, json['data']['settings']['allowMatching']);
-      expect(info.isPrivate, json['data']['settings']['isPrivate']);
-      expect(info.showActive, json['data']['settings']['showActive']);
-    });
+    expect(user.birthday, DateTime.tryParse(json['data']['birthday']));
+    expect(user.minAgePrefer, json['data']['minAgePrefer']);
+    expect(user.maxAgePrefer, json['data']['maxAgePrefer']);
+    expect(user.minHeightPrefer, json['data']['minHeightPrefer']);
+    expect(user.maxHeightPrefer, json['data']['maxHeightPrefer']);
+    expect(user.distancePrefer, json['data']['distancePrefer']);
+    expect(user.genderPrefer.map((e) => e.rawValue).toList(),
+        json['data']['genderPrefer']);
+    expect(user.friendType.rawValue, json['data']['friendType']['status']);
+    expect(user.allowMatching, json['data']['settings']['allowMatching']);
+    expect(user.isPrivate, json['data']['settings']['isPrivate']);
+    expect(user.showActive, json['data']['settings']['showActive']);
+    expect(
+        user.socialProviders[0].id, json['data']['socialProviders'][0]['id']);
+  });
 
-    test('Test to json', () {
-      var mapper = Mapper.fromJson(json);
-      final info = mapper.toObject<User>();
-      final currentJson = info.toJson();
+  test('Test to json', () {
+    var mapper = Mapper.fromJson(json);
+    final user = mapper.toObject<User>();
+    final currentJson = user.toJson();
 
-      expect(currentJson, json);
-    });
+    expect(currentJson, json);
+  });
 
-    test('Test compare', () {
-      var mapper = Mapper.fromJson(json);
-      final user = mapper.toObject<User>();
-      final clone = user.clone<User>();
+  test('Test compare', () {
+    var mapper = Mapper.fromJson(json);
+    final user = mapper.toObject<User>();
+    final clone = user.clone<User>();
 
-      expect(clone == user, true);
-    });
+    expect(clone == user, true);
   });
 }

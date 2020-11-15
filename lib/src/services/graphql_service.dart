@@ -3,14 +3,15 @@ part of 'index.dart';
 class GraphqlService extends MomentumService {
   GraphQLClient _client;
   GraphQLClient get client => _client;
+  final String apiUrl;
 
-  GraphqlService() {
+  GraphqlService(this.apiUrl) {
     reset();
   }
 
   void reset() {
     final HttpLink httpLink = HttpLink(
-      uri: AppConfig.instance.apiUrl,
+      uri: apiUrl,
     );
 
     final AuthLink authLink = AuthLink(
@@ -54,7 +55,7 @@ class GraphqlService extends MomentumService {
           throw clientError.message;
         } else {
           inspect(result.exception);
-          throw 'Lỗi server';
+          throw 'Lỗi server: ${result.exception.graphqlErrors[0].message}';
         }
       } else {
         debugPrint(result.exception.toString());
