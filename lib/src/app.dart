@@ -26,7 +26,7 @@ Momentum momentum({bool isTesting = false}) {
       MainScreenController(),
     ],
     services: [
-      Router([
+      RouterService([
         LoginScreen(),
         RegisterScreen(),
         MainScreen(),
@@ -128,7 +128,7 @@ class _MyApp extends StatelessWidget {
               title: 'Cupizz',
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
               theme: theme,
-              home: Router.getActivePage(context),
+              home: RouterService.getActivePage(context),
             ),
           );
         });

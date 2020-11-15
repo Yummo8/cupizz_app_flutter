@@ -49,7 +49,7 @@ class GraphqlService extends MomentumService {
             (element) => element.extensions['code'] == 'CLIENT_ERROR',
             orElse: () => null);
         if (unauthenticatedError != null) {
-          await getService<AuthService>().logout();
+          await Momentum.controller<AuthController>(context).logout();
           throw 'UNAUTHENTICATED';
         } else if (clientError != null) {
           throw clientError.message;

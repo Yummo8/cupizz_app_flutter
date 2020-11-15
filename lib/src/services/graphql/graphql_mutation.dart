@@ -34,7 +34,7 @@ extension GraphqlMutation on GraphqlService {
               ${nickName != null ? 'nickName: "$nickName"' : ''}
               ${introduction != null ? 'introduction: "$introduction"' : ''}
               ${gender != null ? 'gender: ${gender.rawValue}' : ''}
-              ${hobbies != null ? 'hobbieIds: ${jsonEncode(hobbies.map((e) => e.id).toList())}' : ''}
+              ${hobbies != null ? 'hobbyIds: ${jsonEncode(hobbies.map((e) => e.id).toList())}' : ''}
               ${phoneNumber != null ? 'phoneNumber: "$phoneNumber"' : ''}
               ${job != null ? 'job: "$job"' : ''}
               ${height != null ? 'height: $height' : ''}

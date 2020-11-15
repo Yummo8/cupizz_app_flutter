@@ -8,7 +8,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   bootstrapAsync() async {
     if (!await isAuthenticated) {
-      getService<AuthService>().gotoAuth();
+      gotoAuth();
     }
     super.bootstrapAsync();
   }
@@ -19,7 +19,24 @@ class AuthController extends MomentumController<AuthModel> {
   Future<void> login(String email, String password) async {
     await getService<AuthService>().login(
         email, password, dependOn<CurrentUserController>().getCurrentUser);
+    gotoHome();
   }
 
-  Future<void> logout() => getService<AuthService>().logout();
+  Future<void> logout() async {
+    await getService<AuthService>().logout();
+    gotoAuth();
+  }
+
+  Future<void> gotoHome() async {
+    final router = getService<RouterService>();
+    await router.clearHistory();
+    await RouterService.goto(AppConfig.navigatorKey.currentContext, MainScreen);
+  }
+
+  Future<void> gotoAuth() async {
+    final router = getService<RouterService>();
+    await router.clearHistory();
+    await RouterService.goto(
+        AppConfig.navigatorKey.currentContext, LoginScreen);
+  }
 }

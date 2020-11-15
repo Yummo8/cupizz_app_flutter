@@ -10,22 +10,10 @@ class AuthService extends MomentumService {
     if (postLogin != null) {
       await postLogin();
     }
-    gotoHome();
   }
 
   Future<void> logout() async {
     await getService<StorageService>().deleteToken();
     Momentum.resetAll(context);
-    gotoAuth();
-  }
-
-  Future<void> gotoHome() async {
-    await Router.clearHistoryWithContext(context);
-    await Router.goto(context, MainScreen);
-  }
-
-  Future<void> gotoAuth() async {
-    await Router.clearHistoryWithContext(context);
-    await Router.goto(context, LoginScreen);
   }
 }

@@ -109,7 +109,7 @@ mixin RouterMixin on _ControllerBase {
       }
       return null;
     }
-    var result = momentum_router.Router.getParam<T>(_mRootContext);
+    var result = momentum_router.RouterService.getParam<T>(_mRootContext);
     return result;
   }
 
@@ -1176,7 +1176,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     for (var service in services) {
       if (service != null) {
         service._context = context;
-        if (service is momentum_router.Router) {
+        if (service is momentum_router.RouterService) {
           _momentumEvent.on().listen((event) {
             for (var controller in widget.controllers) {
               if (controller is RouterMixin) {
@@ -1773,8 +1773,8 @@ class MomentumTester {
     return result;
   }
 
-  momentum_router.Router _getRouterIfPresent() {
-    var result = trycatch(() => service<momentum_router.Router>());
+  momentum_router.RouterService _getRouterIfPresent() {
+    var result = trycatch(() => service<momentum_router.RouterService>());
     return result;
   }
 
@@ -1790,7 +1790,7 @@ class MomentumTester {
 
   /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
-    service<momentum_router.Router>().mockParam(param);
+    service<momentum_router.RouterService>().mockParam(param);
     print('Mock params has been set (${param.runtimeType}): $param');
   }
 }

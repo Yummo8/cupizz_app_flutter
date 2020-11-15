@@ -158,7 +158,7 @@ class _CardTileWidgetState extends State<CardTileWidget>
   }
 
   _onItemPressed() {
-    Router.goto(context, MessagesScreen);
+    RouterService.goto(context, MessagesScreen);
   }
 
   @override
