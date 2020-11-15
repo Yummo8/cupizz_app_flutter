@@ -1,13 +1,7 @@
+import 'package:cupizz_app/src/helpers/extensions.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'custom_item_choice.dart';
-
-extension IndexedIterable<E> on Iterable<E> {
-  Iterable<T> mapIndexed<T>(T Function(E e, int i) f) {
-    var i = 0;
-    return map((e) => f(e, i++));
-  }
-}
 
 class CheckBoxGroup extends StatefulWidget {
   final List<String> buttonLables;

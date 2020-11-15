@@ -150,16 +150,20 @@ class _EditTextScreenState extends State<EditTextScreen> {
         actions: [
           InkWell(
             onTap: () {
-              widget.onSave(_textController.text);
-              setState(() {
-                isEdit = false;
-                value = _textController.text;
-              });
+              if (isEdit) {
+                widget.onSave(_textController.text);
+                setState(() {
+                  isEdit = false;
+                  value = _textController.text;
+                });
+              }
             },
             child: Center(
               child: Text(
                 "Lưu",
-                style: TextStyle(color: _theme.primaryColor, fontSize: 15.0),
+                style: TextStyle(
+                    color: isEdit ? _theme.primaryColor : Colors.black87,
+                    fontSize: 18.0),
               ),
             ),
           ),
