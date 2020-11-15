@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cupizz_app/src/helpers/index.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'widgets/cart_image.dart';
 import 'widgets/row_info.dart';
@@ -13,6 +16,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ScrollController scrollController = ScrollController();
+  File _image;
+  final picker = ImagePicker();
 
   bool _isCollapse = false;
 
@@ -38,8 +43,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = new SizeHelper(context);
+    final ThemeData _theme = Theme.of(context);
     return Scaffold(
       body: NestedScrollView(
         controller: scrollController,
@@ -206,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Divider(
                   color: Colors.pink[300],
-                  height: 20,
+                  height: 15,
                   thickness: 1,
                   indent: 20,
                   endIndent: 20,
@@ -220,6 +238,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   shrinkWrap: true,
                   itemCount: 6,
                 ),
+                FlatButton(
+                  onPressed: () => {getImage()},
+                  color: _theme.primaryColor.withOpacity(0.2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image,
+                        color: _theme.primaryColor,
+                      ),
+                      Text(
+                        "Thêm ảnh",
+                        style: TextStyle(
+                            color: _theme.primaryColor,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),

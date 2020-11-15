@@ -58,7 +58,7 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
               ),
               Text(
                 "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 15.0),
+                style: TextStyle(color: Colors.black54, fontSize: 18.0),
               )
             ],
           ),

@@ -39,7 +39,9 @@ dependencies:
   sliding_sheet: ^0.4.1
   font_awesome_flutter: ^8.10.0
   material_design_icons_flutter: 4.0.5755
-  direct_select: "^1.0.3"
+  image_picker: ^0.6.7+14
+  geolocator: ^6.1.6
+  geocoding: ^1.0.5
 
 dev_dependencies:
   flutter_test:

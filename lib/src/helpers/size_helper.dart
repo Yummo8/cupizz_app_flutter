@@ -1,14 +1,14 @@
 part of 'index.dart';
 
 class SizeHelper {
-  BuildContext _context;
+  BuildContext context;
   double _height;
   double _width;
   double _heightPadding;
   double _widthPadding;
 
-  SizeHelper(this._context) {
-    MediaQueryData _queryData = MediaQuery.of(_context);
+  SizeHelper(this.context) {
+    MediaQueryData _queryData = MediaQuery.of(context);
     _height = _queryData.size.height / 100.0;
     _width = _queryData.size.width / 100.0;
     _heightPadding = _height -

@@ -1,15 +1,18 @@
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_gender_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_height_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_lookup_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_marriage_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_religion_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_smoke_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'sub_edit_screen/edit_age_screen.dart';
 import 'sub_edit_screen/edit_drink_screen.dart';
+import 'sub_edit_screen/edit_gender_screen.dart';
+import 'sub_edit_screen/edit_height_screen.dart';
+import 'sub_edit_screen/edit_location_screen.dart';
+import 'sub_edit_screen/edit_lookup_screen.dart';
+import 'sub_edit_screen/edit_marriage_screen.dart';
+import 'sub_edit_screen/edit_religion_screen.dart';
+import 'sub_edit_screen/edit_smoke_screen.dart';
+import 'sub_edit_screen/edit_text_screen.dart';
 import 'widgets/row_edit_info.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -84,18 +87,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.account_circle_outlined,
       title: "Tên",
       value: "Thăng",
+      onClick: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditTextScreen(
+                      title: "Tên",
+                      onSave: (value) {},
+                    )))
+      },
     ));
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.info,
       title: "Độ tuổi",
       value: "22",
+      onClick: () => {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => EditAgeScreen()))
+      },
     ));
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.location_on_rounded,
       title: "Vị trí hẹn hò",
       value: "Đang ở Thành phố Hồ Chí Minh",
+      onClick: () => {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => EditLocationScreen()))
+      },
     ));
 
     listWidgetItems.add(RowEditInfo(
@@ -145,6 +165,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.work,
       title: "Chức danh",
       value: "-",
+      onClick: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditTextScreen(
+                      title: "Chức danh",
+                      onSave: (value) {},
+                    )))
+      },
     ));
 
     listWidgetItems.add(RowEditInfo(
@@ -152,8 +181,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: "Công ty",
       value: "-",
       onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditLookupScreen()))
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditTextScreen(
+              title: "Bạn đang làm việc ở đâu",
+              onSave: (value) {},
+            ),
+          ),
+        )
       },
     ));
 
@@ -161,24 +197,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.school,
       title: "Trường trung học",
       value: "-",
+      onClick: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditTextScreen(
+                      title: "Trường trung học",
+                      onSave: (value) {},
+                    )))
+      },
     ));
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.school,
       title: "Trường đại học cao/cao đẳng",
       value: "-",
-    ));
-
-    listWidgetItems.add(RowEditInfo(
-      iconData: Icons.school,
-      title: "Trường cao học",
-      value: "-",
+      onClick: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditTextScreen(
+              title: "Trường đại học cao/cao đẳng",
+              onSave: (value) {},
+            ),
+          ),
+        )
+      },
     ));
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.school,
       title: "Trình độ học vấn",
       value: "-",
+      onClick: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditTextScreen(
+              title: "Trình độ học vấn",
+              onSave: (value) {},
+            ),
+          ),
+        )
+      },
     ));
     return buildWrapperRowEditInfo(
         "Công việc và học vấn của bạn", listWidgetItems, sizeHelper);
