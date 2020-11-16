@@ -8,5 +8,15 @@ class HobbyListController extends MomentumController<HobbyListModel> {
     );
   }
 
-  Future loadHobbies() {}
+  bootstrapAsync() => loadHobbies();
+
+  Future loadHobbies() async {
+    try {
+      this.model.update(isLoading: true);
+      final hobbies = await getService<SystemService>().getAllHobbies();
+      this.model.update(hobbies: hobbies);
+    } catch (e) {
+      this.model.update(error: e.toString());
+    }
+  }
 }

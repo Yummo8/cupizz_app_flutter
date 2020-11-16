@@ -1,6 +1,8 @@
 part of base;
 
 extension ListExt<T> on List<T> {
+  bool get isExistAndNotEmpty => this != null && this.isNotEmpty;
+
   List<T> addBetweenEvery(T value) {
     List<T> r = [];
     this.asMap().forEach(

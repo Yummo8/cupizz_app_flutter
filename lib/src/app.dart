@@ -24,6 +24,7 @@ Momentum momentum({bool isTesting = false}) {
       CurrentUserController(),
       RecommendableUsersController()..config(lazy: true),
       MainScreenController(),
+      HobbyListController()..config(lazy: true),
     ],
     services: [
       RouterService([
@@ -40,6 +41,7 @@ Momentum momentum({bool isTesting = false}) {
             : 'http://cupizz.cf/graphql', //192.168.1.242:2020
       ),
       UserService(),
+      SystemService(),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),

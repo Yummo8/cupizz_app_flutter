@@ -126,6 +126,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                         _buildHobbies(model.currentUser),
                         _buildDistance(model.currentUser),
                         _buildAge(model.currentUser),
+                        _buildHeight(model.currentUser),
                         const SizedBox(height: 56),
                       ],
                     ),
@@ -201,21 +202,22 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   Widget _buildHobbies(User currentUser) {
     return _buildItem(
       title: Strings.common.hobbies,
-      actions:
-          Text(Strings.drawer.upTo5Pieces, style: context.textTheme.caption),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Wrap(
             spacing: 10,
             children: currentUser.hobbies
+                .take(5)
                 .map(
-                  (e) => _buildOptionButton(title: e.value, isSelected: true),
+                  (e) => HobbyItem(hobby: e, isSelected: true),
                 )
                 .toList(),
           ),
           OutlineButton(
-            onPressed: () {},
+            onPressed: () {
+              HobbiesBottomSheet().show(context);
+            },
             borderSide: BorderSide(width: 1, color: Colors.grey[500]),
             highlightColor: context.colorScheme.primary.withOpacity(0.5),
             child: Text(Strings.drawer.chooseOtherHoddies),
@@ -280,6 +282,44 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               min: (18 > currentUser.minAgePrefer
                       ? currentUser.minAgePrefer
                       : 18)
+                  .toDouble(),
+              rangeSlider: true,
+              minimumDistance: 1,
+              trackBar: FlutterSliderTrackBar(
+                activeTrackBar:
+                    BoxDecoration(color: context.colorScheme.primary),
+              ),
+              handlerWidth: 18,
+              handlerHeight: 18,
+              handler: HeartSliderHandler(context, iconSize: 14),
+              rightHandler: HeartSliderHandler(context, iconSize: 14),
+              tooltip: CustomSliderTooltip(context, unit: 'tuổi'),
+              onDragging: (handlerIndex, lowerValue, upperValue) {},
+            ),
+          );
+  }
+
+  Widget _buildHeight(User currentUser) {
+    return currentUser.minHeightPrefer == null ||
+            currentUser.maxHeightPrefer == null
+        ? const SizedBox.shrink()
+        : _buildItem(
+            title: Strings.common.age,
+            actions: Text(
+                '${currentUser.minHeightPrefer} - ${currentUser.maxHeightPrefer} cm',
+                style: context.textTheme.caption),
+            body: FlutterSlider(
+              values: [
+                currentUser.minHeightPrefer.toDouble(),
+                currentUser.maxHeightPrefer.toDouble()
+              ],
+              max: (200 < currentUser.maxHeightPrefer
+                      ? currentUser.maxAgePrefer
+                      : 200)
+                  .toDouble(),
+              min: (150 > currentUser.minHeightPrefer
+                      ? currentUser.minHeightPrefer
+                      : 150)
                   .toDouble(),
               rangeSlider: true,
               minimumDistance: 1,

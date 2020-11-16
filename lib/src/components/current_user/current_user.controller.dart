@@ -15,7 +15,33 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     this.model.update(currentUser: result);
   }
 
-  // ignore: unused_element Chưa dùng
+  Future<void> _updateProfile({
+    String nickName,
+    String introduction,
+    Gender gender,
+    List<Hobby> hobbies,
+    String phoneNumber,
+    String job,
+    int height,
+    io.File avatar,
+  }) async {
+    final service = getService<UserService>();
+    final result = await service.updateProfile(
+      nickName: nickName,
+      introduction: introduction,
+      gender: gender,
+      hobbies: hobbies,
+      phoneNumber: phoneNumber,
+      job: job,
+      height: height,
+      avatar: avatar,
+    );
+    this.model.update(currentUser: result);
+    if (hobbies != null) {
+      dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+    }
+  }
+
   Future<void> _updateSetting({
     int minAgePrefer,
     int maxAgePrefer,
@@ -49,6 +75,22 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     this.model.update(currentUser: currentUser);
     try {
       await this._updateSetting(genderPrefer: currentUser.genderPrefer);
+    } catch (e) {
+      this.backward();
+      rethrow;
+    }
+  }
+
+  Future toggleHobbyButton(Hobby hobby) async {
+    final currentUser = this.model.currentUser.clone<User>();
+    if (currentUser.hobbies.contains(hobby)) {
+      currentUser.hobbies.remove(hobby);
+    } else {
+      currentUser.hobbies.add(hobby);
+    }
+    this.model.update(currentUser: currentUser);
+    try {
+      await this._updateProfile(hobbies: currentUser.hobbies);
     } catch (e) {
       this.backward();
       rethrow;

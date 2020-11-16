@@ -1,16 +1,24 @@
 part of '../index.dart';
 
 class HobbyListModel extends MomentumModel<HobbyListController> {
-  HobbyListModel(HobbyListController controller, {this.hobbies})
-      : super(controller);
+  HobbyListModel(
+    HobbyListController controller, {
+    this.hobbies,
+    this.error,
+    this.isLoading,
+  }) : super(controller);
 
   final List<Hobby> hobbies;
+  final String error;
+  final bool isLoading;
 
   @override
-  void update({List<Hobby> hobbies}) {
+  void update({List<Hobby> hobbies, String error, bool isLoading}) {
     HobbyListModel(
       controller,
-      hobbies: hobbies,
+      hobbies: hobbies ?? this.hobbies,
+      error: error ?? null,
+      isLoading: isLoading ?? false,
     ).updateMomentum();
   }
 

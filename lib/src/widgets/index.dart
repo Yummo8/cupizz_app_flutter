@@ -19,4 +19,7 @@ part 'customs/rotate_animated_text_kit.dart';
 part 'customs/text_field.dart';
 part 'errors/error_indicator.dart';
 part 'indicators/loading_indicator.dart';
+part 'indicators/notfound_indicator.dart';
 part 'users/user_card.dart';
+part 'bottom_sheets/hobbies_bottom_sheet.dart';
+part 'hobbies/hobby_item.dart';

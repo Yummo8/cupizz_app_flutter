@@ -17,6 +17,31 @@ class UserService extends MomentumService {
     return users;
   }
 
+  Future<User> updateProfile({
+    String nickName,
+    String introduction,
+    Gender gender,
+    List<Hobby> hobbies,
+    String phoneNumber,
+    String job,
+    int height,
+    io.File avatar,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.updateProfile(
+      nickName,
+      introduction,
+      gender,
+      hobbies,
+      phoneNumber,
+      job,
+      height,
+      avatar,
+    );
+    final user = Mapper.fromJson(data).toObject<User>();
+    return user;
+  }
+
   Future<User> updateSetting({
     int minAgePrefer,
     int maxAgePrefer,

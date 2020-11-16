@@ -27,8 +27,7 @@ extension GraphqlMutation on GraphqlService {
     int height,
     io.File avatar,
   ]) async {
-    final result = await this.mutate(
-      MutationOptions(documentNode: gql('''
+    final query = '''
           mutation updateProfile(\$avatar: Upload) {
             updateProfile(
               ${nickName != null ? 'nickName: "$nickName"' : ''}
@@ -40,7 +39,9 @@ extension GraphqlMutation on GraphqlService {
               ${height != null ? 'height: $height' : ''}
               avatar: \$avatar
             ) ${User.graphqlQuery}
-          }'''), variables: {
+          }''';
+    final result = await this.mutate(
+      MutationOptions(documentNode: gql(query), variables: {
         'avatar': avatar != null ? await multiPartFile(avatar) : null
       }),
     );
