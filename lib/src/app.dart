@@ -19,29 +19,30 @@ Momentum momentum({bool isTesting = false}) {
     key: UniqueKey(),
     maxTimeTravelSteps: 200,
     controllers: [
-      ThemeController(),
       AuthController(),
       CurrentUserController(),
-      RecommendableUsersController()..config(lazy: true),
-      MainScreenController(),
       HobbyListController()..config(lazy: true),
+      MainScreenController(),
+      RecommendableUsersController()..config(lazy: true),
+      ThemeController(),
     ],
     services: [
-      RouterService([
-        LoginScreen(),
-        RegisterScreen(),
-        MainScreen(),
-        MessagesScreen(),
-      ]),
-      StorageService(isTesting: isTesting),
       AuthService(),
       GraphqlService(
         !isTesting
             ? AppConfig.instance.apiUrl
             : 'http://cupizz.cf/graphql', //192.168.1.242:2020
       ),
-      UserService(),
+      OneSignalService()..init(),
+      RouterService([
+        LoginScreen(),
+        MainScreen(),
+        MessagesScreen(),
+        RegisterScreen(),
+      ]),
+      StorageService(isTesting: isTesting),
       SystemService(),
+      UserService(),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),

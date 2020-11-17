@@ -64,3 +64,16 @@ class SocialProviderType extends Enumerable<String> {
   static List<SocialProviderType> getAll() =>
       [email, facebook, google, instagram];
 }
+
+class NotificationType extends Enumerable<String> {
+  final String rawValue;
+
+  const NotificationType({@required this.rawValue});
+
+  static const like = const NotificationType(rawValue: 'like');
+  static const matching = const NotificationType(rawValue: 'matching');
+  static const newMessage = const NotificationType(rawValue: 'newMessage');
+  static const other = const NotificationType(rawValue: 'other');
+
+  static List<NotificationType> getAll() => [like, matching, newMessage, other];
+}

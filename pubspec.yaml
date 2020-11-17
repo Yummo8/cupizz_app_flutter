@@ -35,6 +35,7 @@ dependencies:
   dotted_border: ^1.0.6
   dash_chat: ^1.1.15
   cached_network_image: ^2.3.3
+  onesignal_flutter: ^2.0.0
 
 dev_dependencies:
   flutter_test:

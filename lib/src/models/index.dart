@@ -24,6 +24,7 @@ objectMapping() {
     FriendType: (v) => FriendType(rawValue: v),
     Gender: (v) => Gender(rawValue: v),
     OnlineStatus: (v) => OnlineStatus(rawValue: v),
+    NotificationType: (v) => NotificationType(rawValue: v),
     SocialProviderType: (v) => SocialProviderType(rawValue: v),
     SocialProvider: () => SocialProvider(),
     File: () => File(),

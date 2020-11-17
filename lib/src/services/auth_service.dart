@@ -5,8 +5,10 @@ class AuthService extends MomentumService {
       [Future Function() postLogin]) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.loginMutation(email: email, password: password);
-
-    await getService<StorageService>().saveToken(data['token']);
+    await Future.wait([
+      getService<StorageService>().saveToken(data['token']),
+      getService<StorageService>().saveUserId(data['info']['id']),
+    ]);
     if (postLogin != null) {
       await postLogin();
     }
@@ -14,6 +16,7 @@ class AuthService extends MomentumService {
 
   Future<void> logout() async {
     await getService<StorageService>().deleteToken();
+    await getService<StorageService>().deleteUserId();
     Momentum.resetAll(context);
   }
 }
