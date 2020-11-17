@@ -8,12 +8,13 @@ extension GraphqlMutation on GraphqlService {
           mutation login(\$email: String, \$password: String){
             login(email: \$email password: \$password) {
               token
+              info { id }
             }
           }
         '''),
       variables: {'email': email, 'password': password},
     ));
-
+    debugPrint(result.data['login']['info']['id']);
     return result.data['login'];
   }
 

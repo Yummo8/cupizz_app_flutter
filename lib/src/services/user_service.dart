@@ -17,6 +17,18 @@ class UserService extends MomentumService {
     return users;
   }
 
+  Future<FriendType> addFriend(String userId) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.addFriendMutation(id: userId);
+    final result = FriendType(rawValue: data['status']);
+    return result;
+  }
+
+  Future<void> removeFriend(String userId) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.removeFriendMutation(id: userId);
+  }
+
   Future<User> updateProfile({
     String nickName,
     String introduction,
