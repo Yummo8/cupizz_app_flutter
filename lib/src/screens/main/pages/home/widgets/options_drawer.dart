@@ -257,7 +257,12 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               ),
               handler: HeartSliderHandler(context),
               tooltip: CustomSliderTooltip(context, unit: 'km'),
-              onDragging: (handlerIndex, lowerValue, upperValue) {},
+              onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+                Momentum.controller<CurrentUserController>(context)
+                    .updateSetting(
+                        distancePrefer:
+                            double.tryParse(lowerValue.toString()).round());
+              },
             ),
           );
   }
@@ -294,7 +299,14 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               handler: HeartSliderHandler(context, iconSize: 14),
               rightHandler: HeartSliderHandler(context, iconSize: 14),
               tooltip: CustomSliderTooltip(context, unit: 'tuổi'),
-              onDragging: (handlerIndex, lowerValue, upperValue) {},
+              onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+                Momentum.controller<CurrentUserController>(context)
+                    .updateSetting(
+                        minAgePrefer:
+                            double.tryParse(lowerValue.toString()).round(),
+                        maxAgePrefer:
+                            double.tryParse(upperValue.toString()).round());
+              },
             ),
           );
   }
@@ -331,8 +343,15 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               handlerHeight: 18,
               handler: HeartSliderHandler(context, iconSize: 14),
               rightHandler: HeartSliderHandler(context, iconSize: 14),
-              tooltip: CustomSliderTooltip(context, unit: 'tuổi'),
-              onDragging: (handlerIndex, lowerValue, upperValue) {},
+              tooltip: CustomSliderTooltip(context, unit: 'cm'),
+              onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+                Momentum.controller<CurrentUserController>(context)
+                    .updateSetting(
+                        minHeightPrefer:
+                            double.tryParse(lowerValue.toString()).round(),
+                        maxHeightPrefer:
+                            double.tryParse(upperValue.toString()).round());
+              },
             ),
           );
   }
@@ -367,7 +386,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
 
   Widget _buildGenderButton(User user, Gender gender) => _buildOptionButton(
       title: gender.displayValue,
-      isSelected: user.genderPrefer.contains(gender),
+      isSelected: user.genderPrefer?.contains(gender) ?? false,
       onPressed: () async {
         try {
           await Momentum.controller<CurrentUserController>(context)

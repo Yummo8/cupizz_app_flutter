@@ -15,7 +15,27 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     this.model.update(currentUser: result);
   }
 
-  Future<void> _updateProfile({
+  Future toggleGenderButton(Gender gender) async {
+    final currentUser = this.model.currentUser.clone<User>();
+    if (currentUser.genderPrefer.contains(gender)) {
+      currentUser.genderPrefer.remove(gender);
+    } else {
+      currentUser.genderPrefer.add(gender);
+    }
+    await this.updateSetting(genderPrefer: currentUser.genderPrefer);
+  }
+
+  Future toggleHobbyButton(Hobby hobby) async {
+    final currentUser = this.model.currentUser.clone<User>();
+    if (currentUser.hobbies.contains(hobby)) {
+      currentUser.hobbies.remove(hobby);
+    } else {
+      currentUser.hobbies.add(hobby);
+    }
+    await this.updateProfile(hobbies: currentUser.hobbies);
+  }
+
+  Future<void> updateProfile({
     String nickName,
     String introduction,
     Gender gender,
@@ -25,23 +45,38 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     int height,
     io.File avatar,
   }) async {
-    final service = getService<UserService>();
-    await service.updateProfile(
-      nickName: nickName,
-      introduction: introduction,
-      gender: gender,
-      hobbies: hobbies,
-      phoneNumber: phoneNumber,
-      job: job,
-      height: height,
-      avatar: avatar,
-    );
-    if (hobbies != null) {
-      dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+    final currentUser = this.model.currentUser.clone<User>();
+    if (nickName != null) currentUser.nickName = nickName;
+    if (introduction != null) currentUser.introduction = introduction;
+    if (gender != null) currentUser.gender = gender;
+    if (hobbies != null) currentUser.hobbies = hobbies;
+    if (phoneNumber != null) currentUser.phoneNumber = phoneNumber;
+    if (job != null) currentUser.job = job;
+    if (height != null) currentUser.height = height;
+    this.model.update(currentUser: currentUser);
+
+    try {
+      final service = getService<UserService>();
+      await service.updateProfile(
+        nickName: nickName,
+        introduction: introduction,
+        gender: gender,
+        hobbies: hobbies,
+        phoneNumber: phoneNumber,
+        job: job,
+        height: height,
+        avatar: avatar,
+      );
+      if (hobbies != null) {
+        dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+      }
+    } catch (_) {
+      this.backward();
+      rethrow;
     }
   }
 
-  Future<void> _updateSetting({
+  Future<void> updateSetting({
     int minAgePrefer,
     int maxAgePrefer,
     int minHeightPrefer,
@@ -50,6 +85,17 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     int distancePrefer,
     List<String> mustHaveFields,
   }) async {
+    final currentUser = this.model.currentUser.clone<User>();
+
+    if (minAgePrefer != null) currentUser.minAgePrefer = minAgePrefer;
+    if (maxAgePrefer != null) currentUser.maxAgePrefer = maxAgePrefer;
+    if (minHeightPrefer != null) currentUser.minHeightPrefer = minHeightPrefer;
+    if (maxHeightPrefer != null) currentUser.maxHeightPrefer = maxHeightPrefer;
+    if (genderPrefer != null) currentUser.genderPrefer = genderPrefer;
+    if (distancePrefer != null) currentUser.distancePrefer = distancePrefer;
+
+    this.model.update(currentUser: currentUser);
+
     final service = getService<UserService>();
     await service.updateSetting(
       minAgePrefer: minAgePrefer,
@@ -61,37 +107,5 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       mustHaveFields: mustHaveFields,
     );
     dependOn<RecommendableUsersController>().fetchRecommendableUsers();
-  }
-
-  Future toggleGenderButton(Gender gender) async {
-    final currentUser = this.model.currentUser.clone<User>();
-    if (currentUser.genderPrefer.contains(gender)) {
-      currentUser.genderPrefer.remove(gender);
-    } else {
-      currentUser.genderPrefer.add(gender);
-    }
-    this.model.update(currentUser: currentUser);
-    try {
-      await this._updateSetting(genderPrefer: currentUser.genderPrefer);
-    } catch (e) {
-      this.backward();
-      rethrow;
-    }
-  }
-
-  Future toggleHobbyButton(Hobby hobby) async {
-    final currentUser = this.model.currentUser.clone<User>();
-    if (currentUser.hobbies.contains(hobby)) {
-      currentUser.hobbies.remove(hobby);
-    } else {
-      currentUser.hobbies.add(hobby);
-    }
-    this.model.update(currentUser: currentUser);
-    try {
-      await this._updateProfile(hobbies: currentUser.hobbies);
-    } catch (e) {
-      this.backward();
-      rethrow;
-    }
   }
 }

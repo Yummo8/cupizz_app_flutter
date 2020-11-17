@@ -32,5 +32,5 @@ class HobbyListModel extends MomentumModel<HobbyListController> {
 
   @override
   Map<String, dynamic> toJson() =>
-      {'hobbies': hobbies.map((e) => e.toJson()).toList()};
+      {'hobbies': hobbies?.map((e) => e.toJson())?.toList() ?? []};
 }

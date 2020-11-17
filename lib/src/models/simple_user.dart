@@ -1,34 +1,21 @@
 part of 'index.dart';
 
 class SimpleUser extends BaseModel {
-  String _nickName;
-  int _age;
-  String _introduction;
-  Gender _gender;
-  List<Hobby> _hobbies;
-  String _phoneNumber;
-  String _job;
-  int _height;
-  File _avatar;
-  File _cover;
-  OnlineStatus _onlineStatus;
-  DateTime _lastOnline;
-  FriendType _friendType;
+  String nickName;
+  int age;
+  String introduction;
+  Gender gender;
+  List<Hobby> hobbies;
+  String phoneNumber;
+  String job;
+  int height;
+  File avatar;
+  File cover;
+  OnlineStatus onlineStatus;
+  DateTime lastOnline;
+  FriendType friendType;
 
   String get displayName => nickName;
-  String get nickName => _nickName;
-  int get age => _age;
-  String get introduction => _introduction;
-  Gender get gender => _gender;
-  List<Hobby> get hobbies => _hobbies;
-  String get phoneNumber => _phoneNumber;
-  String get job => _job;
-  int get height => _height;
-  File get avatar => _avatar;
-  File get cover => _cover;
-  OnlineStatus get onlineStatus => _onlineStatus;
-  DateTime get lastOnline => _lastOnline;
-  FriendType get friendType => _friendType;
 
   List<HobbyWithIsSelect> _sameHobbies;
   List<HobbyWithIsSelect> getSameHobbies(BuildContext context) {
@@ -40,7 +27,7 @@ class SimpleUser extends BaseModel {
           [];
 
       _sameHobbies = [];
-      List<Hobby> userHobbies = [..._hobbies] ?? [];
+      List<Hobby> userHobbies = [...hobbies] ?? [];
 
       for (var hobby in userHobbies) {
         if (_sameHobbies.length >= 5) break;
@@ -65,53 +52,39 @@ class SimpleUser extends BaseModel {
 
   SimpleUser({
     String id,
-    String nickname,
-    int age,
-    String introduction,
-    File avatar,
-    File cover,
-    List<Hobby> hobbies,
-    Gender gender,
-    String phoneNumber,
-    String job,
-    int height,
-    OnlineStatus onlineStatus,
-    DateTime lastOnline,
-    FriendType friendType,
-  })  : _nickName = nickname,
-        _age = age,
-        _introduction = introduction,
-        _avatar = avatar,
-        _cover = cover,
-        _hobbies = hobbies,
-        _gender = gender,
-        _phoneNumber = phoneNumber,
-        _job = job,
-        _height = height,
-        _onlineStatus = onlineStatus,
-        _lastOnline = lastOnline,
-        _friendType = friendType,
-        super(id: id);
+    this.nickName,
+    this.age,
+    this.introduction,
+    this.avatar,
+    this.cover,
+    this.hobbies,
+    this.gender,
+    this.phoneNumber,
+    this.job,
+    this.height,
+    this.onlineStatus,
+    this.lastOnline,
+    this.friendType,
+  }) : super(id: id);
 
   @override
   void mapping(Mapper map) {
     super.mapping(map);
-    map('data.nickName', _nickName, (v) => _nickName = v);
-    map('data.age', _age, (v) => _age = v);
-    map('data.introduction', _introduction, (v) => _introduction = v);
-    map('data.gender', _gender, (v) => _gender = v,
+    map('data.nickName', nickName, (v) => nickName = v);
+    map('data.age', age, (v) => age = v);
+    map('data.introduction', introduction, (v) => introduction = v);
+    map('data.gender', gender, (v) => gender = v,
         EnumTransform<Gender, String>());
-    map<Hobby>('data.hobbies', _hobbies, (v) => _hobbies = v);
-    map('data.phoneNumber', _phoneNumber, (v) => _phoneNumber = v);
-    map('data.job', _job, (v) => _job = v);
-    map('data.height', _height, (v) => _height = v);
-    map<File>('data.avatar', _avatar, (v) => _avatar = v);
-    map<File>('data.cover', _cover, (v) => _cover = v);
-    map('data.onlineStatus', _onlineStatus, (v) => _onlineStatus = v,
+    map<Hobby>('data.hobbies', hobbies, (v) => hobbies = v);
+    map('data.phoneNumber', phoneNumber, (v) => phoneNumber = v);
+    map('data.job', job, (v) => job = v);
+    map('data.height', height, (v) => height = v);
+    map<File>('data.avatar', avatar, (v) => avatar = v);
+    map<File>('data.cover', cover, (v) => cover = v);
+    map('data.onlineStatus', onlineStatus, (v) => onlineStatus = v,
         EnumTransform<OnlineStatus, String>());
-    map('data.lastOnline', _lastOnline, (v) => _lastOnline = v,
-        DateTransform());
-    map('data.friendType.status', _friendType, (v) => _friendType = v,
+    map('data.lastOnline', lastOnline, (v) => lastOnline = v, DateTransform());
+    map('data.friendType.status', friendType, (v) => friendType = v,
         EnumTransform<FriendType, String>());
   }
 

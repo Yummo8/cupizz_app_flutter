@@ -41,7 +41,7 @@ class User extends SimpleUser {
           id: id,
           age: age,
           avatar: avatar,
-          nickname: name,
+          nickName: name,
           introduction: bio,
           hobbies: hobbies,
           gender: gender,
