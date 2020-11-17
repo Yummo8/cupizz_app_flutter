@@ -18,6 +18,7 @@ class _Common {
   final hobbies = 'Sở thích';
   final distance = 'Khoảng cách';
   final age = 'Tuổi';
+  final height = 'Chiều cao';
   final man = 'Nam';
   final woman = 'Nữ';
   final other = 'Khác';

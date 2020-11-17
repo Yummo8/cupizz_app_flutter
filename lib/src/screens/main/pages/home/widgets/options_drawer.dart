@@ -304,7 +304,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
             currentUser.maxHeightPrefer == null
         ? const SizedBox.shrink()
         : _buildItem(
-            title: Strings.common.age,
+            title: Strings.common.height,
             actions: Text(
                 '${currentUser.minHeightPrefer} - ${currentUser.maxHeightPrefer} cm',
                 style: context.textTheme.caption),
