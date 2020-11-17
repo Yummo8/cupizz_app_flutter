@@ -26,7 +26,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     io.File avatar,
   }) async {
     final service = getService<UserService>();
-    final result = await service.updateProfile(
+    await service.updateProfile(
       nickName: nickName,
       introduction: introduction,
       gender: gender,
@@ -36,7 +36,6 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       height: height,
       avatar: avatar,
     );
-    this.model.update(currentUser: result);
     if (hobbies != null) {
       dependOn<RecommendableUsersController>().fetchRecommendableUsers();
     }
@@ -52,7 +51,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     List<String> mustHaveFields,
   }) async {
     final service = getService<UserService>();
-    final result = await service.updateSetting(
+    await service.updateSetting(
       minAgePrefer: minAgePrefer,
       maxAgePrefer: maxAgePrefer,
       minHeightPrefer: minHeightPrefer,
@@ -61,7 +60,6 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       distancePrefer: distancePrefer,
       mustHaveFields: mustHaveFields,
     );
-    this.model.update(currentUser: result);
     dependOn<RecommendableUsersController>().fetchRecommendableUsers();
   }
 

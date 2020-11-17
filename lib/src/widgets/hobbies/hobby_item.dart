@@ -38,7 +38,7 @@ class HobbyItem extends StatelessWidget {
                 child: child,
               )
             : OutlineButton(
-                onPressed: () => onPressed?.call(),
+                onPressed: () => handlePressed(context),
                 borderSide: BorderSide(width: 1, color: Colors.grey[500]),
                 highlightColor: context.colorScheme.primary.withOpacity(0.5),
                 child: child,
