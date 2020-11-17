@@ -88,6 +88,14 @@ class _HomePageState extends State<HomePage> {
               MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height,
             ),
+            onSwipeLeft: () {
+              Momentum.controller<RecommendableUsersController>(context)
+                  .onSwipe();
+            },
+            onSwipeRight: () {
+              Momentum.controller<RecommendableUsersController>(context)
+                  .onSwipe(isSwipeRight: true);
+            },
             cards: model.users
                 .map((e) => ClipRRect(
                       child: UserCard(simpleUser: e),
