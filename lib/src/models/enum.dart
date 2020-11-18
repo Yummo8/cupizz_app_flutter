@@ -7,6 +7,9 @@ class FileType extends Enumerable<String> {
   static const image = const FileType(rawValue: 'image');
 }
 
+enum FriendQueryType { all, friend, sent, received }
+enum FriendQueryOrderBy { recent, login, age }
+
 class FriendType extends Enumerable<String> {
   final String rawValue;
   const FriendType({@required this.rawValue});

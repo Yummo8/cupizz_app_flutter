@@ -176,4 +176,15 @@ void main() async {
       expect(hobbies.length, greaterThan(0));
     });
   });
+
+  group('Friends test', () {
+    test('Get all friends', () async {
+      final json = await graphql.friendsQuery(FriendQueryType.all);
+      final friends = (json as List)
+          .map((e) => Mapper.fromJson(e).toObject<FriendData>())
+          .toList();
+
+      expect(friends.length, greaterThan(0));
+    });
+  });
 }
