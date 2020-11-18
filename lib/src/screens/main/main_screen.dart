@@ -1,5 +1,6 @@
 library main_screen;
 
+import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -18,14 +19,9 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends MomentumState<MainScreen>
     with SingleTickerProviderStateMixin {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _tabs = <Widget>[
     HomePage(),
-    Text(
-      'Index 1: Likes',
-      style: optionStyle,
-    ),
+    FriendPage(),
     ChatPage(),
     ProfilePage(),
   ];

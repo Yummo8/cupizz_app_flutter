@@ -9,6 +9,7 @@ class Strings {
   static final _Drawer drawer = _Drawer();
   static final _LoginScreen login = _LoginScreen();
   static final _RegisterScreen register = _RegisterScreen();
+  static final _FriendPage friendPage = _FriendPage();
 }
 
 class _Common {
@@ -54,4 +55,8 @@ class _Drawer {
   final whoAreYouLookingFor = 'Giới tính của người bạn cần tìm?';
   final upTo5Pieces = 'Tối đa 5 sở thích';
   final chooseOtherHoddies = 'Chọn sở thích khác';
+}
+
+class _FriendPage {
+  final title = 'Yêu thích';
 }
