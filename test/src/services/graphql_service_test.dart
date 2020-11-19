@@ -9,10 +9,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'dart:io' as io;
 
 void main() async {
-  setUp(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    objectMapping();
-  });
+  WidgetsFlutterBinding.ensureInitialized();
+  objectMapping();
+
   final tester = MomentumTester(momentum(isTesting: true));
   await tester.init();
 
@@ -26,6 +25,7 @@ void main() async {
 
   await storage.saveToken(token);
   graphql.reset();
+  final currentUser = Mapper.fromJson(await graphql.meQuery()).toObject<User>();
 
   group('User Service Test', () {
     test('Token must be String', () {
@@ -33,10 +33,7 @@ void main() async {
     });
 
     test('Get my info', () async {
-      final json = await graphql.meQuery();
-      final user = Mapper.fromJson(json).toObject<User>();
-
-      final email = user.socialProviders
+      final email = currentUser.socialProviders
           ?.firstWhere((e) => e.type == SocialProviderType.email)
           ?.id;
       expect(email, loginEmail);
@@ -185,6 +182,59 @@ void main() async {
           .toList();
 
       expect(friends.length, greaterThan(0));
+    });
+    test('Get all friends sort recent', () async {
+      final json = await graphql.friendsQuery(
+          FriendQueryType.all, FriendQueryOrderBy.recent);
+      final friends = (json as List)
+          .map((e) => Mapper.fromJson(e).toObject<FriendData>())
+          .toList();
+
+      expect(friends.length, greaterThan(0));
+      for (var i = 0; i < friends.length - 1; i++) {
+        expect(friends[i].updatedAt,
+            greaterThanOrEqualTo(friends[i + 1].updatedAt));
+      }
+    });
+    test('Get all friends sort age', () async {
+      final json = await graphql.friendsQuery(
+          FriendQueryType.all, FriendQueryOrderBy.age);
+      final friends = (json as List)
+          .map((e) => Mapper.fromJson(e).toObject<FriendData>())
+          .toList();
+
+      expect(friends.length, greaterThan(0));
+      for (var i = 0; i < friends.length - 1; i++) {
+        expect(
+          (currentUser.age - friends[i].friend.age).abs() <
+              (currentUser.age - friends[i + 1].friend.age),
+          true,
+        );
+      }
+    });
+    test('Get all friends sort login', () async {
+      final json = await graphql.friendsQuery(
+          FriendQueryType.all, FriendQueryOrderBy.login);
+      final friends = (json as List)
+          .map((e) => Mapper.fromJson(e).toObject<FriendData>())
+          .toList();
+
+      expect(friends.length, greaterThan(0));
+      debugPrint(friends.map((e) => e.friend.lastOnline).toList().toString());
+      for (var i = 0; i < friends.length - 1; i++) {
+        if (friends[i].friend.lastOnline == null) {
+          expect(friends[i + 1].friend.lastOnline, null);
+        } else if (friends[i + 1].friend.lastOnline == null) {
+          continue;
+        } else {
+          expect(
+              friends[i]
+                  .friend
+                  .lastOnline
+                  .compareTo(friends[i + 1].friend.lastOnline),
+              1);
+        }
+      }
     });
   });
 }

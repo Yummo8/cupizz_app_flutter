@@ -31,7 +31,7 @@ Momentum momentum({bool isTesting = false}) {
       GraphqlService(
         !isTesting
             ? AppConfig.instance.apiUrl
-            : 'http://cupizz.cf/graphql', //192.168.1.242:2020
+            : 'http://cupizz.cf/graphql', //192.168.1.10:2020
       ),
       if (!isTesting) OneSignalService()..init(),
       RouterService([
