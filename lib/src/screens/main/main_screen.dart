@@ -33,17 +33,16 @@ class _MainScreenState extends MomentumState<MainScreen>
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: _tabs.length, vsync: this);
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _screenController = Momentum.controller<MainScreenController>(context);
-      _tabController.animateTo(_screenController.model.currentTabIndex,
-          duration: Duration(milliseconds: 1));
-      _screenController.listen(
-          state: this,
-          invoke: (e) {
-            debugPrint(_screenController.model.currentTabIndex.toString());
-          });
+      setState(() {
+        _tabController = TabController(
+          length: _tabs.length,
+          vsync: this,
+          initialIndex: _screenController.model.currentTabIndex,
+        );
+      });
+
       _tabController.addListener(() {
         _screenController.changeTab(_tabController.index);
       });
@@ -53,14 +52,20 @@ class _MainScreenState extends MomentumState<MainScreen>
   @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
-      body: ExtendedTabBarView(
-        cacheExtent: 4,
-        physics: [0, 2].contains(_tabController.index)
-            ? NeverScrollableScrollPhysics()
-            : BouncingScrollPhysics(),
-        controller: _tabController,
-        children: _tabs,
-      ),
+      body: _tabController == null
+          ? const SizedBox.shrink()
+          : MomentumBuilder(
+              controllers: [MainScreenController],
+              builder: (context, snapshot) {
+                return ExtendedTabBarView(
+                  cacheExtent: 4,
+                  physics: [0, 2].contains(_tabController.index)
+                      ? NeverScrollableScrollPhysics()
+                      : BouncingScrollPhysics(),
+                  controller: _tabController,
+                  children: _tabs,
+                );
+              }),
       bottomNavigationBar: Container(
         decoration:
             BoxDecoration(color: context.colorScheme.background, boxShadow: [

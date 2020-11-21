@@ -384,7 +384,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
     );
   }
 
-  Widget _buildGenderButton(User user, Gender gender) => _buildOptionButton(
+  Widget _buildGenderButton(User user, Gender gender) => OptionButton(
       title: gender.displayValue,
       isSelected: user.genderPrefer?.contains(gender) ?? false,
       onPressed: () async {
@@ -395,32 +395,6 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
           Fluttertoast.showToast(msg: e);
         }
       });
-
-  Widget _buildOptionButton({
-    @required String title,
-    bool isSelected = false,
-    Function onPressed,
-  }) {
-    final child = Text(title,
-        style: context.textTheme.button.copyWith(
-            color: !isSelected
-                ? Colors.grey[500]
-                : context.colorScheme.onPrimary));
-    return isSelected
-        ? RaisedButton(
-            onPressed: () => onPressed?.call(),
-            color: isSelected
-                ? context.colorScheme.primary
-                : context.colorScheme.onPrimary,
-            child: child,
-          )
-        : OutlineButton(
-            onPressed: () => onPressed?.call(),
-            borderSide: BorderSide(width: 1, color: Colors.grey[500]),
-            highlightColor: context.colorScheme.primary.withOpacity(0.5),
-            child: child,
-          );
-  }
 }
 
 class _DrawerPainter extends CustomPainter {

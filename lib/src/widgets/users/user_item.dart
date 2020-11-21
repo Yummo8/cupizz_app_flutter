@@ -11,7 +11,12 @@ class UserItem extends StatelessWidget {
     return simpleUser == null
         ? const SizedBox.shrink()
         : ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+              topRight: Radius.circular(50),
+            ),
             child: InkWell(
               onTap: () => onPressed?.call(simpleUser),
               child: Stack(

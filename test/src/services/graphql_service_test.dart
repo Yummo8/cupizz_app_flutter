@@ -220,7 +220,6 @@ void main() async {
           .toList();
 
       expect(friends.length, greaterThan(0));
-      debugPrint(friends.map((e) => e.friend.lastOnline).toList().toString());
       for (var i = 0; i < friends.length - 1; i++) {
         if (friends[i].friend.lastOnline == null) {
           expect(friends[i + 1].friend.lastOnline, null);

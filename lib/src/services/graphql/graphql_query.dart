@@ -26,13 +26,10 @@ extension GraphqlQuery on GraphqlService {
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
   ]) async {
-    String orderByString = orderBy == FriendQueryOrderBy.recent
-        ? 'new'
-        : orderBy.toString().split('.')[1];
-
     final result = await this.query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(
-          '{ friends(type: ${type.toString().split('.')[1]} orderBy: $orderByString page: $page) ${FriendData.graphqlQuery} }'),
+          '{ friends(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${FriendData.graphqlQuery} }'),
     ));
     return result.data['friends'];
   }

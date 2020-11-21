@@ -59,4 +59,6 @@ class _Drawer {
 
 class _FriendPage {
   final title = 'Yêu thích';
+  final filterTitle = 'Bộ lọc';
+  final sortTitle = 'Sắp xếp';
 }
