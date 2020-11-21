@@ -76,4 +76,17 @@ class UserService extends MomentumService {
     final user = Mapper.fromJson(data).toObject<User>();
     return user;
   }
+
+  Future<List<FriendData>> getFriends({
+    FriendQueryType type,
+    FriendQueryOrderBy orderBy,
+    int page,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.friendsQuery(type, orderBy, page);
+    final friends = (data as List)
+        .map((e) => Mapper.fromJson(e).toObject<FriendData>())
+        .toList();
+    return friends;
+  }
 }

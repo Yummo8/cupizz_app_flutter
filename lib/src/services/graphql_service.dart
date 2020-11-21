@@ -59,7 +59,7 @@ class GraphqlService extends MomentumService {
         }
       } else {
         debugPrint(result.exception.toString());
-        throw 'Lỗi không xác định';
+        throw 'Xảy ra lỗi khi tải dữ liệu:\n${result.exception.toString()}';
       }
     }
 

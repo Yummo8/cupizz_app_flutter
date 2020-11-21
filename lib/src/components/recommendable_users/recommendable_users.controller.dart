@@ -26,6 +26,7 @@ class RecommendableUsersController
       final service = getService<UserService>();
       if (isSwipeRight) {
         await service.addFriend(this.model.users[0].id);
+        dependOn<FriendPageController>().refresh();
       } else {
         await service.removeFriend(this.model.users[0].id);
       }

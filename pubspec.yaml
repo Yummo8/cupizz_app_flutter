@@ -36,6 +36,7 @@ dependencies:
   dash_chat: ^1.1.15
   cached_network_image: ^2.3.3
   onesignal_flutter: ^2.0.0
+  sliding_sheet: ^0.4.1
 
 dev_dependencies:
   flutter_test:

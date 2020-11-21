@@ -17,6 +17,7 @@ part 'key_value.dart';
 part 'simple_user.dart';
 part 'user.dart';
 part 'social_provider.dart';
+part 'friend_data.dart';
 
 objectMapping() {
   Mappable.factories = {
@@ -32,5 +33,6 @@ objectMapping() {
     KeyValue: () => KeyValue(),
     Hobby: () => Hobby(),
     User: () => User(),
+    FriendData: () => FriendData(),
   };
 }

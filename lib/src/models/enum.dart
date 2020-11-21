@@ -18,6 +18,50 @@ class FriendType extends Enumerable<String> {
   static const me = const FriendType(rawValue: 'me');
 }
 
+class FriendQueryType extends Enumerable<String> {
+  final String rawValue;
+  final String displayValue;
+
+  const FriendQueryType({
+    @required this.rawValue,
+  }) : displayValue = rawValue == 'all'
+            ? 'Tất cả'
+            : rawValue == 'friend'
+                ? 'Đã phù hợp'
+                : rawValue == 'sent'
+                    ? 'Đã thích'
+                    : rawValue == 'received'
+                        ? 'Thích bạn'
+                        : '';
+
+  static const all = const FriendQueryType(rawValue: 'all');
+  static const friend = const FriendQueryType(rawValue: 'friend');
+  static const sent = const FriendQueryType(rawValue: 'sent');
+  static const received = const FriendQueryType(rawValue: 'received');
+
+  static List<FriendQueryType> getAll() => [all, friend, sent, received];
+}
+
+class FriendQueryOrderBy extends Enumerable<String> {
+  final String rawValue;
+  final String displayValue;
+
+  const FriendQueryOrderBy({@required this.rawValue})
+      : displayValue = rawValue == 'new'
+            ? 'Mới nhất'
+            : rawValue == 'login'
+                ? 'Đăng nhập'
+                : rawValue == 'age'
+                    ? 'Tuổi'
+                    : '';
+
+  static const recent = const FriendQueryOrderBy(rawValue: 'new');
+  static const login = const FriendQueryOrderBy(rawValue: 'login');
+  static const age = const FriendQueryOrderBy(rawValue: 'age');
+
+  static List<FriendQueryOrderBy> getAll() => [recent, login, age];
+}
+
 class OnlineStatus extends Enumerable<String> {
   final String rawValue;
   const OnlineStatus({@required this.rawValue});

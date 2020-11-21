@@ -20,4 +20,17 @@ extension GraphqlQuery on GraphqlService {
         QueryOptions(documentNode: gql('{ hobbies ${Hobby.graphqlQuery} }')));
     return result.data['hobbies'];
   }
+
+  Future friendsQuery([
+    FriendQueryType type = FriendQueryType.all,
+    FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
+    int page = 1,
+  ]) async {
+    final result = await this.query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      documentNode: gql(
+          '{ friends(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${FriendData.graphqlQuery} }'),
+    ));
+    return result.data['friends'];
+  }
 }
