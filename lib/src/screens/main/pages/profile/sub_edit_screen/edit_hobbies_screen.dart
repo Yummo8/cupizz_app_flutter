@@ -43,7 +43,6 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
     final ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
 
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

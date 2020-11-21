@@ -341,7 +341,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = new SizeHelper(context);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

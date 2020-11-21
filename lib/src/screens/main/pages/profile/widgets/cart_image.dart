@@ -10,7 +10,7 @@ class CartImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
-    // TODO: implement build
+
     return Stack(
       children: [
         Container(

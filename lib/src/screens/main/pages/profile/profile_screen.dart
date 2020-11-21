@@ -28,7 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     scrollController.addListener(() {
       if (_isAppBarCollapsed) {

@@ -1,20 +1,12 @@
 library chat_page;
 
-import 'dart:convert';
-
-import 'package:dotted_border/dotted_border.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter/services.dart';
-import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 
-import '../../../../models/index.dart';
 import '../../../../base/base.dart';
-import '../../../../widgets/index.dart';
-import '../../../messages/messages_screen.dart';
 
-part 'widgets/inbox_animation.dart';
-part 'widgets/card_tile_widget.dart';
-part 'widgets/icon_animation_widget.dart';
+part 'widgets/chat_item.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -22,7 +14,9 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  // Bubble length state management
+  final GlobalKey<CustomAnimatedListState> _key =
+      GlobalKey<CustomAnimatedListState>();
+
   int messageLength;
   String selectId;
   int selectAction;
@@ -64,9 +58,24 @@ class _ChatPageState extends State<ChatPage> {
           // Inbox and Archive Button
           buildButtonBar(context),
           Expanded(
-            child: SlidingListAction(
-              selectedState: selecetedState,
-              updateMessageLength: updateBubble,
+            child: CustomAnimatedList(
+              items: <Conversation>[]
+                  .asMap()
+                  .map((i, e) {
+                    return MapEntry(
+                        i,
+                        ChatItem(
+                          conversation: e,
+                          onHided: (_) {
+                            _key.currentState.removeItem(i);
+                          },
+                          onDeleted: (_) {
+                            _key.currentState.removeItem(i);
+                          },
+                        ));
+                  })
+                  .values
+                  .toList(),
             ),
           ),
         ],

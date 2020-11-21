@@ -18,6 +18,8 @@ class AppConfig extends InheritedWidget {
     @required Widget child,
   }) : super(child: Material(child: child)) {
     _globalKey = child.key;
+
+    timeago.setLocaleMessages('vi', ViMessages());
   }
 
   static AppConfig get instance => _globalKey.currentContext

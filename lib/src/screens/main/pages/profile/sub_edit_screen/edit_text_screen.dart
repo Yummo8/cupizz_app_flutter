@@ -126,7 +126,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

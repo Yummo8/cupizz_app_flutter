@@ -38,6 +38,8 @@ class _Button {
   final register = 'Đăng ký';
   final forgotPassword = 'Quên mật khẩu?';
   final reload = 'Tải lại';
+  final hide = 'Ản';
+  final delete = 'Xóa';
 }
 
 class _LoginScreen {

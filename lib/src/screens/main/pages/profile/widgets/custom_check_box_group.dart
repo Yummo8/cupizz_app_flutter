@@ -73,7 +73,6 @@ class _CheckBoxGroupState extends State<CheckBoxGroup> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Wrap(
       spacing: widget.spacing,
       children: buildListItem(),
