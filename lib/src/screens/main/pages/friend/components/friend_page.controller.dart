@@ -40,6 +40,7 @@ class FriendPageController extends MomentumController<FriendPageModel> {
   }
 
   Future loadmoreFriends() async {
+    if (this.model.isLastPage) return;
     try {
       final friends = await getService<UserService>().getFriends(
         type: this.model.filter,

@@ -19,13 +19,12 @@ class FriendPage extends StatefulWidget {
 }
 
 class _FriendPageState extends MomentumState<FriendPage>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, LoadmoreMixin {
   AnimationController animationController;
   AnimationController topBarAnimationController;
   bool multiple = true;
   Animation<double> topBarAnimation;
 
-  final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
 
   @override
@@ -80,6 +79,11 @@ class _FriendPageState extends MomentumState<FriendPage>
   }
 
   @override
+  onLoadMore() {
+    Momentum.controller<FriendPageController>(context).loadmoreFriends();
+  }
+
+  @override
   void dispose() {
     animationController.dispose();
     topBarAnimationController.dispose();
@@ -96,17 +100,23 @@ class _FriendPageState extends MomentumState<FriendPage>
                 controllers: [FriendPageController],
                 builder: (context, snapshot) {
                   final model = snapshot<FriendPageModel>();
+                  final friendsList = [
+                    ...model.friends,
+                    ...!model.isLastPage
+                        ? List.generate(
+                            model.friends.length % 2 == 0 ? 2 : 3, (_) => null)
+                        : []
+                  ];
                   animationController.forward();
                   return GridView(
-                    padding:
-                        const EdgeInsets.only(top: 80, left: 12, right: 12),
+                    padding: const EdgeInsets.all(12).copyWith(top: 80),
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     controller: scrollController,
-                    children: model.friends
+                    children: friendsList
                         .asMap()
                         .map((index, value) {
-                          final int count = Fake.users.length;
+                          final int count = friendsList.length;
                           final Animation<double> animation =
                               Tween<double>(begin: 0.0, end: 1.0).animate(
                             CurvedAnimation(
@@ -120,7 +130,7 @@ class _FriendPageState extends MomentumState<FriendPage>
                             HomeListView(
                               animation: animation,
                               animationController: animationController,
-                              simpleUser: value.friend,
+                              simpleUser: value?.friend,
                             ),
                           );
                         })
