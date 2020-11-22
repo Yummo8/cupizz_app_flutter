@@ -1,4 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
+import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_hobbies_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -299,7 +300,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget buildFavorites(SizeHelper sizeHelper) {
     List<Widget> listWidgetItems = new List<Widget>();
     listWidgetItems.add(InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => EditHobbiesScreen()));
+      },
       child: Container(
         width: sizeHelper.rW(45),
         decoration: BoxDecoration(
@@ -308,7 +312,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(2)),
-          child: Row(
+          child: Wrap(
             children: [
               Icon(
                 Icons.search,
