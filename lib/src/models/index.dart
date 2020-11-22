@@ -18,21 +18,24 @@ part 'simple_user.dart';
 part 'user.dart';
 part 'social_provider.dart';
 part 'friend_data.dart';
+part 'message.dart';
 
 objectMapping() {
   Mappable.factories = {
+    Conversation: () => Conversation(),
+    File: () => File(),
     FileType: (v) => FileType(rawValue: v),
+    FriendData: () => FriendData(),
     FriendType: (v) => FriendType(rawValue: v),
     Gender: (v) => Gender(rawValue: v),
-    OnlineStatus: (v) => OnlineStatus(rawValue: v),
+    Hobby: () => Hobby(),
+    KeyValue: () => KeyValue(),
     NotificationType: (v) => NotificationType(rawValue: v),
+    Message: () => Message(),
+    OnlineStatus: (v) => OnlineStatus(rawValue: v),
     SocialProviderType: (v) => SocialProviderType(rawValue: v),
     SocialProvider: () => SocialProvider(),
-    File: () => File(),
     SimpleUser: () => SimpleUser(),
-    KeyValue: () => KeyValue(),
-    Hobby: () => Hobby(),
     User: () => User(),
-    FriendData: () => FriendData(),
   };
 }

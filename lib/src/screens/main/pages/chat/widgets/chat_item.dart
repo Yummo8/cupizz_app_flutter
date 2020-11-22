@@ -51,11 +51,11 @@ class _ChatItemState extends State<ChatItem> {
                         borderRadius: BorderRadius.circular(90),
                         image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              widget.conversation?.avatar ?? ''),
+                              widget.conversation?.images ?? ''),
                         ),
                       ),
                     ),
-                    if (widget.conversation?.isOnline != null)
+                    if (widget.conversation?.onlineStatus != null)
                       Positioned(
                         bottom: 0,
                         right: 3,
@@ -64,7 +64,8 @@ class _ChatItemState extends State<ChatItem> {
                           height: 14,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(widget.conversation.isOnline
+                            color: Color(widget.conversation.onlineStatus ==
+                                    OnlineStatus.online
                                 ? 0xff20FF6C
                                 : 0xff7D7D7D),
                           ),
@@ -86,7 +87,7 @@ class _ChatItemState extends State<ChatItem> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        widget.conversation?.message ?? '',
+                        widget.conversation?.newestMessage ?? '',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -102,8 +103,9 @@ class _ChatItemState extends State<ChatItem> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        widget.conversation?.time != null
-                            ? TimeAgo.format(widget.conversation.time)
+                        widget.conversation?.newestMessage != null
+                            ? TimeAgo.format(
+                                widget.conversation.newestMessage.createdAt)
                             : '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
