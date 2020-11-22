@@ -43,11 +43,6 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
     removeItem(index).then((value) => widget.onHided?.call(index));
   }
 
-  onDeleted(int index) {
-    _slidableController.activeState..close();
-    removeItem(index).then((value) => widget.onDeleted?.call(index));
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -75,7 +70,7 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
         controller: _slidableController,
         direction: Axis.horizontal,
         actionPane: SlidableDrawerActionPane(),
-        actionExtentRatio: 0.2,
+        actionExtentRatio: 0.3,
         closeOnScroll: true,
         secondaryActions: <Widget>[
           SlideAction(
@@ -89,33 +84,15 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
               } else
                 onHided(index);
             },
-            color: Color(0xFF717892),
+            color: context.colorScheme.error,
             closeOnTap: false,
             child: Text(
-              Strings.button.hide,
+              Strings.button.hideConversation,
               textAlign: TextAlign.center,
-              style: context.textTheme.subtitle1
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-          SlideAction(
-            onTap: () {
-              if (widget.confirmDelete != null) {
-                widget.confirmDelete(index).then((value) {
-                  if (value) {
-                    onDeleted(index);
-                  }
-                });
-              } else
-                onDeleted(index);
-            },
-            closeOnTap: false,
-            color: Colors.redAccent,
-            child: Text(
-              Strings.button.delete,
-              textAlign: TextAlign.center,
-              style: context.textTheme.subtitle1
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+              style: context.textTheme.button.copyWith(
+                color: context.colorScheme.onError,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           )
         ],

@@ -3,6 +3,7 @@ library app;
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cupizz_app/src/screens/main/main_screen.dart';
+import 'package:cupizz_app/src/screens/main/pages/chat/chat_page.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
 import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
 import 'package:flutter/material.dart' hide Router;
@@ -22,6 +23,7 @@ Momentum momentum({bool isTesting = false}) {
     controllers: [
       AuthController(),
       CurrentUserController(),
+      ChatPageController()..config(lazy: true),
       FriendPageController()..config(lazy: true),
       HobbyListController()..config(lazy: true),
       MainScreenController(),
@@ -35,6 +37,7 @@ Momentum momentum({bool isTesting = false}) {
             ? AppConfig.instance.apiUrl
             : 'http://cupizz.cf/graphql', //192.168.1.10:2020
       ),
+      MessageService(),
       if (!isTesting) OneSignalService()..init(),
       RouterService([
         LoginScreen(),

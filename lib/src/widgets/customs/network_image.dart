@@ -1,12 +1,12 @@
 part of '../index.dart';
 
-class NetworkImage extends StatelessWidget {
+class CustomNetworkImage extends StatelessWidget {
   final String url;
   final BoxFit fit;
   final bool isAvatar;
   final BorderRadius borderRadius;
 
-  const NetworkImage(
+  const CustomNetworkImage(
     this.url, {
     Key key,
     this.fit = BoxFit.cover,

@@ -37,7 +37,7 @@ class UserItem extends StatelessWidget {
                 // ignore: can_be_null_after_null_aware
                 if (simpleUser?.avatar?.url.isExistAndNotEmpty)
                   Positioned.fill(
-                    child: NetworkImage(
+                    child: CustomNetworkImage(
                       simpleUser?.avatar?.url ?? '',
                       fit: BoxFit.cover,
                     ),

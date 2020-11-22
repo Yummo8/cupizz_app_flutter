@@ -75,7 +75,7 @@ void main() {
         json['data']['images']);
     expect(conversation.newestMessage.toJson(), json['data']['newestMessage']);
     expect(conversation.onlineStatus.rawValue, json['data']['onlineStatus']);
-    expect(conversation.unreadMessages,
+    expect(conversation.unreadMessageCount,
         json['personalData']['unreadMessageCount']);
   });
 

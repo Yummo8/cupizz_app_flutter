@@ -21,7 +21,7 @@ part 'customs/button_bar.dart';
 part 'customs/custom_grid_view.dart';
 part 'customs/custom_theme.dart';
 part 'customs/heading_bar.dart';
-part 'customs/netword_image.dart';
+part 'customs/network_image.dart';
 part 'customs/primary_scaffold.dart';
 part 'customs/rotate_animated_text_kit.dart';
 part 'customs/skeleton.dart';
