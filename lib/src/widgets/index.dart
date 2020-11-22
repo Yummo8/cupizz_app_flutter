@@ -33,3 +33,4 @@ part 'indicators/loading_indicator.dart';
 part 'indicators/notfound_indicator.dart';
 part 'users/user_card.dart';
 part 'users/user_item.dart';
+part 'users/user_avatar.dart';

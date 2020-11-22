@@ -36,7 +36,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
       this.model.conversations.addAll(conversations);
 
       this.model.update(
-            conversations: this.model.conversations,
+            messages: this.model.conversations,
             currentPage: this.model.currentPage + 1,
             isLastPage: data.isLastPage,
           );
@@ -52,7 +52,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
         page: 1,
       );
       this.model.update(
-            conversations: data.data,
+            messages: data.data,
             currentPage: 1,
             isLastPage: data.isLastPage,
           );

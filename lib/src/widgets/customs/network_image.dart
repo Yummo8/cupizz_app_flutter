@@ -24,12 +24,10 @@ class CustomNetworkImage extends StatelessWidget {
         imageUrl: url,
         fit: fit,
         progressIndicatorBuilder: (ctx, url, process) {
-          return Center(
-            child: CircularProgressIndicator(
-              value: process.progress,
-              valueColor: AlwaysStoppedAnimation(context.colorScheme.primary),
-            ),
-          );
+          return Skeleton(
+              child: Container(
+            color: context.colorScheme.background,
+          ));
         },
       ),
     );

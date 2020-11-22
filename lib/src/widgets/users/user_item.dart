@@ -29,7 +29,7 @@ class UserItem extends StatelessWidget {
         child: Skeleton(
           enabled: simpleUser == null,
           autoContainer: true,
-          child: InkWell(
+          child: GestureDetector(
             onTap:
                 simpleUser != null ? () => onPressed?.call(simpleUser) : null,
             child: Stack(

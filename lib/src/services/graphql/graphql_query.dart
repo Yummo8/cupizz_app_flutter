@@ -54,11 +54,24 @@ extension GraphqlQuery on GraphqlService {
           ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
           page: $page
         ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
-        }''';
+      }''';
     final result = await this.query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(query),
     ));
     return result.data['messages'];
+  }
+
+  Future conversationQuery(ConversationKey key) async {
+    final query = '''{ 
+        conversation(
+          ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
+        ) ${Conversation.graphqlQuery}
+      }''';
+    final result = await this.query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      documentNode: gql(query),
+    ));
+    return result.data['conversation'];
   }
 }

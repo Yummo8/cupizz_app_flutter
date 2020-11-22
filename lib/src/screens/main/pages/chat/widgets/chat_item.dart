@@ -27,7 +27,9 @@ class _ChatItemState extends State<ChatItem> {
         if (widget.onPressed != null) {
           widget.onPressed?.call();
         } else {
-          RouterService.goto(context, MessagesScreen);
+          RouterService.goto(context, MessagesScreen,
+              params: MessagesScreenParams(
+                  ConversationKey(conversationId: widget.conversation.id)));
         }
       },
       child: Container(
@@ -35,41 +37,7 @@ class _ChatItemState extends State<ChatItem> {
         child: IntrinsicHeight(
           child: Row(
             children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CustomNetworkImage(
-                      widget.conversation?.images != null &&
-                              widget.conversation.images.isNotEmpty
-                          ? widget.conversation.images[0].thumbnail
-                          : '',
-                      isAvatar: true,
-                    ),
-                  ),
-                  if (widget.conversation?.onlineStatus == OnlineStatus.online)
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 14,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: context.colorScheme.background,
-                            width: 2,
-                          ),
-                          color: Color(widget.conversation.onlineStatus ==
-                                  OnlineStatus.online
-                              ? 0xff20FF6C
-                              : 0xff7D7D7D),
-                        ),
-                      ),
-                    )
-                ],
-              ),
+              UserAvatar.fromConversation(conversation: widget.conversation),
               const SizedBox(width: 15),
               Expanded(
                 child: Column(

@@ -27,6 +27,7 @@ Momentum momentum({bool isTesting = false}) {
       FriendPageController()..config(lazy: true),
       HobbyListController()..config(lazy: true),
       MainScreenController(),
+      MessagesScreenController(),
       RecommendableUsersController()..config(lazy: true),
       ThemeController(),
     ],

@@ -276,5 +276,19 @@ void main() async {
 
       expect(newestConversations.data[0].newestMessage?.id, messageId);
     });
+
+    test('Test get conversation detail', () async {
+      final json = await graphql.conversationQuery(
+        conversationKey,
+      );
+
+      final conversation = Mapper.fromJson(json).toObject<Conversation>();
+
+      if (conversationKey?.conversationId != null) {
+        expect(conversationKey.conversationId, conversation.id);
+      } else {
+        expect(conversation, isNotNull);
+      }
+    });
   });
 }

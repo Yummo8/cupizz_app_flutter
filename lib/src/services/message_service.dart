@@ -10,12 +10,21 @@ class MessageService extends MomentumService {
   }
 
   Future<WithIsLastPageOutput<Message>> getMessages({
-    ConversationKey key,
+    @required ConversationKey key,
     int page,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.messagesQuery(key, page);
     final result = WithIsLastPageOutput<Message>.fromJson(data);
+    return result;
+  }
+
+  Future<Conversation> getConversation({
+    @required ConversationKey key,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.conversationQuery(key);
+    final result = Mapper.fromJson(data).toObject<Conversation>();
     return result;
   }
 

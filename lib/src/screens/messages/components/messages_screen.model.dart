@@ -1,64 +1,66 @@
-part of '../chat_page.dart';
+part of '../messages_screen.dart';
 
-class ChatPageModel extends MomentumModel<ChatPageController> {
-  ChatPageModel(
-    ChatPageController controller, {
-    this.conversations = const [],
+class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
+  MessagesScreenModel(
+    MessagesScreenController controller, {
+    this.conversation,
+    this.messages = const [],
     this.scrollOffset = 0,
     this.currentPage = 1,
-    this.unreadMessageCount = 0,
     this.isLastPage = false,
     this.isLoading = false,
   }) : super(controller);
 
-  final List<Conversation> conversations;
+  final Conversation conversation;
+  final List<Message> messages;
   final double scrollOffset;
   final int currentPage;
   final bool isLastPage;
-  final int unreadMessageCount;
 
   final bool isLoading;
 
   @override
   void update({
-    List<Conversation> messages,
+    Conversation conversation,
+    List<Message> messages,
     double scrollOffset,
     int currentPage,
     int unreadMessageCount,
     bool isLastPage,
     bool isLoading,
   }) {
-    ChatPageModel(
+    MessagesScreenModel(
       controller,
-      unreadMessageCount: unreadMessageCount ?? this.unreadMessageCount,
-      conversations: messages ?? this.conversations,
+      conversation: conversation ?? this.conversation,
       scrollOffset: scrollOffset ?? this.scrollOffset,
       currentPage: currentPage ?? this.currentPage,
       isLastPage: isLastPage ?? this.isLastPage,
       isLoading: isLoading ?? this.isLoading,
+      messages: messages ?? this.messages,
     ).updateMomentum();
   }
 
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
-    return ChatPageModel(
+    return MessagesScreenModel(
       controller,
-      conversations: ((json['conversations'] ?? []) as List)
-          .map((e) => Mapper.fromJson(e).toObject<Conversation>())
+      conversation:
+          Mapper.fromJson(json['conversation']).toObject<Conversation>(),
+      messages: ((json['messages'] ?? []) as List)
+          .map((e) => Mapper.fromJson(e).toObject<Message>())
           .toList(),
       scrollOffset: json['scrollOffset'],
       currentPage: json['currentPage'],
-      unreadMessageCount: json['unreadMessageCount'],
       isLastPage: json['isLastPage'],
     );
   }
 
   @override
   Map<String, dynamic> toJson() => {
-        'conversations': conversations.map((e) => e.toJson()).toList(),
+        'conversation': conversation.toJson(),
+        'messages': messages.map((e) => e.toJson()).toList(),
         'scrollOffset': scrollOffset,
         'currentPage': currentPage,
         'isLastPage': isLastPage,
-        'unreadMessageCount': unreadMessageCount,
       };
 }
