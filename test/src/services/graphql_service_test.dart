@@ -236,4 +236,45 @@ void main() async {
       }
     });
   });
+
+  group('Message test', () {
+    final conversationKey = ConversationKey(targetUserId: currentUser.id);
+
+    test('Send string message', () async {
+      final messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+
+      final WithIsLastPageOutput<Message> newestMessages =
+          WithIsLastPageOutput.fromJson(
+              await graphql.messagesQuery(conversationKey));
+
+      expect(newestMessages.data[0].id, messageId);
+    });
+
+    test('Send images message', () async {
+      final messageId = (await graphql.sendMessage(
+          conversationKey, null, [io.File(Assets.images.defaultAvatar)]))['id'];
+
+      final WithIsLastPageOutput<Message> newestMessages =
+          WithIsLastPageOutput.fromJson(
+              await graphql.messagesQuery(conversationKey));
+
+      expect(newestMessages.data[0].id, messageId);
+      expect(newestMessages.data[0].attachments.length, 1);
+    });
+
+    test('Test get my conversation matching with newest message', () async {
+      final messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+
+      final WithIsLastPageOutput<Conversation> newestConversations =
+          WithIsLastPageOutput.fromJson(await graphql.myConversationsQuery());
+
+      expect(newestConversations.data[0].newestMessage?.id, messageId);
+    });
+  });
 }
