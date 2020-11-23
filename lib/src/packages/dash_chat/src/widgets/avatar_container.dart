@@ -26,7 +26,7 @@ class AvatarContainer extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onPress != null ? onPress(user) : null,
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
-        child: avatarBuilder != null
+        child: avatarBuilder != null && user != null
             ? avatarBuilder(user)
             : SizedBox(child: UserAvatar.fromSimpleUser(simpleUser: user)),
       ),

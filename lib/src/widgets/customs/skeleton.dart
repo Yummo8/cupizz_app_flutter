@@ -26,8 +26,12 @@ class Skeleton extends StatelessWidget {
                     color: context.colorScheme.background,
                   )
                 : child,
-            baseColor: context.colorScheme.background,
-            highlightColor: Colors.grey[800],
+            baseColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[900]
+                : Colors.grey[100],
+            highlightColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[800]
+                : Colors.grey[200],
             enabled: true,
           )
         : child;
