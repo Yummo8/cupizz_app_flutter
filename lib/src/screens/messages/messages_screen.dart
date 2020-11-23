@@ -24,15 +24,12 @@ class _MessagesScreenState extends State<MessagesScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final params = RouterService.getParam<MessagesScreenParams>(context);
+      if (params != null) {
+        Momentum.controller<MessagesScreenController>(context).reset();
+      }
       Momentum.controller<MessagesScreenController>(context)
-          ._reload(key: params.conversationKey);
+          ._reload(key: params?.conversationKey);
     });
-  }
-
-  @override
-  void dispose() {
-    Momentum.controller<MessagesScreenController>(context).reset();
-    super.dispose();
   }
 
   @override
@@ -92,27 +89,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
               );
             }),
       ),
-      body: DashChat(
-        user: ChatUser(
-          name: "Hien",
-          uid: "001",
-          avatar:
-              "https://www.wrappixel.com/ampleadmin/assets/images/users/4.jpg",
-        ),
-        messages: [
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '002', name: 'Cupid')),
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '002', name: 'Cupid')),
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '003', name: '2Cupid')),
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '001', name: 'Cupid')),
-          ChatMessage(
-              text: 'Welcome2', user: ChatUser(uid: '001', name: 'Cupid')),
-        ],
-        onSend: (ChatMessage message) {},
-      ),
+      body: MomentumBuilder(
+          controllers: [MessagesScreenController],
+          builder: (context, snapshot) {
+            final model = snapshot<MessagesScreenModel>();
+            return DashChat(
+              user: Momentum.controller<CurrentUserController>(context)
+                  .model
+                  .currentUser,
+              messages: model.messages.reversed.toList(),
+              onSend: (Message message) {},
+            );
+          }),
     );
   }
 }

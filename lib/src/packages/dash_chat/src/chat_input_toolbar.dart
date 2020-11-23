@@ -11,8 +11,8 @@ class ChatInputToolbar extends StatelessWidget {
   final int inputMaxLines;
   final int maxInputLength;
   final bool alwaysShowSend;
-  final ChatUser user;
-  final Function(ChatMessage) onSend;
+  final SimpleUser user;
+  final Function(Message) onSend;
   final String text;
   final Function(String) onTextChange;
   final bool inputDisabled;
@@ -68,10 +68,9 @@ class ChatInputToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ChatMessage message = ChatMessage(
-      text: text,
-      user: user,
-      messageIdGenerator: messageIdGenerator,
+    Message message = Message(
+      message: text,
+      sender: user,
       createdAt: DateTime.now(),
     );
 
@@ -158,7 +157,7 @@ class ChatInputToolbar extends StatelessWidget {
     );
   }
 
-  void _sendMessage(BuildContext context, ChatMessage message) async {
+  void _sendMessage(BuildContext context, Message message) async {
     if (text.length != 0) {
       await onSend(message);
 

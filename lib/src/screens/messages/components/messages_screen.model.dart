@@ -57,7 +57,7 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
 
   @override
   Map<String, dynamic> toJson() => {
-        'conversation': conversation.toJson(),
+        'conversation': conversation?.toJson(),
         'messages': messages.map((e) => e.toJson()).toList(),
         'scrollOffset': scrollOffset,
         'currentPage': currentPage,

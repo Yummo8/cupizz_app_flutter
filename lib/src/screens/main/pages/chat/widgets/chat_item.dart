@@ -22,7 +22,7 @@ class _ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
     final unreadMessageCount = widget.conversation?.unreadMessageCount ?? 0;
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         if (widget.onPressed != null) {
           widget.onPressed?.call();

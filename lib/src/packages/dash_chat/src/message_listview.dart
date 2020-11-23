@@ -1,22 +1,22 @@
 part of dash_chat;
 
 class MessageListView extends StatefulWidget {
-  final List<ChatMessage> messages;
-  final ChatUser user;
+  final List<Message> messages;
+  final SimpleUser user;
   final bool showuserAvatar;
   final DateFormat dateFormat;
   final DateFormat timeFormat;
   final bool showAvatarForEverMessage;
-  final Function(ChatUser) onPressAvatar;
-  final Function(ChatUser) onLongPressAvatar;
+  final Function(SimpleUser user) onPressAvatar;
+  final Function(SimpleUser user) onLongPressAvatar;
   final bool renderAvatarOnTop;
-  final Function(ChatMessage) onLongPressMessage;
+  final Function(Message) onLongPressMessage;
   final bool inverted;
-  final Widget Function(ChatUser) avatarBuilder;
-  final Widget Function(ChatMessage) messageBuilder;
-  final Widget Function(String, [ChatMessage]) messageTextBuilder;
-  final Widget Function(String, [ChatMessage]) messageImageBuilder;
-  final Widget Function(String, [ChatMessage]) messageTimeBuilder;
+  final Widget Function(SimpleUser user) avatarBuilder;
+  final Widget Function(Message) messageBuilder;
+  final Widget Function(String, [Message]) messageTextBuilder;
+  final Widget Function(String, [Message]) messageImageBuilder;
+  final Widget Function(String, [Message]) messageTimeBuilder;
   final Widget Function(String) dateBuilder;
   final Widget Function() renderMessageFooter;
   final BoxDecoration messageContainerDecoration;
@@ -31,11 +31,11 @@ class MessageListView extends StatefulWidget {
   final Function onLoadEarlier;
   final Function(bool) defaultLoadCallback;
   final BoxConstraints constraints;
-  final List<Widget> Function(ChatMessage) messageButtonsBuilder;
+  final List<Widget> Function(Message) messageButtonsBuilder;
   final EdgeInsets messagePadding;
   final bool textBeforeImage;
   final double avatarMaxSize;
-  final BoxDecoration Function(ChatMessage, bool) messageDecorationBuilder;
+  final BoxDecoration Function(Message, bool) messageDecorationBuilder;
 
   MessageListView({
     this.showLoadEarlierWidget,
@@ -104,11 +104,11 @@ class _MessageListViewState extends State<MessageListView> {
       return true;
     }
     if (!widget.inverted && index + 1 < widget.messages.length) {
-      return widget.messages[index + 1].user.uid !=
-          widget.messages[index].user.uid;
+      return widget.messages[index + 1].sender.id !=
+          widget.messages[index].sender.id;
     } else if (widget.inverted && index - 1 >= 0) {
-      return widget.messages[index - 1].user.uid !=
-          widget.messages[index].user.uid;
+      return widget.messages[index - 1].sender.id !=
+          widget.messages[index].sender.id;
     }
     return true;
   }
@@ -193,7 +193,7 @@ class _MessageListViewState extends State<MessageListView> {
                             ),
                             child: Row(
                               mainAxisAlignment:
-                                  widget.messages[i].user.uid == widget.user.uid
+                                  widget.messages[i].sender.id == widget.user.id
                                       ? MainAxisAlignment.end
                                       : MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -205,12 +205,12 @@ class _MessageListViewState extends State<MessageListView> {
                                   child: Opacity(
                                     opacity: (widget.showAvatarForEverMessage ||
                                                 showAvatar) &&
-                                            widget.messages[i].user.uid !=
-                                                widget.user.uid
+                                            widget.messages[i].sender.id !=
+                                                widget.user.id
                                         ? 1
                                         : 0,
                                     child: AvatarContainer(
-                                      user: widget.messages[i].user,
+                                      user: widget.messages[i].sender,
                                       onPress: widget.onPressAvatar,
                                       onLongPress: widget.onLongPressAvatar,
                                       avatarBuilder: widget.avatarBuilder,
@@ -243,7 +243,7 @@ class _MessageListViewState extends State<MessageListView> {
                                                                   text: widget
                                                                       .messages[
                                                                           i]
-                                                                      .text));
+                                                                      .message));
                                                           Navigator.pop(
                                                               context);
                                                         },
@@ -257,9 +257,9 @@ class _MessageListViewState extends State<MessageListView> {
                                         ? widget
                                             .messageBuilder(widget.messages[i])
                                         : Align(
-                                            alignment: widget
-                                                        .messages[i].user.uid ==
-                                                    widget.user.uid
+                                            alignment: widget.messages[i].sender
+                                                        .id ==
+                                                    widget.user.id
                                                 ? AlignmentDirectional.centerEnd
                                                 : AlignmentDirectional
                                                     .centerStart,
@@ -267,9 +267,9 @@ class _MessageListViewState extends State<MessageListView> {
                                               messagePadding:
                                                   widget.messagePadding,
                                               constraints: constraints,
-                                              isUser:
-                                                  widget.messages[i].user.uid ==
-                                                      widget.user.uid,
+                                              isUser: widget
+                                                      .messages[i].sender.id ==
+                                                  widget.user.id,
                                               message: widget.messages[i],
                                               timeFormat: widget.timeFormat,
                                               messageImageBuilder:
@@ -282,8 +282,6 @@ class _MessageListViewState extends State<MessageListView> {
                                                   .messageContainerDecoration,
                                               parsePatterns:
                                                   widget.parsePatterns,
-                                              buttons:
-                                                  widget.messages[i].buttons,
                                               messageButtonsBuilder:
                                                   widget.messageButtonsBuilder,
                                               textBeforeImage:
@@ -303,12 +301,13 @@ class _MessageListViewState extends State<MessageListView> {
                                       opacity:
                                           (widget.showAvatarForEverMessage ||
                                                       showAvatar) &&
-                                                  widget.messages[i].user.uid ==
-                                                      widget.user.uid
+                                                  widget.messages[i].sender
+                                                          .id ==
+                                                      widget.user.id
                                               ? 1
                                               : 0,
                                       child: AvatarContainer(
-                                        user: widget.messages[i].user,
+                                        user: widget.messages[i].sender,
                                         onPress: widget.onPressAvatar,
                                         onLongPress: widget.onLongPressAvatar,
                                         avatarBuilder: widget.avatarBuilder,

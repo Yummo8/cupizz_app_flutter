@@ -1,71 +1,20 @@
 part of dash_chat;
 
-/// MessageContainer is just a wrapper around [Text], [Image]
-/// component to present the message
 class MessageContainer extends StatelessWidget {
-  /// Message Object that will be rendered
-  /// Takes a [ChatMessage] object
-  final ChatMessage message;
-
-  /// [DateFormat] object to render the date in desired
-  /// format, if no format is provided it use
-  /// the default `HH:mm:ss`
+  final Message message;
   final DateFormat timeFormat;
-
-  /// [messageTextBuilder] function takes a function with this
-  /// structure [Widget Function(String)] to render the text inside
-  /// the container.
-  final Widget Function(String, [ChatMessage]) messageTextBuilder;
-
-  /// [messageImageBuilder] function takes a function with this
-  /// structure [Widget Function(String)] to render the image inside
-  /// the container.
-  final Widget Function(String, [ChatMessage]) messageImageBuilder;
-
-  /// [messageTimeBuilder] function takes a function with this
-  /// structure [Widget Function(String)] to render the time text inside
-  /// the container.
-  final Widget Function(String, [ChatMessage]) messageTimeBuilder;
-
-  /// Provides a custom style to the message container
-  /// takes [BoxDecoration]
+  final Widget Function(String, [Message]) messageTextBuilder;
+  final Widget Function(String, [Message]) messageImageBuilder;
+  final Widget Function(String, [Message]) messageTimeBuilder;
   final BoxDecoration messageContainerDecoration;
-
-  /// Used to parse text to make it linkified text uses
-  /// [flutter_parsed_text](https://pub.dev/packages/flutter_parsed_text)
-  /// takes a list of [MatchText] in order to parse Email, phone, links
-  /// and can also add custom pattersn using regex
   final List<MatchText> parsePatterns;
-
-  /// A flag which is used for assiging styles
   final bool isUser;
-
-  /// Provides a list of buttons to allow the usage of adding buttons to
-  /// the bottom of the message
   final List<Widget> buttons;
-
-  /// [messageButtonsBuilder] function takes a function with this
-  /// structure [List<Widget> Function()] to render the buttons inside
-  /// a row.
-  final List<Widget> Function(ChatMessage) messageButtonsBuilder;
-
-  /// Constraint to use to build the message layout
+  final List<Widget> Function(Message) messageButtonsBuilder;
   final BoxConstraints constraints;
-
-  /// Padding of the message
-  /// Default to EdgeInsets.all(8.0)
   final EdgeInsets messagePadding;
-
-  /// Should show the text before the image in the chat bubble
-  /// or the opposite
-  /// Default to `true`
   final bool textBeforeImage;
-
-  /// overrides the boxdecoration of the message
-  /// can be used to override color, or customise the message container
-  /// params [ChatMessage] and [isUser]: boolean
-  /// return BoxDecoration
-  final BoxDecoration Function(ChatMessage, bool) messageDecorationBuilder;
+  final BoxDecoration Function(Message, bool) messageDecorationBuilder;
 
   const MessageContainer({
     @required this.message,
@@ -99,16 +48,12 @@ class MessageContainer extends StatelessWidget {
             ? messageDecorationBuilder(message, isUser)
             : messageContainerDecoration != null
                 ? messageContainerDecoration.copyWith(
-                    color: message.user.containerColor != null
-                        ? message.user.containerColor
-                        : messageContainerDecoration.color,
+                    color: messageContainerDecoration.color,
                   )
                 : BoxDecoration(
-                    color: message.user.containerColor != null
-                        ? message.user.containerColor
-                        : isUser
-                            ? Theme.of(context).primaryColor
-                            : context.colorScheme.background.withOpacity(0.5),
+                    color: isUser
+                        ? Theme.of(context).primaryColor
+                        : context.colorScheme.surface,
                     borderRadius: BorderRadius.circular(5.0),
                   ),
         margin: EdgeInsets.only(
@@ -160,11 +105,9 @@ class MessageContainer extends StatelessWidget {
                       : DateFormat('HH:mm:ss').format(message.createdAt),
                   style: TextStyle(
                     fontSize: 10.0,
-                    color: message.user.color != null
-                        ? message.user.color
-                        : isUser
-                            ? context.colorScheme.onPrimary
-                            : context.colorScheme.onBackground,
+                    color: isUser
+                        ? context.colorScheme.onPrimary
+                        : context.colorScheme.onBackground,
                   ),
                 ),
               )
@@ -176,25 +119,24 @@ class MessageContainer extends StatelessWidget {
 
   Widget _buildMessageText(BuildContext context) {
     if (messageTextBuilder != null)
-      return messageTextBuilder(message.text, message);
+      return messageTextBuilder(message.message, message);
     else
       return ParsedText(
         parse: parsePatterns,
-        text: message.text,
+        text: message.message,
         style: TextStyle(
-          color: message.user.color != null
-              ? message.user.color
-              : isUser
-                  ? context.colorScheme.onPrimary
-                  : context.colorScheme.onBackground,
+          color: isUser
+              ? context.colorScheme.onPrimary
+              : context.colorScheme.onBackground,
         ),
       );
   }
 
   Widget _buildMessageImage() {
-    if (message.image != null) {
+    // TODO build multi image
+    if (message.attachments != null && message.attachments.isNotEmpty) {
       if (messageImageBuilder != null)
-        return messageImageBuilder(message.image, message);
+        return messageImageBuilder(message.attachments[0].thumbnail, message);
       else
         return Padding(
           padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -203,7 +145,7 @@ class MessageContainer extends StatelessWidget {
             width: constraints.maxWidth * 0.7,
             fit: BoxFit.contain,
             placeholder: kTransparentImage,
-            image: message.image,
+            image: message.attachments[0].thumbnail,
           ),
         );
     }
