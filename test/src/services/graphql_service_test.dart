@@ -290,5 +290,24 @@ void main() async {
         expect(conversation, isNotNull);
       }
     });
+
+    // test('Test realtime send message', () async {
+    //   graphql.newMessageSubscription(conversationKey).listen((event) {
+
+    //   });
+
+    //   await graphql.sendMessage(
+    //     conversationKey,
+    //     'Test from Flutter testing.',
+    //   );
+
+    //   final conversation = Mapper.fromJson(json).toObject<Conversation>();
+
+    //   if (conversationKey?.conversationId != null) {
+    //     expect(conversationKey.conversationId, conversation.id);
+    //   } else {
+    //     expect(conversation, isNotNull);
+    //   }
+    // });
   });
 }

@@ -1,60 +1,93 @@
 part of 'index.dart';
 
-class GraphqlSupscription {
-  static loginMutation({@required String email, @required String password}) =>
-      MutationOptions(
-        documentNode: gql('''
-mutation login(\$email: String, \$password: String){
-  login(email: \$email password: \$password) {
-    token
+class MessageSubscription extends MomentumService {
+  StreamSubscription<FetchResult> _streamSubscription;
+  final StreamController _controller = StreamController<Message>.broadcast();
+
+  init(ConversationKey key) {
+    _streamSubscription?.cancel();
+    _streamSubscription = getService<GraphqlService>()
+        .subscribe(Operation(documentNode: gql('''subscription {
+          newMessage (
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
+          ) ${Message.graphqlQuery(includeConversation: false)}
+        }''')))
+        .listen((event) {
+      if (event.errors != null && event.errors.isNotEmpty) {
+        _controller.addError(event.errors[0].toString());
+      }
+      if (event.data != null) {
+        _controller
+            .add(Mapper.fromJson(event.data['newMessage']).toObject<Message>());
+      }
+    });
   }
+
+  Stream<Message> listen() => _controller.stream;
+
+  Future cancel() => _streamSubscription?.cancel();
 }
-    '''),
-        variables: {'email': email, 'password': password},
-      );
 
-  static meQuery() =>
-      QueryOptions(documentNode: gql('{ me ${User.graphqlQuery} }'));
+extension GraphqlSupscription on GraphqlService {
+  Stream<Message> newMessageSubscription(ConversationKey key) {
+    StreamSubscription<FetchResult> _streamSubscription;
+    // ignore: close_sinks
+    final StreamController<Message> controller =
+        StreamController<Message>.broadcast(
+      onCancel: () {
+        _streamSubscription?.cancel();
+      },
+    );
+    _streamSubscription = this
+        .subscribe(
+      Operation(documentNode: gql('''subscription {
+          newMessage (
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
+          ) ${Message.graphqlQuery(includeConversation: false)}
+        }''')),
+    )
+        .listen(
+      (event) {
+        if (event.errors != null && event.errors.isNotEmpty) {
+          controller.addError(event.errors[0].toString());
+        }
+        if (event.data != null) {
+          controller.add(
+              Mapper.fromJson(event.data['newMessage']).toObject<Message>());
+        }
+      },
+    );
 
-  static recommendableUsersQuery() => QueryOptions(
-      documentNode: gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }'));
+    return controller.stream;
+  }
 
-  static updateMySetting([
-    int minAgePrefer,
-    int maxAgePrefer,
-    int minHeightPrefer,
-    int maxHeightPrefer,
-    List<Gender> genderPrefer,
-    int distancePrefer,
-    List<String> mustHaveFields,
-  ]) =>
-      QueryOptions(documentNode: gql('''
-    mutation updateMySetting(
-        \$minAgePrefer: Int
-        \$maxAgePrefer: Int
-        \$minHeightPrefer: Int
-        \$maxHeightPrefer: Int
-        \$genderPrefer: [Gender!]
-        \$distancePrefer: Int
-        \$mustHaveFields: [MustHaveEnum!]
-      )  {
-      updateMySetting(
-        minAgePrefer: \$minAgePrefer
-        maxAgePrefer: \$maxAgePrefer
-        minHeightPrefer: \$minHeightPrefer
-        maxHeightPrefer: \$maxHeightPrefer
-        genderPrefer: \$genderPrefer
-        distancePrefer: \$distancePrefer
-        mustHaveFields: \$mustHaveFields
-      ) ${User.graphqlQuery}
-    }
-  '''), variables: {
-        'minAgePrefer': minAgePrefer,
-        'maxAgePrefer': maxAgePrefer,
-        'minHeightPrefer': minHeightPrefer,
-        'maxHeightPrefer': maxHeightPrefer,
-        'genderPrefer': genderPrefer.map((e) => e.rawValue).toList(),
-        'distancePrefer': distancePrefer,
-        'mustHaveFields': mustHaveFields,
-      });
+  Stream<Conversation> conversationChangeSubscription() {
+    StreamSubscription<FetchResult> _streamSubscription;
+    // ignore: close_sinks
+    final StreamController<Conversation> controller =
+        StreamController<Conversation>.broadcast(
+      onCancel: () {
+        _streamSubscription?.cancel();
+      },
+    );
+    _streamSubscription = this
+        .subscribe(
+      Operation(documentNode: gql('''subscription {
+          conversationChange ${Conversation.graphqlQuery}
+        }''')),
+    )
+        .listen(
+      (event) {
+        if (event.errors != null && event.errors.isNotEmpty) {
+          controller.addError(event.errors[0].toString());
+        }
+        if (event.data != null) {
+          controller.add(Mapper.fromJson(event.data['conversationChange'])
+              .toObject<Conversation>());
+        }
+      },
+    );
+
+    return controller.stream;
+  }
 }
