@@ -12,18 +12,48 @@ class ChatPageEvent {
 }
 
 class MessagesScreenController extends MomentumController<MessagesScreenModel> {
+  StreamSubscription<Message> messageSupscription;
+
   @override
   MessagesScreenModel init() {
     return MessagesScreenModel(this);
   }
 
+  bootstrap() {
+    if (this.model.conversation?.id != null) {
+      loadData(ConversationKey(conversationId: this.model.conversation?.id));
+    }
+  }
+
   Future loadData(ConversationKey key) async {
     this.model.update(isLoading: true);
     await _reload(key: key);
+
+    messageSupscription =
+        getService<MessageService>().onNewMessage(key).listen(onNewMessage);
     this.model.update(isLoading: false);
   }
 
+  @override
+  reset({bool clearHistory}) {
+    messageSupscription?.cancel();
+    super.reset(clearHistory: clearHistory);
+  }
+
   Future refresh() => _reload();
+
+  void onNewMessage(Message message) {
+    this.model.messages.insert(0, message);
+    this.model.update(messages: this.model.messages);
+  }
+
+  sendMessage({String message, List<File> attachments}) async {
+    await getService<MessageService>().sendMessage(
+      ConversationKey(conversationId: this.model.conversation.id),
+      message: message,
+      attachments: attachments,
+    );
+  }
 
   Future loadmore() async {
     if (this.model.isLastPage) return;
@@ -36,7 +66,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
       this.model.messages.addAll(messages);
 
       this.model.update(
-            messages: messages,
+            messages: this.model.messages,
             currentPage: this.model.currentPage + 1,
             isLastPage: data.isLastPage,
           );

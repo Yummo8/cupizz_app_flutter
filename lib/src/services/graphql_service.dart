@@ -3,13 +3,17 @@ part of 'index.dart';
 class GraphqlService extends MomentumService {
   GraphQLClient _client;
   GraphQLClient get client => _client;
+  WebSocketLink _socketLink;
   final String apiUrl;
+  final String wss;
 
-  GraphqlService(this.apiUrl) {
+  GraphqlService({@required this.apiUrl, @required this.wss}) {
     reset();
   }
 
   void reset() {
+    _socketLink?.dispose();
+
     final HttpLink httpLink = HttpLink(
       uri: apiUrl,
     );
@@ -18,7 +22,19 @@ class GraphqlService extends MomentumService {
       getToken: () async => await getService<StorageService>().getToken,
     );
 
-    final Link link = authLink.concat(httpLink);
+    _socketLink = WebSocketLink(
+      url: this.wss,
+      config: SocketClientConfig(
+        autoReconnect: true,
+        initPayload: () async {
+          return {
+            'Authorization': await getService<StorageService>().getToken,
+          };
+        },
+      ),
+    );
+
+    final Link link = authLink.concat(httpLink).concat(_socketLink);
 
     _client = GraphQLClient(
       cache: InMemoryCache(),

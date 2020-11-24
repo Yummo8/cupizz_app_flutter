@@ -25,7 +25,7 @@ part 'with_is_past_page_output.dart';
 objectMapping() {
   Mappable.factories = {
     Conversation: () => Conversation(),
-    File: () => File(),
+    FileModel: () => FileModel(),
     FileType: (v) => FileType(rawValue: v),
     FriendData: () => FriendData(),
     FriendType: (v) => FriendType(rawValue: v),

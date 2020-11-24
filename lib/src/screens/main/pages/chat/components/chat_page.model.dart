@@ -21,7 +21,7 @@ class ChatPageModel extends MomentumModel<ChatPageController> {
 
   @override
   void update({
-    List<Conversation> messages,
+    List<Conversation> conversations,
     double scrollOffset,
     int currentPage,
     int unreadMessageCount,
@@ -31,7 +31,7 @@ class ChatPageModel extends MomentumModel<ChatPageController> {
     ChatPageModel(
       controller,
       unreadMessageCount: unreadMessageCount ?? this.unreadMessageCount,
-      conversations: messages ?? this.conversations,
+      conversations: conversations ?? this.conversations,
       scrollOffset: scrollOffset ?? this.scrollOffset,
       currentPage: currentPage ?? this.currentPage,
       isLastPage: isLastPage ?? this.isLastPage,

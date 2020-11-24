@@ -1,7 +1,7 @@
 part of '../index.dart';
 
 class UserAvatar extends StatelessWidget {
-  final File image;
+  final FileModel image;
   final OnlineStatus onlineStatus;
 
   const UserAvatar({Key key, this.image, this.onlineStatus}) : super(key: key);

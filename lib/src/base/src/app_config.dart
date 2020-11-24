@@ -4,6 +4,7 @@ class AppConfig extends InheritedWidget {
   final String appName;
   final AppFlavor flavorName;
   final String apiUrl;
+  final String wss;
   static final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
   static GlobalKey _globalKey;
@@ -15,6 +16,7 @@ class AppConfig extends InheritedWidget {
     @required this.appName,
     @required this.flavorName,
     @required this.apiUrl,
+    @required this.wss,
     @required Widget child,
   }) : super(child: Material(child: child)) {
     _globalKey = child.key;

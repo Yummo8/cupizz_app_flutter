@@ -35,4 +35,10 @@ class MessageService extends MomentumService {
     final result = data['id'];
     return result;
   }
+
+  Stream<Message> onNewMessage(ConversationKey key) =>
+      getService<GraphqlService>().newMessageSubscription(key);
+
+  Stream<Conversation> onConversationChange() =>
+      getService<GraphqlService>().conversationChangeSubscription();
 }

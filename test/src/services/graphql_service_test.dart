@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cupizz_app/src/app.dart';
@@ -291,23 +292,34 @@ void main() async {
       }
     });
 
-    // test('Test realtime send message', () async {
-    //   graphql.newMessageSubscription(conversationKey).listen((event) {
+    test('Test realtime send message', () async {
+      String messageId;
+      StreamSubscription subscription;
+      subscription =
+          graphql.newMessageSubscription(conversationKey).listen((message) {
+        expect(message.id, messageId);
+        subscription.cancel();
+      });
 
-    //   });
+      messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+    });
 
-    //   await graphql.sendMessage(
-    //     conversationKey,
-    //     'Test from Flutter testing.',
-    //   );
+    test('Test realtime conversation change', () async {
+      String messageId;
+      StreamSubscription subscription;
+      subscription =
+          graphql.conversationChangeSubscription().listen((conversation) {
+        expect(conversation.newestMessage.id, messageId);
+        subscription.cancel();
+      });
 
-    //   final conversation = Mapper.fromJson(json).toObject<Conversation>();
-
-    //   if (conversationKey?.conversationId != null) {
-    //     expect(conversationKey.conversationId, conversation.id);
-    //   } else {
-    //     expect(conversation, isNotNull);
-    //   }
-    // });
+      messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+    });
   });
 }

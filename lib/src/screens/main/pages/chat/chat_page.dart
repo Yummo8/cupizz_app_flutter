@@ -1,5 +1,7 @@
 library chat_page;
 
+import 'dart:async';
+
 import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
 import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/material.dart' hide Router;
@@ -46,24 +48,22 @@ class _ChatPageState extends State<ChatPage> {
                       ? LoadingIndicator()
                       : model.conversations.isEmpty
                           ? NotFoundIndicator()
-                          : CustomAnimatedList(
-                              items: model.conversations
-                                  .asMap()
-                                  .map((i, e) {
-                                    return MapEntry(
-                                        i,
-                                        ChatItem(
-                                          conversation: e,
-                                          onHided: (_) {
-                                            _key.currentState.removeItem(i);
-                                          },
-                                          onDeleted: (_) {
-                                            _key.currentState.removeItem(i);
-                                          },
-                                        ));
-                                  })
-                                  .values
-                                  .toList(),
+                          : ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: model.conversations.length,
+                              itemExtent: null,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return ChatItem(
+                                  conversation: model.conversations[index],
+                                  onHided: (_) {
+                                    _key.currentState.removeItem(index);
+                                  },
+                                  onDeleted: (_) {
+                                    _key.currentState.removeItem(index);
+                                  },
+                                );
+                              },
                             ),
                 ),
               ],

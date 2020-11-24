@@ -1,5 +1,8 @@
 library messages_screen;
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart' hide Router;
 
 import '../../base/base.dart';
@@ -62,41 +65,44 @@ class _MessagesScreenState extends State<MessagesScreen> {
               final model = snapshot<MessagesScreenModel>();
               return Skeleton(
                 enabled: model.isLoading,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: UserAvatar.fromConversation(
-                        conversation: model.conversation,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SkeletonItem(
-                            child: Text(
-                              model.conversation?.name ?? 'Loading',
-                              style: context.textTheme.bodyText1
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Align(
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: UserAvatar.fromConversation(
+                            conversation: model.conversation,
                           ),
-                          // TODO add lastOnline to conversation server side
-                          if (false)
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
                             SkeletonItem(
-                              height: 26,
                               child: Text(
-                                model.conversation?.name ?? '',
-                                style: context.textTheme.caption,
+                                model.conversation?.name ?? 'Loading',
+                                style: context.textTheme.bodyText1
+                                    .copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
-                        ],
+                            if (model.conversation?.lastOnline != null)
+                              SkeletonItem(
+                                child: Text(
+                                  TimeAgo.format(model.conversation.lastOnline),
+                                  style: context.textTheme.caption,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),
@@ -116,12 +122,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   .model
                   .currentUser,
               messages: <Message>[
-                ...model.messages,
+                ...model.isLoading ? [] : model.messages,
                 ...!model.isLastPage || model.isLoading
-                    ? List.generate(10, (_) => null)
+                    ? List.generate(model.isLoading ? 10 : 2, (_) => null)
                     : [],
               ].toList(),
-              onSend: (Message message) {},
+              onSend: (Message message) {
+                controller.sendMessage(message: message.message);
+              },
+              trailing: [IconButton(icon: Icon(Icons.camera), onPressed: null)],
             );
           }),
     );

@@ -12,6 +12,8 @@ class ChatPageEvent {
 }
 
 class ChatPageController extends MomentumController<ChatPageModel> {
+  StreamSubscription<Conversation> conversationSupscription;
+
   @override
   ChatPageModel init() {
     return ChatPageModel(this);
@@ -21,7 +23,37 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   bootstrapAsync() async {
     this.model.update(isLoading: true);
     await _reload();
+    _connectSubsciption();
     this.model.update(isLoading: false);
+  }
+
+  @override
+  reset({bool clearHistory}) {
+    conversationSupscription?.cancel();
+    super.reset(clearHistory: clearHistory);
+  }
+
+  _connectSubsciption() {
+    conversationSupscription = getService<MessageService>()
+        .onConversationChange()
+        .listen(onConversationChange);
+  }
+
+  void onConversationChange(newConversation) {
+    final oldConversationIndex =
+        this.model.conversations.indexWhere((e) => e.id == newConversation.id);
+
+    if (this.model.conversations[oldConversationIndex].newestMessage?.id ==
+        newConversation?.newestMessage?.id) {
+      this.model.conversations[oldConversationIndex] = newConversation;
+      this.model.update(conversations: this.model.conversations);
+    } else {
+      this.model.conversations
+        ..removeAt(oldConversationIndex)
+        ..insert(0, newConversation);
+    }
+
+    this.model.update(conversations: this.model.conversations);
   }
 
   Future refresh() => _reload();
@@ -36,7 +68,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
       this.model.conversations.addAll(conversations);
 
       this.model.update(
-            messages: this.model.conversations,
+            conversations: this.model.conversations,
             currentPage: this.model.currentPage + 1,
             isLastPage: data.isLastPage,
           );
@@ -52,7 +84,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
         page: 1,
       );
       this.model.update(
-            messages: data.data,
+            conversations: data.data,
             currentPage: 1,
             isLastPage: data.isLastPage,
           );
