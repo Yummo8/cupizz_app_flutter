@@ -26,7 +26,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   int bioLenght;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _bioController.addListener(_onBioChanged);
   }

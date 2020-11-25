@@ -90,10 +90,10 @@ class __BottomWidgetState extends State<_BottomWidget> {
     var result = await showModalBottomSheet(
       context: context,
       builder: (ctx) => ChangeGalleryDialog(
-            galleryList: widget.galleryListProvider.galleryPathList,
-            i18n: i18nProvider,
-            options: options,
-          ),
+        galleryList: widget.galleryListProvider.galleryPathList,
+        i18n: i18nProvider,
+        options: options,
+      ),
     );
 
     if (result != null) widget.onGalleryChange?.call(result);

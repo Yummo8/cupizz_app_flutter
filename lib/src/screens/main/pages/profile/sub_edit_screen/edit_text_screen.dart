@@ -22,7 +22,6 @@ class _EditTextScreenState extends State<EditTextScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _textController.text = widget.value != null ? widget.value : '';
     _textController.addListener(_textChange);

@@ -24,7 +24,6 @@ class _EditPicturesScreenState extends State<EditPicturesScreen> {
   ];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isEdit = false;
     for (var i = 0; i < 5; i++) {

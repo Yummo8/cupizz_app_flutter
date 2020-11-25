@@ -4,5 +4,6 @@ class ConversationKey {
   final String conversationId;
   final String targetUserId;
 
-  ConversationKey({this.conversationId, this.targetUserId}) : assert(conversationId != null || targetUserId != null);
+  ConversationKey({this.conversationId, this.targetUserId})
+      : assert(conversationId != null || targetUserId != null);
 }

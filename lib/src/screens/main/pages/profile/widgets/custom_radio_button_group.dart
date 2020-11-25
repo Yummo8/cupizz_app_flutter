@@ -28,7 +28,6 @@ class _RadioButtonGroupState<T> extends State<RadioButtonGroup> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     for (int i = 0; i < widget.buttonLables.length; i++) {

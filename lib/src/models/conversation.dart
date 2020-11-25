@@ -33,7 +33,8 @@ class Conversation extends BaseModel {
         'data.newestMessage', _newestMessage, (v) => _newestMessage = v);
     map('data.onlineStatus', _onlineStatus, (v) => _onlineStatus = v,
         EnumTransform<OnlineStatus, String>());
-    map('data.lastOnline', _lastOnline, (v) => _lastOnline = v, DateTransform());
+    map('data.lastOnline', _lastOnline, (v) => _lastOnline = v,
+        DateTransform());
     map('personalData.unreadMessageCount', _unreadMessages,
         (v) => _unreadMessages = v);
   }

@@ -54,7 +54,7 @@ class __PhotoViewState extends State<_PhotoView> {
     return WillPopScope(
       onWillPop: () => _onBack(context),
       child: Scaffold(
-        backgroundColor: context.colorScheme.onBackground,
+        backgroundColor: Colors.black,
         body: Stack(children: <Widget>[
           PhotoViewGallery.builder(
             scrollPhysics: const BouncingScrollPhysics(),

@@ -42,6 +42,9 @@ class _Button {
   final hide = 'Ẩn';
   final hideConversation = 'Ẩn tin nhắn';
   final delete = 'Xóa';
+  final takeAPicture = 'Chụp ảnh';
+  final pickFromGallery = 'Chọn từ thư viện';
+  final cancel = 'Hủy bỏ';
 }
 
 class _LoginScreen {

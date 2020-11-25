@@ -30,7 +30,6 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isEdit = false;
 

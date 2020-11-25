@@ -146,22 +146,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     icon: Icon(Icons.camera_alt_outlined),
                     onPressed: model.isSendingMessage
                         ? null
-                        : () async {
-                            final assets = await PhotoPicker.pickAsset(
-                              context: context,
-                              pickType: PickType.onlyImage,
-                              disableColor: context.colorScheme.onSurface,
-                              dividerColor: context.colorScheme.background,
-                              textColor: context.colorScheme.primary,
-                              themeColor: context.colorScheme.background,
-                            );
-                            if (assets.length > 0) {
-                              final files =
-                                  await Future.wait(assets.map((e) => e.file));
-
-                              controller?.sendMessage(attachments: files);
-                            }
-                          })
+                        : () => pickImage(context, (images) {
+                              controller?.sendMessage(attachments: images);
+                            }))
               ],
               sendButtonBuilder: (onSend) {
                 return IconButton(
