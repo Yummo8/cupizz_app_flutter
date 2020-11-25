@@ -34,7 +34,7 @@ class UserAvatar extends StatelessWidget {
           width: 50,
           height: 50,
           child: CustomNetworkImage(
-            image?.thumbnail ?? '',
+            image?.thumbnail ?? image?.url ?? '',
             isAvatar: true,
           ),
         ),

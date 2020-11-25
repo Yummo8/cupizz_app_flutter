@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide Router;
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../base/base.dart';
 
@@ -94,7 +95,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             if (model.conversation?.lastOnline != null)
                               SkeletonItem(
                                 child: Text(
-                                  TimeAgo.format(model.conversation.lastOnline),
+                                  Strings.messageScreen.lastOnlineAt(
+                                      TimeAgo.format(
+                                          model.conversation.lastOnline)),
                                   style: context.textTheme.caption,
                                 ),
                               ),
@@ -117,7 +120,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               },
               inverted: true,
               dateFormat: DateFormat('dd/MM/yyyy'),
-              timeFormat: DateFormat('hh:mm'),
+              timeFormat: DateFormat('HH:mm'),
               user: Momentum.controller<CurrentUserController>(context)
                   .model
                   .currentUser,
@@ -128,9 +131,45 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     : [],
               ].toList(),
               onSend: (Message message) {
-                controller.sendMessage(message: message.message);
+                controller?.sendMessage(message: message.message);
               },
-              trailing: [IconButton(icon: Icon(Icons.camera), onPressed: null)],
+              inputContainerStyle: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: context.colorScheme.onSurface),
+                ),
+              ),
+              inputDecoration: InputDecoration(
+                hintText: Strings.messageScreen.hint,
+              ),
+              trailing: [
+                IconButton(
+                    icon: Icon(Icons.camera_alt_outlined),
+                    onPressed: model.isSendingMessage
+                        ? null
+                        : () async {
+                            final assets = await PhotoPicker.pickAsset(
+                              context: context,
+                              pickType: PickType.onlyImage,
+                              disableColor: context.colorScheme.onSurface,
+                              dividerColor: context.colorScheme.background,
+                              textColor: context.colorScheme.primary,
+                              themeColor: context.colorScheme.background,
+                            );
+                            if (assets.length > 0) {
+                              final files =
+                                  await Future.wait(assets.map((e) => e.file));
+
+                              controller?.sendMessage(attachments: files);
+                            }
+                          })
+              ],
+              sendButtonBuilder: (onSend) {
+                return IconButton(
+                    icon: model.isSendingMessage
+                        ? LoadingIndicator(size: 20)
+                        : Icon(Icons.send),
+                    onPressed: model.isSendingMessage ? null : onSend);
+              },
             );
           }),
     );

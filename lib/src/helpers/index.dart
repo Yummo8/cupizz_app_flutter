@@ -11,3 +11,4 @@ part 'strings.dart';
 part 'validator.dart';
 part 'vi_time_ago_message.dart';
 part 'time_ago.dart';
+part 'hero_key.dart';

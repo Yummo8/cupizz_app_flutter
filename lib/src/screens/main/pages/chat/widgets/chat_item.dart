@@ -54,20 +54,25 @@ class _ChatItemState extends State<ChatItem> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Flexible(
-                          fit: FlexFit.loose,
-                          flex: 1,
-                          child: Text(
-                            widget.conversation?.newestMessage?.message ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: context.textTheme.bodyText1.copyWith(
-                              fontWeight: unreadMessageCount > 0
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                        if (widget.conversation?.newestMessage != null)
+                          Flexible(
+                            fit: FlexFit.loose,
+                            flex: 1,
+                            child: Text(
+                              widget.conversation?.newestMessage?.message ??
+                                  (widget.conversation.newestMessage.attachments
+                                          .isExistAndNotEmpty
+                                      ? '[${Strings.common.image}]'
+                                      : ''),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textTheme.bodyText1.copyWith(
+                                fontWeight: unreadMessageCount > 0
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
                             ),
                           ),
-                        ),
                         Text(
                           ' ‧ ' +
                               (widget.conversation?.newestMessage != null

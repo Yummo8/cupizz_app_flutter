@@ -9,6 +9,7 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
     this.currentPage = 1,
     this.isLastPage = false,
     this.isLoading = false,
+    this.isSendingMessage = false,
   }) : super(controller);
 
   final Conversation conversation;
@@ -18,6 +19,7 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
   final bool isLastPage;
 
   final bool isLoading;
+  final bool isSendingMessage;
 
   @override
   void update({
@@ -28,15 +30,17 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
     int unreadMessageCount,
     bool isLastPage,
     bool isLoading,
+    bool isSendingMessage,
   }) {
     MessagesScreenModel(
       controller,
       conversation: conversation ?? this.conversation,
+      messages: messages ?? this.messages,
       scrollOffset: scrollOffset ?? this.scrollOffset,
       currentPage: currentPage ?? this.currentPage,
       isLastPage: isLastPage ?? this.isLastPage,
       isLoading: isLoading ?? this.isLoading,
-      messages: messages ?? this.messages,
+      isSendingMessage: isSendingMessage ?? this.isSendingMessage,
     ).updateMomentum();
   }
 

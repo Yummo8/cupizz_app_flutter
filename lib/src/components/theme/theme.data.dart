@@ -17,12 +17,16 @@ ThemeData _themeData(
                 primaryVariant: primaryVariant,
                 secondary: secondary,
                 secondaryVariant: secondaryVariant,
+                surface: Color(0xffE5E5E5),
+                onSurface: Color(0xff6c6c6c),
               )
             : ColorScheme.dark(
                 primary: primary,
                 primaryVariant: primaryVariant,
                 secondary: secondary,
                 secondaryVariant: secondaryVariant,
+                surface: Color(0xff6c6c6c),
+                onSurface: Color(0xffE5E5E5),
               ));
 
 final indigoPinkLight = _themeData(

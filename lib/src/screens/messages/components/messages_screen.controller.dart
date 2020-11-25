@@ -48,11 +48,18 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   }
 
   sendMessage({String message, List<File> attachments}) async {
-    await getService<MessageService>().sendMessage(
-      ConversationKey(conversationId: this.model.conversation.id),
-      message: message,
-      attachments: attachments,
-    );
+    try {
+      this.model.update(isSendingMessage: true);
+      await getService<MessageService>().sendMessage(
+        ConversationKey(conversationId: this.model.conversation.id),
+        message: message,
+        attachments: attachments,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      this.model.update(isSendingMessage: false);
+    }
   }
 
   Future loadmore() async {
