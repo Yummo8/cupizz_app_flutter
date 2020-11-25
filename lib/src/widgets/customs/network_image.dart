@@ -23,6 +23,12 @@ class CustomNetworkImage extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: url ?? '',
         fit: fit,
+        errorWidget: (context, url, error) {
+          return Skeleton(
+              child: Container(
+            color: context.colorScheme.background,
+          ));
+        },
         progressIndicatorBuilder: (ctx, url, process) {
           return Skeleton(
               child: Container(

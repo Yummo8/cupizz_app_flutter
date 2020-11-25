@@ -112,7 +112,7 @@ extension GraphqlMutation on GraphqlService {
       [String message, List<io.File> attachments = const []]) async {
     final result = await this.mutate(MutationOptions(
         documentNode: gql(
-            '''mutation sendMessage(\$attachments: [Upload], message: String) {
+            '''mutation sendMessage(\$attachments: [Upload], \$message: String) {
           sendMessage(
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'} 
             message: \$message

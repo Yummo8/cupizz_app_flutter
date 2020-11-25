@@ -34,8 +34,8 @@ class DateBuilder extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10.0),
         child: Text(
           dateFormat != null
-              ? dateFormat.format(date)
-              : DateFormat('yyyy-MMM-dd').format(date),
+              ? dateFormat.format(date.toLocal())
+              : DateFormat('yyyy-MMM-dd').format(date.toLocal()),
           style: TextStyle(
             color: context.colorScheme.onSurface,
             fontSize: 12.0,

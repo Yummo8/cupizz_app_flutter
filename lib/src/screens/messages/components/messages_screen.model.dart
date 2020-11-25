@@ -44,8 +44,9 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
     return MessagesScreenModel(
       controller,
-      conversation:
-          Mapper.fromJson(json['conversation']).toObject<Conversation>(),
+      conversation: json['conversation'] != null
+          ? Mapper.fromJson(json['conversation']).toObject<Conversation>()
+          : null,
       messages: ((json['messages'] ?? []) as List)
           .map((e) => Mapper.fromJson(e).toObject<Message>())
           .toList(),

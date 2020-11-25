@@ -379,7 +379,7 @@ class DashChatState extends State<DashChat> {
     );
   }
 
-  QuickReply _mapReply(Reply reply) => QuickReply(
+  QuickReply mapReply(Reply reply) => QuickReply(
         reply: reply,
         onReply: widget.onQuickReply,
         quickReplyBuilder: widget.quickReplyBuilder,

@@ -94,8 +94,8 @@ class MessageContainer extends StatelessWidget {
                 padding: EdgeInsets.only(top: 5.0),
                 child: Text(
                   timeFormat != null
-                      ? timeFormat.format(createdAt)
-                      : DateFormat('HH:mm:ss').format(createdAt),
+                      ? timeFormat.format(createdAt.toLocal())
+                      : DateFormat('HH:mm:ss').format(createdAt.toLocal()),
                   style: TextStyle(
                     fontSize: 10.0,
                     color: isUser
