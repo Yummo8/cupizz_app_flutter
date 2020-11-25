@@ -107,4 +107,26 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['undoLastDislikedUser'];
   }
+
+  Future sendMessage(ConversationKey key,
+      [String message, List<io.File> attachments = const []]) async {
+    final result = await this.mutate(MutationOptions(
+        documentNode: gql(
+            '''mutation sendMessage(\$attachments: [Upload], \$message: String) {
+          sendMessage(
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'} 
+            message: \$message
+            attachments: \$attachments
+          ) {
+            id
+          }
+        }'''),
+        variables: {
+          'message': message,
+          'attachments': await Future.wait(
+              (attachments ?? []).map((e) => multiPartFile(e))),
+        }));
+
+    return result.data['sendMessage'];
+  }
 }

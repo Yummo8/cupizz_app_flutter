@@ -36,7 +36,7 @@ class UserCard extends StatelessWidget {
             ),
           ),
           Positioned.fill(
-              child: NetworkImage(
+              child: CustomNetworkImage(
                   simpleUser.cover?.url ?? simpleUser.avatar?.url)),
           Positioned(
             bottom: 0,
@@ -74,7 +74,7 @@ class UserCard extends StatelessWidget {
                     SizedBox(
                       width: 40,
                       height: 40,
-                      child: NetworkImage(simpleUser.avatar.thumbnail,
+                      child: CustomNetworkImage(simpleUser.avatar.thumbnail,
                           isAvatar: true),
                     ),
                     const SizedBox(width: 10),

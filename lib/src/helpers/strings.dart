@@ -1,8 +1,7 @@
 part of 'index.dart';
 
 class Strings {
-  static const APP_TITLE = 'Invite me';
-  static const INVITE_ME_TEXT_DATA = '@invite_me';
+  static const APP_TITLE = 'Cupizz';
   static final _Common common = _Common();
   static final _Button button = _Button();
   static final _Error error = _Error();
@@ -10,6 +9,7 @@ class Strings {
   static final _LoginScreen login = _LoginScreen();
   static final _RegisterScreen register = _RegisterScreen();
   static final _FriendPage friendPage = _FriendPage();
+  static final _MessageScreen messageScreen = _MessageScreen();
 }
 
 class _Common {
@@ -23,6 +23,7 @@ class _Common {
   final man = 'Nam';
   final woman = 'Nữ';
   final other = 'Khác';
+  final image = 'Hình ảnh';
 }
 
 class _Error {
@@ -38,6 +39,12 @@ class _Button {
   final register = 'Đăng ký';
   final forgotPassword = 'Quên mật khẩu?';
   final reload = 'Tải lại';
+  final hide = 'Ẩn';
+  final hideConversation = 'Ẩn tin nhắn';
+  final delete = 'Xóa';
+  final takeAPicture = 'Chụp ảnh';
+  final pickFromGallery = 'Chọn từ thư viện';
+  final cancel = 'Hủy bỏ';
 }
 
 class _LoginScreen {
@@ -61,4 +68,9 @@ class _FriendPage {
   final title = 'Yêu thích';
   final filterTitle = 'Bộ lọc';
   final sortTitle = 'Sắp xếp';
+}
+
+class _MessageScreen {
+  final hint = 'Nhập tin nhắn';
+  String lastOnlineAt(String time) => 'Truy cập $time';
 }

@@ -29,7 +29,7 @@ class UserItem extends StatelessWidget {
         child: Skeleton(
           enabled: simpleUser == null,
           autoContainer: true,
-          child: InkWell(
+          child: GestureDetector(
             onTap:
                 simpleUser != null ? () => onPressed?.call(simpleUser) : null,
             child: Stack(
@@ -37,7 +37,7 @@ class UserItem extends StatelessWidget {
                 // ignore: can_be_null_after_null_aware
                 if (simpleUser?.avatar?.url.isExistAndNotEmpty)
                   Positioned.fill(
-                    child: NetworkImage(
+                    child: CustomNetworkImage(
                       simpleUser?.avatar?.url ?? '',
                       fit: BoxFit.cover,
                     ),

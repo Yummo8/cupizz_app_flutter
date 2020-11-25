@@ -1,20 +1,16 @@
 library chat_page;
 
-import 'dart:convert';
+import 'dart:async';
 
-import 'package:dotted_border/dotted_border.dart';
+import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
+import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter/services.dart';
-import 'package:flutter_sequence_animation/flutter_sequence_animation.dart';
 
-import '../../../../models/index.dart';
 import '../../../../base/base.dart';
-import '../../../../widgets/index.dart';
-import '../../../messages/messages_screen.dart';
 
-part 'widgets/inbox_animation.dart';
-part 'widgets/card_tile_widget.dart';
-part 'widgets/icon_animation_widget.dart';
+part 'components/chat_page.controller.dart';
+part 'components/chat_page.model.dart';
+part 'widgets/chat_item.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -22,7 +18,9 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  // Bubble length state management
+  final GlobalKey<CustomAnimatedListState> _key =
+      GlobalKey<CustomAnimatedListState>();
+
   int messageLength;
   String selectId;
   int selectAction;
@@ -33,82 +31,93 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  // returns list id and action index
-  void selecetedState(Map val) {
-    setState(() {
-      selectId = val["list_id"];
-      selectAction = val["select_action"];
-    });
-    String _action;
-    if (selectAction == 1) {
-      _action = 'favorites';
-    } else if (selectAction == 2) {
-      _action = 'delete';
-    } else if (selectAction == 3) {
-      _action = 'archive';
-    }
-    Scaffold.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Selected action \"$_action\" for $selectId id number!'),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          // Message Text
-          buildHeadingBar(context),
-          // Inbox and Archive Button
-          buildButtonBar(context),
-          Expanded(
-            child: SlidingListAction(
-              selectedState: selecetedState,
-              updateMessageLength: updateBubble,
-            ),
-          ),
-        ],
-      ),
+    return Container(
+      color: context.colorScheme.background,
+      child: MomentumBuilder(
+          controllers: [ChatPageController],
+          builder: (context, snapshot) {
+            final model = snapshot<ChatPageModel>();
+            return Column(
+              children: <Widget>[
+                buildHeadingBar(context),
+                buildButtonBar(context),
+                Expanded(
+                  child: model.isLoading
+                      ? LoadingIndicator()
+                      : model.conversations.isEmpty
+                          ? NotFoundIndicator()
+                          : ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: model.conversations.length,
+                              itemExtent: null,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return ChatItem(
+                                  conversation: model.conversations[index],
+                                  onHided: (_) {
+                                    _key.currentState.removeItem(index);
+                                  },
+                                  onDeleted: (_) {
+                                    _key.currentState.removeItem(index);
+                                  },
+                                );
+                              },
+                            ),
+                ),
+              ],
+            );
+          }),
     );
   }
 
   Widget buildBadge(int length) {
-    return Container(
-      decoration: BoxDecoration(
-        color: context.colorScheme.primary,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      width: 20,
-      height: 20,
-      child: Center(
-        child: Text(
-          length.toString(),
-          style: TextStyle(color: context.colorScheme.onPrimary, fontSize: 11),
-        ),
-      ),
-    );
+    return length <= 0
+        ? const SizedBox.shrink()
+        : Container(
+            decoration: BoxDecoration(
+              color: context.colorScheme.primary,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            width: 20,
+            height: 20,
+            child: Center(
+              child: Text(
+                length.toString(),
+                style: TextStyle(
+                    color: context.colorScheme.onPrimary, fontSize: 11),
+              ),
+            ),
+          );
   }
 
-  Container buildHeadingBar(BuildContext context) {
-    return Container(
-      height: 65.0,
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left: 15.0, bottom: 20.0, top: 10),
-      color: context.colorScheme.background,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Tin nhắn',
-            style: context.textTheme.headline4.copyWith(
-              color: context.colorScheme.onBackground,
-              fontWeight: FontWeight.bold,
+  Widget buildHeadingBar(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        height: 65.0,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(left: 15.0, bottom: 10.0, top: 10),
+        color: context.colorScheme.background,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Tin nhắn',
+              style: context.textTheme.headline4.copyWith(
+                color: context.colorScheme.onBackground,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          buildBadge(messageLength)
-        ],
+            MomentumBuilder(
+                controllers: [ChatPageController],
+                builder: (context, snapshot) {
+                  final unreadMessageCount =
+                      snapshot<ChatPageModel>().unreadMessageCount ?? 0;
+                  return buildBadge(unreadMessageCount);
+                })
+          ],
+        ),
       ),
     );
   }
@@ -118,13 +127,13 @@ class _ChatPageState extends State<ChatPage> {
       color: context.colorScheme.background,
       height: 45.0,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left: 15.0, bottom: 0.0),
+      padding: EdgeInsets.only(left: 15.0, bottom: 10.0),
       child: Row(
         children: <Widget>[
           Container(
             child: Center(
               child: Text(
-                'Inbox',
+                'Công khai',
                 style: TextStyle(color: context.colorScheme.onPrimary),
               ),
             ),
@@ -141,7 +150,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
           SizedBox(width: 12.0),
           Text(
-            'Archive',
+            'Ẩn danh',
             style: TextStyle(color: Colors.grey),
           ),
         ],

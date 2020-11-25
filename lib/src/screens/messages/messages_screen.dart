@@ -1,9 +1,21 @@
 library messages_screen;
 
-import 'package:flutter/material.dart' hide Router;
+import 'dart:async';
+import 'dart:io';
 
-import '../../packages/dash_chat/dash_chat.dart';
-import '../../widgets/index.dart';
+import 'package:flutter/material.dart' hide Router;
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../base/base.dart';
+
+part 'components/messages_screen.controller.dart';
+part 'components/messages_screen.model.dart';
+
+class MessagesScreenParams extends RouterParam {
+  final ConversationKey conversationKey;
+
+  MessagesScreenParams(this.conversationKey);
+}
 
 class MessagesScreen extends StatefulWidget {
   @override
@@ -11,30 +23,142 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
+  MessagesScreenController controller;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller = Momentum.controller<MessagesScreenController>(context);
+      final params = RouterService.getParam<MessagesScreenParams>(context);
+      if (params != null) {
+        controller.loadData(params?.conversationKey);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller?.reset();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
-      body: DashChat(
-        user: ChatUser(
-          name: "Hien",
-          uid: "001",
-          avatar:
-              "https://www.wrappixel.com/ampleadmin/assets/images/users/4.jpg",
-        ),
-        messages: [
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '002', name: 'Cupid')),
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '002', name: 'Cupid')),
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '003', name: '2Cupid')),
-          ChatMessage(
-              text: 'Welcome', user: ChatUser(uid: '001', name: 'Cupid')),
-          ChatMessage(
-              text: 'Welcome2', user: ChatUser(uid: '001', name: 'Cupid')),
-        ],
-        onSend: (ChatMessage message) {},
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: context.colorScheme.background,
+        shadowColor: context.colorScheme.onBackground,
+        elevation: 1,
+        leading: IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.chevron_left,
+              color: context.colorScheme.onBackground,
+              size: 40,
+            ),
+            onPressed: () {
+              RouterService.pop(context);
+            }),
+        title: MomentumBuilder(
+            controllers: [MessagesScreenController],
+            builder: (context, snapshot) {
+              final model = snapshot<MessagesScreenModel>();
+              return Skeleton(
+                enabled: model.isLoading,
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Align(
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: UserAvatar.fromConversation(
+                            conversation: model.conversation,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SkeletonItem(
+                              child: Text(
+                                model.conversation?.name ?? 'Loading',
+                                style: context.textTheme.bodyText1
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            if (model.conversation?.lastOnline != null)
+                              SkeletonItem(
+                                child: Text(
+                                  Strings.messageScreen.lastOnlineAt(
+                                      TimeAgo.format(
+                                          model.conversation.lastOnline)),
+                                  style: context.textTheme.caption,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
       ),
+      body: MomentumBuilder(
+          controllers: [MessagesScreenController],
+          builder: (context, snapshot) {
+            final model = snapshot<MessagesScreenModel>();
+            return DashChat(
+              onLoadEarlier: () {
+                model.controller.loadmore();
+              },
+              inverted: true,
+              dateFormat: DateFormat('dd/MM/yyyy'),
+              timeFormat: DateFormat('HH:mm'),
+              user: Momentum.controller<CurrentUserController>(context)
+                  .model
+                  .currentUser,
+              messages: <Message>[
+                ...model.isLoading ? [] : model.messages,
+                ...!model.isLastPage || model.isLoading
+                    ? List.generate(model.isLoading ? 10 : 2, (_) => null)
+                    : [],
+              ].toList(),
+              onSend: (Message message) {
+                controller?.sendMessage(message: message.message);
+              },
+              inputContainerStyle: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: context.colorScheme.onSurface),
+                ),
+              ),
+              inputDecoration: InputDecoration(
+                hintText: Strings.messageScreen.hint,
+              ),
+              trailing: [
+                IconButton(
+                    icon: Icon(Icons.camera_alt_outlined),
+                    onPressed: model.isSendingMessage
+                        ? null
+                        : () => pickImage(context, (images) {
+                              controller?.sendMessage(attachments: images);
+                            }))
+              ],
+              sendButtonBuilder: (onSend) {
+                return IconButton(
+                    icon: model.isSendingMessage
+                        ? LoadingIndicator(size: 20)
+                        : Icon(Icons.send),
+                    onPressed: model.isSendingMessage ? null : onSend);
+              },
+            );
+          }),
     );
   }
 }

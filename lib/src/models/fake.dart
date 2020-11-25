@@ -4,7 +4,7 @@ class Fake {
   static User currentUser = User(
     id: '0000',
     age: 22,
-    avatar: File(
+    avatar: FileModel(
         id: '0000',
         url:
             'https://avatars2.githubusercontent.com/u/36977998?s=460&u=2620376cf57c02a2a9bb3fe00c45ebfa75aff511&v=4'),
@@ -18,7 +18,7 @@ class Fake {
       id: (index + 1).toString(),
       name: 'Hien ' + (index + 1).toString(),
       age: 22 + index,
-      avatar: File(
+      avatar: FileModel(
         id: (index + 1).toString(),
         url: 'https://loremflickr.com/888/851/girl?lock=$index',
       ),

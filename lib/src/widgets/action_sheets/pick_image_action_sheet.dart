@@ -1,0 +1,50 @@
+part of '../index.dart';
+
+pickImage(BuildContext context, Function(List<File> image) onPickedImage,
+    {bool isMulti = false}) async {
+  FocusScope.of(context).unfocus();
+  showCupertinoModalPopup(
+    context: context,
+    useRootNavigator: false,
+    builder: (context) => CupertinoActionSheet(
+      title: null,
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          onPressed: () => ImagePicker()
+              .getImage(source: ImageSource.camera)
+              .then((image) async {
+            onPickedImage([File(image.path)]);
+          }).whenComplete(() => Navigator.pop(context)),
+          child: Text(
+            Strings.button.takeAPicture,
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () => PhotoPicker.pickAsset(
+            context: context,
+            pickType: PickType.onlyImage,
+            disableColor: context.colorScheme.onSurface,
+            dividerColor: context.colorScheme.background,
+            textColor: context.colorScheme.primary,
+            themeColor: context.colorScheme.background,
+          ).then((assets) async {
+            if (assets.length > 0) {
+              final files = await Future.wait(assets.map((e) => e.file));
+              onPickedImage(files);
+            }
+          }).whenComplete(() => Navigator.pop(context)),
+          child: Text(
+            Strings.button.pickFromGallery,
+          ),
+        )
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        onPressed: () => Navigator.pop(context),
+        isDestructiveAction: true,
+        child: Text(
+          Strings.button.cancel,
+        ),
+      ),
+    ),
+  );
+}

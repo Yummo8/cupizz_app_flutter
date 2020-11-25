@@ -13,7 +13,7 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
     final ThemeData _theme = Theme.of(context);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

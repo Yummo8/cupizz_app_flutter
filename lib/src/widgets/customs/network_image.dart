@@ -1,12 +1,12 @@
 part of '../index.dart';
 
-class NetworkImage extends StatelessWidget {
+class CustomNetworkImage extends StatelessWidget {
   final String url;
   final BoxFit fit;
   final bool isAvatar;
   final BorderRadius borderRadius;
 
-  const NetworkImage(
+  const CustomNetworkImage(
     this.url, {
     Key key,
     this.fit = BoxFit.cover,
@@ -21,15 +21,19 @@ class NetworkImage extends StatelessWidget {
           ? BorderRadius.circular(90)
           : borderRadius ?? BorderRadius.circular(0),
       child: CachedNetworkImage(
-        imageUrl: url,
+        imageUrl: url ?? '',
         fit: fit,
+        errorWidget: (context, url, error) {
+          return Skeleton(
+              child: Container(
+            color: context.colorScheme.background,
+          ));
+        },
         progressIndicatorBuilder: (ctx, url, process) {
-          return Center(
-            child: CircularProgressIndicator(
-              value: process.progress,
-              valueColor: AlwaysStoppedAnimation(context.colorScheme.primary),
-            ),
-          );
+          return Skeleton(
+              child: Container(
+            color: context.colorScheme.background,
+          ));
         },
       ),
     );

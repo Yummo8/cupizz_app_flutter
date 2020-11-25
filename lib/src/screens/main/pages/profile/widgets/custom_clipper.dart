@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class BackgroudClipper extends CustomClipper<Path> {
   @override
   getClip(Size size) {
-    // TODO: implement getClip
     var path = new Path();
 
     var height = size.height / 10 * 8;
@@ -36,7 +35,6 @@ class BackgroudClipper extends CustomClipper<Path> {
 class PinkOneClipper extends CustomClipper<Path> {
   @override
   getClip(Size size) {
-    // TODO: implement getClip
     var path = new Path();
 
     var height = size.height / 10 * 6;
@@ -70,7 +68,6 @@ class PinkOneClipper extends CustomClipper<Path> {
 class PinkTwoClipper extends CustomClipper<Path> {
   @override
   getClip(Size size) {
-    // TODO: implement getClip
     var path = new Path();
 
     var height = size.height / 10 * 6;

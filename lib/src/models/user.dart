@@ -16,7 +16,7 @@ class User extends SimpleUser {
   User({
     String id,
     String name,
-    File avatar,
+    FileModel avatar,
     int age,
     String bio,
     List<Hobby> hobbies,
@@ -76,7 +76,7 @@ class User extends SimpleUser {
     id
     data {
       nickName
-      avatar ${File.graphqlQuery}
+      avatar ${FileModel.graphqlQuery}
       age
       birthday
       introduction

@@ -22,7 +22,6 @@ class _EditTextScreenState extends State<EditTextScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _textController.text = widget.value != null ? widget.value : '';
     _textController.addListener(_textChange);
@@ -126,7 +125,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

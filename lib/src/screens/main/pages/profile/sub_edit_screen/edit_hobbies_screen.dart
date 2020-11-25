@@ -30,7 +30,6 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isEdit = false;
 
@@ -43,7 +42,6 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
     final ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
 
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

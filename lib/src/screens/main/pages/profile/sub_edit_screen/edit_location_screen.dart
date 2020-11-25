@@ -70,10 +70,9 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     SizeHelper sizeHelper = SizeHelper(context);
     final ThemeData _theme = Theme.of(context);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

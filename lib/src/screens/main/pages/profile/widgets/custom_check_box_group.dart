@@ -28,7 +28,6 @@ class _CheckBoxGroupState extends State<CheckBoxGroup> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     for (int i = 0; i < widget.buttonLables.length; i++) {
@@ -73,7 +72,6 @@ class _CheckBoxGroupState extends State<CheckBoxGroup> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Wrap(
       spacing: widget.spacing,
       children: buildListItem(),

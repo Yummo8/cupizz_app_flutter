@@ -1,6 +1,6 @@
 part of 'index.dart';
 
-class File extends BaseModel {
+class FileModel extends BaseModel {
   FileType _type;
   String _url;
   String _thumbnail;
@@ -8,7 +8,7 @@ class File extends BaseModel {
   String get url => _url;
   String get thumbnail => _thumbnail ?? url;
 
-  File({String id, FileType type, String url, String thumbnail})
+  FileModel({String id, FileType type, String url, String thumbnail})
       : _type = type,
         _thumbnail = thumbnail,
         _url = url,

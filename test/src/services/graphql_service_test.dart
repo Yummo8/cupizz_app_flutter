@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cupizz_app/src/app.dart';
@@ -234,6 +235,91 @@ void main() async {
               1);
         }
       }
+    });
+  });
+
+  group('Message test', () {
+    final conversationKey = ConversationKey(targetUserId: currentUser.id);
+
+    test('Send string message', () async {
+      final messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+
+      final WithIsLastPageOutput<Message> newestMessages =
+          WithIsLastPageOutput.fromJson(
+              await graphql.messagesQuery(conversationKey));
+
+      expect(newestMessages.data[0].id, messageId);
+    });
+
+    test('Send images message', () async {
+      final messageId = (await graphql.sendMessage(
+          conversationKey, null, [io.File(Assets.images.defaultAvatar)]))['id'];
+
+      final WithIsLastPageOutput<Message> newestMessages =
+          WithIsLastPageOutput.fromJson(
+              await graphql.messagesQuery(conversationKey));
+
+      expect(newestMessages.data[0].id, messageId);
+      expect(newestMessages.data[0].attachments.length, 1);
+    });
+
+    test('Test get my conversation matching with newest message', () async {
+      final messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+
+      final WithIsLastPageOutput<Conversation> newestConversations =
+          WithIsLastPageOutput.fromJson(await graphql.myConversationsQuery());
+
+      expect(newestConversations.data[0].newestMessage?.id, messageId);
+    });
+
+    test('Test get conversation detail', () async {
+      final json = await graphql.conversationQuery(
+        conversationKey,
+      );
+
+      final conversation = Mapper.fromJson(json).toObject<Conversation>();
+
+      if (conversationKey?.conversationId != null) {
+        expect(conversationKey.conversationId, conversation.id);
+      } else {
+        expect(conversation, isNotNull);
+      }
+    });
+
+    test('Test realtime send message', () async {
+      String messageId;
+      StreamSubscription subscription;
+      subscription =
+          graphql.newMessageSubscription(conversationKey).listen((message) {
+        expect(message.id, messageId);
+        subscription.cancel();
+      });
+
+      messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
+    });
+
+    test('Test realtime conversation change', () async {
+      String messageId;
+      StreamSubscription subscription;
+      subscription =
+          graphql.conversationChangeSubscription().listen((conversation) {
+        expect(conversation.newestMessage.id, messageId);
+        subscription.cancel();
+      });
+
+      messageId = (await graphql.sendMessage(
+        conversationKey,
+        'Test from Flutter testing.',
+      ))['id'];
     });
   });
 }

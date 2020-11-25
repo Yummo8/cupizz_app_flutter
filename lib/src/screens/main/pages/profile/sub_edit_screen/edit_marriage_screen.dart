@@ -12,7 +12,7 @@ class _EditMarriageScreenState extends State<EditMarriageScreen> {
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

@@ -9,6 +9,7 @@ void main() {
     appName: 'Cupizz Production',
     flavorName: AppFlavor.PRODUCTION,
     apiUrl: 'http://cupizz.cf/graphql',
+    wss: 'ws://cupizz.cf/graphql',
     child: App(),
   );
 

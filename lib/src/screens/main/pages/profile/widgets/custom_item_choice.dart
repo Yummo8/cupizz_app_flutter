@@ -27,7 +27,6 @@ class CustomItemChoice extends StatefulWidget {
 class _CustomItemChoiceState extends State<CustomItemChoice> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

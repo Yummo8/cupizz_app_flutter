@@ -11,7 +11,6 @@ class RowInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     final ThemeData _theme = Theme.of(context);
     return InkWell(
       onTap: () => {

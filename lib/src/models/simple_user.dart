@@ -9,8 +9,8 @@ class SimpleUser extends BaseModel {
   String phoneNumber;
   String job;
   int height;
-  File avatar;
-  File cover;
+  FileModel avatar;
+  FileModel cover;
   OnlineStatus onlineStatus;
   DateTime lastOnline;
   FriendType friendType;
@@ -79,8 +79,8 @@ class SimpleUser extends BaseModel {
     map('data.phoneNumber', phoneNumber, (v) => phoneNumber = v);
     map('data.job', job, (v) => job = v);
     map('data.height', height, (v) => height = v);
-    map<File>('data.avatar', avatar, (v) => avatar = v);
-    map<File>('data.cover', cover, (v) => cover = v);
+    map<FileModel>('data.avatar', avatar, (v) => avatar = v);
+    map<FileModel>('data.cover', cover, (v) => cover = v);
     map('data.onlineStatus', onlineStatus, (v) => onlineStatus = v,
         EnumTransform<OnlineStatus, String>());
     map('data.lastOnline', lastOnline, (v) => lastOnline = v, DateTransform());
@@ -100,8 +100,8 @@ class SimpleUser extends BaseModel {
       phoneNumber
       job
       height
-      avatar ${File.graphqlQuery}
-      cover ${File.graphqlQuery}
+      avatar ${FileModel.graphqlQuery}
+      cover ${FileModel.graphqlQuery}
       friendType {status}
       onlineStatus
       lastOnline

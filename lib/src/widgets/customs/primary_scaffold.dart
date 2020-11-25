@@ -25,6 +25,7 @@ class PrimaryScaffold extends StatelessWidget {
     return RouterPage(
       child: Scaffold(
         appBar: appBar,
+        backgroundColor: context.colorScheme.background,
         drawer: drawer,
         body: body,
         bottomNavigationBar: bottomNavigationBar,

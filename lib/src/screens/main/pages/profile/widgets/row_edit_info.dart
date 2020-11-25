@@ -19,7 +19,6 @@ class RowEditInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     SizeHelper sizeHelper = SizeHelper(context);
     return InkWell(
       onTap: () => {
