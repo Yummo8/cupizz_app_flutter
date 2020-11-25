@@ -89,4 +89,15 @@ class UserService extends MomentumService {
         .toList();
     return friends;
   }
+
+  Future<WithIsLastPageOutput<FriendData>> getFriendsV2({
+    FriendQueryType type,
+    FriendQueryOrderBy orderBy,
+    int page,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.friendsV2Query(type, orderBy, page);
+    final result = WithIsLastPageOutput<FriendData>.fromJson(data);
+    return result;
+  }
 }

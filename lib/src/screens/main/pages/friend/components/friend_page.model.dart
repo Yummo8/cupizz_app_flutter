@@ -11,7 +11,6 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
     this.currentPage = 1,
     this.isLastPage = false,
     this.isLoading = false,
-    this.pageSize = 0,
   }) : super(controller);
 
   final FriendQueryType filter;
@@ -21,8 +20,6 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
   final double scrollOffset;
   final int currentPage;
   final bool isLastPage;
-  // Lấy từ server về trong lần get đầu tiên để tính last page
-  final int pageSize;
 
   final bool isLoading;
 
@@ -48,7 +45,6 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
       currentPage: currentPage ?? this.currentPage,
       isLastPage: isLastPage ?? this.isLastPage,
       isLoading: isLoading ?? this.isLoading,
-      pageSize: pageSize ?? this.pageSize,
     ).updateMomentum();
   }
 
@@ -65,7 +61,6 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
       isMultiColumn: json['isMultiColumn'],
       currentPage: json['currentPage'],
       isLastPage: json['isLastPage'],
-      pageSize: json['pageSize'],
     );
   }
 
@@ -78,6 +73,5 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
         'isMultiColumn': isMultiColumn,
         'currentPage': currentPage,
         'isLastPage': isLastPage,
-        'pageSize': pageSize,
       };
 }

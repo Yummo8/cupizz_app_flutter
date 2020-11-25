@@ -34,6 +34,19 @@ extension GraphqlQuery on GraphqlService {
     return result.data['friends'];
   }
 
+  Future friendsV2Query([
+    FriendQueryType type = FriendQueryType.all,
+    FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
+    int page = 1,
+  ]) async {
+    final result = await this.query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      documentNode: gql(
+          '{ friendsV2(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${WithIsLastPageOutput.graphqlQuery(FriendData.graphqlQuery)} }'),
+    ));
+    return result.data['friendsV2'];
+  }
+
   Future myConversationsQuery([
     int page = 1,
   ]) async {

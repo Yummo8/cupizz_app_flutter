@@ -42,17 +42,17 @@ class FriendPageController extends MomentumController<FriendPageModel> {
   Future loadmoreFriends() async {
     if (this.model.isLastPage) return;
     try {
-      final friends = await getService<UserService>().getFriends(
+      final result = await getService<UserService>().getFriendsV2(
         type: this.model.filter,
         orderBy: this.model.sort,
         page: this.model.currentPage + 1,
       );
-      this.model.friends.addAll(friends);
+      this.model.friends.addAll(result.data);
 
       this.model.update(
             friends: this.model.friends,
             currentPage: this.model.currentPage + 1,
-            isLastPage: friends.isEmpty || this.model.pageSize > friends.length,
+            isLastPage: result.isLastPage,
           );
     } catch (e) {
       sendEvent(FriendPageEvent(
@@ -62,16 +62,15 @@ class FriendPageController extends MomentumController<FriendPageModel> {
 
   Future _reloadFriends() async {
     try {
-      final friends = await getService<UserService>().getFriends(
+      final result = await getService<UserService>().getFriendsV2(
         type: this.model.filter,
         orderBy: this.model.sort,
         page: 1,
       );
       this.model.update(
-            friends: friends,
+            friends: result.data,
             currentPage: 1,
-            isLastPage: friends.length == 0,
-            pageSize: friends.length,
+            isLastPage: result.isLastPage,
           );
     } catch (e) {
       sendEvent(FriendPageEvent(
