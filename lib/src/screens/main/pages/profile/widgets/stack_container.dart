@@ -1,31 +1,51 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:flutter/material.dart';
+part of '../profile_screen.dart';
 
-import 'custom_clipper.dart';
-
-class StackContainer extends StatelessWidget {
-  const StackContainer({Key key}) : super(key: key);
+class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  static const _AVATAR_MAX_SIZE = 100.0;
+  static const _AVATAR_MIN_SIZE = 50.0;
+  static const _HEADER_MIN_HEIGHT = 100.0;
+  final double expandedHeight;
+  final PreferredSizeWidget bottom;
+  final SimpleUser user;
 
   @override
-  Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
-    const opacity = 0.3;
+  final FloatingHeaderSnapConfiguration snapConfiguration;
 
-    SizeHelper sizeHelper = SizeHelper(context);
+  ProfileSliverAppBarDelegate(
+    this.user, {
+    @required this.expandedHeight,
+    this.bottom,
+    this.snapConfiguration,
+  });
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final scrollRate =
+        min(1.0, max<double>(0.0, shrinkOffset / (maxExtent - minExtent)));
+    final opacity = 0.3 - 0.3 * scrollRate;
+
     return Container(
-      height: sizeHelper.rH(45),
+      height: expandedHeight,
       child: Stack(
+        fit: StackFit.expand,
+        overflow: Overflow.visible,
         children: [
-          ClipPath(
-            clipper: BackgroudClipper(),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: _theme.primaryColor)),
-                image: DecorationImage(
-                  image: NetworkImage(
-                      "https://static.onecms.io/wp-content/uploads/sites/20/2017/05/alexandra-daddario-womens-health-1-2000.jpg"),
-                  fit: BoxFit.cover,
-                ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0 - 50 * scrollRate,
+            child: ClipPath(
+              clipper: BackgroudClipper(),
+              child: Stack(
+                children: [
+                  CustomNetworkImage(user?.cover?.url ?? ''),
+                  Positioned.fill(
+                      child: Container(
+                    color: context.colorScheme.primary
+                        .withOpacity(0 + 0.3 * scrollRate),
+                  ))
+                ],
               ),
             ),
           ),
@@ -33,10 +53,7 @@ class StackContainer extends StatelessWidget {
             clipper: PinkOneClipper(),
             child: Container(
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: _theme.primaryColor),
-                ),
-                color: _theme.primaryColor.withOpacity(opacity),
+                color: context.colorScheme.primary.withOpacity(opacity),
               ),
             ),
           ),
@@ -44,32 +61,31 @@ class StackContainer extends StatelessWidget {
             clipper: PinkTwoClipper(),
             child: Container(
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.pink[300]),
-                ),
-                color: _theme.primaryColor.withOpacity(opacity),
+                color: context.colorScheme.primary.withOpacity(opacity),
               ),
             ),
           ),
           Positioned(
             bottom: 0,
-            left: MediaQuery.of(context).size.width / 12,
+            left: context.width / 12 - (context.width / 12 - 20) * scrollRate,
             child: Container(
-              child: CircleAvatar(
-                radius: 55,
-                backgroundColor: Colors.white,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      border: Border.all(
-                          width: 1,
-                          color: Colors.pink[300],
-                          style: BorderStyle.solid)),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                        "https://celebmafia.com/wp-content/uploads/2020/05/alexandra-daddario-instagram-photos-05-16-2020-5.jpg"),
-                  ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(90.0)),
+                border: Border.all(
+                  color: context.colorScheme.background,
+                  width: 5,
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(90.0)),
+                  border: Border.all(color: context.colorScheme.primary),
+                ),
+                child: UserAvatar.fromSimpleUser(
+                  simpleUser: user,
+                  size: _AVATAR_MAX_SIZE -
+                      (_AVATAR_MAX_SIZE - _AVATAR_MIN_SIZE) * scrollRate,
+                  showOnline: false,
                 ),
               ),
             ),
@@ -78,4 +94,14 @@ class StackContainer extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  double get maxExtent => expandedHeight + (bottom?.preferredSize?.height ?? 0);
+
+  @override
+  double get minExtent =>
+      _HEADER_MIN_HEIGHT + (bottom?.preferredSize?.height ?? 0);
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

@@ -12,7 +12,6 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(

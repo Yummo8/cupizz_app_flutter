@@ -77,6 +77,7 @@ class User extends SimpleUser {
     data {
       nickName
       avatar ${FileModel.graphqlQuery}
+      cover ${FileModel.graphqlQuery}
       age
       birthday
       introduction

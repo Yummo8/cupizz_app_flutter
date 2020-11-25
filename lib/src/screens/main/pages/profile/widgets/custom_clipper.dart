@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+part of '../profile_screen.dart';
 
 class BackgroudClipper extends CustomClipper<Path> {
   @override
   getClip(Size size) {
     var path = new Path();
 
-    var height = size.height / 10 * 8;
+    var height = size.height * 0.8;
     path.lineTo(0, height);
 
     var firstControlPoint = new Offset(size.width / 5, height);

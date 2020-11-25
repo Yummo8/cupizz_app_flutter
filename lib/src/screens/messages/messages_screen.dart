@@ -71,12 +71,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Align(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: UserAvatar.fromConversation(
-                            conversation: model.conversation,
-                          ),
+                        child: UserAvatar.fromConversation(
+                          size: 30,
+                          conversation: model.conversation,
                         ),
                       ),
                       const SizedBox(width: 10),

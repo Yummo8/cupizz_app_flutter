@@ -12,7 +12,6 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(

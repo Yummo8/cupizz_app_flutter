@@ -12,14 +12,6 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
   int selectedIndex = 0;
   String selected;
 
-  List<Widget> _buildItems() {
-    return elements
-        .map((val) => MySelectionItem(
-              title: val,
-            ))
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
 class RowInfo extends StatelessWidget {
-  String semanticLabel;
-  IconData iconData;
-  String title;
-  Function onClick;
+  final String semanticLabel;
+  final IconData iconData;
+  final String title;
+  final Function onClick;
 
-  RowInfo({Key key, this.semanticLabel, this.iconData, this.title})
-      : super(key: key);
+  RowInfo({
+    Key key,
+    this.semanticLabel,
+    this.iconData,
+    this.title,
+    this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
