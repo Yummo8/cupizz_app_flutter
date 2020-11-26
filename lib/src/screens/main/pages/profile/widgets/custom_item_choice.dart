@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+part of '../edit_profile_screen.dart';
 
 class CustomItemChoice extends StatefulWidget {
   const CustomItemChoice(this.label,

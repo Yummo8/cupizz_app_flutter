@@ -1,5 +1,4 @@
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/multiselect_dialog_hobby.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class MultiSelectHobby extends FormField<dynamic> {
   final Widget title;

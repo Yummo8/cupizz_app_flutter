@@ -19,6 +19,7 @@ export '../widgets/index.dart';
 part 'src/app_base.dart';
 part 'src/app_config.dart';
 part 'src/cache_provider.dart';
+part 'src/exts/array_ext.dart';
 part 'src/exts/context_ext.dart';
 part 'src/exts/date_ext.dart';
 part 'src/exts/list_ext.dart';

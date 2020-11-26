@@ -1,6 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditTextScreen extends StatefulWidget {
   final ValueChanged<String> onSave;
@@ -30,32 +28,24 @@ class _EditTextScreenState extends State<EditTextScreen> {
   }
 
   void _textChange() {
-    print(_textController.text);
-    if (widget.value != null) {
-      if (_textController.text == widget.value) {
-        setState(() {
-          isEdit = true;
-        });
-      }
-    } else {
-      if (_textController.text.length > 0) {
-        setState(() {
-          isEdit = true;
-        });
-      }
+    if (_textController.text.isExistAndNotEmpty) {
+      setState(() {
+        isEdit = _textController.text != widget.value;
+      });
     }
   }
 
-  void _settingModalBottomSheet(context) {
+  void _settingModalBottomSheet(BuildContext context) {
     ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
+        barrierColor: _theme.colorScheme.onBackground.withOpacity(0.5),
         builder: (BuildContext bc) {
           return Container(
             decoration: new BoxDecoration(
-                color: Colors.white,
+                color: _theme.colorScheme.background,
                 borderRadius: new BorderRadius.only(
                     topLeft: const Radius.circular(15.0),
                     topRight: const Radius.circular(15.0))),
@@ -68,18 +58,14 @@ class _EditTextScreenState extends State<EditTextScreen> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.close),
-                        onPressed: null,
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),
-                  Divider(
-                    color: Colors.black,
-                  ),
+                  Divider(color: _theme.colorScheme.onSurface),
                   Text(
                       "Bạn có muốn lưu thay đổi vào hồ sơ hẹn hò của mình ko?"),
-                  SizedBox(
-                    height: 20.0,
-                  ),
+                  SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -89,10 +75,11 @@ class _EditTextScreenState extends State<EditTextScreen> {
                           Navigator.pop(context);
                         },
                         minWidth: sizeHelper.rW(35),
-                        color: Colors.grey[200],
+                        color: context.colorScheme.onBackground,
                         child: Text(
                           "Bỏ",
-                          style: TextStyle(color: Colors.black),
+                          style: context.textTheme.button
+                              .copyWith(color: context.colorScheme.background),
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(20.0)),
@@ -107,7 +94,8 @@ class _EditTextScreenState extends State<EditTextScreen> {
                         color: _theme.primaryColor,
                         child: Text(
                           "Lưu",
-                          style: TextStyle(color: Colors.white),
+                          style: context.textTheme.button
+                              .copyWith(color: _theme.colorScheme.onPrimary),
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(20.0)),
@@ -123,20 +111,19 @@ class _EditTextScreenState extends State<EditTextScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
 
-    return Scaffold(
+    return PrimaryScaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: context.colorScheme.background,
         title: Text(
           widget.title,
-          style: TextStyle(color: Colors.black),
+          style: context.textTheme.bodyText1,
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: context.colorScheme.onBackground,
           ),
           onPressed: () {
             if (isEdit) {
@@ -147,23 +134,19 @@ class _EditTextScreenState extends State<EditTextScreen> {
           },
         ),
         actions: [
-          InkWell(
-            onTap: () {
-              if (isEdit) {
-                widget.onSave(_textController.text);
-                setState(() {
-                  isEdit = false;
-                  value = _textController.text;
-                });
-              }
-            },
-            child: Center(
-              child: Text(
-                "Lưu",
-                style: TextStyle(
-                    color: isEdit ? _theme.primaryColor : Colors.black87,
-                    fontSize: 18.0),
-              ),
+          TextButton(
+            onPressed: !isEdit
+                ? null
+                : () {
+                    widget.onSave(_textController.text);
+                    setState(() {
+                      isEdit = false;
+                      value = _textController.text;
+                    });
+                  },
+            child: Text(
+              Strings.button.save,
+              style: context.textTheme.button,
             ),
           ),
           SizedBox(
@@ -179,14 +162,14 @@ class _EditTextScreenState extends State<EditTextScreen> {
             children: [
               TextFormField(
                 controller: _textController,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: context.textTheme.bodyText1,
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
               Text(
                 "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
+                style: context.textTheme.bodyText2,
               )
             ],
           ),

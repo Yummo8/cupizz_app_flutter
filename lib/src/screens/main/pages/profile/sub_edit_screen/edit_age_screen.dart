@@ -1,6 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditAgeScreen extends StatefulWidget {
   @override
@@ -27,19 +25,21 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
 
-    return Scaffold(
+    return PrimaryScaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: context.colorScheme.background,
         title: Text(
           'Ngày sinh',
-          style: TextStyle(color: Colors.black),
+          style: context.textTheme.bodyText1,
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: context.colorScheme.onBackground,
           ),
-          onPressed: () => {Navigator.pop(context)},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Container(
@@ -62,7 +62,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
               ),
               Text(
                 "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
+                style: context.textTheme.bodyText2,
               )
             ],
           ),

@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'base/base.dart';
 import 'screens/auth/index.dart';
 import 'screens/main/components/main_screen.controller.dart';
+import 'screens/main/pages/profile/edit_profile_screen.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
 
@@ -42,6 +43,7 @@ Momentum momentum({bool isTesting = false}) {
       MessageService(),
       if (!isTesting) OneSignalService()..init(),
       RouterService([
+        EditProfileScreen(),
         LoginScreen(),
         MainScreen(),
         MessagesScreen(),

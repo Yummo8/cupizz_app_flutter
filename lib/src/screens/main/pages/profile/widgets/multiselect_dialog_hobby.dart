@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class MultiSelectDialogItem<V> {
   const MultiSelectDialogItem(

@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/extensions.dart';
-import 'package:flutter/cupertino.dart';
-
-import 'custom_item_choice.dart';
+part of '../edit_profile_screen.dart';
 
 class CheckBoxGroup extends StatefulWidget {
   final List<String> buttonLables;

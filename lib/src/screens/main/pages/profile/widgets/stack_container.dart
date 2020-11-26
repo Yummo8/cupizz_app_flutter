@@ -34,17 +34,19 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0 - 50 * scrollRate,
+            bottom: 0 - 30 * scrollRate,
             child: ClipPath(
               clipper: BackgroudClipper(),
               child: Stack(
                 children: [
-                  CustomNetworkImage(user?.cover?.url ?? ''),
                   Positioned.fill(
-                      child: Container(
+                      child: CustomNetworkImage(user?.cover?.url ?? '')),
+                  Container(
+                    width: context.width,
+                    height: expandedHeight,
                     color: context.colorScheme.primary
                         .withOpacity(0 + 0.3 * scrollRate),
-                  ))
+                  )
                 ],
               ),
             ),

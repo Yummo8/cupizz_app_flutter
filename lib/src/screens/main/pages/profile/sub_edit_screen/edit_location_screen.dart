@@ -1,8 +1,4 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
+part of '../edit_profile_screen.dart';
 
 class EditLocationScreen extends StatefulWidget {
   @override
@@ -57,7 +53,8 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
       List<Placemark> p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
-      String address = "${place.locality}, ${place.country}";
+      String address =
+          "${place.locality.isExistAndNotEmpty ? '${place.locality},' : place.locality} ${place.country}";
       print(address);
       setState(() {
         _currentAddress = address;
@@ -73,19 +70,21 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     SizeHelper sizeHelper = SizeHelper(context);
     final ThemeData _theme = Theme.of(context);
 
-    return Scaffold(
+    return PrimaryScaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: context.colorScheme.background,
         title: Text(
           'Vị trí hẹn hò',
-          style: TextStyle(color: Colors.black),
+          style: context.textTheme.bodyText1,
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: context.colorScheme.onBackground,
           ),
-          onPressed: () => {Navigator.pop(context)},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           InkWell(
@@ -112,9 +111,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                 height: sizeHelper.rH(7),
                 margin: EdgeInsets.only(bottom: sizeHelper.rH(3)),
                 child: _onLoading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
+                    ? Center(child: LoadingIndicator())
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -127,8 +124,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                           ),
                           Text(
                             _currentAddress,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20.0),
+                            style: context.textTheme.bodyText1,
                           ),
                         ],
                       ),
@@ -161,14 +157,14 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
               ),
               Text(
                 "Vị trí hẹn hò của bạn chỉ cập nhật khi bạn chọn thay đổi ở đây.",
-                style: TextStyle(color: Colors.black, fontSize: 20.0),
+                style: context.textTheme.subtitle1,
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
               Text(
                 "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
+                style: context.textTheme.bodyText2,
               )
             ],
           ),

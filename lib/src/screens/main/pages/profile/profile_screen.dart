@@ -1,15 +1,15 @@
 import 'dart:math';
 
-import 'package:cupizz_app/src/helpers/index.dart';
+import 'package:cupizz_app/src/screens/main/pages/profile/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../base/base.dart';
 import 'widgets/cart_image.dart';
-import 'widgets/row_info.dart';
 
 part 'widgets/custom_clipper.dart';
+part 'widgets/row_info.dart';
 part 'widgets/stack_container.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
-    return Scaffold(
+    return PrimaryScaffold(
       body: MomentumBuilder(
           controllers: [CurrentUserController],
           builder: (context, snapshot) {
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     pinned: true,
                     delegate: ProfileSliverAppBarDelegate(
                       user,
-                      expandedHeight: context.height,
+                      expandedHeight: 300,
                     ),
                   ),
                 ];
@@ -54,21 +54,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text(
                             "${user?.displayName ?? ''},",
-                            style: TextStyle(
+                            style: context.textTheme.headline6.copyWith(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
                             ),
                           ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
+                          const SizedBox(width: 8.0),
                           if (user?.age != null)
                             Text(
                               "${user?.age} tuổi",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                              ),
+                              style: context.textTheme.subtitle1,
                             ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: context.colorScheme.primary,
+                              size: 16,
+                            ),
+                            onPressed: () {
+                              RouterService.goto(context, EditProfileScreen);
+                            },
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16.0),

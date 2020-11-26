@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../profile_screen.dart';
 
 class RowInfo extends StatelessWidget {
   final String semanticLabel;
@@ -16,17 +16,14 @@ class RowInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
     return InkWell(
-      onTap: () => {
-        if (onClick != null) {onClick()}
-      },
+      onTap: onClick,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             this.iconData,
-            color: _theme.primaryColor,
+            color: context.colorScheme.primary,
             size: 18.0,
             semanticLabel: this.semanticLabel,
           ),
@@ -36,10 +33,7 @@ class RowInfo extends StatelessWidget {
           Flexible(
             child: Text(
               this.title,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18.0,
-              ),
+              style: context.textTheme.bodyText1,
             ),
           )
         ],

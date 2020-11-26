@@ -1,5 +1,4 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class RowEditInfo extends StatelessWidget {
   final String semanticLabel;
@@ -21,40 +20,28 @@ class RowEditInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
     return InkWell(
-      onTap: () => {
-        if (onClick != null) {onClick()}
-      },
+      onTap: onClick,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             this.iconData,
-            color: Colors.black87,
+            color: context.colorScheme.onBackground,
             size: sizeHelper.rW(10.0),
             semanticLabel: this.semanticLabel,
           ),
-          SizedBox(
-            width: sizeHelper.rW(3.0),
-          ),
+          SizedBox(width: sizeHelper.rW(3.0)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 this.title,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: sizeHelper.rW(5),
-                    fontWeight: FontWeight.w600),
+                style: context.textTheme.bodyText1,
               ),
-              SizedBox(
-                height: sizeHelper.rH(1),
-              ),
+              SizedBox(height: sizeHelper.rH(1)),
               Text(
                 this.value,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: sizeHelper.rW(4.8),
-                ),
+                style: context.textTheme.bodyText2,
               ),
             ],
           )

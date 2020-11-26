@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/custom_check_box_group.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditLookupScreen extends StatefulWidget {
   @override

@@ -1,20 +1,30 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_hobbies_screen.dart';
+library edit_profile_screen;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import 'sub_edit_screen/edit_age_screen.dart';
-import 'sub_edit_screen/edit_drink_screen.dart';
-import 'sub_edit_screen/edit_gender_screen.dart';
-import 'sub_edit_screen/edit_height_screen.dart';
-import 'sub_edit_screen/edit_location_screen.dart';
-import 'sub_edit_screen/edit_lookup_screen.dart';
-import 'sub_edit_screen/edit_marriage_screen.dart';
-import 'sub_edit_screen/edit_religion_screen.dart';
-import 'sub_edit_screen/edit_smoke_screen.dart';
-import 'sub_edit_screen/edit_text_screen.dart';
-import 'widgets/row_edit_info.dart';
+import '../../../../base/base.dart';
+
+part 'sub_edit_screen/edit_age_screen.dart';
+part 'sub_edit_screen/edit_drink_screen.dart';
+part 'sub_edit_screen/edit_gender_screen.dart';
+part 'sub_edit_screen/edit_height_screen.dart';
+part 'sub_edit_screen/edit_hobbies_screen.dart';
+part 'sub_edit_screen/edit_location_screen.dart';
+part 'sub_edit_screen/edit_lookup_screen.dart';
+part 'sub_edit_screen/edit_marriage_screen.dart';
+part 'sub_edit_screen/edit_religion_screen.dart';
+part 'sub_edit_screen/edit_smoke_screen.dart';
+part 'sub_edit_screen/edit_text_screen.dart';
+part 'widgets/custom_check_box_group.dart';
+part 'widgets/custom_item_choice.dart';
+part 'widgets/custom_radio_button_group.dart';
+part 'widgets/multi_select_hobby.dart';
+part 'widgets/multiselect_dialog_hobby.dart';
+part 'widgets/row_edit_info.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -50,30 +60,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     List<Widget> children = new List<Widget>();
     children.add(Text(
       title,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: sizeHelper.rW(6),
-      ),
+      style: context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
     ));
-    children.add(SizedBox(
-      height: 10.0,
-    ));
+    children.add(const SizedBox(height: 10.0));
     for (var widget in listWidgetItems) {
       children.add(widget);
-      children.add(SizedBox(
-        height: sizeHelper.rW(4),
-      ));
+      children.add(const SizedBox(height: 10));
     }
     children.add(Divider(
       thickness: 1.0,
       indent: 0,
       endIndent: 0,
       height: 30.0,
-      color: Colors.black12,
+      color: context.colorScheme.onSurface,
     ));
-    children.add(SizedBox(
-      height: 10.0,
-    ));
+    children.add(const SizedBox(height: 10.0));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
@@ -91,10 +92,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => EditTextScreen(
-                      title: "Tên",
-                      onSave: (value) {},
-                    )))
+              builder: (context) => EditTextScreen(
+                title: "Tên",
+                onSave: (value) {},
+              ),
+            ))
       },
     ));
 
@@ -341,20 +343,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = new SizeHelper(context);
 
-    return Scaffold(
+    return PrimaryScaffold(
       appBar: AppBar(
         title: Text(
           "Chỉnh sửa hồ sơ hẹn hò",
-          style: TextStyle(color: Colors.black),
+          style: context.textTheme.subtitle2,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: context.colorScheme.background,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            RouterService.pop(context);
           },
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black, // add custom icons also
+            color: context.colorScheme.onBackground,
           ),
         ),
       ),
@@ -369,14 +371,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: [
                   Text(
                     "Giới thiệu bản thân",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: sizeHelper.rW(6),
-                    ),
+                    style: context.textTheme.headline6
+                        .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: sizeHelper.rW(2),
-                  ),
+                  const SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: sizeHelper.rW(0.5)),
                     child: TextFormField(
@@ -386,35 +384,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       keyboardType: TextInputType.multiline,
                       minLines: 1,
                       maxLines: 5,
-                      style: TextStyle(
-                        fontSize: sizeHelper.rW(5),
-                        color: Colors.black,
-                      ),
+                      style: context.textTheme.bodyText1,
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText:
-                              "Hãy mô tả bản thân bạn bằng vài từ hoặc câu...",
-                          hintStyle: TextStyle(
-                              color: Colors.black45,
-                              fontSize: sizeHelper.rW(5))),
+                        border: InputBorder.none,
+                        hintText:
+                            "Hãy mô tả bản thân bạn bằng vài từ hoặc câu...",
+                        hintStyle: context.textTheme.bodyText1
+                            .copyWith(color: context.colorScheme.onSurface),
+                      ),
                     ),
                   ),
                   if (this.bioLenght != null)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("$bioLenght/500",
-                            style: TextStyle(
-                                fontSize: sizeHelper.rW(5),
-                                color: Colors.black54)),
+                        Text(
+                          "$bioLenght/500",
+                          style: context.textTheme.caption,
+                        ),
                         InkWell(
                           onTap: () => {},
                           child: Text(
-                            "Lưu",
-                            style: TextStyle(
+                            Strings.button.save,
+                            style: context.textTheme.bodyText1.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: Colors.purpleAccent,
-                              fontSize: sizeHelper.rW(5),
+                              color: context.colorScheme.primary,
                             ),
                           ),
                         )
@@ -427,11 +421,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 indent: 0,
                 endIndent: 0,
                 height: 10.0,
-                color: Colors.black12,
+                color: context.colorScheme.onSurface,
               ),
-              SizedBox(
-                height: 10.0,
-              ),
+              const SizedBox(height: 10.0),
               buildBasicInfo(sizeHelper),
               buildJobAndEducation(sizeHelper),
               buildLifeStyle(sizeHelper),
