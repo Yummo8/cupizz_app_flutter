@@ -2,10 +2,6 @@ library app;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cupizz_app/src/screens/main/main_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/chat/chat_page.dart';
-import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
-import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'base/base.dart';
 import 'screens/auth/index.dart';
 import 'screens/main/components/main_screen.controller.dart';
+import 'screens/main/main_screen.dart';
+import 'screens/main/pages/chat/chat_page.dart';
+import 'screens/main/pages/friend/friend_page.dart';
 import 'screens/main/pages/profile/edit_profile_screen.dart';
+import 'screens/main/pages/profile/profile_screen.dart';
+import 'screens/messages/messages_screen.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
 
@@ -48,6 +49,22 @@ Momentum momentum({bool isTesting = false}) {
         MainScreen(),
         MessagesScreen(),
         RegisterScreen(),
+        ProfileScreen(),
+        ...[
+          EditAgeScreen(),
+          EditDrinkScreen(),
+          EditGenderScreen(),
+          EditHeightScreen(),
+          EditHobbiesScreen(),
+          EditLocationScreen(),
+          EditLookupScreen(),
+          EditMarriageScreen(),
+          EditPicturesScreen(),
+          EditReligionScreen(),
+          EditSmokeScreen(),
+          EditSmokeScreen(),
+          EditTextScreen(),
+        ]
       ]),
       StorageService(isTesting: isTesting),
       SystemService(),

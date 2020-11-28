@@ -9,21 +9,8 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Đang tìm kiếm',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: 'Đang tìm kiếm'),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -32,10 +19,7 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
             children: [
               Text(
                 "Bạn mong muốn điều gì? Hãy chọn tất cả đáp án phù hợp.",
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                style: context.textTheme.bodyText1,
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
@@ -63,10 +47,7 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

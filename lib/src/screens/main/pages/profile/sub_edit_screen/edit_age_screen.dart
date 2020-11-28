@@ -26,22 +26,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
     SizeHelper sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: AppBar(
-        backgroundColor: context.colorScheme.background,
-        title: Text(
-          'Ngày sinh',
-          style: context.textTheme.bodyText1,
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.colorScheme.onBackground,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: BackAppBar(title: Strings.common.birthday),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -60,10 +45,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: context.textTheme.bodyText2,
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

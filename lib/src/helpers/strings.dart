@@ -20,10 +20,13 @@ class _Common {
   final distance = 'Khoảng cách';
   final age = 'Tuổi';
   final height = 'Chiều cao';
+  final gender = 'Giới tính';
   final man = 'Nam';
   final woman = 'Nữ';
   final other = 'Khác';
   final image = 'Hình ảnh';
+  final showOnYourProfile = 'Hiển thị trên hồ sơ của bạn';
+  final birthday = 'Ngày sinh';
 }
 
 class _Error {

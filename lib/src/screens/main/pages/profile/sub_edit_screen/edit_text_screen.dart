@@ -1,36 +1,42 @@
 part of '../edit_profile_screen.dart';
 
-class EditTextScreen extends StatefulWidget {
+class EditTextScreenParams extends RouterParam {
   final ValueChanged<String> onSave;
   final String title;
   final String value;
 
-  const EditTextScreen(
-      {Key key, @required this.title, @required this.onSave, this.value})
-      : super(key: key);
+  EditTextScreenParams({this.onSave, this.title, this.value});
+}
 
+class EditTextScreen extends StatefulWidget {
   @override
   _EditTextScreenState createState() => _EditTextScreenState();
 }
 
 class _EditTextScreenState extends State<EditTextScreen> {
   final TextEditingController _textController = TextEditingController();
-  bool isEdit;
+  bool isEdit = false;
   String value;
+  EditTextScreenParams params;
 
   @override
   void initState() {
     super.initState();
-    _textController.text = widget.value != null ? widget.value : '';
-    _textController.addListener(_textChange);
-    isEdit = false;
-    value = widget.value;
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      params = RouterService.getParam<EditTextScreenParams>(context);
+      _textController.text = params?.value != null ? params.value : '';
+      _textController.addListener(_textChange);
+      isEdit = false;
+      value = params?.value;
+      setState(() {});
+    });
   }
 
   void _textChange() {
     if (_textController.text.isExistAndNotEmpty) {
       setState(() {
-        isEdit = _textController.text != widget.value;
+        isEdit = _textController.text != params?.value;
       });
     }
   }
@@ -86,7 +92,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
                       ),
                       FlatButton(
                         onPressed: () {
-                          widget.onSave(_textController.text);
+                          params?.onSave(_textController.text);
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
@@ -114,45 +120,16 @@ class _EditTextScreenState extends State<EditTextScreen> {
     SizeHelper sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: AppBar(
-        backgroundColor: context.colorScheme.background,
-        title: Text(
-          widget.title,
-          style: context.textTheme.bodyText1,
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.colorScheme.onBackground,
-          ),
-          onPressed: () {
-            if (isEdit) {
-              _settingModalBottomSheet(context);
-            } else {
-              Navigator.pop(context);
-            }
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: !isEdit
-                ? null
-                : () {
-                    widget.onSave(_textController.text);
-                    setState(() {
-                      isEdit = false;
-                      value = _textController.text;
-                    });
-                  },
-            child: Text(
-              Strings.button.save,
-              style: context.textTheme.button,
-            ),
-          ),
-          SizedBox(
-            width: sizeHelper.rW(8),
-          ),
-        ],
+      appBar: BackAppBar(
+        title: params?.title ?? '',
+        onBackPressed: () {
+          if (isEdit) {
+            _settingModalBottomSheet(context);
+          } else {
+            RouterService.pop(context);
+          }
+        },
+        actions: [SaveButton()],
       ),
       body: Container(
         child: Padding(

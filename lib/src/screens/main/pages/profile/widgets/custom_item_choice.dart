@@ -41,14 +41,14 @@ class _CustomItemChoiceState extends State<CustomItemChoice> {
             ? _theme.primaryColor.withOpacity(0.1)
             : widget.selectedBackgroundColor)
         : (widget.notSelectedBackgroundColor == null
-            ? Colors.grey[200]
+            ? context.colorScheme.onBackground
             : widget.notSelectedBackgroundColor);
     Color textColor = widget.isSelected
         ? (widget.selectedTextColor == null
             ? _theme.primaryColor
             : widget.selectedTextColor)
         : (widget.notSelectedTextColor == null
-            ? Colors.black
+            ? context.colorScheme.background
             : widget.notSelectedTextColor);
     return FlatButton(
       onPressed: () {

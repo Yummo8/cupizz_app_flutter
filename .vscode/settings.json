@@ -1,5 +1,9 @@
 {
     "cSpell.words": [
         "cupizz"
-    ]
+    ],
+    "files.watcherExclude": {
+        "**/.dart_tool/**": true,
+        "**/build/**": true
+    }
 }

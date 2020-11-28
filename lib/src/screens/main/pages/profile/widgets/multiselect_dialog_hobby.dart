@@ -103,7 +103,7 @@ class _MultiSelectDialogHobbyState<V> extends State<MultiSelectDialogHobby<V>> {
         children: [
           Icon(
             item.icon,
-            color: Colors.black,
+            color: context.colorScheme.onBackground,
           ),
           SizedBox(
             width: 15.0,

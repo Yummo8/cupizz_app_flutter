@@ -10,21 +10,8 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Hút thuốc',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: Strings.common.gender),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -33,23 +20,13 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
             children: [
               RadioButtonGroup(
                 spacing: 1.0,
-                buttonLables: [
-                  'Nam',
-                  'Nữ',
-                ],
-                buttonValues: [
-                  'Nam',
-                  'Nữ',
-                ],
+                buttonLables:
+                    Gender.getAll().map((e) => e.displayValue).toList(),
+                buttonValues: Gender.getAll().map((e) => e.rawValue).toList(),
                 radioButtonValue: (value) => print(value),
               ),
-              SizedBox(
-                height: sizeHelper.rW(5),
-              ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              SizedBox(height: sizeHelper.rW(5)),
+              ShowOnProfileText(),
             ],
           ),
         ),

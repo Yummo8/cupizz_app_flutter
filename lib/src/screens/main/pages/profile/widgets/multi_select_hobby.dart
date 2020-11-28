@@ -58,7 +58,7 @@ class MultiSelectHobby extends FormField<dynamic> {
           // ignore: deprecated_member_use
           autovalidate: autovalidate,
           builder: (FormFieldState<dynamic> state) {
-            List<Widget> _buildSelectedOptions(state) {
+            List<Widget> _buildSelectedOptions(FormFieldState<dynamic> state) {
               List<Widget> selectedOptions = [];
 
               if (state.value != null) {
@@ -70,10 +70,12 @@ class MultiSelectHobby extends FormField<dynamic> {
                     padding: EdgeInsets.symmetric(horizontal: 5.0),
                     labelStyle: chipLabelStyle,
                     backgroundColor: chipBackGroundColor,
-                    avatar: Icon(existingItem.icon, color: Colors.white),
+                    avatar: Icon(existingItem.icon,
+                        color: state.context.colorScheme.onPrimary),
                     label: Text(
                       existingItem.label,
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(color: state.context.colorScheme.onPrimary),
                     ),
                   ));
                 });
@@ -138,16 +140,13 @@ class MultiSelectHobby extends FormField<dynamic> {
                                   padding: EdgeInsets.only(top: 5, right: 5),
                                   child: Text(
                                     ' *',
-                                    style: TextStyle(
-                                      color: Colors.red.shade700,
-                                      fontSize: 17.0,
-                                    ),
+                                    style: state.context.textTheme.bodyText1,
                                   ),
                                 )
                               : Container(),
                           Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.black87,
+                            color: state.context.colorScheme.onBackground,
                             size: 25.0,
                           ),
                         ],

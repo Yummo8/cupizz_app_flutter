@@ -45,7 +45,6 @@ class _RadioButtonGroupState<T> extends State<RadioButtonGroup> {
           (item, index) => CustomItemChoice(
             item.lable,
             onChange: () {
-              print(widget.radioButtonValue);
               widget.radioButtonValue(sampleData[index].value);
 
               setState(() {

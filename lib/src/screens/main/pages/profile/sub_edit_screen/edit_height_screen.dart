@@ -14,21 +14,8 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Chiều cao',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: Strings.common.height),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -37,7 +24,7 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
             children: [
               DropdownButton(
                 isExpanded: true,
-                hint: new Text("Chọn chiều cao"),
+                hint: Text("Chọn chiều cao"),
                 value: selected,
                 onChanged: (String newValue) {
                   setState(() {
@@ -45,36 +32,17 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
                   });
                 },
                 items: elements.map((String value) {
-                  return new DropdownMenuItem<String>(
+                  return DropdownMenuItem<String>(
                     value: value,
-                    child: new Text(
+                    child: Text(
                       value,
-                      style: new TextStyle(color: Colors.black),
+                      style: context.textTheme.bodyText2,
                     ),
                   );
                 }).toList(),
               ),
-              // DirectSelect(
-              //   itemExtent: 35.0,
-              //   selectedIndex: selectedIndex,
-              //   child: MySelectionItem(
-              //     isForList: false,
-              //     title: elements[selectedIndex],
-              //   ),
-              //   onSelectedItemChanged: (index) {
-              //     setState(() {
-              //       selectedIndex = index;
-              //     });
-              //   },
-              //   items: _buildItems(),
-              // ),
-              SizedBox(
-                height: sizeHelper.rW(5),
-              ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              SizedBox(height: sizeHelper.rW(5)),
+              ShowOnProfileText(),
             ],
           ),
         ),

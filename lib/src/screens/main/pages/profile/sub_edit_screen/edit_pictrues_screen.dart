@@ -1,6 +1,4 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../profile_screen.dart';
 
 class EditPicturesScreen extends StatefulWidget {
   @override
@@ -80,53 +78,22 @@ class _EditPicturesScreenState extends State<EditPicturesScreen> {
   @override
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Ảnh',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-        actions: [
-          InkWell(
-            onTap: () {},
-            child: Center(
-              child: Text(
-                "Lưu",
-                style: TextStyle(
-                    color: isEdit ? _theme.primaryColor : Colors.black87,
-                    fontSize: 18.0),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: sizeHelper.rW(8),
-          ),
-        ],
+    return PrimaryScaffold(
+      appBar: BackAppBar(
+        title: 'Ảnh',
+        actions: [SaveButton()],
       ),
       body: Container(
         padding: EdgeInsets.all(sizeHelper.rW(3)),
         child: Column(
           children: [
-            SizedBox(
-              height: sizeHelper.rW(5),
-            ),
+            SizedBox(height: sizeHelper.rW(5)),
             Text(
               "Kéo rồi thả ảnh để thay đổi thứ tự trên hồ sơ của bạn",
-              style: TextStyle(color: Colors.black54, fontSize: 18.0),
+              style: context.textTheme.bodyText1,
             ),
-            SizedBox(
-              height: sizeHelper.rW(5),
-            ),
+            SizedBox(height: sizeHelper.rW(5)),
             // Expanded(
             //   child: ReorderableListView(
             //     children: _list

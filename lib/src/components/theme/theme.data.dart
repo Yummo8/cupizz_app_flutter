@@ -1,6 +1,5 @@
 part of '../index.dart';
 
-// TODO change color onSurface and surface for bright and dark theme
 ThemeData _themeData(
   Color primary,
   Color secondary, {

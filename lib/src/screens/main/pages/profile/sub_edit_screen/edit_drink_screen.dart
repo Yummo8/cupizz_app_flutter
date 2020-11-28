@@ -10,21 +10,8 @@ class _EditDrinkScreenState extends State<EditDrinkScreen> {
   Widget build(BuildContext context) {
     SizeHelper sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Rượu bia',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: 'Rượu bia'),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -49,13 +36,8 @@ class _EditDrinkScreenState extends State<EditDrinkScreen> {
                   print(value);
                 },
               ),
-              SizedBox(
-                height: sizeHelper.rW(5),
-              ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              SizedBox(height: sizeHelper.rW(5)),
+              ShowOnProfileText(),
             ],
           ),
         ),

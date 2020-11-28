@@ -71,21 +71,8 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     final ThemeData _theme = Theme.of(context);
 
     return PrimaryScaffold(
-      appBar: AppBar(
-        backgroundColor: context.colorScheme.background,
-        title: Text(
-          'Vị trí hẹn hò',
-          style: context.textTheme.bodyText1,
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.colorScheme.onBackground,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+      appBar: BackAppBar(
+        title: 'Vị trí hẹn hò',
         actions: [
           InkWell(
             onTap: () {},
@@ -162,10 +149,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: context.textTheme.bodyText2,
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

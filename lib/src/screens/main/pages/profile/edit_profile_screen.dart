@@ -25,6 +25,7 @@ part 'widgets/custom_radio_button_group.dart';
 part 'widgets/multi_select_hobby.dart';
 part 'widgets/multiselect_dialog_hobby.dart';
 part 'widgets/row_edit_info.dart';
+part 'widgets/show_on_profile_text.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -88,35 +89,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.account_circle_outlined,
       title: "Tên",
       value: "Thăng",
-      onClick: () => {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => EditTextScreen(
-                title: "Tên",
-                onSave: (value) {},
-              ),
-            ))
+      onClick: () {
+        RouterService.goto(context, EditTextScreen,
+            params: EditTextScreenParams(
+              title: "Tên",
+              onSave: (value) {},
+            ));
       },
     ));
 
     listWidgetItems.add(RowEditInfo(
-      iconData: Icons.info,
-      title: "Độ tuổi",
-      value: "22",
-      onClick: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EditAgeScreen()))
-      },
-    ));
+        iconData: Icons.info,
+        title: "Độ tuổi",
+        value: "22",
+        onClick: () {
+          RouterService.goto(context, EditAgeScreen);
+        }));
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.location_on_rounded,
       title: "Vị trí hẹn hò",
       value: "Đang ở Thành phố Hồ Chí Minh",
-      onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditLocationScreen()))
+      onClick: () {
+        RouterService.goto(context, EditLocationScreen);
       },
     ));
 
@@ -124,9 +119,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: MdiIcons.human,
       title: "Giới tính",
       value: "Nam",
-      onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditGenderScreen()))
+      onClick: () {
+        RouterService.goto(context, EditGenderScreen);
       },
     ));
 
@@ -134,9 +128,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.account_circle_outlined,
       title: "Đang tìm kiếm",
       value: "-",
-      onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditLookupScreen()))
+      onClick: () {
+        RouterService.goto(context, EditLookupScreen);
       },
     ));
 
@@ -144,9 +137,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.height,
       title: "Chiều cao",
       value: "-",
-      onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditHeightScreen()))
+      onClick: () {
+        RouterService.goto(context, EditHeightScreen);
       },
     ));
 
@@ -167,14 +159,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.work,
       title: "Chức danh",
       value: "-",
-      onClick: () => {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EditTextScreen(
-                      title: "Chức danh",
-                      onSave: (value) {},
-                    )))
+      onClick: () {
+        RouterService.goto(context, EditTextScreen,
+            params: EditTextScreenParams(
+              title: "Chức danh",
+              onSave: (value) {},
+            ));
       },
     ));
 
@@ -182,16 +172,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.work,
       title: "Công ty",
       value: "-",
-      onClick: () => {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditTextScreen(
+      onClick: () {
+        RouterService.goto(context, EditTextScreen,
+            params: EditTextScreenParams(
               title: "Bạn đang làm việc ở đâu",
               onSave: (value) {},
-            ),
-          ),
-        )
+            ));
       },
     ));
 
@@ -199,14 +185,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.school,
       title: "Trường trung học",
       value: "-",
-      onClick: () => {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EditTextScreen(
-                      title: "Trường trung học",
-                      onSave: (value) {},
-                    )))
+      onClick: () {
+        RouterService.goto(context, EditTextScreen,
+            params: EditTextScreenParams(
+              title: "Trường trung học",
+              onSave: (value) {},
+            ));
       },
     ));
 
@@ -214,16 +198,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.school,
       title: "Trường đại học cao/cao đẳng",
       value: "-",
-      onClick: () => {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditTextScreen(
+      onClick: () {
+        RouterService.goto(context, EditTextScreen,
+            params: EditTextScreenParams(
               title: "Trường đại học cao/cao đẳng",
               onSave: (value) {},
-            ),
-          ),
-        )
+            ));
       },
     ));
 
@@ -231,16 +211,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.school,
       title: "Trình độ học vấn",
       value: "-",
-      onClick: () => {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditTextScreen(
+      onClick: () {
+        RouterService.goto(context, EditTextScreen,
+            params: EditTextScreenParams(
               title: "Trình độ học vấn",
               onSave: (value) {},
-            ),
-          ),
-        )
+            ));
       },
     ));
     return buildWrapperRowEditInfo(
@@ -253,9 +229,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.family_restroom,
       title: "Con bạn",
       value: "Chưa có con",
-      onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditMarriageScreen()))
+      onClick: () {
+        RouterService.goto(context, EditMarriageScreen);
       },
     ));
 
@@ -263,9 +238,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.smoking_rooms,
       title: "Hút thuốc",
       value: "Thỉnh thoảng",
-      onClick: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EditSmokeScreen()))
+      onClick: () {
+        RouterService.goto(context, EditSmokeScreen);
       },
     ));
 
@@ -273,9 +247,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.local_bar,
       title: "Uống rượu",
       value: "Thỉnh thoảng",
-      onClick: () => {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EditDrinkScreen()))
+      onClick: () {
+        RouterService.goto(context, EditDrinkScreen);
       },
     ));
     return buildWrapperRowEditInfo(
@@ -288,9 +261,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       iconData: Icons.self_improvement,
       title: "Quan điểm tôn giáo",
       value: "khác",
-      onClick: () => {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditReligionScreen()))
+      onClick: () {
+        RouterService.goto(context, EditReligionScreen);
       },
     ));
 
@@ -300,37 +272,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Widget buildFavorites(SizeHelper sizeHelper) {
     List<Widget> listWidgetItems = new List<Widget>();
-    listWidgetItems.add(InkWell(
-      onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EditHobbiesScreen()));
+    listWidgetItems.add(CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: () {
+        RouterService.goto(context, EditHobbiesScreen);
       },
       child: Container(
-        width: sizeHelper.rW(45),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50.0),
-          color: Colors.grey[300],
+          color: context.colorScheme.onSurface,
         ),
-        child: Padding(
-          padding: EdgeInsets.all(sizeHelper.rW(2)),
-          child: Wrap(
-            children: [
-              Icon(
-                Icons.search,
-                size: sizeHelper.rW(6.0),
-              ),
-              SizedBox(
-                height: sizeHelper.rW(3),
-              ),
-              Text(
-                "Thêm sở thích",
-                style: TextStyle(
-                  fontSize: sizeHelper.rW(5.0),
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ],
-          ),
+        padding: EdgeInsets.all(sizeHelper.rW(2)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.search,
+              size: sizeHelper.rW(6.0),
+              color: context.colorScheme.background,
+            ),
+            SizedBox(height: sizeHelper.rW(3)),
+            Text("Thêm sở thích",
+                style: context.textTheme.subtitle1.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.colorScheme.background,
+                ))
+          ],
         ),
       ),
     ));
@@ -344,22 +311,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     SizeHelper sizeHelper = new SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: AppBar(
-        title: Text(
-          "Chỉnh sửa hồ sơ hẹn hò",
-          style: context.textTheme.subtitle2,
-        ),
-        backgroundColor: context.colorScheme.background,
-        leading: IconButton(
-          onPressed: () {
-            RouterService.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.colorScheme.onBackground,
-          ),
-        ),
-      ),
+      appBar: BackAppBar(title: "Chỉnh sửa hồ sơ hẹn hò"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),

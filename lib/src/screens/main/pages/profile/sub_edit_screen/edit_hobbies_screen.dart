@@ -34,36 +34,10 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
     final ThemeData _theme = Theme.of(context);
     SizeHelper sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Sở thích và mối quan tâm',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-        actions: [
-          InkWell(
-            onTap: isEdit ? () {} : null,
-            child: Center(
-              child: Text(
-                "Lưu",
-                style: TextStyle(
-                    color: isEdit ? _theme.primaryColor : Colors.black54,
-                    fontSize: 18.0),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: sizeHelper.rW(8),
-          ),
-        ],
+    return PrimaryScaffold(
+      appBar: BackAppBar(
+        title: 'Sở thích và mối quan tâm',
+        actions: [SaveButton()],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -72,10 +46,10 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
             MultiSelectHobby(
               autovalidate: false,
               chipBackGroundColor: _theme.primaryColor,
-              chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-              dialogTextStyle: TextStyle(fontWeight: FontWeight.bold),
+              chipLabelStyle: context.textTheme.bodyText1,
+              dialogTextStyle: context.textTheme.bodyText1,
               checkBoxActiveColor: _theme.primaryColor,
-              checkBoxCheckColor: Colors.white,
+              checkBoxCheckColor: _theme.colorScheme.onPrimary,
               dialogShapeBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.0))),
               title: Text(

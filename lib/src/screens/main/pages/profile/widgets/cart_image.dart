@@ -1,6 +1,4 @@
-import 'package:cupizz_app/src/screens/main/pages/profile/sub_edit_screen/edit_pictrues_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../profile_screen.dart';
 
 class CartImage extends StatelessWidget {
   final String imageUrl;
@@ -16,12 +14,9 @@ class CartImage extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(top: 4.0, bottom: 10.0),
           height: 300.0,
+          width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.0),
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
@@ -31,6 +26,7 @@ class CartImage extends StatelessWidget {
               ),
             ],
           ),
+          child: CustomNetworkImage(imageUrl),
         ),
         Positioned(
           right: -10,
@@ -39,18 +35,13 @@ class CartImage extends StatelessWidget {
             elevation: 2.0,
             padding: EdgeInsets.all(10.0),
             shape: CircleBorder(),
-            fillColor: Colors.white,
+            fillColor: context.colorScheme.background,
             child: Icon(
               Icons.edit,
               color: _theme.primaryColor,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditPicturesScreen(),
-                ),
-              );
+              RouterService.goto(context, EditPicturesScreen);
             },
           ),
         )

@@ -6,8 +6,9 @@ import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../base/base.dart';
-import 'widgets/cart_image.dart';
 
+part 'sub_edit_screen/edit_pictrues_screen.dart';
+part 'widgets/cart_image.dart';
 part 'widgets/custom_clipper.dart';
 part 'widgets/row_info.dart';
 part 'widgets/stack_container.dart';
