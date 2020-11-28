@@ -1,7 +1,7 @@
 part of dash_chat;
 
 class AvatarContainer extends StatelessWidget {
-  final SimpleUser user;
+  final ChatUser user;
   final Function(SimpleUser user) onPress;
   final Function(SimpleUser user) onLongPress;
   final Widget Function(SimpleUser user) avatarBuilder;
@@ -28,7 +28,7 @@ class AvatarContainer extends StatelessWidget {
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
         child: avatarBuilder != null && user != null
             ? avatarBuilder(user)
-            : SizedBox(child: UserAvatar.fromSimpleUser(simpleUser: user)),
+            : SizedBox(child: UserAvatar.fromChatUser(simpleUser: user)),
       ),
     );
   }

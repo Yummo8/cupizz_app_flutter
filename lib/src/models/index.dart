@@ -21,9 +21,11 @@ part 'simple_user.dart';
 part 'social_provider.dart';
 part 'user.dart';
 part 'with_is_past_page_output.dart';
+part 'chat_user.dart';
 
 void objectMapping() {
   Mappable.factories = {
+    ChatUser: () => ChatUser(),
     Conversation: () => Conversation(),
     FileModel: () => FileModel(),
     FileType: (v) => FileType(rawValue: v),

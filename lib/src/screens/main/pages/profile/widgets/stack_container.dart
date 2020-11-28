@@ -83,7 +83,7 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                   borderRadius: BorderRadius.all(Radius.circular(90.0)),
                   border: Border.all(color: context.colorScheme.primary),
                 ),
-                child: UserAvatar.fromSimpleUser(
+                child: UserAvatar.fromChatUser(
                   simpleUser: user,
                   size: _AVATAR_MAX_SIZE -
                       (_AVATAR_MAX_SIZE - _AVATAR_MIN_SIZE) * scrollRate,

@@ -6,14 +6,14 @@ class Message extends BaseModel {
   DateTime _createdAt;
   DateTime _updatedAt;
   List<FileModel> _attachments;
-  SimpleUser _sender;
+  ChatUser _sender;
 
   Conversation get conversation => _conversation;
   String get message => _message;
   DateTime get createdAt => _createdAt;
   DateTime get updatedAt => _updatedAt;
   List<FileModel> get attachments => _attachments;
-  SimpleUser get sender => _sender;
+  ChatUser get sender => _sender;
 
   Message({
     String id,
@@ -22,7 +22,7 @@ class Message extends BaseModel {
     DateTime createdAt,
     DateTime updatedAt,
     List<FileModel> attachments,
-    SimpleUser sender,
+    ChatUser sender,
   })  : _conversation = conversation,
         _message = message,
         _createdAt = createdAt,
@@ -39,7 +39,7 @@ class Message extends BaseModel {
     map('createdAt', _createdAt, (v) => _createdAt = v, DateTransform());
     map('updatedAt', _updatedAt, (v) => _updatedAt = v, DateTransform());
     map<FileModel>('attachments', _attachments, (v) => _attachments = v);
-    map<SimpleUser>('sender', _sender, (v) => _sender = v);
+    map<ChatUser>('sender', _sender, (v) => _sender = v);
   }
 
   static String graphqlQuery({bool includeConversation = true}) => '''{ 
@@ -49,6 +49,6 @@ class Message extends BaseModel {
     createdAt 
     updatedAt 
     attachments ${FileModel.graphqlQuery} 
-    sender ${SimpleUser.graphqlQuery} 
+    sender ${ChatUser.graphqlQuery} 
   }''';
 }

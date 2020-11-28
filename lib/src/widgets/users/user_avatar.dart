@@ -14,9 +14,9 @@ class UserAvatar extends StatelessWidget {
     this.showOnline = true,
   }) : super(key: key);
 
-  factory UserAvatar.fromSimpleUser({
+  factory UserAvatar.fromChatUser({
     Key key,
-    @required SimpleUser simpleUser,
+    @required ChatUser simpleUser,
     double size = 50,
     bool showOnline = true,
   }) {

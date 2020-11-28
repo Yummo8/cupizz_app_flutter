@@ -1,7 +1,6 @@
 part of 'index.dart';
 
-class SimpleUser extends BaseModel {
-  String nickName;
+class SimpleUser extends ChatUser {
   int age;
   String introduction;
   Gender gender;
@@ -9,13 +8,15 @@ class SimpleUser extends BaseModel {
   String phoneNumber;
   String job;
   int height;
-  FileModel avatar;
   FileModel cover;
-  OnlineStatus onlineStatus;
-  DateTime lastOnline;
   FriendType friendType;
-
-  String get displayName => nickName;
+  String address;
+  EducationLevel educationLevel;
+  UsualType smoking;
+  UsualType drinking;
+  HaveKids yourKids;
+  LookingFor lookingFor;
+  Religious religious;
 
   List<HobbyWithIsSelect> _sameHobbies;
   List<HobbyWithIsSelect> getSameHobbies(BuildContext context) {
@@ -52,25 +53,37 @@ class SimpleUser extends BaseModel {
 
   SimpleUser({
     String id,
-    this.nickName,
+    String nickName,
     this.age,
     this.introduction,
-    this.avatar,
+    FileModel avatar,
     this.cover,
     this.hobbies,
     this.gender,
     this.phoneNumber,
     this.job,
     this.height,
-    this.onlineStatus,
-    this.lastOnline,
+    OnlineStatus onlineStatus,
+    DateTime lastOnline,
     this.friendType,
-  }) : super(id: id);
+    this.address,
+    this.educationLevel,
+    this.smoking,
+    this.drinking,
+    this.yourKids,
+    this.lookingFor,
+    this.religious,
+  }) : super(
+          id: id,
+          nickName: nickName,
+          avatar: avatar,
+          onlineStatus: onlineStatus,
+          lastOnline: lastOnline,
+        );
 
   @override
   void mapping(Mapper map) {
     super.mapping(map);
-    map('data.nickName', nickName, (v) => nickName = v);
     map('data.age', age, (v) => age = v);
     map('data.introduction', introduction, (v) => introduction = v);
     map('data.gender', gender, (v) => gender = v,
@@ -79,13 +92,22 @@ class SimpleUser extends BaseModel {
     map('data.phoneNumber', phoneNumber, (v) => phoneNumber = v);
     map('data.job', job, (v) => job = v);
     map('data.height', height, (v) => height = v);
-    map<FileModel>('data.avatar', avatar, (v) => avatar = v);
     map<FileModel>('data.cover', cover, (v) => cover = v);
-    map('data.onlineStatus', onlineStatus, (v) => onlineStatus = v,
-        EnumTransform<OnlineStatus, String>());
-    map('data.lastOnline', lastOnline, (v) => lastOnline = v, DateTransform());
     map('data.friendType.status', friendType, (v) => friendType = v,
         EnumTransform<FriendType, String>());
+    map('data.address', address, (v) => address = v);
+    map('data.educationLevel', educationLevel, (v) => educationLevel = v,
+        EnumTransform<EducationLevel, String>());
+    map('data.smoking', smoking, (v) => smoking = v,
+        EnumTransform<UsualType, String>());
+    map('data.drinking', drinking, (v) => drinking = v,
+        EnumTransform<UsualType, String>());
+    map('data.yourKids', yourKids, (v) => yourKids = v,
+        EnumTransform<HaveKids, String>());
+    map('data.lookingFor', lookingFor, (v) => lookingFor = v,
+        EnumTransform<LookingFor, String>());
+    map('data.religious', religious, (v) => religious = v,
+        EnumTransform<Religious, String>());
   }
 
   static String get graphqlQuery => '''
@@ -105,6 +127,13 @@ class SimpleUser extends BaseModel {
       friendType {status}
       onlineStatus
       lastOnline
+      address
+      educationLevel
+      smoking
+      drinking
+      yourKids
+      lookingFor
+      religious
     }
   }''';
 }

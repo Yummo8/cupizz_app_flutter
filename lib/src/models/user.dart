@@ -27,6 +27,13 @@ class User extends SimpleUser {
     OnlineStatus onlineStatus,
     String phoneNumber,
     FriendType friendType,
+    String address,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    LookingFor lookingFor,
+    Religious religious,
     this.birthday,
     this.minAgePrefer,
     this.maxAgePrefer,
@@ -51,6 +58,13 @@ class User extends SimpleUser {
           onlineStatus: onlineStatus,
           phoneNumber: phoneNumber,
           friendType: friendType,
+          address: address,
+          educationLevel: educationLevel,
+          smoking: smoking,
+          drinking: drinking,
+          yourKids: yourKids,
+          lookingFor: lookingFor,
+          religious: religious,
         );
 
   @override
@@ -86,6 +100,13 @@ class User extends SimpleUser {
       phoneNumber
       job
       height
+      address
+      educationLevel
+      smoking
+      drinking
+      yourKids
+      lookingFor
+      religious
       minAgePrefer
       maxAgePrefer
       minHeightPrefer

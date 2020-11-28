@@ -27,6 +27,7 @@ class _Common {
   final image = 'Hình ảnh';
   final showOnYourProfile = 'Hiển thị trên hồ sơ của bạn';
   final birthday = 'Ngày sinh';
+  final notDisclose = 'Không muốn tiết lộ';
 }
 
 class _Error {
