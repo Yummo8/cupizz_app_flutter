@@ -67,11 +67,11 @@ class CommonSortDelegate extends SortDelegate {
   }
 
   bool _isCamera(AssetPathEntity entity) {
-    return entity.name.toUpperCase() == "camera".toUpperCase();
+    return entity.name.toUpperCase() == 'camera'.toUpperCase();
   }
 
   bool _isScreenShot(AssetPathEntity entity) {
-    return entity.name.toUpperCase() == "screenshots".toUpperCase() ||
-        entity.name.toUpperCase() == "screenshot".toUpperCase();
+    return entity.name.toUpperCase() == 'screenshots'.toUpperCase() ||
+        entity.name.toUpperCase() == 'screenshot'.toUpperCase();
   }
 }

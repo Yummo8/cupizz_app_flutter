@@ -77,7 +77,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   /// 选中的数据
-  List<AssetEntity> _selectedList = [];
+  final List<AssetEntity> _selectedList = [];
 
   List<AssetEntity> get selectedList {
     if (changeProviderOnCheckChange) {
@@ -110,7 +110,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    int totalCount = assetProvider.current.assetCount ?? 0;
+    var totalCount = assetProvider.current.assetCount ?? 0;
     if (!widget.isPreview) {
       totalCount = assetProvider.current.assetCount;
     } else {
@@ -137,7 +137,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
             initialData: widget.initIndex,
             builder: (ctx, snap) {
               return Text(
-                "${snap.data + 1}/$totalCount",
+                '${snap.data + 1}/$totalCount',
                 style: TextStyle(
                   color: options.textColor,
                 ),
@@ -149,10 +149,10 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
               stream: pageStream,
               builder: (ctx, s) => FlatButton(
                 splashColor: Colors.transparent,
-                onPressed: selectedList.length == 0 ? null : sure,
+                onPressed: selectedList.isEmpty ? null : sure,
                 child: Text(
                   config.provider.getSureText(options, selectedList.length),
-                  style: selectedList.length == 0
+                  style: selectedList.isEmpty
                       ? textStyle.copyWith(color: options.disableColor)
                       : textStyle,
                 ),
@@ -279,7 +279,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   Future<void> _loadMore() async {
-    assetProvider.loadMore();
+    await assetProvider.loadMore();
   }
 
   Widget _buildLoadingWidget(AssetEntity entity) {

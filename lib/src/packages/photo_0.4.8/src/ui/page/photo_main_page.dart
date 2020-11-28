@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
 import '../../delegate/badge_delegate.dart';
 import '../../delegate/loading_delegate.dart';
 import '../../engine/lru_cache.dart';
@@ -66,7 +67,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     if (currentPath?.isAll == true) {
       return i18nProvider.getAllGalleryText(options);
     }
-    return currentPath?.name ?? "Chọn thư mục";
+    return currentPath?.name ?? 'Chọn thư mục';
   }
 
   GlobalKey scaffoldKey;
@@ -173,6 +174,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     return result;
   }
 
+  @override
   void sure() {
     widget.onClose?.call(selectedList);
   }
@@ -199,15 +201,14 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   void _refreshList() async {
     await Future.delayed(Duration.zero);
     if (!useAlbum) {
-      _refreshListFromWidget();
+      unawaited(_refreshListFromWidget());
       return;
     }
-
-    _refreshListFromGallery();
+    unawaited(_refreshListFromGallery());
   }
 
   Future<void> _refreshListFromWidget() async {
-    _onRefreshAssetPathList(widget.photoList);
+    unawaited(_onRefreshAssetPathList(widget.photoList));
   }
 
   Future<void> _refreshListFromGallery() async {
@@ -222,8 +223,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       default:
         pathList = await PhotoManager.getAssetPathList();
     }
-
-    _onRefreshAssetPathList(pathList);
+    unawaited(_onRefreshAssetPathList(pathList));
   }
 
   Future<void> _onRefreshAssetPathList(List<AssetPathEntity> pathList) async {
@@ -305,12 +305,12 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     );
   }
 
-  _loadMore() async {
+  void _loadMore() async {
     await assetProvider.loadMore();
     setState(() {});
   }
 
-  _buildMask(bool showMask) {
+  Widget _buildMask(bool showMask) {
     return IgnorePointer(
       child: AnimatedContainer(
         color: showMask ? Colors.black.withOpacity(0.5) : Colors.transparent,
@@ -515,17 +515,17 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       return;
     }
 
-    this.galleryPathList.clear();
-    this.galleryPathList.addAll(pathList);
+    galleryPathList.clear();
+    galleryPathList.addAll(pathList);
 
-    if (!this.galleryPathList.contains(this.currentPath)) {
+    if (!galleryPathList.contains(currentPath)) {
       // current path is deleted , 当前的相册被删除, 应该提示刷新
-      if (this.galleryPathList.length > 0) {
-        _onGalleryChange(this.galleryPathList[0]);
+      if (galleryPathList.isNotEmpty) {
+        _onGalleryChange(galleryPathList[0]);
       }
       return;
     }
     // Not deleted
-    _onGalleryChange(this.currentPath);
+    _onGalleryChange(currentPath);
   }
 }

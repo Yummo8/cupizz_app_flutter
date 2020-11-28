@@ -15,15 +15,14 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     super.initState();
     _checkPermission();
     _onLoading = false;
-    _currentAddress = "";
+    _currentAddress = '';
   }
 
-  _checkPermission() async {
-    LocationPermission checkPermission = await Geolocator.checkPermission();
+  void _checkPermission() async {
+    final checkPermission = await Geolocator.checkPermission();
     if (checkPermission == LocationPermission.denied ||
         checkPermission == LocationPermission.deniedForever) {
-      LocationPermission requestPermission =
-          await Geolocator.requestPermission();
+      final requestPermission = await Geolocator.requestPermission();
       if (requestPermission == LocationPermission.denied ||
           requestPermission == LocationPermission.deniedForever) {
         _getCurrentLocation();
@@ -33,7 +32,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     }
   }
 
-  _getCurrentLocation() {
+  void _getCurrentLocation() {
     setState(() {
       _onLoading = true;
     });
@@ -48,13 +47,13 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     });
   }
 
-  _getAddressFromLatLng() async {
+  void _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(
+      final p = await placemarkFromCoordinates(
           _currentPosition.latitude, _currentPosition.longitude);
-      Placemark place = p[0];
-      String address =
-          "${place.locality.isExistAndNotEmpty ? '${place.locality},' : place.locality} ${place.country}";
+      final place = p[0];
+      final address =
+          '${place.locality.isExistAndNotEmpty ? '${place.locality},' : place.locality} ${place.country}';
       print(address);
       setState(() {
         _currentAddress = address;
@@ -67,8 +66,8 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
+    final sizeHelper = SizeHelper(context);
+    final _theme = Theme.of(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(
@@ -78,7 +77,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
             onTap: () {},
             child: Center(
               child: Text(
-                "Lưu",
+                'Lưu',
                 style: TextStyle(color: _theme.primaryColor, fontSize: 15.0),
               ),
             ),
@@ -132,7 +131,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                       width: 4.0,
                     ),
                     Text(
-                      "Cập nhật vị trí hẹn hò",
+                      'Cập nhật vị trí hẹn hò',
                       style:
                           TextStyle(color: _theme.primaryColor, fontSize: 18.0),
                     ),
@@ -143,7 +142,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                 height: sizeHelper.rW(5),
               ),
               Text(
-                "Vị trí hẹn hò của bạn chỉ cập nhật khi bạn chọn thay đổi ở đây.",
+                'Vị trí hẹn hò của bạn chỉ cập nhật khi bạn chọn thay đổi ở đây.',
                 style: context.textTheme.subtitle1,
               ),
               SizedBox(

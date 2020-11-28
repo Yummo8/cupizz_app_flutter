@@ -392,7 +392,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
           await Momentum.controller<CurrentUserController>(context)
               .toggleGenderButton(gender);
         } catch (e) {
-          Fluttertoast.showToast(msg: e);
+          await Fluttertoast.showToast(msg: e);
         }
       });
 }
@@ -413,11 +413,11 @@ class _DrawerPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
+    var paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 2.0);
-    Path path = Path();
+    var path = Path();
     path.moveTo(size.width * 2, 0);
     path.lineTo(0, -50);
     path.quadraticBezierTo(

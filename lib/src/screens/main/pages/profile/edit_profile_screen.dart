@@ -49,16 +49,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _onBioChanged() {
     print(_bioController.text.length.toString());
-    if (!(_bioController.text.length == 0 && this.bioLenght == null)) {
+    if (!(_bioController.text.isEmpty && bioLenght == null)) {
       setState(() {
-        this.bioLenght = _bioController.text.length;
+        bioLenght = _bioController.text.length;
       });
     }
   }
 
   Widget buildWrapperRowEditInfo(
       String title, List<Widget> listWidgetItems, SizeHelper sizeHelper) {
-    List<Widget> children = new List<Widget>();
+    var children = <Widget>[];
     children.add(Text(
       title,
       style: context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
@@ -83,16 +83,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget buildBasicInfo(SizeHelper sizeHelper) {
-    List<Widget> listWidgetItems = new List<Widget>();
+    var listWidgetItems = <Widget>[];
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.account_circle_outlined,
-      title: "Tên",
-      value: "Thăng",
+      title: 'Tên',
+      value: 'Thăng',
       onClick: () {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
-              title: "Tên",
+              title: 'Tên',
               onSave: (value) {},
             ));
       },
@@ -100,16 +100,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
         iconData: Icons.info,
-        title: "Độ tuổi",
-        value: "22",
+        title: 'Độ tuổi',
+        value: '22',
         onClick: () {
           RouterService.goto(context, EditAgeScreen);
         }));
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.location_on_rounded,
-      title: "Vị trí hẹn hò",
-      value: "Đang ở Thành phố Hồ Chí Minh",
+      title: 'Vị trí hẹn hò',
+      value: 'Đang ở Thành phố Hồ Chí Minh',
       onClick: () {
         RouterService.goto(context, EditLocationScreen);
       },
@@ -117,8 +117,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: MdiIcons.human,
-      title: "Giới tính",
-      value: "Nam",
+      title: 'Giới tính',
+      value: 'Nam',
       onClick: () {
         RouterService.goto(context, EditGenderScreen);
       },
@@ -126,8 +126,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.account_circle_outlined,
-      title: "Đang tìm kiếm",
-      value: "-",
+      title: 'Đang tìm kiếm',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditLookupScreen);
       },
@@ -135,8 +135,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.height,
-      title: "Chiều cao",
-      value: "-",
+      title: 'Chiều cao',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditHeightScreen);
       },
@@ -144,25 +144,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.house,
-      title: "Quê quán",
-      value: "Bến Cát, Bình Dương, Viet Nam",
+      title: 'Quê quán',
+      value: 'Bến Cát, Bình Dương, Viet Nam',
     ));
 
     return buildWrapperRowEditInfo(
-        "Thông tin cơ bản của bạn", listWidgetItems, sizeHelper);
+        'Thông tin cơ bản của bạn', listWidgetItems, sizeHelper);
   }
 
   Widget buildJobAndEducation(SizeHelper sizeHelper) {
-    List<Widget> listWidgetItems = new List<Widget>();
+    var listWidgetItems = <Widget>[];
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.work,
-      title: "Chức danh",
-      value: "-",
+      title: 'Chức danh',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
-              title: "Chức danh",
+              title: 'Chức danh',
               onSave: (value) {},
             ));
       },
@@ -170,12 +170,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.work,
-      title: "Công ty",
-      value: "-",
+      title: 'Công ty',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
-              title: "Bạn đang làm việc ở đâu",
+              title: 'Bạn đang làm việc ở đâu',
               onSave: (value) {},
             ));
       },
@@ -183,12 +183,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.school,
-      title: "Trường trung học",
-      value: "-",
+      title: 'Trường trung học',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
-              title: "Trường trung học",
+              title: 'Trường trung học',
               onSave: (value) {},
             ));
       },
@@ -196,12 +196,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.school,
-      title: "Trường đại học cao/cao đẳng",
-      value: "-",
+      title: 'Trường đại học cao/cao đẳng',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
-              title: "Trường đại học cao/cao đẳng",
+              title: 'Trường đại học cao/cao đẳng',
               onSave: (value) {},
             ));
       },
@@ -209,26 +209,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.school,
-      title: "Trình độ học vấn",
-      value: "-",
+      title: 'Trình độ học vấn',
+      value: '-',
       onClick: () {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
-              title: "Trình độ học vấn",
+              title: 'Trình độ học vấn',
               onSave: (value) {},
             ));
       },
     ));
     return buildWrapperRowEditInfo(
-        "Công việc và học vấn của bạn", listWidgetItems, sizeHelper);
+        'Công việc và học vấn của bạn', listWidgetItems, sizeHelper);
   }
 
   Widget buildLifeStyle(SizeHelper sizeHelper) {
-    List<Widget> listWidgetItems = new List<Widget>();
+    var listWidgetItems = <Widget>[];
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.family_restroom,
-      title: "Con bạn",
-      value: "Chưa có con",
+      title: 'Con bạn',
+      value: 'Chưa có con',
       onClick: () {
         RouterService.goto(context, EditMarriageScreen);
       },
@@ -236,8 +236,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.smoking_rooms,
-      title: "Hút thuốc",
-      value: "Thỉnh thoảng",
+      title: 'Hút thuốc',
+      value: 'Thỉnh thoảng',
       onClick: () {
         RouterService.goto(context, EditSmokeScreen);
       },
@@ -245,33 +245,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.local_bar,
-      title: "Uống rượu",
-      value: "Thỉnh thoảng",
+      title: 'Uống rượu',
+      value: 'Thỉnh thoảng',
       onClick: () {
         RouterService.goto(context, EditDrinkScreen);
       },
     ));
     return buildWrapperRowEditInfo(
-        "Lối sống của bạn", listWidgetItems, sizeHelper);
+        'Lối sống của bạn', listWidgetItems, sizeHelper);
   }
 
   Widget buildReligion(SizeHelper sizeHelper) {
-    List<Widget> listWidgetItems = new List<Widget>();
+    var listWidgetItems = <Widget>[];
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.self_improvement,
-      title: "Quan điểm tôn giáo",
-      value: "khác",
+      title: 'Quan điểm tôn giáo',
+      value: 'khác',
       onClick: () {
         RouterService.goto(context, EditReligionScreen);
       },
     ));
 
     return buildWrapperRowEditInfo(
-        "Lối sống của bạn", listWidgetItems, sizeHelper);
+        'Lối sống của bạn', listWidgetItems, sizeHelper);
   }
 
   Widget buildFavorites(SizeHelper sizeHelper) {
-    List<Widget> listWidgetItems = new List<Widget>();
+    var listWidgetItems = <Widget>[];
     listWidgetItems.add(CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
@@ -292,7 +292,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               color: context.colorScheme.background,
             ),
             SizedBox(height: sizeHelper.rW(3)),
-            Text("Thêm sở thích",
+            Text('Thêm sở thích',
                 style: context.textTheme.subtitle1.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.background,
@@ -303,15 +303,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     ));
 
     return buildWrapperRowEditInfo(
-        "Sở thích của bạn", listWidgetItems, sizeHelper);
+        'Sở thích của bạn', listWidgetItems, sizeHelper);
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = new SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: "Chỉnh sửa hồ sơ hẹn hò"),
+      appBar: BackAppBar(title: 'Chỉnh sửa hồ sơ hẹn hò'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -322,7 +322,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Giới thiệu bản thân",
+                    'Giới thiệu bản thân',
                     style: context.textTheme.headline6
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
@@ -340,18 +340,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText:
-                            "Hãy mô tả bản thân bạn bằng vài từ hoặc câu...",
+                            'Hãy mô tả bản thân bạn bằng vài từ hoặc câu...',
                         hintStyle: context.textTheme.bodyText1
                             .copyWith(color: context.colorScheme.onSurface),
                       ),
                     ),
                   ),
-                  if (this.bioLenght != null)
+                  if (bioLenght != null)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "$bioLenght/500",
+                          '$bioLenght/500',
                           style: context.textTheme.caption,
                         ),
                         InkWell(

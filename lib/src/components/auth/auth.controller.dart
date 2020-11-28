@@ -6,9 +6,10 @@ class AuthController extends MomentumController<AuthModel> {
     return AuthModel(this);
   }
 
-  bootstrapAsync() async {
+  @override
+  Future<void> bootstrapAsync() async {
     if (!await isAuthenticated) {
-      gotoAuth();
+      await gotoAuth();
     }
   }
 
@@ -19,17 +20,17 @@ class AuthController extends MomentumController<AuthModel> {
     await getService<AuthService>().login(
         email, password, dependOn<CurrentUserController>().getCurrentUser);
 
-    getService<StorageService>().getUserId.then((value) {
-      getService<OneSignalService>().subscribe(value);
-    });
-
-    gotoHome();
+    await gotoHome();
+    final userId = await getService<StorageService>().getUserId;
+    if (userId.isExistAndNotEmpty) {
+      await getService<OneSignalService>().subscribe(userId);
+    }
   }
 
   Future<void> logout() async {
     await getService<AuthService>().logout();
-    getService<OneSignalService>().unSubscribe();
-    gotoAuth();
+    await getService<OneSignalService>().unSubscribe();
+    await gotoAuth();
   }
 
   Future<void> gotoHome() async {

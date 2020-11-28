@@ -66,7 +66,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
   Duration _pause;
 
-  List<Map<String, dynamic>> _texts = [];
+  final List<Map<String, dynamic>> _texts = [];
 
   int _index;
 
@@ -181,7 +181,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
   }
 
   void _nextAnimation() {
-    final bool isLast = _index == widget.text.length - 1;
+    final isLast = _index == widget.text.length - 1;
 
     _isCurrentlyPausing = false;
 
@@ -217,7 +217,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
   }
 
   void _setPause() {
-    final bool isLast = _index == widget.text.length - 1;
+    final isLast = _index == widget.text.length - 1;
 
     _isCurrentlyPausing = true;
     if (mounted) setState(() {});

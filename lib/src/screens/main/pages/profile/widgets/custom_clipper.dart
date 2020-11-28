@@ -2,18 +2,17 @@ part of '../profile_screen.dart';
 
 class BackgroudClipper extends CustomClipper<Path> {
   @override
-  getClip(Size size) {
-    var path = new Path();
+  Path getClip(Size size) {
+    var path = Path();
 
     var height = size.height * 0.8;
     path.lineTo(0, height);
 
-    var firstControlPoint = new Offset(size.width / 5, height);
-    var firstEndPoint = new Offset(size.width / 5 * 2, height + 20);
+    var firstControlPoint = Offset(size.width / 5, height);
+    var firstEndPoint = Offset(size.width / 5 * 2, height + 20);
 
-    var secondControlPoint =
-        new Offset(size.width - (size.width / 4), height + 60);
-    var secondEndPoint = new Offset(size.width, height + 10);
+    var secondControlPoint = Offset(size.width - (size.width / 4), height + 60);
+    var secondEndPoint = Offset(size.width, height + 10);
 
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);
@@ -34,19 +33,19 @@ class BackgroudClipper extends CustomClipper<Path> {
 
 class PinkOneClipper extends CustomClipper<Path> {
   @override
-  getClip(Size size) {
-    var path = new Path();
+  Path getClip(Size size) {
+    var path = Path();
 
     var height = size.height / 10 * 6;
 
     path.lineTo(0, height);
 
-    var firstControlPoint = new Offset(size.width / 5, height + 40);
-    var firstEndPoint = new Offset(size.width / 5 * 2, height + 60);
+    var firstControlPoint = Offset(size.width / 5, height + 40);
+    var firstEndPoint = Offset(size.width / 5 * 2, height + 60);
 
     var secondControlPoint =
-        new Offset(size.width - (size.width / 4), height + 100);
-    var secondEndPoint = new Offset(size.width, height + 40);
+        Offset(size.width - (size.width / 4), height + 100);
+    var secondEndPoint = Offset(size.width, height + 40);
 
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);
@@ -67,18 +66,17 @@ class PinkOneClipper extends CustomClipper<Path> {
 
 class PinkTwoClipper extends CustomClipper<Path> {
   @override
-  getClip(Size size) {
-    var path = new Path();
+  Path getClip(Size size) {
+    var path = Path();
 
     var height = size.height / 10 * 6;
     path.lineTo(0, height + 40);
 
-    var firstControlPoint = new Offset(size.width / 5, height + 80);
-    var firstEndPoint = new Offset(size.width / 5 * 2, height + 60);
+    var firstControlPoint = Offset(size.width / 5, height + 80);
+    var firstEndPoint = Offset(size.width / 5 * 2, height + 60);
 
-    var secondControlPoint =
-        new Offset(size.width - (size.width / 4), height + 20);
-    var secondEndPoint = new Offset(size.width, height - 40);
+    var secondControlPoint = Offset(size.width - (size.width / 4), height + 20);
+    var secondEndPoint = Offset(size.width, height - 40);
 
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);

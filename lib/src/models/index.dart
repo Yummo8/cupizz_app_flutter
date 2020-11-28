@@ -22,7 +22,7 @@ part 'social_provider.dart';
 part 'user.dart';
 part 'with_is_past_page_output.dart';
 
-objectMapping() {
+void objectMapping() {
   Mappable.factories = {
     Conversation: () => Conversation(),
     FileModel: () => FileModel(),

@@ -8,22 +8,23 @@ class EditAgeScreen extends StatefulWidget {
 class _EditAgeScreenState extends State<EditAgeScreen> {
   DateTime selectedDate = DateTime(1998, 04, 25);
 
-  _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+  void _selectDate(BuildContext context) async {
+    final picked = await showDatePicker(
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime.now().subtract(new Duration(days: 365 * 50)),
-      lastDate: DateTime.now().subtract(new Duration(days: 365 * 18)),
+      firstDate: DateTime.now().subtract(Duration(days: 365 * 50)),
+      lastDate: DateTime.now().subtract(Duration(days: 365 * 18)),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: Strings.common.birthday),

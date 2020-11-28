@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-typedef VoidCallback();
+typedef VoidCallback = void Function();
 
 /// When multiple calls are repeated, only the first time is valid.
 ///
@@ -46,7 +46,7 @@ class Throttle {
   }
 
   void dispose() {
-    this.onCall = null;
+    onCall = null;
     _stopTimer();
   }
 }

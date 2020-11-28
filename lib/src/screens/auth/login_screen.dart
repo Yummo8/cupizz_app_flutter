@@ -13,10 +13,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode emailFocus = FocusNode();
   final FocusNode passwordFocus = FocusNode();
   final FlareControls controls = FlareControls();
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     if (AppConfig.instance.isDev) {
       email.text = 'test12@gmail.com';
@@ -24,26 +24,26 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  _getDisposeController() {
+  void _getDisposeController() {
     email.clear();
     password.clear();
     emailFocus.unfocus();
     passwordFocus.unfocus();
   }
 
-  Future _onLogin() async {
+  Future<void> _onLogin() async {
     if (formKey.currentState.validate()) {
       final authCtl = Momentum.of<AuthController>(context);
       try {
         await authCtl.login(email.text, password.text);
       } catch (e) {
         debugPrint(e.toString());
-        Fluttertoast.showToast(msg: e.toString());
+        await Fluttertoast.showToast(msg: e.toString());
       }
     }
   }
 
-  _onGoToRegister() {
+  void _onGoToRegister() {
     _getDisposeController();
     Navigator.push(
       context,
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: EdgeInsets.only(),
                 height: size.height,
                 decoration: BoxDecoration(
-                  gradient: new LinearGradient(
+                  gradient: LinearGradient(
                     colors: [
                       context.colorScheme.primaryVariant.withOpacity(0.7),
                       context.colorScheme.primary,
@@ -192,11 +192,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       SocialButton(
-                        imageName: Assets.icons.google,
+                        imageName: Assets.i.icons.google,
                         margin: EdgeInsets.only(left: 30.0),
                       ),
                       SocialButton(
-                        imageName: Assets.icons.facebook,
+                        imageName: Assets.i.icons.facebook,
                         margin: EdgeInsets.only(right: 30.0),
                       ),
                     ],

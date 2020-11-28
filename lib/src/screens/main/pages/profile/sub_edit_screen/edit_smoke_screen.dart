@@ -8,7 +8,7 @@ class EditSmokeScreen extends StatefulWidget {
 class _EditSmokeScreenState extends State<EditSmokeScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Hút thuốc'),

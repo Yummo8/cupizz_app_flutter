@@ -1,12 +1,13 @@
 part of '../../object_mapper.dart';
 
 class DateUnit extends Enumerable<int> {
+  @override
   final int rawValue;
   const DateUnit({@required this.rawValue});
 
   //
-  static const seconds = const DateUnit(rawValue: 1000);
-  static const milliseconds = const DateUnit(rawValue: 1);
+  static const seconds = DateUnit(rawValue: 1000);
+  static const milliseconds = DateUnit(rawValue: 1);
 
   double addScale(double interval) {
     return interval * rawValue;

@@ -15,10 +15,10 @@ class QuickReplies {
   });
 
   QuickReplies.fromJson(Map<dynamic, dynamic> json) {
-    keepIt = json['keepIt'] != null ? json['keepIt'] : null;
+    keepIt = json['keepIt'];
 
     if (json['values'] != null) {
-      List<Reply> replies = List<Reply>();
+      final replies = <Reply>[];
 
       for (var i = 0; i < json['values'].length; i++) {
         replies.add(Reply.fromJson(json['values'][i]));
@@ -29,7 +29,7 @@ class QuickReplies {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
 
     data['keepIt'] = keepIt;
     data['values'] = values.map((e) => e.toJson()).toList();

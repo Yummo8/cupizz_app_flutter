@@ -8,7 +8,7 @@ class EditDrinkScreen extends StatefulWidget {
 class _EditDrinkScreenState extends State<EditDrinkScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Rượu bia'),

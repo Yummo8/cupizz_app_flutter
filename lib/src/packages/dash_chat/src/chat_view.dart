@@ -149,8 +149,7 @@ class DashChat extends StatefulWidget {
     this.messagePadding = const EdgeInsets.all(8.0),
     this.textBeforeImage = true,
     this.messageDecorationBuilder,
-  })  : this.scrollToBottomStyle =
-            scrollToBottomStyle ?? new ScrollToBottomStyle(),
+  })  : scrollToBottomStyle = scrollToBottomStyle ?? ScrollToBottomStyle(),
         super(key: key);
 
   String getVal() {
@@ -165,7 +164,7 @@ class DashChatState extends State<DashChat> {
   FocusNode inputFocusNode;
   TextEditingController textController;
   ScrollController scrollController;
-  String _text = "";
+  String _text = '';
   bool visible = false;
   GlobalKey inputKey = GlobalKey();
   double height = 48.0;
@@ -179,7 +178,7 @@ class DashChatState extends State<DashChat> {
       changeVisible(false);
     }
     setState(() {
-      this._text = text;
+      _text = text;
     });
   }
 
@@ -213,7 +212,7 @@ class DashChatState extends State<DashChat> {
   }
 
   void widgetBuilt(Duration d) {
-    double initPos = widget.inverted
+    final initPos = widget.inverted
         ? 0.0
         : scrollController.position.maxScrollExtent + 25.0;
 
@@ -225,7 +224,7 @@ class DashChatState extends State<DashChat> {
     )
         .whenComplete(() {
       _timer = Timer(Duration(milliseconds: 1000), () {
-        if (this.mounted) {
+        if (mounted) {
           setState(() {
             _initialLoad = false;
           });
@@ -234,7 +233,7 @@ class DashChatState extends State<DashChat> {
     });
 
     scrollController.addListener(() {
-      bool topReached = widget.inverted
+      final topReached = widget.inverted
           ? scrollController.offset >=
                   scrollController.position.maxScrollExtent &&
               !scrollController.position.outOfRange
@@ -269,8 +268,8 @@ class DashChatState extends State<DashChat> {
             ? MediaQuery.of(context).size.height
             : constraints.maxHeight;
         return Container(
-          height: widget.height != null ? widget.height : maxHeight,
-          width: widget.width != null ? widget.width : maxWidth,
+          height: widget.height ?? maxHeight,
+          width: widget.width ?? maxWidth,
           child: Stack(
             children: <Widget>[
               Column(
@@ -287,9 +286,8 @@ class DashChatState extends State<DashChat> {
                       onLoadEarlier: widget.onLoadEarlier,
                       defaultLoadCallback: changeDefaultLoadMore,
                       messageContainerPadding: widget.messageContainerPadding,
-                      scrollController: widget.scrollController != null
-                          ? widget.scrollController
-                          : scrollController,
+                      scrollController:
+                          widget.scrollController ?? scrollController,
                       user: widget.user,
                       messages: widget.messages,
                       showuserAvatar: widget.showUserAvatar,
@@ -336,10 +334,8 @@ class DashChatState extends State<DashChat> {
                         messageIdGenerator: widget.messageIdGenerator,
                         maxInputLength: widget.maxInputLength,
                         sendButtonBuilder: widget.sendButtonBuilder,
-                        text: widget.text != null ? widget.text : _text,
-                        onTextChange: widget.onTextChange != null
-                            ? widget.onTextChange
-                            : onTextChange,
+                        text: widget.text ?? _text,
+                        onTextChange: widget.onTextChange ?? onTextChange,
                         inputDisabled: widget.inputDisabled,
                         leading: widget.leading,
                         trailling: widget.trailing,
@@ -350,9 +346,8 @@ class DashChatState extends State<DashChat> {
                         inputCursorWidth: widget.inputCursorWidth,
                         showInputCursor: widget.showInputCursor,
                         alwaysShowSend: widget.alwaysShowSend,
-                        scrollController: widget.scrollController != null
-                            ? widget.scrollController
-                            : scrollController,
+                        scrollController:
+                            widget.scrollController ?? scrollController,
                         focusNode: inputFocusNode,
                         reverse: widget.inverted)
                 ],

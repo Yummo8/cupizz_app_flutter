@@ -12,6 +12,6 @@ abstract class Enumerable<T> implements RawRepresentable<T> {
     if (identical(this, other)) {
       return true;
     }
-    return other is RawRepresentable && this.rawValue == other.rawValue;
+    return other is RawRepresentable && rawValue == other.rawValue;
   }
 }

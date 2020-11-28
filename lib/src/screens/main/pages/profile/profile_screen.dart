@@ -22,8 +22,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ScrollController scrollController = ScrollController();
   final picker = ImagePicker();
 
+  @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
+    final _theme = Theme.of(context);
     return PrimaryScaffold(
       body: MomentumBuilder(
           controllers: [CurrentUserController],
@@ -54,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "${user?.displayName ?? ''},",
+                            '${user?.displayName ?? ''},',
                             style: context.textTheme.headline6.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -62,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(width: 8.0),
                           if (user?.age != null)
                             Text(
-                              "${user?.age} tuổi",
+                              '${user?.age} tuổi',
                               style: context.textTheme.subtitle1,
                             ),
                           IconButton(
@@ -80,77 +81,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.location_on_rounded,
-                        semanticLabel: "",
-                        title: "Đang ở Thành phố Hồ Chí Minh",
+                        semanticLabel: '',
+                        title: 'Đang ở Thành phố Hồ Chí Minh',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.favorite,
-                        semanticLabel: "",
+                        semanticLabel: '',
                         title:
-                            "Đang ở tìm mối quan hệ lâu dài, kiểu hẹn hò không ràng buộc",
+                            'Đang ở tìm mối quan hệ lâu dài, kiểu hẹn hò không ràng buộc',
                       ),
                       const SizedBox(height: 16.0),
                       if (user == null || user.height != null)
                         RowInfo(
                           iconData: Icons.height,
-                          semanticLabel: "",
-                          title: "${user?.height} cm",
+                          semanticLabel: '',
+                          title: '${user?.height} cm',
                         ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.work,
-                        semanticLabel: "",
-                        title: "LÀM VIỆC TẠI CTY TNHH Freetrend",
+                        semanticLabel: '',
+                        title: 'LÀM VIỆC TẠI CTY TNHH Freetrend',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.school,
-                        semanticLabel: "",
+                        semanticLabel: '',
                         title:
-                            "Trường đại học Công nghệ Thông tin - Đại học Quốc gia TP.HCM, THPT Bến Cát, Bến Cát, Bình Dương",
+                            'Trường đại học Công nghệ Thông tin - Đại học Quốc gia TP.HCM, THPT Bến Cát, Bến Cát, Bình Dương',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.school,
-                        semanticLabel: "",
-                        title: "Bằng đại cao đẳng/đại học",
+                        semanticLabel: '',
+                        title: 'Bằng đại cao đẳng/đại học',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.house,
-                        semanticLabel: "",
-                        title: "Quê quán Long Xuyên",
+                        semanticLabel: '',
+                        title: 'Quê quán Long Xuyên',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.family_restroom,
-                        semanticLabel: "",
-                        title: "Chưa có con",
+                        semanticLabel: '',
+                        title: 'Chưa có con',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.smoking_rooms,
-                        semanticLabel: "",
-                        title: "Thỉnh thoảng",
+                        semanticLabel: '',
+                        title: 'Thỉnh thoảng',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.local_bar,
-                        semanticLabel: "",
-                        title: "Thỉnh thoảng",
+                        semanticLabel: '',
+                        title: 'Thỉnh thoảng',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.self_improvement,
-                        semanticLabel: "",
-                        title: "Phật giáo",
+                        semanticLabel: '',
+                        title: 'Phật giáo',
                       ),
                       const SizedBox(height: 16.0),
                       RowInfo(
                         iconData: Icons.public,
-                        semanticLabel: "",
-                        title: "Tiếng việt",
+                        semanticLabel: '',
+                        title: 'Tiếng việt',
                       ),
                       Divider(
                         color: context.colorScheme.primary,
@@ -163,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => CartImage(
                           imageUrl:
-                              "https://64.media.tumblr.com/1a818212c49bc873a5cb8a687382122e/tumblr_pwnyyjtQ6M1w89qpgo1_1280.jpg",
+                              'https://64.media.tumblr.com/1a818212c49bc873a5cb8a687382122e/tumblr_pwnyyjtQ6M1w89qpgo1_1280.jpg',
                         ),
                         shrinkWrap: true,
                         itemCount: 6,
@@ -179,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: _theme.primaryColor,
                             ),
                             Text(
-                              "Thêm ảnh",
+                              'Thêm ảnh',
                               style: TextStyle(
                                   color: _theme.primaryColor,
                                   fontSize: 15.0,

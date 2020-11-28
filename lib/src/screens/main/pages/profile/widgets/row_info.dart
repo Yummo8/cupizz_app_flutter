@@ -22,17 +22,17 @@ class RowInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
-            this.iconData,
+            iconData,
             color: context.colorScheme.primary,
             size: 18.0,
-            semanticLabel: this.semanticLabel,
+            semanticLabel: semanticLabel,
           ),
           SizedBox(
             width: 20.0,
           ),
           Flexible(
             child: Text(
-              this.title,
+              title,
               style: context.textTheme.bodyText1,
             ),
           )

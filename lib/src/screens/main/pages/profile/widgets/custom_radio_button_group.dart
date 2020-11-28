@@ -21,14 +21,14 @@ class RadioButtonGroup extends StatefulWidget {
 }
 
 class _RadioButtonGroupState<T> extends State<RadioButtonGroup> {
-  List<RadioModel> sampleData = new List<RadioModel>();
+  List<RadioModel> sampleData = <RadioModel>[];
 
   @override
   void initState() {
     super.initState();
 
-    for (int i = 0; i < widget.buttonLables.length; i++) {
-      bool isSelected = false;
+    for (var i = 0; i < widget.buttonLables.length; i++) {
+      var isSelected = false;
 
       if (widget.defaultValue != null) {
         if (widget.defaultValue == widget.buttonValues[i]) isSelected = true;

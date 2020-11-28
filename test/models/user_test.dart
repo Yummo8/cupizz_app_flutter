@@ -3,52 +3,52 @@ import 'package:cupizz_app/src/models/index.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final Map<String, dynamic> json = {
-  "id": "0297e451-e1d0-4cb6-b4f4-26aa78d9e20e",
-  "data": {
-    "nickName": "Aylin",
-    "avatar": {
-      "id": "ckh6dj70c2390ayqsc22q0c9c",
-      "type": "image",
-      "url": "https://s3.amazonaws.com/uifaces/faces/twitter/her_ruu/128.jpg",
-      "thumbnail":
-          "https://s3.amazonaws.com/uifaces/faces/twitter/her_ruu/128.jpg"
+  'id': '0297e451-e1d0-4cb6-b4f4-26aa78d9e20e',
+  'data': {
+    'nickName': 'Aylin',
+    'avatar': {
+      'id': 'ckh6dj70c2390ayqsc22q0c9c',
+      'type': 'image',
+      'url': 'https://s3.amazonaws.com/uifaces/faces/twitter/her_ruu/128.jpg',
+      'thumbnail':
+          'https://s3.amazonaws.com/uifaces/faces/twitter/her_ruu/128.jpg'
     },
-    "age": 39,
-    "birthday": "1981-07-13T19:26:53.313Z",
-    "introduction": "Quia deleniti neque occaecati.",
-    "gender": "male",
-    "hobbies": [
-      {"id": "ckh6dj2ik00179mqs4kx5g560", "value": "Mua sắm"},
+    'age': 39,
+    'birthday': '1981-07-13T19:26:53.313Z',
+    'introduction': 'Quia deleniti neque occaecati.',
+    'gender': 'male',
+    'hobbies': [
+      {'id': 'ckh6dj2ik00179mqs4kx5g560', 'value': 'Mua sắm'},
       {
-        "id": "ckh6dj2jr00929mqsf6150qrb",
-        "value": "Đọc sách, báo, tiểu thuyết"
+        'id': 'ckh6dj2jr00929mqsf6150qrb',
+        'value': 'Đọc sách, báo, tiểu thuyết'
       },
-      {"id": "ckh6dj2jr00939mqsdvh7s92r", "value": "Vẽ tranh, Điêu khắc"},
+      {'id': 'ckh6dj2jr00939mqsdvh7s92r', 'value': 'Vẽ tranh, Điêu khắc'},
       {
-        "id": "ckh6dj2jy01089mqstlhrd2uu",
-        "value": "Cho ăn và quan sát các loài chim địa phương"
+        'id': 'ckh6dj2jy01089mqstlhrd2uu',
+        'value': 'Cho ăn và quan sát các loài chim địa phương'
       },
-      {"id": "ckh6dj2kg01409mqs98yyevm3", "value": "Sưu tầm"}
+      {'id': 'ckh6dj2kg01409mqs98yyevm3', 'value': 'Sưu tầm'}
     ],
-    "phoneNumber": "466-370-7134 x205",
-    "job": "Customer Communications Engineer",
-    "height": 183,
-    "minAgePrefer": 51,
-    "maxAgePrefer": 67,
-    "minHeightPrefer": 150,
-    "maxHeightPrefer": 160,
-    "genderPrefer": ["male", "other"],
-    "distancePrefer": 322,
-    "friendType": {"status": "me"},
-    "onlineStatus": "offline",
-    "lastOnline": "2020-11-07T16:34:53.931Z",
-    "settings": {
-      "allowMatching": true,
-      "isPrivate": false,
-      "showActive": false
+    'phoneNumber': '466-370-7134 x205',
+    'job': 'Customer Communications Engineer',
+    'height': 183,
+    'minAgePrefer': 51,
+    'maxAgePrefer': 67,
+    'minHeightPrefer': 150,
+    'maxHeightPrefer': 160,
+    'genderPrefer': ['male', 'other'],
+    'distancePrefer': 322,
+    'friendType': {'status': 'me'},
+    'onlineStatus': 'offline',
+    'lastOnline': '2020-11-07T16:34:53.931Z',
+    'settings': {
+      'allowMatching': true,
+      'isPrivate': false,
+      'showActive': false
     },
-    "socialProviders": [
-      {"id": "hienlh1298@gmail.com", "type": "email"}
+    'socialProviders': [
+      {'id': 'hienlh1298@gmail.com', 'type': 'email'}
     ]
   }
 };
@@ -56,7 +56,7 @@ final Map<String, dynamic> json = {
 void main() {
   setUp(objectMapping);
 
-  test("Test from json", () {
+  test('Test from json', () {
     var mapper = Mapper.fromJson(json);
     final user = mapper.toObject<User>();
 

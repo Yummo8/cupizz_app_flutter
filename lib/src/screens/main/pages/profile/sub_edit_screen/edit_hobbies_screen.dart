@@ -11,12 +11,12 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
   List<MultiSelectDialogItem<String>> dataSource =
       <MultiSelectDialogItem<String>>[
     MultiSelectDialogItem(
-        label: "Esports", value: "Esports", icon: Icons.sports_esports),
+        label: 'Esports', value: 'Esports', icon: Icons.sports_esports),
     MultiSelectDialogItem(
-        label: "Musics", value: "Music", icon: Icons.music_note),
-    MultiSelectDialogItem(label: "Movies", value: "Movies", icon: Icons.tv),
+        label: 'Musics', value: 'Music', icon: Icons.music_note),
+    MultiSelectDialogItem(label: 'Movies', value: 'Movies', icon: Icons.tv),
     MultiSelectDialogItem(
-        label: "Football", value: "Football", icon: Icons.sports_basketball),
+        label: 'Football', value: 'Football', icon: Icons.sports_basketball),
   ];
 
   List _myActivities;
@@ -31,8 +31,8 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
-    SizeHelper sizeHelper = SizeHelper(context);
+    final _theme = Theme.of(context);
+    final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(
@@ -53,7 +53,7 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
               dialogShapeBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.0))),
               title: Text(
-                "Bạn làm gì để giải trí",
+                'Bạn làm gì để giải trí',
                 style: TextStyle(fontSize: 16),
               ),
               validator: (value) {

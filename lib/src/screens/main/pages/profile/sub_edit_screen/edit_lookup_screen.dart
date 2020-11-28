@@ -8,7 +8,7 @@ class EditLookupScreen extends StatefulWidget {
 class _EditLookupScreenState extends State<EditLookupScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Đang tìm kiếm'),
       body: Container(
@@ -18,7 +18,7 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Bạn mong muốn điều gì? Hãy chọn tất cả đáp án phù hợp.",
+                'Bạn mong muốn điều gì? Hãy chọn tất cả đáp án phù hợp.',
                 style: context.textTheme.bodyText1,
               ),
               SizedBox(

@@ -79,7 +79,7 @@ class _FriendPageState extends MomentumState<FriendPage>
   }
 
   @override
-  onLoadMore() {
+  void onLoadMore() {
     Momentum.controller<FriendPageController>(context).loadmoreFriends();
   }
 
@@ -116,8 +116,8 @@ class _FriendPageState extends MomentumState<FriendPage>
                     children: friendsList
                         .asMap()
                         .map((index, value) {
-                          final int count = friendsList.length;
-                          final Animation<double> animation =
+                          final count = friendsList.length;
+                          final animation =
                               Tween<double>(begin: 0.0, end: 1.0).animate(
                             CurvedAnimation(
                               parent: animationController,

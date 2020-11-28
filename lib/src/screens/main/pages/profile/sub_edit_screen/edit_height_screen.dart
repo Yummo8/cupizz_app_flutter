@@ -12,7 +12,7 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: Strings.common.height),
@@ -24,7 +24,7 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
             children: [
               DropdownButton(
                 isExpanded: true,
-                hint: Text("Chọn chiều cao"),
+                hint: Text('Chọn chiều cao'),
                 value: selected,
                 onChanged: (String newValue) {
                   setState(() {
@@ -83,7 +83,7 @@ class MySelectionItem extends StatelessWidget {
     );
   }
 
-  _buildItem(BuildContext context) {
+  Widget _buildItem(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,

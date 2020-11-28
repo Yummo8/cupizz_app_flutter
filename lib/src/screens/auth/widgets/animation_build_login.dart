@@ -29,14 +29,14 @@ class _AnimationBuildLoginState extends State<AnimationBuildLogin>
           ..addListener(() {
             wavePoints.clear();
 
-            final double waveSpeed = animationController.value * 1080;
-            final double fullSphere = animationController.value * pi * 2;
-            final double normalizer = cos(fullSphere);
-            final double waveWidth = pi / 270;
-            final double waveHeight = 30.0;
+            final waveSpeed = animationController.value * 1080;
+            final fullSphere = animationController.value * pi * 2;
+            final normalizer = cos(fullSphere);
+            final waveWidth = pi / 270;
+            final waveHeight = 30.0;
 
-            for (int i = 0; i <= widget.size.width.toInt(); ++i) {
-              double calc = sin((waveSpeed - i) * waveWidth);
+            for (var i = 0; i <= widget.size.width.toInt(); ++i) {
+              var calc = sin((waveSpeed - i) * waveWidth);
               wavePoints.add(
                 Offset(
                   i.toDouble(), //X
@@ -81,8 +81,8 @@ class ClipperWidget extends CustomClipper<Path> {
   ClipperWidget({this.waveList});
 
   @override
-  getClip(Size size) {
-    final Path path = Path();
+  Path getClip(Size size) {
+    final path = Path();
     path.addPolygon(waveList, false);
     path.lineTo(size.width, size.height);
     path.lineTo(0.0, size.height);

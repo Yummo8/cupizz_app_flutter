@@ -250,8 +250,8 @@ class _ShimmerFilter extends RenderProxyBox {
     if (child != null) {
       assert(needsCompositing);
 
-      final double width = child.size.width;
-      final double height = child.size.height;
+      final width = child.size.width;
+      final height = child.size.height;
       Rect rect;
       double dx, dy;
       if (_direction == ShimmerDirection.rtl) {

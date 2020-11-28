@@ -52,12 +52,10 @@ class ChatMessage {
       DateTime createdAt,
       this.customProperties,
       this.buttons}) {
-    this.createdAt = createdAt != null ? createdAt : DateTime.now();
-    this.id = id != null
-        ? id
-        : messageIdGenerator != null
-            ? messageIdGenerator()
-            : Uuid().v4().toString();
+    this.createdAt = createdAt ?? DateTime.now();
+    this.id = id ?? messageIdGenerator != null
+        ? messageIdGenerator()
+        : Uuid().v4().toString();
   }
 
   ChatMessage.fromJson(Map<dynamic, dynamic> json) {
@@ -74,17 +72,17 @@ class ChatMessage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
 
     try {
-      data['id'] = this.id;
-      data['text'] = this.text;
-      data['image'] = this.image;
-      data['video'] = this.video;
-      data['createdAt'] = this.createdAt.millisecondsSinceEpoch;
+      data['id'] = id;
+      data['text'] = text;
+      data['image'] = image;
+      data['video'] = video;
+      data['createdAt'] = createdAt.millisecondsSinceEpoch;
       data['user'] = user.toJson();
       data['quickReplies'] = quickReplies?.toJson();
-      data['customProperties'] = this.customProperties;
+      data['customProperties'] = customProperties;
     } catch (e, stack) {
       print('ERROR caught when trying to convert ChatMessage to JSON:');
       print(e);

@@ -14,16 +14,16 @@ class GraphqlService extends MomentumService {
   void reset() {
     _socketLink?.dispose();
 
-    final HttpLink httpLink = HttpLink(
+    final httpLink = HttpLink(
       uri: apiUrl,
     );
 
-    final AuthLink authLink = AuthLink(
+    final authLink = AuthLink(
       getToken: () async => await getService<StorageService>().getToken,
     );
 
     _socketLink = WebSocketLink(
-      url: this.wss,
+      url: wss,
       config: SocketClientConfig(
         autoReconnect: true,
         initPayload: () async {
@@ -34,7 +34,7 @@ class GraphqlService extends MomentumService {
       ),
     );
 
-    final Link link = authLink.concat(httpLink).concat(_socketLink);
+    final link = authLink.concat(httpLink).concat(_socketLink);
 
     _client = GraphQLClient(
       cache: InMemoryCache(),

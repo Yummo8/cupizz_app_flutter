@@ -1,5 +1,5 @@
 name: cupizz_app
-description: A new Flutter project.
+description: Cupizz App
 
 publish_to: "none"
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  pedantic: ^1.9.0
   cupertino_icons: ^1.0.0
   flutter_secure_storage: ^3.3.5
   intl: ^0.16.1

@@ -39,15 +39,15 @@ class ChatUser {
     this.firstName,
     this.lastName,
   }) {
-    this.name = name == null ? "$firstName $lastName" : name;
-    this.uid = uid != null ? uid : Uuid().v4().toString();
+    this.name = name ?? '$firstName $lastName';
+    this.uid = uid ?? Uuid().v4().toString();
   }
 
   ChatUser.fromJson(Map<dynamic, dynamic> json) {
-    final pName = json["name"] as String;
+    final pName = json['name'] as String;
 
     uid = json['uid'];
-    name = pName == null ? "$firstName $lastName" : pName;
+    name = pName ?? '$firstName $lastName';
     firstName = json['firstName'];
     lastName = json['lastName'];
     avatar = json['avatar'];
@@ -58,7 +58,7 @@ class ChatUser {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
 
     try {
       data['uid'] = uid;
@@ -69,7 +69,7 @@ class ChatUser {
       data['containerColor'] =
           containerColor != null ? containerColor.value : null;
       data['color'] = color != null ? color.value : null;
-      data['customProperties'] = this.customProperties;
+      data['customProperties'] = customProperties;
     } catch (e) {
       print(e);
     }

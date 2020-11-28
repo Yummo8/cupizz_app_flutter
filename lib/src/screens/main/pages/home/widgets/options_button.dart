@@ -33,12 +33,12 @@ class RPSCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint_0 = new Paint()
+    var paint_0 = Paint()
       ..color = color
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
 
-    Path path_0 = Path();
+    var path_0 = Path();
     path_0.moveTo(size.width, 0);
     path_0.lineTo(0, 0);
     path_0.cubicTo(0, size.height * 0.6, size.width * 0.7, size.height,

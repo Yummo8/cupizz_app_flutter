@@ -19,7 +19,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends MomentumState<MainScreen>
     with SingleTickerProviderStateMixin {
-  static List<Widget> _tabs = <Widget>[
+  static final List<Widget> _tabs = <Widget>[
     HomePage(),
     FriendPage(),
     ChatPage(),

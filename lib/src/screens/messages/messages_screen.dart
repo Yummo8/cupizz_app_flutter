@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide Router;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pedantic/pedantic.dart';
 
 import '../../base/base.dart';
 

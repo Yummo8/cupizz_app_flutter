@@ -35,21 +35,15 @@ class _CustomItemChoiceState extends State<CustomItemChoice> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
-    Color backgroundColor = widget.isSelected
-        ? (widget.selectedBackgroundColor == null
-            ? _theme.primaryColor.withOpacity(0.1)
-            : widget.selectedBackgroundColor)
-        : (widget.notSelectedBackgroundColor == null
-            ? context.colorScheme.onBackground
-            : widget.notSelectedBackgroundColor);
-    Color textColor = widget.isSelected
-        ? (widget.selectedTextColor == null
-            ? _theme.primaryColor
-            : widget.selectedTextColor)
-        : (widget.notSelectedTextColor == null
-            ? context.colorScheme.background
-            : widget.notSelectedTextColor);
+    final _theme = Theme.of(context);
+    var backgroundColor = widget.isSelected
+        ? (widget.selectedBackgroundColor ??
+            _theme.primaryColor.withOpacity(0.1))
+        : (widget.notSelectedBackgroundColor ??
+            context.colorScheme.onBackground);
+    var textColor = widget.isSelected
+        ? (widget.selectedTextColor ?? _theme.primaryColor)
+        : (widget.notSelectedTextColor ?? context.colorScheme.background);
     return FlatButton(
       onPressed: () {
         _onTap();

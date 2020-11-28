@@ -7,7 +7,7 @@ class EditPicturesScreen extends StatefulWidget {
 
 class _EditPicturesScreenState extends State<EditPicturesScreen> {
   bool isEdit;
-  List<String> _list = new List<String>();
+  final List<String> _list = <String>[];
   List<String> alphabetList = [
     'A',
     'B',
@@ -26,12 +26,12 @@ class _EditPicturesScreenState extends State<EditPicturesScreen> {
     isEdit = false;
     for (var i = 0; i < 5; i++) {
       _list.add(
-          "https://64.media.tumblr.com/1a818212c49bc873a5cb8a687382122e/tumblr_pwnyyjtQ6M1w89qpgo1_1280.jpg");
+          'https://64.media.tumblr.com/1a818212c49bc873a5cb8a687382122e/tumblr_pwnyyjtQ6M1w89qpgo1_1280.jpg');
     }
   }
 
   Widget _buildListTile(BuildContext context, int key, String imageUrl) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
     return Row(
       key: Key(key.toString()),
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,7 +69,7 @@ class _EditPicturesScreenState extends State<EditPicturesScreen> {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        final String item = alphabetList.removeAt(oldIndex);
+        final item = alphabetList.removeAt(oldIndex);
         alphabetList.insert(newIndex, item);
       },
     );
@@ -77,7 +77,7 @@ class _EditPicturesScreenState extends State<EditPicturesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(
@@ -90,7 +90,7 @@ class _EditPicturesScreenState extends State<EditPicturesScreen> {
           children: [
             SizedBox(height: sizeHelper.rW(5)),
             Text(
-              "Kéo rồi thả ảnh để thay đổi thứ tự trên hồ sơ của bạn",
+              'Kéo rồi thả ảnh để thay đổi thứ tự trên hồ sơ của bạn',
               style: context.textTheme.bodyText1,
             ),
             SizedBox(height: sizeHelper.rW(5)),

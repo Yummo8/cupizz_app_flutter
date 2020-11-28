@@ -125,10 +125,10 @@ class MessageContainer extends StatelessWidget {
   }
 
   Widget _buildMessageText(BuildContext context) {
-    if (messageTextBuilder != null)
+    if (messageTextBuilder != null) {
       return messageTextBuilder(
           message?.message ?? 'Loading message...', message);
-    else
+    } else {
       return ParsedText(
         parse: parsePatterns,
         text: message?.message ?? 'Loading message...',
@@ -138,13 +138,14 @@ class MessageContainer extends StatelessWidget {
               : context.colorScheme.onBackground,
         ),
       );
+    }
   }
 
   Widget _buildMessageImages() {
     if (message?.attachments != null && message.attachments.isNotEmpty) {
-      if (messageImageBuilder != null)
+      if (messageImageBuilder != null) {
         return messageImageBuilder(message.attachments[0].thumbnail, message);
-      else
+      } else {
         return Padding(
           padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
           child: ClipRRect(
@@ -156,6 +157,7 @@ class MessageContainer extends StatelessWidget {
             ),
           ),
         );
+      }
     }
     return const SizedBox.shrink();
   }

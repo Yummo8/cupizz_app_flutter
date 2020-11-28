@@ -114,8 +114,8 @@ class AppLoader extends StatelessWidget {
             width: 250.0,
             child: ColorizeAnimatedTextKit(
               text: [
-                "Cupizz",
-                "Loading...",
+                'Cupizz',
+                'Loading...',
               ],
               repeatForever: true,
               textStyle: GoogleFonts.pacifico(

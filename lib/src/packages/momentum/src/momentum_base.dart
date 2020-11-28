@@ -459,9 +459,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// or even override the persisted json value
   /// (**use with caution**).
   String get persistenceKey {
-    if (_persistenceKey == null) {
-      _persistenceKey = '$Momentum[$this<$M>]'.replaceAll('\'', '');
-    }
+    _persistenceKey ??= '$Momentum[$this<$M>]'.replaceAll('\'', '');
     return _persistenceKey;
   }
 
@@ -1092,7 +1090,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     }
   }
 
-  _() {}
+  void _() {}
 }
 
 class _MomentumRoot extends StatefulWidget {

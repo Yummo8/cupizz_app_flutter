@@ -27,7 +27,7 @@ class SimpleUser extends BaseModel {
           [];
 
       _sameHobbies = [];
-      List<Hobby> userHobbies = [...hobbies] ?? [];
+      final userHobbies = [...hobbies] ?? <Hobby>[];
 
       for (var hobby in userHobbies) {
         if (_sameHobbies.length >= 5) break;

@@ -1,7 +1,8 @@
 import 'dart:convert';
 
+import 'package:cupizz_app/src/screens/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:pedantic/pedantic.dart';
 
 import 'momentum_base.dart';
 import 'momentum_event.dart';
@@ -90,11 +91,11 @@ class RouterService extends MomentumService {
             jsonEncode(_history),
           );
         } else {
-          _persistSaver(
+          unawaited(_persistSaver(
             _rootContext,
             'MOMENTUM_ROUTER_HISTORY',
             jsonEncode(_history),
-          );
+          ));
         }
       }
       Route r;
@@ -105,7 +106,7 @@ class RouterService extends MomentumService {
       }
       _currentRouteParam = params;
       _momentumEvent.trigger(RouterSignal(_currentRouteParam));
-      Navigator.pushAndRemoveUntil(context, r, (r) => false);
+      unawaited(Navigator.pushAndRemoveUntil(context, r, (r) => false));
     } else {
       print('[$MomentumService -> $RouterService]: Unable to '
           'find page widget of type "$route".');
@@ -126,15 +127,16 @@ class RouterService extends MomentumService {
           jsonEncode(_history),
         );
       } else {
-        _persistSaver(
+        unawaited(_persistSaver(
           _rootContext,
           'MOMENTUM_ROUTER_HISTORY',
           jsonEncode(_history),
-        );
+        ));
       }
     }
     if (_history.isEmpty) {
-      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      await _goto(context, MainScreen);
+      // unawaited(SystemChannels.platform.invokeMethod('SystemNavigator.pop'));
     } else {
       var activePage = getActive();
       Route r;

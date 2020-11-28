@@ -12,27 +12,27 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future<void> getCurrentUser() async {
     final service = getService<UserService>();
     final result = await service.getCurrentUser();
-    this.model.update(currentUser: result);
+    model.update(currentUser: result);
   }
 
   Future toggleGenderButton(Gender gender) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
     if (currentUser.genderPrefer.contains(gender)) {
       currentUser.genderPrefer.remove(gender);
     } else {
       currentUser.genderPrefer.add(gender);
     }
-    await this.updateSetting(genderPrefer: currentUser.genderPrefer);
+    await updateSetting(genderPrefer: currentUser.genderPrefer);
   }
 
   Future toggleHobbyButton(Hobby hobby) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
     if (currentUser.hobbies.contains(hobby)) {
       currentUser.hobbies.remove(hobby);
     } else {
       currentUser.hobbies.add(hobby);
     }
-    await this.updateProfile(hobbies: currentUser.hobbies);
+    await updateProfile(hobbies: currentUser.hobbies);
   }
 
   Future<void> updateProfile({
@@ -45,7 +45,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     int height,
     io.File avatar,
   }) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
     if (nickName != null) currentUser.nickName = nickName;
     if (introduction != null) currentUser.introduction = introduction;
     if (gender != null) currentUser.gender = gender;
@@ -53,7 +53,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (phoneNumber != null) currentUser.phoneNumber = phoneNumber;
     if (job != null) currentUser.job = job;
     if (height != null) currentUser.height = height;
-    this.model.update(currentUser: currentUser);
+    model.update(currentUser: currentUser);
 
     try {
       final service = getService<UserService>();
@@ -68,10 +68,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         avatar: avatar,
       );
       if (hobbies != null) {
-        dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+        unawaited(
+            dependOn<RecommendableUsersController>().fetchRecommendableUsers());
       }
     } catch (_) {
-      this.backward();
+      backward();
       rethrow;
     }
   }
@@ -85,7 +86,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     int distancePrefer,
     List<String> mustHaveFields,
   }) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
 
     if (minAgePrefer != null) currentUser.minAgePrefer = minAgePrefer;
     if (maxAgePrefer != null) currentUser.maxAgePrefer = maxAgePrefer;
@@ -94,7 +95,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (genderPrefer != null) currentUser.genderPrefer = genderPrefer;
     if (distancePrefer != null) currentUser.distancePrefer = distancePrefer;
 
-    this.model.update(currentUser: currentUser);
+    model.update(currentUser: currentUser);
 
     final service = getService<UserService>();
     await service.updateSetting(
@@ -106,6 +107,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       distancePrefer: distancePrefer,
       mustHaveFields: mustHaveFields,
     );
-    dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+    unawaited(
+        dependOn<RecommendableUsersController>().fetchRecommendableUsers());
   }
 }

@@ -8,7 +8,7 @@ class EditReligionScreen extends StatefulWidget {
 class _EditReligionScreenState extends State<EditReligionScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Quan điểm tôn giáo'),

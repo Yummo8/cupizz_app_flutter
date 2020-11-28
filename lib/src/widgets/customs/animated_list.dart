@@ -38,7 +38,7 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
     _items = widget.items;
   }
 
-  onHided(int index) {
+  void onHided(int index) {
     _slidableController.activeState..close();
     removeItem(index).then((value) => widget.onHided?.call(index));
   }
@@ -81,8 +81,9 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
                     onHided(index);
                   }
                 });
-              } else
+              } else {
                 onHided(index);
+              }
             },
             color: context.colorScheme.error,
             closeOnTap: false,
@@ -101,7 +102,7 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
     );
   }
 
-  changeItem() {
+  void changeItem() {
     setState(() {
       _items = widget.items;
     });

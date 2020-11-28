@@ -32,7 +32,7 @@ class PhotoPicker {
     return _instance;
   }
 
-  static const String rootRouteName = "photo_picker_image";
+  static const String rootRouteName = 'photo_picker_image';
 
   /// 没有授予权限的时候,会开启一个dialog去帮助用户去应用设置页面开启权限
   /// 确定开启设置页面,取消关闭弹窗,无论选择什么,返回值都是null
@@ -84,9 +84,9 @@ class PhotoPicker {
     List<AssetPathEntity> photoPathList,
     List<AssetEntity> pickedAssetList,
   }) {
-    assert(provider != null, "provider must be not null");
-    assert(context != null, "context must be not null");
-    assert(pickType != null, "pickType must be not null");
+    assert(provider != null, 'provider must be not null');
+    assert(context != null, 'context must be not null');
+    assert(pickType != null, 'pickType must be not null');
 
     themeColor ??= Theme.of(context)?.primaryColor ?? Colors.black;
     dividerColor ??= Theme.of(context)?.dividerColor ?? Colors.grey;

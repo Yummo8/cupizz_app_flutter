@@ -8,7 +8,7 @@ class EditMarriageScreen extends StatefulWidget {
 class _EditMarriageScreenState extends State<EditMarriageScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Có con'),

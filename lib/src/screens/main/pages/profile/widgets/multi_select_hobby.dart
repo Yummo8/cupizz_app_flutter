@@ -21,6 +21,7 @@ class MultiSelectHobby extends FormField<dynamic> {
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
+  @override
   final bool enabled;
 
   MultiSelectHobby({
@@ -59,7 +60,7 @@ class MultiSelectHobby extends FormField<dynamic> {
           autovalidate: autovalidate,
           builder: (FormFieldState<dynamic> state) {
             List<Widget> _buildSelectedOptions(FormFieldState<dynamic> state) {
-              List<Widget> selectedOptions = [];
+              var selectedOptions = <Widget>[];
 
               if (state.value != null) {
                 state.value.forEach((item) {
@@ -89,11 +90,9 @@ class MultiSelectHobby extends FormField<dynamic> {
                   ? null
                   : () async {
                       List initialSelected = state.value;
-                      if (initialSelected == null) {
-                        initialSelected = List();
-                      }
+                      initialSelected ??= [];
 
-                      List selectedValues = await showDialog<List>(
+                      var selectedValues = await showDialog<List>(
                         context: state.context,
                         builder: (BuildContext context) {
                           return MultiSelectDialogHobby(
@@ -158,7 +157,7 @@ class MultiSelectHobby extends FormField<dynamic> {
                             runSpacing: 0.0,
                             children: _buildSelectedOptions(state),
                           )
-                        : new Container(
+                        : Container(
                             padding: EdgeInsets.only(top: 4),
                             child: hintWidget,
                           )

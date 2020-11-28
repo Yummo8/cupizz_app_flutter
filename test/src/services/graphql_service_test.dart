@@ -60,7 +60,7 @@ void main() async {
             (await graphql.recommendableUsersQuery() as List)
                 .map((e) => Mapper.fromJson(e).toObject<SimpleUser>())
                 .toList();
-        if (usersTestAfterDislike.length > 0) {
+        if (usersTestAfterDislike.isExistAndNotEmpty) {
           expect(usersTestAfterDislike[0] != recommendUsers[0], true);
         }
 
@@ -138,7 +138,7 @@ void main() async {
       final phoneNumber = '097196370${Random().nextInt(9)}';
       final job = 'Job ${Random().nextInt(100)}';
       final height = Random().nextInt(190 - 160) + 160;
-      final avatar = io.File(Assets.images.defaultAvatar);
+      final avatar = io.File(Assets.i.images.defaultAvatar);
 
       final json = await graphql.updateProfile(
         nickName,
@@ -247,20 +247,18 @@ void main() async {
         'Test from Flutter testing.',
       ))['id'];
 
-      final WithIsLastPageOutput<Message> newestMessages =
-          WithIsLastPageOutput.fromJson(
-              await graphql.messagesQuery(conversationKey));
+      final newestMessages = WithIsLastPageOutput<Message>.fromJson(
+          await graphql.messagesQuery(conversationKey));
 
       expect(newestMessages.data[0].id, messageId);
     });
 
     test('Send images message', () async {
-      final messageId = (await graphql.sendMessage(
-          conversationKey, null, [io.File(Assets.images.defaultAvatar)]))['id'];
+      final messageId = (await graphql.sendMessage(conversationKey, null,
+          [io.File(Assets.i.images.defaultAvatar)]))['id'];
 
-      final WithIsLastPageOutput<Message> newestMessages =
-          WithIsLastPageOutput.fromJson(
-              await graphql.messagesQuery(conversationKey));
+      final newestMessages = WithIsLastPageOutput<Message>.fromJson(
+          await graphql.messagesQuery(conversationKey));
 
       expect(newestMessages.data[0].id, messageId);
       expect(newestMessages.data[0].attachments.length, 1);
@@ -272,8 +270,8 @@ void main() async {
         'Test from Flutter testing.',
       ))['id'];
 
-      final WithIsLastPageOutput<Conversation> newestConversations =
-          WithIsLastPageOutput.fromJson(await graphql.myConversationsQuery());
+      final newestConversations = WithIsLastPageOutput<Conversation>.fromJson(
+          await graphql.myConversationsQuery());
 
       expect(newestConversations.data[0].newestMessage?.id, messageId);
     });

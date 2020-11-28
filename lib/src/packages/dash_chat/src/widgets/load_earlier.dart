@@ -38,7 +38,7 @@ class LoadEarlierWidget extends StatelessWidget {
               )
             ]),
         child: Text(
-          "Load Earlier Messages",
+          'Load Earlier Messages',
           style: TextStyle(
             color: Theme.of(context).primaryColor,
           ),

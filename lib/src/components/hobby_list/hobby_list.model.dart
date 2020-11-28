@@ -17,7 +17,7 @@ class HobbyListModel extends MomentumModel<HobbyListController> {
     HobbyListModel(
       controller,
       hobbies: hobbies ?? this.hobbies,
-      error: error ?? null,
+      error: error,
       isLoading: isLoading ?? false,
     ).updateMomentum();
   }

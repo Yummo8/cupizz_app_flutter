@@ -17,7 +17,7 @@ abstract class I18nProvider {
   String getAllGalleryText(Options options);
 
   String loadingText() {
-    return "Loading...";
+    return 'Loading...';
   }
 
   I18NPermissionProvider getNotPermissionText(Options options);
@@ -34,45 +34,45 @@ class VNProvider extends I18nProvider {
 
   @override
   String getTitleText(Options options) {
-    return "Chọn hình ảnh";
+    return 'Chọn hình ảnh';
   }
 
   @override
   String getPreviewText(Options options, SelectedProvider selectedProvider) {
-    return "Xem trước (${selectedProvider.selectedCount})";
+    return 'Xem trước (${selectedProvider.selectedCount})';
   }
 
   @override
   String getSureText(Options options, int currentCount) {
-    return "Đã chọn ($currentCount/${options.maxSelected})";
+    return 'Đã chọn ($currentCount/${options.maxSelected})';
   }
 
   @override
   String getSelectedOptionsText(Options options) {
-    return "Chọn";
+    return 'Chọn';
   }
 
   @override
   String getMaxTipText(Options options) {
-    return "Bạn đã lựa chọn ${options.maxSelected} hình";
+    return 'Bạn đã lựa chọn ${options.maxSelected} hình';
   }
 
   @override
   String getAllGalleryText(Options options) {
-    return "Tất cả";
+    return 'Tất cả';
   }
 
   @override
   String loadingText() {
-    return "Đang tải...";
+    return 'Đang tải...';
   }
 
   @override
   I18NPermissionProvider getNotPermissionText(Options options) {
     return I18NPermissionProvider(
-        cancelText: "Hủy",
-        sureText: "Đồng ý",
-        titleText: "Không có quyền truy cập album");
+        cancelText: 'Hủy',
+        sureText: 'Đồng ý',
+        titleText: 'Không có quyền truy cập album');
   }
 }
 
@@ -81,43 +81,43 @@ class CNProvider extends I18nProvider {
 
   @override
   String getTitleText(Options options) {
-    return "图片选择";
+    return '图片选择';
   }
 
   @override
   String getPreviewText(Options options, SelectedProvider selectedProvider) {
-    return "预览(${selectedProvider.selectedCount})";
+    return '预览(${selectedProvider.selectedCount})';
   }
 
   @override
   String getSureText(Options options, int currentCount) {
-    return "确定($currentCount/${options.maxSelected})";
+    return '确定($currentCount/${options.maxSelected})';
   }
 
   @override
   String getSelectedOptionsText(Options options) {
-    return "选择";
+    return '选择';
   }
 
   @override
   String getMaxTipText(Options options) {
-    return "您已经选择了${options.maxSelected}张图片";
+    return '您已经选择了${options.maxSelected}张图片';
   }
 
   @override
   String getAllGalleryText(Options options) {
-    return "全部图片";
+    return '全部图片';
   }
 
   @override
   String loadingText() {
-    return "加载中...";
+    return '加载中...';
   }
 
   @override
   I18NPermissionProvider getNotPermissionText(Options options) {
     return I18NPermissionProvider(
-        cancelText: "取消", sureText: "去开启", titleText: "没有访问相册的权限");
+        cancelText: '取消', sureText: '去开启', titleText: '没有访问相册的权限');
   }
 }
 
@@ -126,40 +126,40 @@ class ENProvider extends I18nProvider {
 
   @override
   String getTitleText(Options options) {
-    return "Image Picker";
+    return 'Image Picker';
   }
 
   @override
   String getPreviewText(Options options, SelectedProvider selectedProvider) {
-    return "Preview (${selectedProvider.selectedCount})";
+    return 'Preview (${selectedProvider.selectedCount})';
   }
 
   @override
   String getSureText(Options options, int currentCount) {
-    return "Save ($currentCount/${options.maxSelected})";
+    return 'Save ($currentCount/${options.maxSelected})';
   }
 
   @override
   String getSelectedOptionsText(Options options) {
-    return "Selected";
+    return 'Selected';
   }
 
   @override
   String getMaxTipText(Options options) {
-    return "Select ${options.maxSelected} pictures at most";
+    return 'Select ${options.maxSelected} pictures at most';
   }
 
   @override
   String getAllGalleryText(Options options) {
-    return "Recent";
+    return 'Recent';
   }
 
   @override
   I18NPermissionProvider getNotPermissionText(Options options) {
     return I18NPermissionProvider(
-        cancelText: "Cancel",
-        sureText: "Allow",
-        titleText: "No permission to access gallery");
+        cancelText: 'Cancel',
+        sureText: 'Allow',
+        titleText: 'No permission to access gallery');
   }
 }
 

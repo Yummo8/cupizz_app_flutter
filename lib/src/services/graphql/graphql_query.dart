@@ -2,13 +2,13 @@ part of 'index.dart';
 
 extension GraphqlQuery on GraphqlService {
   Future meQuery() async {
-    final result = await this
-        .query(QueryOptions(documentNode: gql('{ me ${User.graphqlQuery} }')));
+    final result = await query(
+        QueryOptions(documentNode: gql('{ me ${User.graphqlQuery} }')));
     return result.data['me'];
   }
 
   Future recommendableUsersQuery() async {
-    final result = await this.query(QueryOptions(
+    final result = await query(QueryOptions(
         fetchPolicy: FetchPolicy.noCache,
         documentNode:
             gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }')));
@@ -16,7 +16,7 @@ extension GraphqlQuery on GraphqlService {
   }
 
   Future hobbiesQuery() async {
-    final result = await this.query(
+    final result = await query(
         QueryOptions(documentNode: gql('{ hobbies ${Hobby.graphqlQuery} }')));
     return result.data['hobbies'];
   }
@@ -26,7 +26,7 @@ extension GraphqlQuery on GraphqlService {
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
   ]) async {
-    final result = await this.query(QueryOptions(
+    final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(
           '{ friends(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${FriendData.graphqlQuery} }'),
@@ -39,7 +39,7 @@ extension GraphqlQuery on GraphqlService {
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
   ]) async {
-    final result = await this.query(QueryOptions(
+    final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(
           '{ friendsV2(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${WithIsLastPageOutput.graphqlQuery(FriendData.graphqlQuery)} }'),
@@ -50,7 +50,7 @@ extension GraphqlQuery on GraphqlService {
   Future myConversationsQuery([
     int page = 1,
   ]) async {
-    final result = await this.query(QueryOptions(
+    final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(
           '{ myConversations(page: $page) ${WithIsLastPageOutput.graphqlQuery(Conversation.graphqlQuery)} }'),
@@ -62,28 +62,28 @@ extension GraphqlQuery on GraphqlService {
     ConversationKey key, [
     int page = 1,
   ]) async {
-    final query = '''{ 
+    final queryString = '''{ 
         messages(
           ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
           page: $page
         ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
       }''';
-    final result = await this.query(QueryOptions(
+    final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(query),
+      documentNode: gql(queryString),
     ));
     return result.data['messages'];
   }
 
   Future conversationQuery(ConversationKey key) async {
-    final query = '''{ 
+    final queryString = '''{ 
         conversation(
           ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
         ) ${Conversation.graphqlQuery}
       }''';
-    final result = await this.query(QueryOptions(
+    final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(query),
+      documentNode: gql(queryString),
     ));
     return result.data['conversation'];
   }

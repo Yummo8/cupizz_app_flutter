@@ -27,7 +27,7 @@ class DefaultBadgeDelegate extends BadgeDelegate {
               borderRadius: BorderRadius.circular(3.0),
             ),
             child: Text(
-              "video",
+              'video',
               style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.white,
@@ -54,8 +54,8 @@ class DurationBadgeDelegate extends BadgeDelegate {
       var m = duration.inMinutes % 60;
       var h = duration.inHours;
 
-      String text =
-          "$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}";
+      final text =
+          '$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
 
       return Padding(
         padding: const EdgeInsets.all(2.0),

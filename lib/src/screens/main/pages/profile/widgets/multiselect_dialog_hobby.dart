@@ -38,8 +38,9 @@ class MultiSelectDialogHobby<V> extends StatefulWidget {
 }
 
 class _MultiSelectDialogHobbyState<V> extends State<MultiSelectDialogHobby<V>> {
-  final _selectedValues = List<V>();
+  final _selectedValues = <V>[];
 
+  @override
   void initState() {
     super.initState();
     if (widget.initialSelectedValues != null) {

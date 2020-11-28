@@ -6,7 +6,7 @@ abstract class Mappable {
   factory Mappable(Type type) {
     var constructor = Mappable.factories[type];
     assert(constructor != null,
-        "${type.toString()} is not defined in Reflection.factories");
+        '${type.toString()} is not defined in Reflection.factories');
     return constructor();
   }
 
@@ -17,7 +17,7 @@ abstract class Mappable {
   }
 
   T clone<T extends Mappable>() {
-    final json = this.toJson();
+    final json = toJson();
     return Mapper.fromJson(json).toObject<T>();
   }
 
@@ -26,12 +26,12 @@ abstract class Mappable {
       identical(this, other) ||
       other is Mappable &&
           runtimeType == other.runtimeType &&
-          this.toJsonString() == other.toJsonString();
+          toJsonString() == other.toJsonString();
 
   @override
-  int get hashCode => runtimeType.hashCode ^ this.toJson().hashCode;
+  int get hashCode => runtimeType.hashCode ^ toJson().hashCode;
 
   String toJsonString() {
-    return json.encode(this.toJson());
+    return json.encode(toJson());
   }
 }

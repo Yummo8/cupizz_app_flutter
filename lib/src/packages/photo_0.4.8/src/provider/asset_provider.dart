@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:photo_manager/photo_manager.dart';
 
 class AssetProvider {
-  Map<AssetPathEntity, AssetPaging> _dataMap = {};
+  final Map<AssetPathEntity, AssetPaging> _dataMap = {};
 
   AssetPathEntity _current;
 
@@ -51,7 +51,7 @@ class AssetPaging {
       return;
     }
     var data = await path.getAssetListPaged(page, pageCount);
-    if (data.length == 0) {
+    if (data.isEmpty) {
       noMore = true;
     }
     page++;

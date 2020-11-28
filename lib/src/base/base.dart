@@ -3,7 +3,7 @@ library base;
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

@@ -42,17 +42,17 @@ class _EditTextScreenState extends State<EditTextScreen> {
   }
 
   void _settingModalBottomSheet(BuildContext context) {
-    ThemeData _theme = Theme.of(context);
-    SizeHelper sizeHelper = SizeHelper(context);
+    var _theme = Theme.of(context);
+    final sizeHelper = SizeHelper(context);
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         barrierColor: _theme.colorScheme.onBackground.withOpacity(0.5),
         builder: (BuildContext bc) {
           return Container(
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
                 color: _theme.colorScheme.background,
-                borderRadius: new BorderRadius.only(
+                borderRadius: BorderRadius.only(
                     topLeft: const Radius.circular(15.0),
                     topRight: const Radius.circular(15.0))),
             height: sizeHelper.rH(25),
@@ -70,7 +70,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
                   ),
                   Divider(color: _theme.colorScheme.onSurface),
                   Text(
-                      "Bạn có muốn lưu thay đổi vào hồ sơ hẹn hò của mình ko?"),
+                      'Bạn có muốn lưu thay đổi vào hồ sơ hẹn hò của mình ko?'),
                   SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -83,12 +83,12 @@ class _EditTextScreenState extends State<EditTextScreen> {
                         minWidth: sizeHelper.rW(35),
                         color: context.colorScheme.onBackground,
                         child: Text(
-                          "Bỏ",
+                          'Bỏ',
                           style: context.textTheme.button
                               .copyWith(color: context.colorScheme.background),
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0)),
+                            borderRadius: BorderRadius.circular(20.0)),
                       ),
                       FlatButton(
                         onPressed: () {
@@ -99,12 +99,12 @@ class _EditTextScreenState extends State<EditTextScreen> {
                         minWidth: sizeHelper.rW(35),
                         color: _theme.primaryColor,
                         child: Text(
-                          "Lưu",
+                          'Lưu',
                           style: context.textTheme.button
                               .copyWith(color: _theme.colorScheme.onPrimary),
                         ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0)),
+                            borderRadius: BorderRadius.circular(20.0)),
                       )
                     ],
                   )
@@ -117,7 +117,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(
@@ -145,7 +145,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
                 height: sizeHelper.rW(5),
               ),
               Text(
-                "Hiển thị trên hồ sơ của bạn",
+                'Hiển thị trên hồ sơ của bạn',
                 style: context.textTheme.bodyText2,
               )
             ],

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 
 class ImageLruCache {
-  static LRUMap<_ImageCacheEntity, Uint8List> _map = LRUMap(500);
+  static final LRUMap<_ImageCacheEntity, Uint8List> _map = LRUMap(500);
 
   static Uint8List getData(AssetEntity entity, [int size = 64]) {
     return _map.get(_ImageCacheEntity(entity, size));
@@ -37,7 +37,7 @@ class _ImageCacheEntity {
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-typedef EvictionHandler<K, V>(K key, V value);
+typedef EvictionHandler<K, V> = void Function(K key, V value);
 
 class LRUMap<K, V> {
   final LinkedHashMap<K, V> _map = LinkedHashMap<K, V>();
@@ -47,7 +47,7 @@ class LRUMap<K, V> {
   LRUMap(this._maxSize, [this._handler]);
 
   V get(K key) {
-    V value = _map.remove(key);
+    var value = _map.remove(key);
     if (value != null) {
       _map[key] = value;
     }
@@ -58,8 +58,8 @@ class LRUMap<K, V> {
     _map.remove(key);
     _map[key] = value;
     if (_map.length > _maxSize) {
-      K evictedKey = _map.keys.first;
-      V evictedValue = _map.remove(evictedKey);
+      var evictedKey = _map.keys.first;
+      var evictedValue = _map.remove(evictedKey);
       if (_handler != null) {
         _handler(evictedKey, evictedValue);
       }

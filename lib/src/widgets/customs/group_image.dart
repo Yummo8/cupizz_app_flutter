@@ -24,8 +24,8 @@ class GroupImage extends StatelessWidget {
     );
   }
 
-  _buildBody(BuildContext context) {
-    if (images.length <= 0) {
+  Widget _buildBody(BuildContext context) {
+    if (images.isEmpty) {
       return const SizedBox.shrink();
     } else if (images.length == 1) {
       return _buildImage(images[0]);
@@ -36,7 +36,7 @@ class GroupImage extends StatelessWidget {
     }
   }
 
-  _build2Images() {
+  Widget _build2Images() {
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +49,7 @@ class GroupImage extends StatelessWidget {
     );
   }
 
-  _buildMoreImages(BuildContext context) {
+  Widget _buildMoreImages(BuildContext context) {
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -98,7 +98,7 @@ class GroupImage extends StatelessWidget {
     );
   }
 
-  _buildImage(FileModel image) {
+  Widget _buildImage(FileModel image) {
     return Hero(
       tag: image?.url,
       child: AspectRatio(

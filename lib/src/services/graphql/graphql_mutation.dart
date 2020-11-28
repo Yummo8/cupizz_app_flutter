@@ -3,7 +3,7 @@ part of 'index.dart';
 extension GraphqlMutation on GraphqlService {
   Future loginMutation(
       {@required String email, @required String password}) async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
       documentNode: gql('''
           mutation login(\$email: String, \$password: String){
             login(email: \$email password: \$password) {
@@ -41,7 +41,7 @@ extension GraphqlMutation on GraphqlService {
               avatar: \$avatar
             ) ${User.graphqlQuery}
           }''';
-    final result = await this.mutate(
+    final result = await mutate(
       MutationOptions(documentNode: gql(query), variables: {
         'avatar': avatar != null ? await multiPartFile(avatar) : null
       }),
@@ -59,7 +59,7 @@ extension GraphqlMutation on GraphqlService {
     int distancePrefer,
     List<String> mustHaveFields,
   ]) async {
-    final result = await this.mutate(
+    final result = await mutate(
       MutationOptions(
         documentNode: gql('''
           mutation {
@@ -81,7 +81,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future addFriendMutation(
       {@required String id, bool isSuperLike = false}) async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
       documentNode: gql('''mutation {
         addFriend(userId: "$id" isSuperLike: $isSuperLike) { status }
       }'''),
@@ -91,7 +91,7 @@ extension GraphqlMutation on GraphqlService {
   }
 
   Future<void> removeFriendMutation({@required String id}) async {
-    await this.mutate(MutationOptions(
+    await mutate(MutationOptions(
       documentNode: gql('''mutation {
         removeFriend(userId: "$id")
       }'''),
@@ -99,7 +99,7 @@ extension GraphqlMutation on GraphqlService {
   }
 
   Future undoLastDislikeUserMutation() async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
       documentNode: gql('''mutation {
         undoLastDislikedUser ${SimpleUser.graphqlQuery}
       }'''),
@@ -110,7 +110,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future sendMessage(ConversationKey key,
       [String message, List<io.File> attachments = const []]) async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
         documentNode: gql(
             '''mutation sendMessage(\$attachments: [Upload], \$message: String) {
           sendMessage(

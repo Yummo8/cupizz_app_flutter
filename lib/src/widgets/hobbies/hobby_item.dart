@@ -9,7 +9,7 @@ class HobbyItem extends StatelessWidget {
       {Key key, @required this.hobby, this.isSelected = false, this.onPressed})
       : super(key: key);
 
-  handlePressed(BuildContext context) {
+  void handlePressed(BuildContext context) {
     if (onPressed != null) {
       onPressed(hobby);
     } else {

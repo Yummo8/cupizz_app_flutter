@@ -8,7 +8,7 @@ class EditGenderScreen extends StatefulWidget {
 class _EditGenderScreenState extends State<EditGenderScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
       appBar: BackAppBar(title: Strings.common.gender),

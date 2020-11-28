@@ -15,31 +15,31 @@ class SwipInfo {
   );
 }
 
-typedef ForwardCallback(int index, SwipInfo info);
-typedef UpdateCallBack(DragStartDetails details);
-typedef BackCallback(int index);
-typedef EndCallback();
+typedef ForwardCallback = void Function(int index, SwipInfo info);
+typedef UpdateCallBack = void Function(DragStartDetails details);
+typedef BackCallback = void Function(int index);
+typedef EndCallback = Function();
 
 class CCardController {
   _CCardState _state;
 
   void _bindState(_CCardState state) {
-    this._state = state;
+    _state = state;
   }
 
   int get index => _state?._frontCardIndex ?? 0;
 
-  forward({SwipDirection direction = SwipDirection.Right}) {
-    final SwipInfo swipInfo = SwipInfo(_state._frontCardIndex, direction);
+  void forward({SwipDirection direction = SwipDirection.Right}) {
+    final swipInfo = SwipInfo(_state._frontCardIndex, direction);
     _state._swipInfoList.add(swipInfo);
     _state._runChangeOrderAnimation();
   }
 
-  back() {
+  void back() {
     _state._runReverseOrderAnimation();
   }
 
-  reset() {
+  void reset() {
     _state._reset();
   }
 
@@ -78,7 +78,7 @@ class CCard extends StatefulWidget {
     this.size = const Size(380, 400),
     this.padding = EdgeInsets.zero,
   })  : assert(cards != null),
-        assert(cards.length > 0);
+        assert(cards.isNotEmpty);
 
   @override
   _CCardState createState() => _CCardState();
@@ -107,11 +107,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   double limit = 10;
 
   Widget _frontCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length
+    final child = _frontCardIndex < _cards.length
         ? _cards[_frontCardIndex]
         : const SizedBox.shrink();
-    bool forward = _cardChangeController.status == AnimationStatus.forward;
-    bool reverse = _cardReverseController.status == AnimationStatus.forward;
+    final forward = _cardChangeController.status == AnimationStatus.forward;
+    final reverse = _cardReverseController.status == AnimationStatus.forward;
 
     Widget rotate = Transform.rotate(
       angle: (math.pi / 180.0) * _frontCardRotation,
@@ -122,7 +122,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
           child: Stack(
             children: <Widget>[
               Positioned.fill(child: child),
-              if (widget.cards.length != 0)
+              if (widget.cards.isNotEmpty)
                 Positioned.fill(
                   child: IgnorePointer(
                     child: Container(
@@ -170,11 +170,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   Widget _middleCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 1
+    final child = _frontCardIndex < _cards.length - 1
         ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 1])
         : const SizedBox.shrink();
-    bool forward = _cardChangeController.status == AnimationStatus.forward;
-    bool reverse = _cardReverseController.status == AnimationStatus.forward;
+    final forward = _cardChangeController.status == AnimationStatus.forward;
+    final reverse = _cardReverseController.status == AnimationStatus.forward;
 
     if (reverse) {
       return Align(
@@ -214,11 +214,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   Widget _backCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 2
+    final child = _frontCardIndex < _cards.length - 2
         ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 2])
         : Container();
-    bool forward = _cardChangeController.status == AnimationStatus.forward;
-    bool reverse = _cardReverseController.status == AnimationStatus.forward;
+    final forward = _cardChangeController.status == AnimationStatus.forward;
+    final reverse = _cardReverseController.status == AnimationStatus.forward;
 
     if (reverse) {
       return Align(
@@ -270,8 +270,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
       ),
     );
 
-    final double unitsPerSecondX = pixelsPerSecond.dx / size.width;
-    final double unitsPerSecondY = pixelsPerSecond.dy / size.height;
+    final unitsPerSecondX = pixelsPerSecond.dx / size.width;
+    final unitsPerSecondY = pixelsPerSecond.dy / size.height;
     final unitsPerSecond = Offset(unitsPerSecondX, unitsPerSecondY);
     final unitVelocity = unitsPerSecond.distance;
     const spring = SpringDescription(mass: 30, stiffness: 1, damping: 1);
@@ -353,7 +353,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   void _updateFrontCardAlignment(DragUpdateDetails details, Size size) {
-    final double speed = 10.0;
+    final speed = 10.0;
 
     _frontCardAlignment += Alignment(
       details.delta.dx / (size.width / 2) * speed,
@@ -365,8 +365,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   void _judgeRunAnimation(DragEndDetails details, Size size) {
-    final bool isSwipLeft = _frontCardAlignment.x < -limit;
-    final bool isSwipRight = _frontCardAlignment.x > limit;
+    final isSwipLeft = _frontCardAlignment.x < -limit;
+    final isSwipRight = _frontCardAlignment.x > limit;
 
     Timer.periodic(Duration(milliseconds: 1), (timer) {
       setState(() {
@@ -449,7 +449,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
       size: widget.size,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final Size size = MediaQuery.of(context).size;
+          final size = MediaQuery.of(context).size;
 
           return Stack(
             children: <Widget>[
@@ -499,7 +499,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    child: SvgPicture.asset(Assets.icons.dislikeUser,
+                    child: SvgPicture.asset(Assets.i.icons.dislikeUser,
                         color: Colors.black54),
                     width: 100,
                     height: 100,
@@ -528,7 +528,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                   alignment: Alignment.centerLeft,
                   child: Container(
                       padding: EdgeInsets.all(10),
-                      child: SvgPicture.asset(Assets.icons.likeUser,
+                      child: SvgPicture.asset(Assets.i.icons.likeUser,
                           color: Colors.white.withOpacity(0.3)),
                       decoration: BoxDecoration(
                           gradient: LinearGradient(

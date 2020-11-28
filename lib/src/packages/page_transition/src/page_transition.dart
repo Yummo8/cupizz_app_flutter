@@ -67,7 +67,7 @@ class PageTransition<T> extends PageRouteBuilder<T> {
               case PageTransitionType.rightToLeft:
                 return SlideTransition(
                   transformHitTests: false,
-                  position: new Tween<Offset>(
+                  position: Tween<Offset>(
                     begin: const Offset(1.0, 0.0),
                     end: Offset.zero,
                   ).animate(
@@ -76,8 +76,8 @@ class PageTransition<T> extends PageRouteBuilder<T> {
                       curve: curve,
                     ),
                   ),
-                  child: new SlideTransition(
-                    position: new Tween<Offset>(
+                  child: SlideTransition(
+                    position: Tween<Offset>(
                       begin: Offset.zero,
                       end: const Offset(-1.0, 0.0),
                     ).animate(
@@ -105,8 +105,8 @@ class PageTransition<T> extends PageRouteBuilder<T> {
                       curve: curve,
                     ),
                   ),
-                  child: new SlideTransition(
-                    position: new Tween<Offset>(
+                  child: SlideTransition(
+                    position: Tween<Offset>(
                       begin: Offset.zero,
                       end: const Offset(1.0, 0.0),
                     ).animate(
@@ -134,8 +134,8 @@ class PageTransition<T> extends PageRouteBuilder<T> {
                       curve: curve,
                     ),
                   ),
-                  child: new SlideTransition(
-                    position: new Tween<Offset>(
+                  child: SlideTransition(
+                    position: Tween<Offset>(
                       begin: Offset.zero,
                       end: const Offset(0.0, 1.0),
                     ).animate(
@@ -163,8 +163,8 @@ class PageTransition<T> extends PageRouteBuilder<T> {
                       curve: curve,
                     ),
                   ),
-                  child: new SlideTransition(
-                    position: new Tween<Offset>(
+                  child: SlideTransition(
+                    position: Tween<Offset>(
                       begin: Offset.zero,
                       end: const Offset(0.0, -1.0),
                     ).animate(
@@ -198,10 +198,10 @@ class PageTransition<T> extends PageRouteBuilder<T> {
               /// PageTransitionType.rotate which is the rotate functionality for transition you can also use alignment for this transition
 
               case PageTransitionType.rotate:
-                return new RotationTransition(
+                return RotationTransition(
                   alignment: alignment,
                   turns: animation,
-                  child: new ScaleTransition(
+                  child: ScaleTransition(
                     alignment: alignment,
                     scale: animation,
                     child: FadeTransition(

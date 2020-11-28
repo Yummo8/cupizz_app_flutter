@@ -1,9 +1,9 @@
 part of '../index.dart';
 
-pickImage(BuildContext context, Function(List<File> image) onPickedImage,
+void pickImage(BuildContext context, Function(List<File> image) onPickedImage,
     {bool isMulti = false}) async {
   FocusScope.of(context).unfocus();
-  showCupertinoModalPopup(
+  await showCupertinoModalPopup(
     context: context,
     useRootNavigator: false,
     builder: (context) => CupertinoActionSheet(
@@ -28,7 +28,7 @@ pickImage(BuildContext context, Function(List<File> image) onPickedImage,
             textColor: context.colorScheme.primary,
             themeColor: context.colorScheme.background,
           ).then((assets) async {
-            if (assets.length > 0) {
+            if (assets.isNotEmpty) {
               final files = await Future.wait(assets.map((e) => e.file));
               onPickedImage(files);
             }

@@ -45,7 +45,7 @@ abstract class SelectedProvider {
   void sure();
 
   Future checkPickImageEntity() async {
-    List<AssetEntity> notExistsList = [];
+    final notExistsList = [];
     for (var entity in selectedList) {
       var exists = await entity.exists;
       if (!exists) {
@@ -58,7 +58,7 @@ abstract class SelectedProvider {
     });
   }
 
-  addPickedAsset(List<AssetEntity> list) {
+  void addPickedAsset(List<AssetEntity> list) {
     for (final entity in list) {
       addSelectEntity(entity);
     }

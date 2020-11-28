@@ -38,7 +38,7 @@ class _Error {
 }
 
 class _Button {
-  final login = "Đăng nhập";
+  final login = 'Đăng nhập';
   final register = 'Đăng ký';
   final forgotPassword = 'Quên mật khẩu?';
   final reload = 'Tải lại';

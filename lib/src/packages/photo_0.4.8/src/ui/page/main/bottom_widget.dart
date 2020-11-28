@@ -20,7 +20,7 @@ class _BottomWidget extends StatefulWidget {
     this.options,
     this.provider,
     this.selectedProvider,
-    this.galleryName = "",
+    this.galleryName = '',
     this.galleryListProvider,
     this.onTapPreview,
   }) : super(key: key);
@@ -37,7 +37,7 @@ class __BottomWidgetState extends State<_BottomWidget> {
   @override
   Widget build(BuildContext context) {
     var textStyle = TextStyle(fontSize: 14.0);
-    const textPadding = const EdgeInsets.symmetric(horizontal: 16.0);
+    const textPadding = EdgeInsets.symmetric(horizontal: 16.0);
     return Container(
       color: options.themeColor,
       child: SafeArea(

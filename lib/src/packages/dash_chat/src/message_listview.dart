@@ -84,7 +84,7 @@ class _MessageListViewState extends State<MessageListView> {
   double previousPixelPostion = 0.0;
 
   bool scrollNotificationFunc(ScrollNotification scrollNotification) {
-    double bottom =
+    final bottom =
         widget.inverted ? 0.0 : scrollNotification.metrics.maxScrollExtent;
 
     if (scrollNotification.metrics.pixels == bottom) {
@@ -138,23 +138,23 @@ class _MessageListViewState extends State<MessageListView> {
                   reverse: widget.inverted,
                   itemCount: widget.messages.length,
                   itemBuilder: (context, i) {
-                    bool first = false;
-                    bool last = false;
-                    bool showDate;
-                    bool isUser = widget.messages[i] != null
+                    var first = false;
+                    var last = false;
+                    var showDate = false;
+                    final isUser = widget.messages[i] != null
                         ? widget.messages[i].sender.id == widget.user.id
                         : Random().nextInt(2) == 1;
-                    bool showAvatar = widget.messages[i] != null
+                    final showAvatar = widget.messages[i] != null
                         ? shouldShowAvatar(i)
                         : !isUser;
 
-                    if (widget.messages.length == 0) {
+                    if (widget.messages.isEmpty) {
                       first = true;
                     } else if (widget.messages.length - 1 == i) {
                       last = true;
                     }
 
-                    DateTime messageDate = widget.messages[i] != null
+                    final messageDate = widget.messages[i] != null
                         ? DateTime(
                             widget.messages[i].createdAt.year,
                             widget.messages[i].createdAt.month,
@@ -163,7 +163,7 @@ class _MessageListViewState extends State<MessageListView> {
                         : DateTime.now();
 
                     // Needed for inverted list
-                    DateTime previousDate = currentDate ?? messageDate;
+                    final previousDate = currentDate ?? messageDate;
 
                     if (currentDate == null) {
                       currentDate = messageDate;
@@ -247,8 +247,8 @@ class _MessageListViewState extends State<MessageListView> {
                                                             ListTile(
                                                               leading: Icon(Icons
                                                                   .content_copy),
-                                                              title: Text(
-                                                                  "Copy to clipboard"),
+                                                              title:
+                                                                  Text('Copy'),
                                                               onTap: () {
                                                                 Clipboard.setData(ClipboardData(
                                                                     text: widget
