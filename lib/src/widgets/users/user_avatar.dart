@@ -57,7 +57,7 @@ class UserAvatar extends StatelessWidget {
             isAvatar: true,
           ),
         ),
-        if (onlineStatus == OnlineStatus.online)
+        if (onlineStatus == OnlineStatus.online && showOnline)
           Positioned(
             bottom: size * 0.05,
             right: size * 0.05,

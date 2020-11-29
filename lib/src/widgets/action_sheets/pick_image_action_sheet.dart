@@ -1,16 +1,18 @@
 part of '../index.dart';
 
 void pickImage(BuildContext context, Function(List<File> image) onPickedImage,
-    {bool isMulti = false, String title}) async {
+    {int maxSelected = 9, String title}) async {
   FocusScope.of(context).unfocus();
   await showCupertinoModalPopup(
     context: context,
     useRootNavigator: false,
     builder: (context) => CupertinoActionSheet(
-      title: Text(title,
-          style: context.textTheme.headline6.copyWith(
-              fontWeight: FontWeight.bold,
-              color: context.colorScheme.onSurface)),
+      title: title.isExistAndNotEmpty
+          ? Text(title,
+              style: context.textTheme.headline6.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.colorScheme.onSurface))
+          : null,
       actions: <Widget>[
         CupertinoActionSheetAction(
           onPressed: () => ImagePicker()
@@ -30,6 +32,7 @@ void pickImage(BuildContext context, Function(List<File> image) onPickedImage,
             dividerColor: context.colorScheme.background,
             textColor: context.colorScheme.primary,
             themeColor: context.colorScheme.background,
+            maxSelected: maxSelected,
           ).then((assets) async {
             if (assets.isNotEmpty) {
               final files = await Future.wait(assets.map((e) => e.file));

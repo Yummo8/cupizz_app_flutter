@@ -37,13 +37,25 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
 
   Future updateCover(io.File cover) async {
     try {
-      model.update(isUpdaingCover: true);
+      model.update(isUpdatingCover: true);
       await updateProfile(cover: cover);
     } catch (e) {
       debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
     } finally {
-      model.update(isUpdaingCover: false);
+      model.update(isUpdatingCover: false);
+    }
+  }
+
+  Future updateAvatar(io.File avatar) async {
+    try {
+      model.update(isUpdatingAvatar: true);
+      await updateProfile(avatar: avatar);
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      model.update(isUpdatingAvatar: false);
     }
   }
 

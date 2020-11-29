@@ -33,6 +33,7 @@ class _Common {
 
 class _Public {
   final updateCover = 'Cập nhật ảnh bìa';
+  final updateAvatar = 'Đổi avatar';
 }
 
 class _Error {

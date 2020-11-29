@@ -5,24 +5,28 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     CurrentUserController controller, {
     @required this.currentUser,
     this.isLoading = false,
-    this.isUpdaingCover = false,
+    this.isUpdatingCover = false,
+    this.isUpdatingAvatar = false,
   }) : super(controller);
 
   final User currentUser;
   final bool isLoading;
-  final bool isUpdaingCover;
+  final bool isUpdatingCover;
+  final bool isUpdatingAvatar;
 
   @override
   void update({
     User currentUser,
     bool isLoading,
-    bool isUpdaingCover,
+    bool isUpdatingCover,
+    bool isUpdatingAvatar,
   }) {
     CurrentUserModel(
       controller,
       currentUser: currentUser ?? this.currentUser,
       isLoading: isLoading ?? this.isLoading,
-      isUpdaingCover: isUpdaingCover ?? this.isUpdaingCover,
+      isUpdatingCover: isUpdatingCover ?? this.isUpdatingCover,
+      isUpdatingAvatar: isUpdatingAvatar ?? this.isUpdatingAvatar,
     ).updateMomentum();
   }
 
@@ -33,7 +37,6 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
       currentUser: json != null && json['currentUser'] != null
           ? Mapper.fromJson(json['currentUser']).toObject<User>()
           : null,
-      isLoading: (json ?? {})['isLoading'],
     );
   }
 
@@ -41,7 +44,6 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
   Map<String, dynamic> toJson() {
     final result = {
       'currentUser': currentUser?.toJson(),
-      'isLoading': isLoading,
     };
     return result;
   }

@@ -50,6 +50,7 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           _buildAvatar(context, scrollRate),
           _buildUpdateCoverButton(context, scrollRate),
+          _buildUpdateCoverButton(context, scrollRate),
         ],
       ),
     );
@@ -78,28 +79,58 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildAvatar(BuildContext context, double scrollRate) {
+    final size =
+        _AVATAR_MAX_SIZE - (_AVATAR_MAX_SIZE - _AVATAR_MIN_SIZE) * scrollRate;
     return Positioned(
       bottom: 0,
       left: context.width / 12 - (context.width / 12 - 20) * scrollRate,
       child: Container(
+        height: size,
+        width: size,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(90.0)),
           border: Border.all(
             color: context.colorScheme.background,
             width: 5,
           ),
+          color: context.colorScheme.background,
         ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(90.0)),
             border: Border.all(color: context.colorScheme.primary),
           ),
-          child: UserAvatar.fromChatUser(
-            simpleUser: user,
-            size: _AVATAR_MAX_SIZE -
-                (_AVATAR_MAX_SIZE - _AVATAR_MIN_SIZE) * scrollRate,
-            showOnline: false,
-          ),
+          child: MomentumBuilder(
+              controllers: [CurrentUserController],
+              builder: (context, snapshot) {
+                final model = snapshot<CurrentUserModel>();
+                return CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: model.isUpdatingAvatar
+                      ? null
+                      : () {
+                          pickImage(
+                            context,
+                            (images) {
+                              if (images.isExistAndNotEmpty) {
+                                Momentum.controller<CurrentUserController>(
+                                        context)
+                                    .updateAvatar(images[0]);
+                              }
+                            },
+                            maxSelected: 1,
+                            title: Strings.public.updateAvatar,
+                          );
+                        },
+                  child: model.isUpdatingAvatar
+                      ? Align(child: LoadingIndicator(size: size * 0.5))
+                      : UserAvatar.fromChatUser(
+                          simpleUser: model.currentUser,
+                          size: size,
+                          showOnline: false,
+                        ),
+                );
+              }),
         ),
       ),
     );
@@ -117,11 +148,48 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             builder: (context, snapshot) {
               final model = snapshot<CurrentUserModel>();
               return OpacityIconButton(
-                icon: !model.isUpdaingCover ? Icons.camera : null,
-                iconWidget: model.isUpdaingCover
+                icon: !model.isUpdatingCover ? Icons.camera : null,
+                iconWidget: model.isUpdatingCover
                     ? LoadingIndicator(
                         color: context.colorScheme.onPrimary,
-                        size: 20,
+                        size: 22,
+                      )
+                    : null,
+                onPressed: () {
+                  pickImage(
+                    context,
+                    (images) {
+                      if (images.isExistAndNotEmpty) {
+                        model.controller.updateCover(images[0]);
+                      }
+                    },
+                    title: Strings.public.updateCover,
+                    maxSelected: 1,
+                  );
+                },
+              );
+            }),
+      ),
+    );
+  }
+
+  Widget _buildSettingButton(BuildContext context, double scrollRate) {
+    final topPosition = 10 + MediaQuery.of(context).padding.top;
+    return Positioned(
+      right: 10,
+      top: topPosition * (1 - scrollRate),
+      child: Transform.scale(
+        scale: 1 - scrollRate,
+        child: MomentumBuilder(
+            controllers: [CurrentUserController],
+            builder: (context, snapshot) {
+              final model = snapshot<CurrentUserModel>();
+              return OpacityIconButton(
+                icon: !model.isUpdatingCover ? Icons.camera : null,
+                iconWidget: model.isUpdatingCover
+                    ? LoadingIndicator(
+                        color: context.colorScheme.onPrimary,
+                        size: 22,
                       )
                     : null,
                 onPressed: () {
