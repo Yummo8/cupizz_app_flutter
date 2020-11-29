@@ -1,13 +1,16 @@
 part of '../index.dart';
 
 void pickImage(BuildContext context, Function(List<File> image) onPickedImage,
-    {bool isMulti = false}) async {
+    {bool isMulti = false, String title}) async {
   FocusScope.of(context).unfocus();
   await showCupertinoModalPopup(
     context: context,
     useRootNavigator: false,
     builder: (context) => CupertinoActionSheet(
-      title: null,
+      title: Text(title,
+          style: context.textTheme.headline6.copyWith(
+              fontWeight: FontWeight.bold,
+              color: context.colorScheme.onSurface)),
       actions: <Widget>[
         CupertinoActionSheetAction(
           onPressed: () => ImagePicker()

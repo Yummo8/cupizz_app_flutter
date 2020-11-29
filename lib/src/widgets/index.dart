@@ -23,6 +23,7 @@ part 'bottom_sheets/hobbies_bottom_sheet.dart';
 part 'buttons/argon_button.dart';
 part 'buttons/option_button.dart';
 part 'buttons/save_button.dart';
+part 'buttons/opacity_icon_button.dart';
 part 'customs/animated_list.dart';
 part 'customs/button_bar.dart';
 part 'customs/custom_grid_view.dart';

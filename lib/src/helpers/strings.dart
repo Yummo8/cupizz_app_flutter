@@ -3,6 +3,7 @@ part of 'index.dart';
 class Strings {
   static const APP_TITLE = 'Cupizz';
   static final _Common common = _Common();
+  static final _Public public = _Public();
   static final _Button button = _Button();
   static final _Error error = _Error();
   static final _Drawer drawer = _Drawer();
@@ -28,6 +29,10 @@ class _Common {
   final showOnYourProfile = 'Hiển thị trên hồ sơ của bạn';
   final birthday = 'Ngày sinh';
   final notDisclose = 'Không muốn tiết lộ';
+}
+
+class _Public {
+  final updateCover = 'Cập nhật ảnh bìa';
 }
 
 class _Error {

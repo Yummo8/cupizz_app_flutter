@@ -19,7 +19,6 @@ import '../../../../widgets/index.dart';
 
 part 'widgets/animated_background.dart';
 part 'widgets/c_card.dart';
-part 'widgets/options_button.dart';
 part 'widgets/options_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,7 +49,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildHeader() {
     return Builder(builder: (context) {
-      return OptionsButton(
+      return OpacityIconButton(
+        icon: Icons.tune,
         onPressed: () {
           _drawerController.openMenu();
         },

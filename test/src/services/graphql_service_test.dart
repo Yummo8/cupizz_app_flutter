@@ -126,9 +126,10 @@ void main() async {
       final allHobbies = (await graphql.hobbiesQuery() as List)
           .map((e) => Mapper.fromJson(e).toObject<Hobby>())
           .toList();
-      final currentAvatar = Mapper.fromJson(await graphql.meQuery())
-          .toObject<SimpleUser>()
-          .avatar;
+      final currentAvatar =
+          Mapper.fromJson(await graphql.meQuery()).toObject<ChatUser>().avatar;
+      final currentCover =
+          Mapper.fromJson(await graphql.meQuery()).toObject<SimpleUser>().cover;
       final nickName = 'Hien ${Random().nextInt(100)}';
       final introduction = 'Introduction ${Random().nextInt(100)}';
       final gender =
@@ -139,6 +140,7 @@ void main() async {
       final job = 'Job ${Random().nextInt(100)}';
       final height = Random().nextInt(190 - 160) + 160;
       final avatar = io.File(Assets.i.images.defaultAvatar);
+      final cover = io.File(Assets.i.images.defaultAvatar);
 
       final json = await graphql.updateProfile(
         nickName,
@@ -149,6 +151,7 @@ void main() async {
         job,
         height,
         avatar,
+        cover,
       );
 
       final user = Mapper.fromJson(json).toObject<User>();
@@ -161,6 +164,7 @@ void main() async {
       expect(job, user.job);
       expect(height, user.height);
       expect(currentAvatar != user.avatar, true);
+      expect(currentCover != user.cover, true);
     });
   });
 

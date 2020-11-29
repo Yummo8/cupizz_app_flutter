@@ -11,7 +11,7 @@ part 'sub_edit_screen/edit_pictrues_screen.dart';
 part 'widgets/cart_image.dart';
 part 'widgets/custom_clipper.dart';
 part 'widgets/row_info.dart';
-part 'widgets/stack_container.dart';
+part 'widgets/profile_sliver_app_bar_delegate.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override

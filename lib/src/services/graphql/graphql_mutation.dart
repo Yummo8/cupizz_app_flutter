@@ -27,9 +27,10 @@ extension GraphqlMutation on GraphqlService {
     String job,
     int height,
     io.File avatar,
+    io.File cover,
   ]) async {
     final query = '''
-          mutation updateProfile(\$avatar: Upload) {
+          mutation updateProfile(\$avatar: Upload, \$cover: Upload) {
             updateProfile(
               ${nickName != null ? 'nickName: "$nickName"' : ''}
               ${introduction != null ? 'introduction: "$introduction"' : ''}
@@ -39,11 +40,13 @@ extension GraphqlMutation on GraphqlService {
               ${job != null ? 'job: "$job"' : ''}
               ${height != null ? 'height: $height' : ''}
               avatar: \$avatar
+              cover: \$cover
             ) ${User.graphqlQuery}
           }''';
     final result = await mutate(
       MutationOptions(documentNode: gql(query), variables: {
-        'avatar': avatar != null ? await multiPartFile(avatar) : null
+        'avatar': avatar != null ? await multiPartFile(avatar) : null,
+        'cover': cover != null ? await multiPartFile(cover) : null,
       }),
     );
 

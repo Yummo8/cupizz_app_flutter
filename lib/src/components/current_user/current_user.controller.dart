@@ -35,6 +35,18 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     await updateProfile(hobbies: currentUser.hobbies);
   }
 
+  Future updateCover(io.File cover) async {
+    try {
+      model.update(isUpdaingCover: true);
+      await updateProfile(cover: cover);
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      model.update(isUpdaingCover: false);
+    }
+  }
+
   Future<void> updateProfile({
     String nickName,
     String introduction,
@@ -44,6 +56,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     String job,
     int height,
     io.File avatar,
+    io.File cover,
   }) async {
     final currentUser = model.currentUser.clone<User>();
     if (nickName != null) currentUser.nickName = nickName;
@@ -57,7 +70,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
 
     try {
       final service = getService<UserService>();
-      await service.updateProfile(
+      final result = await service.updateProfile(
         nickName: nickName,
         introduction: introduction,
         gender: gender,
@@ -66,7 +79,9 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         job: job,
         height: height,
         avatar: avatar,
+        cover: cover,
       );
+      model.update(currentUser: result);
       if (hobbies != null) {
         unawaited(
             dependOn<RecommendableUsersController>().fetchRecommendableUsers());
