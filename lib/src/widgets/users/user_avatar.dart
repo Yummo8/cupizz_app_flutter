@@ -16,14 +16,14 @@ class UserAvatar extends StatelessWidget {
 
   factory UserAvatar.fromChatUser({
     Key key,
-    @required ChatUser simpleUser,
+    @required ChatUser user,
     double size = 50,
     bool showOnline = true,
   }) {
     return UserAvatar(
       key: key,
-      image: simpleUser?.avatar,
-      onlineStatus: simpleUser?.onlineStatus,
+      image: user?.avatar,
+      onlineStatus: user?.onlineStatus,
       size: size,
       showOnline: showOnline,
     );

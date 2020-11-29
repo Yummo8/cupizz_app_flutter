@@ -87,4 +87,15 @@ extension GraphqlQuery on GraphqlService {
     ));
     return result.data['conversation'];
   }
+
+  Future userQuery(String id) async {
+    final queryString = '''{ 
+        user(id: "$id") ${SimpleUser.graphqlQuery}
+      }''';
+    final result = await query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      documentNode: gql(queryString),
+    ));
+    return result.data['user'];
+  }
 }

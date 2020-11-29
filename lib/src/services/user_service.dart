@@ -102,4 +102,11 @@ class UserService extends MomentumService {
     final result = WithIsLastPageOutput<FriendData>.fromJson(data);
     return result;
   }
+
+  Future<SimpleUser> getUser({String id}) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.userQuery(id);
+    final result = Mapper.fromJson(data).toObject<SimpleUser>();
+    return result;
+  }
 }

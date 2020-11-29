@@ -3,6 +3,7 @@ part of 'index.dart';
 class ChatUser extends BaseModel {
   String nickName;
   FileModel avatar;
+  FileModel cover;
   OnlineStatus onlineStatus;
   DateTime lastOnline;
 
@@ -12,6 +13,7 @@ class ChatUser extends BaseModel {
     String id,
     this.nickName,
     this.avatar,
+    this.cover,
     this.onlineStatus,
     this.lastOnline,
   }) : super(id: id);
@@ -21,6 +23,7 @@ class ChatUser extends BaseModel {
     super.mapping(map);
     map('data.nickName', nickName, (v) => nickName = v);
     map<FileModel>('data.avatar', avatar, (v) => avatar = v);
+    map<FileModel>('data.cover', cover, (v) => cover = v);
     map('data.onlineStatus', onlineStatus, (v) => onlineStatus = v,
         EnumTransform<OnlineStatus, String>());
     map('data.lastOnline', lastOnline, (v) => lastOnline = v, DateTransform());
@@ -32,6 +35,7 @@ class ChatUser extends BaseModel {
     data {
       nickName
       avatar ${FileModel.graphqlQuery}
+      cover ${FileModel.graphqlQuery}
       onlineStatus
       lastOnline
     }

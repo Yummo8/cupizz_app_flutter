@@ -22,6 +22,15 @@ class ThemeController extends MomentumController<ThemeModel> {
   void _selectTheme(int index) {
     _storage.saveTheme(index);
     model.update(activeTheme: index);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: themes[index].brightness,
+        statusBarColor: themes[index].colorScheme.onBackground.withOpacity(0),
+        statusBarIconBrightness: themes[index].brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark,
+      ),
+    );
   }
 
   ThemeData get selectedTheme => themes[model.activeTheme];

@@ -28,7 +28,7 @@ class AvatarContainer extends StatelessWidget {
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
         child: avatarBuilder != null && user != null
             ? avatarBuilder(user)
-            : SizedBox(child: UserAvatar.fromChatUser(simpleUser: user)),
+            : SizedBox(child: UserAvatar.fromChatUser(user: user)),
       ),
     );
   }

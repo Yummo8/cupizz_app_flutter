@@ -1,16 +1,20 @@
-part of '../profile_screen.dart';
+part of '../user_profile.dart';
 
-class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   static const _AVATAR_MAX_SIZE = 100.0;
   static const _AVATAR_MIN_SIZE = 50.0;
   static const _HEADER_MIN_HEIGHT = 100.0;
   final double expandedHeight;
   final PreferredSizeWidget bottom;
+  final ChatUser user;
+  final bool isCurrentUser;
 
   @override
   final FloatingHeaderSnapConfiguration snapConfiguration;
 
-  ProfileSliverAppBarDelegate({
+  _ProfileSliverAppBarDelegate(
+    this.user,
+    this.isCurrentUser, {
     @required this.expandedHeight,
     this.bottom,
     this.snapConfiguration,
@@ -47,8 +51,7 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
           _buildAvatar(context, scrollRate),
-          _buildUpdateCoverButton(context, scrollRate),
-          _buildUpdateCoverButton(context, scrollRate),
+          if (isCurrentUser) _buildUpdateCoverButton(context, scrollRate),
         ],
       ),
     );
@@ -63,14 +66,7 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         clipper: BackgroudClipper(),
         child: Stack(
           children: [
-            Positioned.fill(
-                child: MomentumBuilder(
-                    controllers: [CurrentUserController],
-                    builder: (context, snapshot) {
-                      final model = snapshot<CurrentUserModel>();
-                      return CustomNetworkImage(
-                          model.currentUser?.cover?.url ?? '');
-                    })),
+            Positioned.fill(child: CustomNetworkImage(user?.cover?.url ?? '')),
             Container(
               width: context.width,
               height: expandedHeight,
@@ -111,7 +107,7 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 final model = snapshot<CurrentUserModel>();
                 return CupertinoButton(
                   padding: EdgeInsets.zero,
-                  onPressed: model.isUpdatingAvatar
+                  onPressed: model.isUpdatingAvatar && isCurrentUser
                       ? null
                       : () {
                           pickImage(
@@ -127,10 +123,10 @@ class ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                             title: Strings.public.updateAvatar,
                           );
                         },
-                  child: model.isUpdatingAvatar
+                  child: model.isUpdatingAvatar && isCurrentUser
                       ? Align(child: LoadingIndicator(size: size * 0.5))
                       : UserAvatar.fromChatUser(
-                          user: model.currentUser,
+                          user: user,
                           size: size,
                           showOnline: false,
                         ),

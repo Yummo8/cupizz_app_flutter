@@ -7,6 +7,7 @@ import 'package:cupizz_app/src/packages/momentum/src/momentum_base.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pedantic/pedantic.dart';
 

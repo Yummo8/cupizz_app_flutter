@@ -8,7 +8,6 @@ class SimpleUser extends ChatUser {
   String phoneNumber;
   String job;
   int height;
-  FileModel cover;
   FriendType friendType;
   String address;
   EducationLevel educationLevel;
@@ -57,7 +56,7 @@ class SimpleUser extends ChatUser {
     this.age,
     this.introduction,
     FileModel avatar,
-    this.cover,
+    FileModel cover,
     this.hobbies,
     this.gender,
     this.phoneNumber,
@@ -77,6 +76,7 @@ class SimpleUser extends ChatUser {
           id: id,
           nickName: nickName,
           avatar: avatar,
+          cover: cover,
           onlineStatus: onlineStatus,
           lastOnline: lastOnline,
         );
@@ -92,7 +92,6 @@ class SimpleUser extends ChatUser {
     map('data.phoneNumber', phoneNumber, (v) => phoneNumber = v);
     map('data.job', job, (v) => job = v);
     map('data.height', height, (v) => height = v);
-    map<FileModel>('data.cover', cover, (v) => cover = v);
     map('data.friendType.status', friendType, (v) => friendType = v,
         EnumTransform<FriendType, String>());
     map('data.address', address, (v) => address = v);

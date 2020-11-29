@@ -2,6 +2,7 @@ library app;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cupizz_app/src/screens/user/user_screen.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,6 +33,7 @@ Momentum momentum({bool isTesting = false}) {
       MessagesScreenController(),
       RecommendableUsersController()..config(lazy: true),
       ThemeController(),
+      UserScreenController(),
     ],
     services: [
       AuthService(),
@@ -50,6 +52,7 @@ Momentum momentum({bool isTesting = false}) {
         MessagesScreen(),
         RegisterScreen(),
         ProfileScreen(),
+        UserScreen(),
         ...[
           EditAgeScreen(),
           EditDrinkScreen(),

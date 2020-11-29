@@ -27,26 +27,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     return PrimaryScaffold(
-      body: MomentumBuilder(
-          controllers: [CurrentUserController],
-          builder: (context, snapshot) {
-            final model = snapshot<CurrentUserModel>();
-            final user = model.currentUser;
-            return NestedScrollView(
-              controller: scrollController,
-              headerSliverBuilder: (context, _) {
-                return <Widget>[
-                  SliverPersistentHeader(
-                    floating: false,
-                    pinned: true,
-                    delegate: ProfileSliverAppBarDelegate(
-                      user,
-                      expandedHeight: 300,
-                    ),
-                  ),
-                ];
-              },
-              body: SingleChildScrollView(
+      body: NestedScrollView(
+        controller: scrollController,
+        headerSliverBuilder: (context, _) {
+          return <Widget>[
+            SliverPersistentHeader(
+              floating: false,
+              pinned: true,
+              delegate: ProfileSliverAppBarDelegate(expandedHeight: 300),
+            ),
+          ];
+        },
+        body: MomentumBuilder(
+            controllers: [CurrentUserController],
+            builder: (context, snapshot) {
+              final model = snapshot<CurrentUserModel>();
+              final user = model.currentUser;
+              return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -79,81 +76,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.location_on_rounded,
-                        semanticLabel: '',
-                        title: 'Đang ở Thành phố Hồ Chí Minh',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.favorite,
-                        semanticLabel: '',
-                        title:
-                            'Đang ở tìm mối quan hệ lâu dài, kiểu hẹn hò không ràng buộc',
-                      ),
-                      const SizedBox(height: 16.0),
-                      if (user == null || user.height != null)
+                      if (user == null || user?.address != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.location_on_rounded,
+                          semanticLabel: '',
+                          title: user.address,
+                        ),
+                      ],
+                      if (user == null || user?.lookingFor != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.favorite,
+                          semanticLabel: '',
+                          title: user.lookingFor.displayValue,
+                        ),
+                      ],
+                      if (user == null || user?.height != null) ...[
+                        const SizedBox(height: 16.0),
                         RowInfo(
                           iconData: Icons.height,
                           semanticLabel: '',
                           title: '${user?.height} cm',
                         ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.work,
-                        semanticLabel: '',
-                        title: 'LÀM VIỆC TẠI CTY TNHH Freetrend',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.school,
-                        semanticLabel: '',
-                        title:
-                            'Trường đại học Công nghệ Thông tin - Đại học Quốc gia TP.HCM, THPT Bến Cát, Bến Cát, Bình Dương',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.school,
-                        semanticLabel: '',
-                        title: 'Bằng đại cao đẳng/đại học',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.house,
-                        semanticLabel: '',
-                        title: 'Quê quán Long Xuyên',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.family_restroom,
-                        semanticLabel: '',
-                        title: 'Chưa có con',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.smoking_rooms,
-                        semanticLabel: '',
-                        title: 'Thỉnh thoảng',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.local_bar,
-                        semanticLabel: '',
-                        title: 'Thỉnh thoảng',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.self_improvement,
-                        semanticLabel: '',
-                        title: 'Phật giáo',
-                      ),
-                      const SizedBox(height: 16.0),
-                      RowInfo(
-                        iconData: Icons.public,
-                        semanticLabel: '',
-                        title: 'Tiếng việt',
-                      ),
+                      ],
+                      // const SizedBox(height: 16.0),
+                      // RowInfo(
+                      //   iconData: Icons.work,
+                      //   semanticLabel: '',
+                      //   title: 'LÀM VIỆC TẠI CTY TNHH Freetrend',
+                      // ),
+                      // const SizedBox(height: 16.0),
+                      // RowInfo(
+                      //   iconData: Icons.school,
+                      //   semanticLabel: '',
+                      //   title:
+                      //       'Trường đại học Công nghệ Thông tin - Đại học Quốc gia TP.HCM, THPT Bến Cát, Bến Cát, Bình Dương',
+                      // ),
+                      if (user == null || user.educationLevel != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.favorite,
+                          semanticLabel: '',
+                          title: user.educationLevel.displayValue,
+                        ),
+                      ],
+                      // const SizedBox(height: 16.0),
+                      // RowInfo(
+                      //   iconData: Icons.house,
+                      //   semanticLabel: '',
+                      //   title: 'Quê quán Long Xuyên',
+                      // ),
+                      if (user == null || user.yourKids != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.family_restroom,
+                          semanticLabel: '',
+                          title: user.yourKids.displayValue,
+                        ),
+                      ],
+                      if (user == null || user.smoking != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.smoking_rooms,
+                          semanticLabel: '',
+                          title: user.smoking.displayValue,
+                        ),
+                      ],
+                      if (user == null || user.drinking != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.local_bar,
+                          semanticLabel: '',
+                          title: user.drinking.displayValue,
+                        ),
+                      ],
+                      if (user == null || user.religious != null) ...[
+                        const SizedBox(height: 16.0),
+                        RowInfo(
+                          iconData: Icons.self_improvement,
+                          semanticLabel: '',
+                          title: user.religious.displayValue,
+                        ),
+                      ],
+                      // const SizedBox(height: 16.0),
+                      // RowInfo(
+                      //   iconData: Icons.public,
+                      //   semanticLabel: '',
+                      //   title: 'Tiếng việt',
+                      // ),
                       Divider(
                         color: context.colorScheme.primary,
                         height: 15,
@@ -193,9 +204,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
     );
   }
 }

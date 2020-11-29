@@ -1,4 +1,4 @@
-part of '../profile_screen.dart';
+part of '../user_profile.dart';
 
 class RowInfo extends StatelessWidget {
   final String semanticLabel;

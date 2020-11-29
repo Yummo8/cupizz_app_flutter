@@ -98,14 +98,14 @@ class RouterService extends MomentumService {
           ));
         }
       }
+      _currentRouteParam = params;
+      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       Route r;
       if (transition != null) {
         r = transition(context, findWidgetOfType);
       } else {
         r = MaterialPageRoute(builder: (_) => findWidgetOfType);
       }
-      _currentRouteParam = params;
-      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       unawaited(Navigator.pushAndRemoveUntil(context, r, (r) => false));
     } else {
       print('[$MomentumService -> $RouterService]: Unable to '
