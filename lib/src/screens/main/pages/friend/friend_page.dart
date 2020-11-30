@@ -103,61 +103,59 @@ class _FriendPageState extends MomentumState<FriendPage>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: MomentumBuilder(
-                controllers: [FriendPageController],
-                builder: (context, snapshot) {
-                  final model = snapshot<FriendPageModel>();
-                  final friendsList = [
-                    ...model.friends,
-                    ...!model.isLastPage
-                        ? List.generate(
-                            model.friends.length % 2 == 0 ? 2 : 3, (_) => null)
-                        : []
-                  ];
-                  return GridView(
-                    padding: const EdgeInsets.all(12).copyWith(top: 80),
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    controller: scrollController,
-                    children: friendsList
-                        .asMap()
-                        .map((index, value) {
-                          final count = friendsList.length;
-                          final animation =
-                              Tween<double>(begin: 0.0, end: 1.0).animate(
-                            CurvedAnimation(
-                              parent: animationController,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn),
-                            ),
-                          );
-                          return MapEntry(
-                            index,
-                            HomeListView(
-                              animation: animation,
-                              animationController: animationController,
-                              simpleUser: value?.friend,
-                            ),
-                          );
-                        })
-                        .values
-                        .toList(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: multiple ? 2 : 1,
-                      mainAxisSpacing: _PADDING,
-                      crossAxisSpacing: _PADDING,
-                      childAspectRatio: 1,
-                    ),
-                  );
-                }),
-          ),
-          getAppBarUI(),
-        ],
-      ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: MomentumBuilder(
+              controllers: [FriendPageController],
+              builder: (context, snapshot) {
+                final model = snapshot<FriendPageModel>();
+                final friendsList = [
+                  ...model.friends,
+                  ...!model.isLastPage
+                      ? List.generate(
+                          model.friends.length % 2 == 0 ? 2 : 3, (_) => null)
+                      : []
+                ];
+                return GridView(
+                  padding: const EdgeInsets.all(12).copyWith(top: 100),
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  controller: scrollController,
+                  children: friendsList
+                      .asMap()
+                      .map((index, value) {
+                        final count = friendsList.length;
+                        final animation =
+                            Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                            parent: animationController,
+                            curve: Interval((1 / count) * index, 1.0,
+                                curve: Curves.fastOutSlowIn),
+                          ),
+                        );
+                        return MapEntry(
+                          index,
+                          HomeListView(
+                            animation: animation,
+                            animationController: animationController,
+                            simpleUser: value?.friend,
+                          ),
+                        );
+                      })
+                      .values
+                      .toList(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: multiple ? 2 : 1,
+                    mainAxisSpacing: _PADDING,
+                    crossAxisSpacing: _PADDING,
+                    childAspectRatio: 1,
+                  ),
+                );
+              }),
+        ),
+        getAppBarUI(),
+      ],
     );
   }
 
@@ -165,6 +163,7 @@ class _FriendPageState extends MomentumState<FriendPage>
     return FadeTransition(
       opacity: topBarAnimation,
       child: Container(
+        padding: MediaQuery.of(context).padding,
         decoration: BoxDecoration(
           color: context.colorScheme.background.withOpacity(topBarOpacity),
           borderRadius: const BorderRadius.only(
