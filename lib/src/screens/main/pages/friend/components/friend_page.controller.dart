@@ -17,10 +17,13 @@ class FriendPageController extends MomentumController<FriendPageModel> {
     return FriendPageModel(this);
   }
 
-  @override
-  Future<void> bootstrapAsync() => _reloadFriends();
+  // @override
+  // Future<void> bootstrapAsync() => _reloadFriends();
 
-  Future refresh() => _reloadFriends();
+  Future refresh() async {
+    model.animationController?.forward();
+    await _reloadFriends();
+  }
 
   Future updateSettings({
     FriendQueryType filter,
@@ -36,6 +39,8 @@ class FriendPageController extends MomentumController<FriendPageModel> {
       );
       await _reloadFriends();
       model.update(isLoading: false);
+      model.animationController?.reset();
+      model.animationController?.forward();
     }
   }
 

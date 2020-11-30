@@ -8,6 +8,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final PreferredSizeWidget bottom;
   final ChatUser user;
   final bool isCurrentUser;
+  final bool showBackButton;
 
   @override
   final FloatingHeaderSnapConfiguration snapConfiguration;
@@ -18,6 +19,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     @required this.expandedHeight,
     this.bottom,
     this.snapConfiguration,
+    this.showBackButton = false,
   });
 
   @override
@@ -50,8 +52,10 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
+          if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
           if (isCurrentUser) _buildUpdateCoverButton(context, scrollRate),
+          if (isCurrentUser) _buildSettingButton(context, scrollRate),
         ],
       ),
     );
@@ -175,37 +179,39 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildSettingButton(BuildContext context, double scrollRate) {
-    final topPosition = 10 + MediaQuery.of(context).padding.top;
     return Positioned(
       right: 10,
-      top: topPosition * (1 - scrollRate),
+      bottom: 10 - 30 * scrollRate,
       child: Transform.scale(
-        scale: 1 - scrollRate,
-        child: MomentumBuilder(
-            controllers: [CurrentUserController],
-            builder: (context, snapshot) {
-              final model = snapshot<CurrentUserModel>();
-              return OpacityIconButton(
-                icon: !model.isUpdatingCover ? Icons.camera : null,
-                iconWidget: model.isUpdatingCover
-                    ? LoadingIndicator(
-                        color: context.colorScheme.onPrimary,
-                        size: 22,
-                      )
-                    : null,
-                onPressed: () {
-                  pickImage(
-                    context,
-                    (images) {
-                      if (images.isExistAndNotEmpty) {
-                        model.controller.updateCover(images[0]);
-                      }
-                    },
-                    title: Strings.public.updateCover,
-                  );
-                },
-              );
-            }),
+        scale: 1,
+        child: FlatButton(
+          color: context.colorScheme.background,
+          shape: CircleBorder(),
+          child: Icon(Icons.settings),
+          onPressed: () {
+            RouterService.goto(context, UserSettingScreen);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(BuildContext context, double scrollRate) {
+    return Positioned(
+      left: 10,
+      top: 10 + MediaQuery.of(context).padding.top,
+      child: Opacity(
+        opacity: 1 - scrollRate,
+        child: InkWell(
+          child: Icon(
+            Icons.chevron_left,
+            color: context.colorScheme.onPrimary,
+            size: 40,
+          ),
+          onTap: () {
+            RouterService.pop(context);
+          },
+        ),
       ),
     );
   }

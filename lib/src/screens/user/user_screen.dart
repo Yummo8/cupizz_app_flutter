@@ -25,7 +25,7 @@ class UserScreen extends StatelessWidget {
         var model = snapshot<_UserScreenModel>();
         return UserProfile(
           user: model.user,
-          isCurrentUser: true,
+          showBackButton: true,
         );
       },
     );

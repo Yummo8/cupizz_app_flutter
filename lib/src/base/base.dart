@@ -15,6 +15,7 @@ export '../models/index.dart';
 export '../packages/index.dart';
 export '../services/index.dart';
 export '../widgets/index.dart';
+export '../screens/index.dart';
 
 part 'src/app_base.dart';
 part 'src/app_config.dart';

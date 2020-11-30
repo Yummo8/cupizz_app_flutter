@@ -25,6 +25,7 @@ class AuthController extends MomentumController<AuthModel> {
     if (userId.isExistAndNotEmpty) {
       await getService<OneSignalService>().subscribe(userId);
     }
+    await dependOn<FriendPageController>().refresh();
   }
 
   Future<void> logout() async {

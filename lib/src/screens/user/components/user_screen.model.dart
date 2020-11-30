@@ -16,11 +16,16 @@ class _UserScreenModel extends MomentumModel<UserScreenController> {
 
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
-    return _UserScreenModel(controller, user: json['user']);
+    return _UserScreenModel(
+      controller,
+      user: json['user'] != null
+          ? Mapper.fromJson(json['user']).toObject<SimpleUser>()
+          : null,
+    );
   }
 
   @override
   Map<String, dynamic> toJson() => {
-        'user': user.toJson(),
+        'user': user?.toJson(),
       };
 }

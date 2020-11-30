@@ -31,7 +31,7 @@ class _FriendPageState extends MomentumState<FriendPage>
   void initState() {
     super.initState();
     animationController = AnimationController(
-        duration: const Duration(milliseconds: 4000), vsync: this);
+        duration: const Duration(milliseconds: 2000), vsync: this);
 
     topBarAnimationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this)
@@ -42,6 +42,9 @@ class _FriendPageState extends MomentumState<FriendPage>
             curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
+      Momentum.controller<FriendPageController>(context)
+          .model
+          .update(scrollOffset: scrollController.offset);
       if (scrollController.offset >= 24) {
         if (topBarOpacity != 1.0) {
           setState(() {
@@ -65,16 +68,24 @@ class _FriendPageState extends MomentumState<FriendPage>
     });
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Momentum.controller<FriendPageController>(context)
-          .listen<FriendPageEvent>(
-        state: this,
-        invoke: (data) {
-          if (data.action == FriendPageEventAction.error) {
-            debugPrint(data.message);
-            Fluttertoast.showToast(msg: data.message);
-          }
-        },
-      );
+      final controller = Momentum.controller<FriendPageController>(context)
+        ..model.update(animationController: animationController)
+        // ..refresh()
+        ..listen<FriendPageEvent>(
+          state: this,
+          invoke: (data) {
+            if (data.action == FriendPageEventAction.error) {
+              debugPrint(data.message);
+              Fluttertoast.showToast(msg: data.message);
+            }
+          },
+        );
+      if (controller.model.scrollOffset > 0) {
+        scrollController.jumpTo(controller.model.scrollOffset);
+      }
+      if (controller.model.friends.isNotEmpty) {
+        animationController.fling();
+      }
     });
   }
 
@@ -107,7 +118,6 @@ class _FriendPageState extends MomentumState<FriendPage>
                             model.friends.length % 2 == 0 ? 2 : 3, (_) => null)
                         : []
                   ];
-                  animationController.forward();
                   return GridView(
                     padding: const EdgeInsets.all(12).copyWith(top: 80),
                     physics: const BouncingScrollPhysics(),

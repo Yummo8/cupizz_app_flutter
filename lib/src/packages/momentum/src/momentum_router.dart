@@ -139,14 +139,14 @@ class RouterService extends MomentumService {
       // unawaited(SystemChannels.platform.invokeMethod('SystemNavigator.pop'));
     } else {
       var activePage = getActive();
+      _currentRouteParam = result;
+      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       Route r;
       if (transition != null) {
         r = transition(context, activePage);
       } else {
         r = MaterialPageRoute(builder: (_) => activePage);
       }
-      _currentRouteParam = result;
-      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       await Navigator.pushAndRemoveUntil(context, r, (r) => false);
     }
   }

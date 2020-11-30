@@ -11,6 +11,7 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
     this.currentPage = 1,
     this.isLastPage = false,
     this.isLoading = false,
+    this.animationController,
   }) : super(controller);
 
   final FriendQueryType filter;
@@ -21,6 +22,7 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
   final int currentPage;
   final bool isLastPage;
 
+  final AnimationController animationController;
   final bool isLoading;
 
   @override
@@ -34,6 +36,7 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
     bool isLastPage,
     bool isLoading,
     int pageSize,
+    AnimationController animationController,
   }) {
     FriendPageModel(
       controller,
@@ -45,6 +48,7 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
       currentPage: currentPage ?? this.currentPage,
       isLastPage: isLastPage ?? this.isLastPage,
       isLoading: isLoading ?? this.isLoading,
+      animationController: animationController ?? this.animationController,
     ).updateMomentum();
   }
 
