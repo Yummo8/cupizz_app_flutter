@@ -177,6 +177,10 @@ void main() async {
 
       expect(hobbies.length, greaterThan(0));
     });
+    test('Get address', () async {
+      final address = await graphql.getAddressQuery('10.762622', '106.660172');
+      expect(address, 'Phường 7, Quận 11, Việt Nam');
+    });
   });
 
   group('Friends test', () {

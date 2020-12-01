@@ -9,4 +9,11 @@ class SystemService extends MomentumService {
         .toList();
     return hobies;
   }
+
+  Future<String> getAddress(
+      {@required String latitude, @required String longitude}) async {
+    final graphql = getService<GraphqlService>();
+    final address = await graphql.getAddressQuery(latitude, longitude);
+    return address;
+  }
 }

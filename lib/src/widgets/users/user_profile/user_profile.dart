@@ -95,7 +95,7 @@ class _UserProfileState extends State<UserProfile> {
                   RowInfo(
                     iconData: Icons.location_on_rounded,
                     semanticLabel: '',
-                    title: user?.address ?? 'Address',
+                    title: 'Đang ở ${user?.address ?? 'Address'}',
                   ),
                 ],
                 if (user == null || user?.lookingFor != null) ...[

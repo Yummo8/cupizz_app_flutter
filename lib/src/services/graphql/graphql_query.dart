@@ -98,4 +98,15 @@ extension GraphqlQuery on GraphqlService {
     ));
     return result.data['user'];
   }
+
+  Future getAddressQuery(String latitude, String longitude) async {
+    final queryString = '''{ 
+        getAddress(latitude: "$latitude" longitude: "$longitude")
+      }''';
+    final result = await query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheFirst,
+      documentNode: gql(queryString),
+    ));
+    return result.data['getAddress'];
+  }
 }

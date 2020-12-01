@@ -49,12 +49,11 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
 
   void _getAddressFromLatLng() async {
     try {
-      final p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
-      final place = p[0];
       final address =
-          '${place.locality.isExistAndNotEmpty ? '${place.locality},' : place.locality} ${place.country}';
-      print(address);
+          await Momentum.getService<SystemService>(context).getAddress(
+        latitude: _currentPosition.latitude.toString(),
+        longitude: _currentPosition.longitude.toString(),
+      );
       setState(() {
         _currentAddress = address;
         _onLoading = false;
