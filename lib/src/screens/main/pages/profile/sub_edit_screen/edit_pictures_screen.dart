@@ -1,4 +1,4 @@
-part of '../profile_screen.dart';
+part of '../edit_profile_screen.dart';
 
 class EditPicturesScreen extends StatefulWidget {
   @override

@@ -13,7 +13,6 @@ import 'screens/main/main_screen.dart';
 import 'screens/main/pages/chat/chat_page.dart';
 import 'screens/main/pages/friend/friend_page.dart';
 import 'screens/main/pages/profile/edit_profile_screen.dart';
-import 'screens/main/pages/profile/profile_screen.dart';
 import 'screens/messages/messages_screen.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
@@ -50,7 +49,6 @@ Momentum momentum({bool isTesting = false}) {
         MainScreen(),
         MessagesScreen(),
         RegisterScreen(),
-        ProfileScreen(),
         UserScreen(),
         UserSettingScreen(),
         ...[

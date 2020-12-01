@@ -2,7 +2,6 @@ library edit_profile_screen;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -26,6 +25,7 @@ part 'widgets/multi_select_hobby.dart';
 part 'widgets/multiselect_dialog_hobby.dart';
 part 'widgets/row_edit_info.dart';
 part 'widgets/show_on_profile_text.dart';
+part 'sub_edit_screen/edit_pictures_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override

@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:cupizz_app/src/screens/main/pages/profile/edit_profile_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
