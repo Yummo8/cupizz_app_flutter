@@ -8,11 +8,15 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
     );
   }
 
-  Future loadData(ChatUser chatUser) async {
-    if (chatUser == null) return;
-    model.update(user: chatUser);
+  Future loadData({String userId, ChatUser chatUser}) async {
+    if (chatUser == null && userId == null) return;
+
+    if (chatUser != null) {
+      model.update(user: chatUser);
+    }
     if (chatUser is! SimpleUser && chatUser is! User) {
-      final user = await getService<UserService>().getUser(id: chatUser.id);
+      final user =
+          await getService<UserService>().getUser(id: chatUser?.id ?? userId);
       model.update(user: user);
     }
   }
