@@ -40,7 +40,7 @@ class RowEditInfo extends StatelessWidget {
               ),
               SizedBox(height: sizeHelper.rH(1)),
               Text(
-                value,
+                value ?? ' - ',
                 style: context.textTheme.bodyText2,
               ),
             ],

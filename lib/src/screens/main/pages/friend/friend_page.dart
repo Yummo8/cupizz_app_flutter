@@ -19,7 +19,7 @@ class FriendPage extends StatefulWidget {
 }
 
 class _FriendPageState extends MomentumState<FriendPage>
-    with TickerProviderStateMixin, LoadmoreMixin {
+    with TickerProviderStateMixin, LoadmoreMixin, KeepScrollOffsetMixin {
   AnimationController animationController;
   AnimationController topBarAnimationController;
   bool multiple = true;
@@ -42,9 +42,6 @@ class _FriendPageState extends MomentumState<FriendPage>
             curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
-      Momentum.controller<FriendPageController>(context)
-          .model
-          .update(scrollOffset: scrollController.offset);
       if (scrollController.offset >= 24) {
         if (topBarOpacity != 1.0) {
           setState(() {
@@ -80,9 +77,6 @@ class _FriendPageState extends MomentumState<FriendPage>
             }
           },
         );
-      if (controller.model.scrollOffset > 0) {
-        scrollController.jumpTo(controller.model.scrollOffset);
-      }
       if (controller.model.friends.isNotEmpty) {
         animationController.fling();
       }

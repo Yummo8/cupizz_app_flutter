@@ -11,6 +11,7 @@ class Strings {
   static final _RegisterScreen register = _RegisterScreen();
   static final _FriendPage friendPage = _FriendPage();
   static final _MessageScreen messageScreen = _MessageScreen();
+  static final _EditProfileScreen editProfile = _EditProfileScreen();
 }
 
 class _Common {
@@ -84,4 +85,9 @@ class _FriendPage {
 class _MessageScreen {
   final hint = 'Nhập tin nhắn';
   String lastOnlineAt(String time) => 'Truy cập $time';
+}
+
+class _EditProfileScreen {
+  final title = 'Chỉnh sửa hồ sơ hẹn hò';
+  final introduction = 'Giới thiệu bản thân';
 }

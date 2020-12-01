@@ -29,9 +29,7 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
-  final ScrollController scrollController = ScrollController();
-
+class _UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
