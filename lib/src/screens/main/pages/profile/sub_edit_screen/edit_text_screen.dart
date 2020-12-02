@@ -129,7 +129,14 @@ class _EditTextScreenState extends State<EditTextScreen> {
             RouterService.pop(context);
           }
         },
-        actions: [SaveButton()],
+        actions: [
+          SaveButton(
+            onPressed: () {
+              params.onSave?.call(_textController.text);
+              RouterService.pop(context);
+            },
+          )
+        ],
       ),
       body: Container(
         child: Padding(

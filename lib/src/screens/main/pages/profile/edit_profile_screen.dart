@@ -33,6 +33,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  CurrentUserModel model;
   User user;
   String bio;
 
@@ -58,7 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: MomentumBuilder(
           controllers: [CurrentUserController],
           builder: (context, snapshot) {
-            final model = snapshot<CurrentUserModel>();
+            model = snapshot<CurrentUserModel>();
             user = model.currentUser;
             return SingleChildScrollView(
               padding:
@@ -181,9 +182,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
               title: 'Tên',
+              value: user.nickName,
               onSave: (value) {
-                Momentum.controller<CurrentUserController>(context)
-                    .updateProfile(nickName: value);
+                model.controller.updateProfile(nickName: value);
               },
             ));
       },
