@@ -21,8 +21,8 @@ class FriendPageController extends MomentumController<FriendPageModel> {
   // Future<void> bootstrapAsync() => _reloadFriends();
 
   Future refresh() async {
-    model.animationController?.forward();
     await _reloadFriends();
+    model.animationController?.fling();
   }
 
   Future updateSettings({

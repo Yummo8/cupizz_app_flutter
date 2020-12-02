@@ -55,7 +55,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
           if (isCurrentUser) _buildUpdateCoverButton(context, scrollRate),
-          if (isCurrentUser) _buildSettingButton(context, scrollRate),
+          _buildSettingOrMessageButton(context, scrollRate),
         ],
       ),
     );
@@ -178,7 +178,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _buildSettingButton(BuildContext context, double scrollRate) {
+  Widget _buildSettingOrMessageButton(BuildContext context, double scrollRate) {
     return Positioned(
       right: 10,
       bottom: 10 - 30 * scrollRate,
@@ -187,9 +187,19 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child: FlatButton(
           color: context.colorScheme.background,
           shape: CircleBorder(),
-          child: Icon(Icons.settings),
+          child: Icon(
+            isCurrentUser ? Icons.settings : Icons.message_outlined,
+            size: 18,
+          ),
           onPressed: () {
-            RouterService.goto(context, UserSettingScreen);
+            RouterService.goto(
+              context,
+              isCurrentUser ? UserSettingScreen : MessagesScreen,
+              params: isCurrentUser
+                  ? null
+                  : MessagesScreenParams(
+                      ConversationKey(targetUserId: user.id)),
+            );
           },
         ),
       ),

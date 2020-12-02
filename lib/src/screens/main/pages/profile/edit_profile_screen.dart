@@ -32,8 +32,7 @@ class EditProfileScreen extends StatefulWidget {
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen>
-    with KeepScrollOffsetMixin {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   User user;
   int bioLenght;
 
@@ -61,7 +60,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>
           builder: (context, snapshot) {
             user = snapshot<CurrentUserModel>().currentUser;
             return SingleChildScrollView(
-              controller: scrollController,
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
               child: Column(

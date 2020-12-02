@@ -19,5 +19,6 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
           await getService<UserService>().getUser(id: chatUser?.id ?? userId);
       model.update(user: user);
     }
+    UserProfileState.lastScrollOffset = 0;
   }
 }

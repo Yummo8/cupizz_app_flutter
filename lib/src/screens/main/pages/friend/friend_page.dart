@@ -20,6 +20,15 @@ class FriendPage extends StatefulWidget {
 
 class _FriendPageState extends MomentumState<FriendPage>
     with TickerProviderStateMixin, LoadmoreMixin, KeepScrollOffsetMixin {
+  static double lastScrollOffset = 0;
+  @override
+  double get lastOffset => lastScrollOffset;
+
+  @override
+  set lastOffset(double value) {
+    lastScrollOffset = value;
+  }
+
   AnimationController animationController;
   AnimationController topBarAnimationController;
   bool multiple = true;
@@ -65,7 +74,7 @@ class _FriendPageState extends MomentumState<FriendPage>
     });
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final controller = Momentum.controller<FriendPageController>(context)
+      Momentum.controller<FriendPageController>(context)
         ..model.update(animationController: animationController)
         // ..refresh()
         ..listen<FriendPageEvent>(
@@ -77,9 +86,7 @@ class _FriendPageState extends MomentumState<FriendPage>
             }
           },
         );
-      if (controller.model.friends.isNotEmpty) {
-        animationController.fling();
-      }
+      animationController.fling();
     });
   }
 

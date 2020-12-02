@@ -24,10 +24,20 @@ class UserProfile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UserProfileState createState() => _UserProfileState();
+  UserProfileState createState() => UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
+class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
+  static double lastScrollOffset = 0;
+
+  @override
+  double get lastOffset => lastScrollOffset;
+
+  @override
+  set lastOffset(double value) {
+    lastScrollOffset = value;
+  }
+
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);

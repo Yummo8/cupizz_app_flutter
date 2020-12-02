@@ -74,6 +74,7 @@ class CartImage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: RaisedButton(
                         elevation: 2.0,
+                        color: context.colorScheme.background,
                         padding: EdgeInsets.all(10.0),
                         shape: CircleBorder(),
                         child: Icon(
