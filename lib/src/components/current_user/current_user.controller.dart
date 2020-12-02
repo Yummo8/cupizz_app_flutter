@@ -67,6 +67,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     String phoneNumber,
     String job,
     int height,
+    DateTime birthday,
     io.File avatar,
     io.File cover,
   }) async {
@@ -78,6 +79,10 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (phoneNumber != null) currentUser.phoneNumber = phoneNumber;
     if (job != null) currentUser.job = job;
     if (height != null) currentUser.height = height;
+    if (birthday != null) {
+      currentUser.birthday = birthday;
+      currentUser.age = birthday.getAge();
+    }
     model.update(currentUser: currentUser);
 
     try {
@@ -92,6 +97,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         height: height,
         avatar: avatar,
         cover: cover,
+        birthday: birthday,
       );
       model.update(currentUser: result);
       if (hobbies != null) {

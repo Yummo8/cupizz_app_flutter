@@ -39,6 +39,7 @@ class UserService extends MomentumService {
     int height,
     io.File avatar,
     io.File cover,
+    DateTime birthday,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.updateProfile(
@@ -51,6 +52,7 @@ class UserService extends MomentumService {
       height,
       avatar,
       cover,
+      birthday,
     );
     final user = Mapper.fromJson(data).toObject<User>();
     return user;

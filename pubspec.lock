@@ -520,6 +520,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  object_mapper:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "v1.1.0"
+      resolved-ref: e349bb5472ba947c1c6c2afa091a30d38b3bf8bb
+      url: "https://github.com/hienlh/object_mapper.git"
+    source: git
+    version: "1.0.0+2"
   octo_image:
     dependency: transitive
     description:

@@ -96,6 +96,12 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                       ),
                   ],
                 ),
+                if (user == null || user?.introduction != null)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(user.introduction,
+                        style: context.textTheme.subtitle2),
+                  ),
                 if (user == null || user?.address != null) ...[
                   const SizedBox(height: 16.0),
                   RowInfo(

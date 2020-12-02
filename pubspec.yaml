@@ -46,6 +46,10 @@ dependencies:
   timeago: ^2.0.28
   photo_manager: ^0.4.8
   photo_view: ^0.10.3
+  object_mapper:
+    git:
+      url: https://github.com/hienlh/object_mapper.git
+      ref: v1.1.0
 
 dev_dependencies:
   flutter_test:

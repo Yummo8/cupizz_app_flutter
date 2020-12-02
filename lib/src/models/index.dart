@@ -3,7 +3,6 @@ library models;
 import 'package:flutter/cupertino.dart';
 
 import '../base/base.dart';
-import '../packages/object_mapper/object_mapper.dart';
 
 part 'base.dart';
 part 'chat_user.dart';

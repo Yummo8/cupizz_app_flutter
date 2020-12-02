@@ -1,6 +1,6 @@
-import 'package:cupizz_app/src/packages/object_mapper/object_mapper.dart';
 import 'package:cupizz_app/src/models/index.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:object_mapper/object_mapper.dart';
 
 final Map<String, dynamic> json = {
   'id': 'ckhsn40e900044rnxna4onhsj',

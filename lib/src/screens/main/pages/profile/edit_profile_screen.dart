@@ -34,7 +34,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   User user;
-  int bioLenght;
+  String bio;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _onBioChanged(String value) {
     if (value.isExistAndNotEmpty) {
       setState(() {
-        bioLenght = value.length;
+        bio = value;
       });
     }
   }
@@ -58,7 +58,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: MomentumBuilder(
           controllers: [CurrentUserController],
           builder: (context, snapshot) {
-            user = snapshot<CurrentUserModel>().currentUser;
+            final model = snapshot<CurrentUserModel>();
+            user = model.currentUser;
             return SingleChildScrollView(
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -95,16 +96,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      if (bioLenght != null)
+                      if (bio.isExistAndNotEmpty)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '$bioLenght/500',
+                              '${bio.length}/500',
                               style: context.textTheme.caption,
                             ),
                             InkWell(
-                              onTap: () => {},
+                              onTap: () {
+                                model.controller
+                                    .updateProfile(introduction: bio);
+                                setState(() {
+                                  bio = '';
+                                });
+                              },
                               child: Text(
                                 Strings.button.save,
                                 style: context.textTheme.bodyText1.copyWith(
@@ -174,7 +181,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         RouterService.goto(context, EditTextScreen,
             params: EditTextScreenParams(
               title: 'Tên',
-              onSave: (value) {},
+              onSave: (value) {
+                Momentum.controller<CurrentUserController>(context)
+                    .updateProfile(nickName: value);
+              },
             ));
       },
     ));

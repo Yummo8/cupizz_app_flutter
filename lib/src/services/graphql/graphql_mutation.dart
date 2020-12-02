@@ -28,6 +28,7 @@ extension GraphqlMutation on GraphqlService {
     int height,
     io.File avatar,
     io.File cover,
+    DateTime birthday,
   ]) async {
     final query = '''
           mutation updateProfile(\$avatar: Upload, \$cover: Upload) {

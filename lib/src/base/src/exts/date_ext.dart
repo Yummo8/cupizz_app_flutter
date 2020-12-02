@@ -5,4 +5,8 @@ extension DateTimeExt on DateTime {
       DateFormat('${withTime ? 'hh:mm ' : ''}dd/MM/yyyy').format(this);
 
   DateTime removeTime() => toVietNamese().toVietNameseDate();
+
+  int getAge() {
+    return DateTime.now().year - year;
+  }
 }

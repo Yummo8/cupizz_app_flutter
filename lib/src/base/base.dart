@@ -6,6 +6,7 @@ import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
+export 'package:object_mapper/object_mapper.dart';
 
 import '../helpers/index.dart';
 
