@@ -12,7 +12,7 @@ class UserItem extends StatelessWidget {
       onPressed(simpleUser);
     } else {
       RouterService.goto(context, UserScreen,
-          params: UserScreenParams(simpleUser));
+          params: UserScreenParams(user: simpleUser));
     }
   }
 

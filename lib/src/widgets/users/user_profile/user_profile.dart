@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:cupizz_app/src/screens/main/pages/profile/edit_profile_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -188,12 +186,11 @@ class _UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => CartImage(
-                    imageUrl:
-                        'https://64.media.tumblr.com/1a818212c49bc873a5cb8a687382122e/tumblr_pwnyyjtQ6M1w89qpgo1_1280.jpg',
+                    userImage: (user?.userImages ?? [])[index],
                     readOnly: !widget.isCurrentUser,
                   ),
                   shrinkWrap: true,
-                  itemCount: 6,
+                  itemCount: user?.userImages?.length ?? 0,
                 ),
                 if (widget.isCurrentUser)
                   FlatButton(

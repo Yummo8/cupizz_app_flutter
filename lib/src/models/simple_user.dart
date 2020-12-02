@@ -16,6 +16,7 @@ class SimpleUser extends ChatUser {
   HaveKids yourKids;
   LookingFor lookingFor;
   Religious religious;
+  List<UserImage> userImages;
 
   List<HobbyWithIsSelect> _sameHobbies;
   List<HobbyWithIsSelect> getSameHobbies(BuildContext context) {
@@ -50,37 +51,6 @@ class SimpleUser extends ChatUser {
     return _sameHobbies;
   }
 
-  SimpleUser({
-    String id,
-    String nickName,
-    this.age,
-    this.introduction,
-    FileModel avatar,
-    FileModel cover,
-    this.hobbies,
-    this.gender,
-    this.phoneNumber,
-    this.job,
-    this.height,
-    OnlineStatus onlineStatus,
-    DateTime lastOnline,
-    this.friendType,
-    this.address,
-    this.educationLevel,
-    this.smoking,
-    this.drinking,
-    this.yourKids,
-    this.lookingFor,
-    this.religious,
-  }) : super(
-          id: id,
-          nickName: nickName,
-          avatar: avatar,
-          cover: cover,
-          onlineStatus: onlineStatus,
-          lastOnline: lastOnline,
-        );
-
   @override
   void mapping(Mapper map) {
     super.mapping(map);
@@ -107,6 +77,7 @@ class SimpleUser extends ChatUser {
         EnumTransform<LookingFor, String>());
     map('data.religious', religious, (v) => religious = v,
         EnumTransform<Religious, String>());
+    map<UserImage>('data.userImages', userImages, (v) => userImages = v);
   }
 
   static String get graphqlQuery => '''
@@ -133,6 +104,7 @@ class SimpleUser extends ChatUser {
       yourKids
       lookingFor
       religious
+      userImages ${UserImage.graphqlQuery}
     }
   }''';
 }

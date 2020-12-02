@@ -8,8 +8,10 @@ part 'components/user_screen.model.dart';
 
 class UserScreenParams extends RouterParam {
   final ChatUser user;
+  final String userId;
 
-  UserScreenParams(this.user);
+  UserScreenParams({this.userId, this.user})
+      : assert(userId != null || user != null);
 }
 
 class UserScreen extends StatelessWidget {
@@ -17,7 +19,7 @@ class UserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Momentum.controller<UserScreenController>(context);
     final params = RouterService.getParam<UserScreenParams>(context);
-    controller.loadData(params?.user);
+    controller.loadData(chatUser: params?.user, userId: params?.userId);
 
     return MomentumBuilder(
       controllers: [UserScreenController],

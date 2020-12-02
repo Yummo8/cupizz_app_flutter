@@ -12,6 +12,8 @@ import 'pages/friend/friend_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/profile/profile_page.dart';
 
+export 'pages/profile/edit_profile_screen.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();

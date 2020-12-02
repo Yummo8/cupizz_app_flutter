@@ -10,4 +10,5 @@ part 'src/mapper.dart';
 part 'src/raw_representable.dart';
 part 'src/transformable.dart';
 part 'src/transforms/date_transform.dart';
+part 'src/transforms/color_transform.dart';
 part 'src/transforms/enum_transform.dart';

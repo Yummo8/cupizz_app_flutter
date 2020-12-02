@@ -18,7 +18,7 @@ void main() async {
 
   final graphql = tester.service<GraphqlService>();
   final storage = tester.service<StorageService>();
-  final loginEmail = 'test111@gmail.com';
+  final loginEmail = 'test12@gmail.com';
   final loginPassword = '123456789';
 
   final token = (await graphql.loginMutation(
@@ -26,7 +26,8 @@ void main() async {
 
   await storage.saveToken(token);
   graphql.reset();
-  final currentUser = Mapper.fromJson(await graphql.meQuery()).toObject<User>();
+  final currentUserJson = await graphql.meQuery();
+  final currentUser = Mapper.fromJson(currentUserJson).toObject<User>();
 
   group('User Service Test', () {
     test('Token must be String', () {
