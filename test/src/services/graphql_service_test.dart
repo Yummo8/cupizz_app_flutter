@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cupizz_app/src/app.dart';
@@ -7,7 +8,6 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:cupizz_app/src/services/graphql/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'dart:io' as io;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -140,8 +140,8 @@ void main() async {
       final phoneNumber = '097196370${Random().nextInt(9)}';
       final job = 'Job ${Random().nextInt(100)}';
       final height = Random().nextInt(190 - 160) + 160;
-      final avatar = io.File(Assets.i.images.defaultAvatar);
-      final cover = io.File(Assets.i.images.defaultAvatar);
+      final avatar = File(Assets.i.images.defaultAvatar);
+      final cover = File(Assets.i.images.defaultAvatar);
 
       final json = await graphql.updateProfile(
         nickName,
@@ -263,8 +263,8 @@ void main() async {
     });
 
     test('Send images message', () async {
-      final messageId = (await graphql.sendMessage(conversationKey, null,
-          [io.File(Assets.i.images.defaultAvatar)]))['id'];
+      final messageId = (await graphql.sendMessage(
+          conversationKey, null, [File(Assets.i.images.defaultAvatar)]))['id'];
 
       final newestMessages = WithIsLastPageOutput<Message>.fromJson(
           await graphql.messagesQuery(conversationKey));
@@ -327,6 +327,50 @@ void main() async {
         conversationKey,
         'Test from Flutter testing.',
       ))['id'];
+    });
+  });
+
+  group('Test user image', () {
+    test('addUserImage & removeUserImage', () async {
+      final json =
+          await graphql.addUserImage(File(Assets.i.images.defaultAvatar));
+
+      final userImage = Mapper.fromJson(json).toObject<UserImage>();
+
+      expect(userImage?.image != null, true);
+
+      final currentUserImages =
+          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+
+      expect(currentUserImages.contains(userImage), false);
+
+      await graphql.removeUserImage(userImage.id);
+
+      final currentUserImagesAfterDelete =
+          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+
+      expect(currentUserImagesAfterDelete.contains(userImage), false);
+    });
+
+    test('answerQuestion', () async {
+      // TODO missing api get questions
+    });
+
+    test('updateUserImagesSortOrder', () async {
+      final currentUserImages =
+          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+      final expectSort = [...currentUserImages];
+      expectSort.shuffle();
+
+      final json = await graphql
+          .updateUserImagesSortOrder(expectSort.map((e) => e.id).toList());
+
+      final afterSort = Mapper.fromJson(json).toObject<User>().userImages;
+
+      expect(
+        afterSort.map((e) => e.id).toList(),
+        expectSort.map((e) => e.id).toList(),
+      );
     });
   });
 }
