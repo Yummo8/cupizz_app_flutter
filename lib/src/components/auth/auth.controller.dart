@@ -32,6 +32,7 @@ class AuthController extends MomentumController<AuthModel> {
     await getService<AuthService>().logout();
     await getService<OneSignalService>().unSubscribe();
     await gotoAuth();
+    Momentum.resetAll(AppConfig.navigatorKey.currentContext);
   }
 
   Future<void> gotoHome() async {

@@ -19,12 +19,13 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     return ChatPageModel(this);
   }
 
-  @override
-  Future<void> bootstrapAsync() async {
-    model.update(isLoading: true);
-    await _reload();
-    _connectSubsciption();
-    model.update(isLoading: false);
+  void initState() async {
+    if (!model.conversations.isExistAndNotEmpty) {
+      model.update(isLoading: true);
+      await _reload();
+      _connectSubsciption();
+      model.update(isLoading: false);
+    }
   }
 
   @override

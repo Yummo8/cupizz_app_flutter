@@ -29,7 +29,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller = Momentum.controller<MessagesScreenController>(context);
+      controller = Momentum.controller<MessagesScreenController>(context)
+        ..initState();
       final params = Router.getParam<MessagesScreenParams>(context);
       if (params != null) {
         controller.loadData(params?.conversationKey);

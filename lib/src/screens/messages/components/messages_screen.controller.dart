@@ -19,8 +19,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
     return MessagesScreenModel(this);
   }
 
-  @override
-  void bootstrap() {
+  void initState() {
     if (model.conversation?.id != null) {
       loadData(ConversationKey(conversationId: model.conversation?.id));
     }
