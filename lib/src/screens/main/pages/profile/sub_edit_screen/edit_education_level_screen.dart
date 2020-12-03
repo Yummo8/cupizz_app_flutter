@@ -1,12 +1,13 @@
 part of '../edit_profile_screen.dart';
 
-class EditSmokeScreen extends StatefulWidget {
+class EditEducationLevelScreen extends StatefulWidget {
   @override
-  _EditSmokeScreenState createState() => _EditSmokeScreenState();
+  _EditEducationLevelScreenState createState() =>
+      _EditEducationLevelScreenState();
 }
 
-class _EditSmokeScreenState extends State<EditSmokeScreen> {
-  UsualType selectedValue;
+class _EditEducationLevelScreenState extends State<EditEducationLevelScreen> {
+  EducationLevel selectedValue;
 
   @override
   void initState() {
@@ -15,20 +16,20 @@ class _EditSmokeScreenState extends State<EditSmokeScreen> {
       selectedValue = Momentum.controller<CurrentUserController>(context)
           .model
           .currentUser
-          ?.drinking;
+          ?.educationLevel;
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: 'Hút thuốc', actions: [
+      appBar: BackAppBar(title: 'Trình độ học vấn', actions: [
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
-              .updateProfile(smoking: selectedValue);
+              .updateProfile(educationLevel: selectedValue);
           Router.pop(context);
         })
       ]),
@@ -38,18 +39,16 @@ class _EditSmokeScreenState extends State<EditSmokeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup<UsualType>(
+              RadioButtonGroup<EducationLevel>(
                 spacing: 1.0,
-                items: UsualType.getAll(),
+                items: EducationLevel.getAll(),
                 selectedItems: [selectedValue],
                 valueToString: (v) => v.displayValue,
                 onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),
               ),
-              SizedBox(
-                height: sizeHelper.rW(5),
-              ),
+              SizedBox(height: sizeHelper.rW(5)),
               ShowOnProfileText(),
             ],
           ),

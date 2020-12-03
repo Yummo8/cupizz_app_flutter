@@ -6,11 +6,19 @@ class EditLookupScreen extends StatefulWidget {
 }
 
 class _EditLookupScreenState extends State<EditLookupScreen> {
+  LookingFor selectedValue;
+
   @override
   Widget build(BuildContext context) {
     final sizeHelper = SizeHelper(context);
     return PrimaryScaffold(
-      appBar: BackAppBar(title: 'Đang tìm kiếm'),
+      appBar: BackAppBar(title: 'Đang tìm kiếm', actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(lookingFor: selectedValue);
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),

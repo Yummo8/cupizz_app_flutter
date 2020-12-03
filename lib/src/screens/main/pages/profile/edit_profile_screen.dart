@@ -9,12 +9,14 @@ import '../../../../base/base.dart';
 
 part 'sub_edit_screen/edit_age_screen.dart';
 part 'sub_edit_screen/edit_drink_screen.dart';
+part 'sub_edit_screen/edit_education_level_screen.dart';
 part 'sub_edit_screen/edit_gender_screen.dart';
 part 'sub_edit_screen/edit_height_screen.dart';
 part 'sub_edit_screen/edit_hobbies_screen.dart';
 part 'sub_edit_screen/edit_location_screen.dart';
 part 'sub_edit_screen/edit_lookup_screen.dart';
 part 'sub_edit_screen/edit_marriage_screen.dart';
+part 'sub_edit_screen/edit_pictures_screen.dart';
 part 'sub_edit_screen/edit_religion_screen.dart';
 part 'sub_edit_screen/edit_smoke_screen.dart';
 part 'sub_edit_screen/edit_text_screen.dart';
@@ -25,17 +27,25 @@ part 'widgets/multi_select_hobby.dart';
 part 'widgets/multiselect_dialog_hobby.dart';
 part 'widgets/row_edit_info.dart';
 part 'widgets/show_on_profile_text.dart';
-part 'sub_edit_screen/edit_pictures_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen>
+    with KeepScrollOffsetMixin {
   CurrentUserModel model;
   User user;
   String bio;
+
+  static double lastScrollOffset = 0;
+
+  @override
+  double get lastOffset => lastScrollOffset;
+
+  @override
+  set lastOffset(double value) => lastScrollOffset = value;
 
   @override
   void initState() {
@@ -62,6 +72,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             model = snapshot<CurrentUserModel>();
             user = model.currentUser;
             return SingleChildScrollView(
+              controller: scrollController,
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
               child: Column(
@@ -304,11 +315,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Trình độ học vấn',
       value: user?.educationLevel?.displayValue,
       onClick: () {
-        Router.goto(context, EditTextScreen,
-            params: EditTextScreenParams(
-              title: 'Trình độ học vấn',
-              onSave: (value) {},
-            ));
+        Router.goto(context, EditEducationLevelScreen);
       },
     ));
     return buildWrapperRowEditInfo(

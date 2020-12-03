@@ -31,19 +31,21 @@ class RowEditInfo extends StatelessWidget {
             semanticLabel: semanticLabel,
           ),
           SizedBox(width: sizeHelper.rW(3.0)),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: context.textTheme.bodyText1,
-              ),
-              SizedBox(height: sizeHelper.rH(1)),
-              Text(
-                value ?? ' - ',
-                style: context.textTheme.bodyText2,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: context.textTheme.bodyText1,
+                ),
+                SizedBox(height: sizeHelper.rH(1)),
+                Text(
+                  value ?? ' - ',
+                  style: context.textTheme.bodyText2,
+                ),
+              ],
+            ),
           )
         ],
       ),

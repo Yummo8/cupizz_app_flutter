@@ -147,6 +147,18 @@ void main() async {
       final longitude = Random().nextDouble() * 10 + 10;
       final address = await graphql.getAddressQuery(
           latitude.toString(), longitude.toString());
+      final educationLevel = EducationLevel.getAll()[
+          Random().nextInt(EducationLevel.getAll().length - 1)];
+      final smoking =
+          UsualType.getAll()[Random().nextInt(UsualType.getAll().length - 1)];
+      final drinking =
+          UsualType.getAll()[Random().nextInt(UsualType.getAll().length - 1)];
+      final yourKids =
+          HaveKids.getAll()[Random().nextInt(HaveKids.getAll().length - 1)];
+      final lookingFor =
+          LookingFor.getAll()[Random().nextInt(LookingFor.getAll().length - 1)];
+      final religious =
+          Religious.getAll()[Random().nextInt(Religious.getAll().length - 1)];
 
       final json = await graphql.updateProfile(
         nickName,
@@ -161,21 +173,33 @@ void main() async {
         birthday,
         latitude,
         longitude,
+        educationLevel,
+        smoking,
+        drinking,
+        yourKids,
+        lookingFor,
+        religious,
       );
 
       final user = Mapper.fromJson(json).toObject<User>();
 
-      expect(nickName, user.nickName);
-      expect(introduction, user.introduction);
-      expect(gender, user.gender);
-      expect(hobbies, user.hobbies);
-      expect(phoneNumber, user.phoneNumber);
-      expect(job, user.job);
-      expect(height, user.height);
+      expect(user.nickName, nickName);
+      expect(user.introduction, introduction);
+      expect(user.gender, gender);
+      expect(user.hobbies, hobbies);
+      expect(user.phoneNumber, phoneNumber);
+      expect(user.job, job);
+      expect(user.height, height);
+      expect(user.birthday.toLocal(), birthday);
+      expect(user.address, address);
+      expect(user.educationLevel, educationLevel);
+      expect(user.smoking, smoking);
+      expect(user.drinking, drinking);
+      expect(user.yourKids, yourKids);
+      expect(user.lookingFor, lookingFor);
+      expect(user.religious, religious);
       expect(currentAvatar != user.avatar, true);
       expect(currentCover != user.cover, true);
-      expect(birthday, user.birthday.toLocal());
-      expect(address, user.address);
     });
   });
 

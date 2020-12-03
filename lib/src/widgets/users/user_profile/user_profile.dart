@@ -95,11 +95,12 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                   ],
                 ),
                 if (user == null || user?.introduction != null)
-                  Align(
+                  ...[
+                    const SizedBox(height: 8.0),Align(
                     alignment: Alignment.centerLeft,
                     child: Text(user?.introduction ?? '',
                         style: context.textTheme.subtitle2),
-                  ),
+                  )],
                 if (user == null || user?.address != null) ...[
                   const SizedBox(height: 16.0),
                   RowInfo(
@@ -140,7 +141,7 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                 if (user == null || user.educationLevel != null) ...[
                   const SizedBox(height: 16.0),
                   RowInfo(
-                    iconData: Icons.favorite,
+                    iconData: Icons.school,
                     semanticLabel: '',
                     title:
                         user?.educationLevel?.displayValue ?? 'Education Level',

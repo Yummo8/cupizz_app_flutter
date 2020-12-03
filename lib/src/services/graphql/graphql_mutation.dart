@@ -31,6 +31,12 @@ extension GraphqlMutation on GraphqlService {
     DateTime birthday,
     double latitude,
     double longitude,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    LookingFor lookingFor,
+    Religious religious,
   ]) async {
     final query = '''
           mutation updateProfile(\$avatar: Upload, \$cover: Upload) {
@@ -47,6 +53,12 @@ extension GraphqlMutation on GraphqlService {
               ${longitude != null ? 'longitude: $longitude' : ''}
               avatar: \$avatar
               cover: \$cover
+              ${educationLevel != null ? 'educationLevel: ${educationLevel.rawValue}' : ''}
+              ${smoking != null ? 'smoking: ${smoking.rawValue}' : ''}
+              ${drinking != null ? 'drinking: ${drinking.rawValue}' : ''}
+              ${yourKids != null ? 'yourKids: ${yourKids.rawValue}' : ''}
+              ${lookingFor != null ? 'lookingFor: ${lookingFor.rawValue}' : ''}
+              ${religious != null ? 'religious: ${religious.rawValue}' : ''}
             ) ${User.graphqlQuery}
           }''';
     final result = await mutate(

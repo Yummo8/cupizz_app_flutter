@@ -42,6 +42,12 @@ class UserService extends MomentumService {
     DateTime birthday,
     double latitude,
     double longitude,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    LookingFor lookingFor,
+    Religious religious,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.updateProfile(
@@ -57,6 +63,12 @@ class UserService extends MomentumService {
       birthday,
       latitude,
       longitude,
+      educationLevel,
+      smoking,
+      drinking,
+      yourKids,
+      lookingFor,
+      religious,
     );
     final user = Mapper.fromJson(data).toObject<User>();
     return user;

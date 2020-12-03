@@ -29,6 +29,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(gender: selectedValue);
+          Router.pop(context);
         })
       ]),
       body: Container(
@@ -40,9 +41,9 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
               RadioButtonGroup<Gender>(
                 spacing: 1.0,
                 items: Gender.getAll(),
-                value: selectedValue,
+                selectedItems: [selectedValue],
                 valueToString: (v) => v.displayValue,
-                radioButtonValue: (value) => setState(() {
+                onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),
               ),

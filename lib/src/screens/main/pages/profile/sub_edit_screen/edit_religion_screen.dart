@@ -27,8 +27,9 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Quan điểm tôn giáo', actions: [
         SaveButton(onPressed: () {
-          // Momentum.controller<CurrentUserController>(context)
-          //     .updateProfile(gender: selectedValue);
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(religious: selectedValue);
+          Router.pop(context);
         })
       ]),
       body: Container(
@@ -40,9 +41,9 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
               RadioButtonGroup<Religious>(
                 spacing: 1.0,
                 items: Religious.getAll(),
-                value: selectedValue,
+                selectedItems: [selectedValue],
                 valueToString: (v) => v.displayValue,
-                radioButtonValue: (value) => setState(() {
+                onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),
               ),

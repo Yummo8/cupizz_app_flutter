@@ -65,6 +65,7 @@ Momentum momentum({bool isTesting = false}) {
           EditSmokeScreen(),
           EditSmokeScreen(),
           EditTextScreen(),
+          EditEducationLevelScreen(),
         ]
       ]),
       StorageService(isTesting: isTesting),

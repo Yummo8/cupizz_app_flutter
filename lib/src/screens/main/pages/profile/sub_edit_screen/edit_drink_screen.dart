@@ -27,8 +27,9 @@ class _EditDrinkScreenState extends State<EditDrinkScreen> {
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Rượu bia', actions: [
         SaveButton(onPressed: () {
-          // Momentum.controller<CurrentUserController>(context)
-          //     .updateProfile(drink: selectedValue);
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(drinking: selectedValue);
+          Router.pop(context);
         })
       ]),
       body: Container(
@@ -40,9 +41,9 @@ class _EditDrinkScreenState extends State<EditDrinkScreen> {
               RadioButtonGroup<UsualType>(
                 spacing: 1.0,
                 items: UsualType.getAll(),
-                value: selectedValue,
+                selectedItems: [selectedValue],
                 valueToString: (v) => v.displayValue,
-                radioButtonValue: (value) => setState(() {
+                onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),
               ),

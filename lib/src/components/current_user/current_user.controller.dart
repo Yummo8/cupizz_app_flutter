@@ -72,6 +72,12 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     io.File cover,
     double latitude,
     double longitude,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    LookingFor lookingFor,
+    Religious religious,
   }) async {
     final currentUser = model.currentUser.clone<User>();
     if (nickName != null) currentUser.nickName = nickName;
@@ -85,6 +91,13 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       currentUser.birthday = birthday;
       currentUser.age = birthday.getAge();
     }
+    if (educationLevel != null) currentUser.educationLevel = educationLevel;
+    if (smoking != null) currentUser.smoking = smoking;
+    if (drinking != null) currentUser.drinking = drinking;
+    if (yourKids != null) currentUser.yourKids = yourKids;
+    if (lookingFor != null) currentUser.lookingFor = lookingFor;
+    if (religious != null) currentUser.religious = religious;
+
     model.update(currentUser: currentUser);
 
     try {
@@ -102,14 +115,21 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         birthday: birthday,
         latitude: latitude,
         longitude: longitude,
+        educationLevel: educationLevel,
+        smoking: smoking,
+        drinking: drinking,
+        yourKids: yourKids,
+        lookingFor: lookingFor,
+        religious: religious,
       );
       model.update(currentUser: result);
       if (hobbies != null || longitude != null || latitude != null) {
         unawaited(
             dependOn<RecommendableUsersController>().fetchRecommendableUsers());
       }
-    } catch (_) {
+    } catch (e) {
       backward();
+      unawaited(Fluttertoast.showToast(msg: e.toString()));
       rethrow;
     }
   }

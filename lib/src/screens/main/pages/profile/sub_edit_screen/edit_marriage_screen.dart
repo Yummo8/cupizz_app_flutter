@@ -27,8 +27,9 @@ class _EditMarriageScreenState extends State<EditMarriageScreen> {
     return PrimaryScaffold(
       appBar: BackAppBar(title: 'Có con', actions: [
         SaveButton(onPressed: () {
-          // Momentum.controller<CurrentUserController>(context)
-          //     .updateProfile(gender: selectedValue);
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(yourKids: selectedValue);
+          Router.pop(context);
         })
       ]),
       body: Container(
@@ -40,9 +41,9 @@ class _EditMarriageScreenState extends State<EditMarriageScreen> {
               RadioButtonGroup<HaveKids>(
                 spacing: 1.0,
                 items: HaveKids.getAll(),
-                value: selectedValue,
+                selectedItems: [selectedValue],
                 valueToString: (v) => v.displayValue,
-                radioButtonValue: (value) => setState(() {
+                onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),
               ),

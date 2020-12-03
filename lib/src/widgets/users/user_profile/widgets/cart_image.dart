@@ -60,33 +60,37 @@ class CartImage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Center(
-                      child: Text(
-                        userImage?.answer?.content ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.headline6
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: RaisedButton(
-                        elevation: 2.0,
-                        color: context.colorScheme.background,
-                        padding: EdgeInsets.all(10.0),
-                        shape: CircleBorder(),
-                        child: Icon(
-                          Icons.edit,
-                          color: _theme.primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          userImage?.answer?.content ?? '',
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.headline6
+                              .copyWith(color: Colors.white),
                         ),
-                        onPressed: () {
-                          Router.goto(context, EditPicturesScreen);
-                        },
                       ),
                     ),
                   ),
+                  if (!readOnly)
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: RaisedButton(
+                          elevation: 2.0,
+                          color: context.colorScheme.background,
+                          padding: EdgeInsets.all(10.0),
+                          shape: CircleBorder(),
+                          child: Icon(
+                            Icons.edit,
+                            color: _theme.primaryColor,
+                          ),
+                          onPressed: () {
+                            Router.goto(context, EditPicturesScreen);
+                          },
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
