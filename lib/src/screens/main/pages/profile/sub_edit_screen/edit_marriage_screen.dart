@@ -6,33 +6,45 @@ class EditMarriageScreen extends StatefulWidget {
 }
 
 class _EditMarriageScreenState extends State<EditMarriageScreen> {
+  HaveKids selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.yourKids;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: 'Có con'),
+      appBar: BackAppBar(title: 'Có con', actions: [
+        SaveButton(onPressed: () {
+          // Momentum.controller<CurrentUserController>(context)
+          //     .updateProfile(gender: selectedValue);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<HaveKids>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Tôi chưa có con',
-                  'Tôi đã có con',
-                  'Không muốn tiết lộ',
-                ],
-                buttonValues: [
-                  'Tôi chưa có con',
-                  'Tôi đã có con',
-                  'Không muốn tiết lộ',
-                ],
-                radioButtonValue: (value) {
-                  print(value);
-                },
+                items: HaveKids.getAll(),
+                value: selectedValue,
+                valueToString: (v) => v.displayValue,
+                radioButtonValue: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),

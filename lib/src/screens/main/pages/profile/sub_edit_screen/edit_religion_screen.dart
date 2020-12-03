@@ -6,35 +6,45 @@ class EditReligionScreen extends StatefulWidget {
 }
 
 class _EditReligionScreenState extends State<EditReligionScreen> {
+  Religious selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.religious;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: 'Quan điểm tôn giáo'),
+      appBar: BackAppBar(title: 'Quan điểm tôn giáo', actions: [
+        SaveButton(onPressed: () {
+          // Momentum.controller<CurrentUserController>(context)
+          //     .updateProfile(gender: selectedValue);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<Religious>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Không muốn tiết lộ',
-                  'Công giáo',
-                  'Do thái',
-                  'Hindu giáo',
-                  'Khác'
-                ],
-                buttonValues: [
-                  'Không muốn tiết lộ',
-                  'Công giáo',
-                  'Do thái',
-                  'Hindu giáo',
-                  'Khác'
-                ],
-                radioButtonValue: (value) => print(value),
+                items: Religious.getAll(),
+                value: selectedValue,
+                valueToString: (v) => v.displayValue,
+                radioButtonValue: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),

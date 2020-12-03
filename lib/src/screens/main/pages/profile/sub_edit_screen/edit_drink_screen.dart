@@ -6,35 +6,45 @@ class EditDrinkScreen extends StatefulWidget {
 }
 
 class _EditDrinkScreenState extends State<EditDrinkScreen> {
+  UsualType selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.drinking;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: 'Rượu bia'),
+      appBar: BackAppBar(title: 'Rượu bia', actions: [
+        SaveButton(onPressed: () {
+          // Momentum.controller<CurrentUserController>(context)
+          //     .updateProfile(drink: selectedValue);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<UsualType>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Không bao giờ',
-                  'Thỉnh thoảng',
-                  'Thường xuyên',
-                  'Không muốn tiết lộ'
-                ],
-                buttonValues: [
-                  'Không bao giờ',
-                  'Thỉnh thoảng',
-                  'Thường xuyên',
-                  'Không muốn tiết lộ'
-                ],
-                radioButtonValue: (value) {
-                  print(value);
-                },
+                items: UsualType.getAll(),
+                value: selectedValue,
+                valueToString: (v) => v.displayValue,
+                radioButtonValue: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(height: sizeHelper.rW(5)),
               ShowOnProfileText(),

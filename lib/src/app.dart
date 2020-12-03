@@ -44,9 +44,9 @@ Momentum momentum({bool isTesting = false}) {
       MessageService(),
       if (!isTesting) OneSignalService()..init(),
       RouterService([
+        MainScreen(),
         EditProfileScreen(),
         LoginScreen(),
-        MainScreen(),
         MessagesScreen(),
         RegisterScreen(),
         UserScreen(),
@@ -157,6 +157,7 @@ class _MyApp extends StatelessWidget {
                   AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
               title: 'Cupizz',
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
+              navigatorObservers: [],
               theme: theme,
               home: RouterService.getActivePage(context),
             ),

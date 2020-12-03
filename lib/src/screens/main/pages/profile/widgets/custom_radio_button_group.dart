@@ -1,58 +1,30 @@
 part of '../edit_profile_screen.dart';
 
-class RadioButtonGroup extends StatefulWidget {
-  final List<String> buttonLables;
-  final List<String> buttonValues;
-  final ValueChanged<String> radioButtonValue;
+class RadioButtonGroup<T> extends StatelessWidget {
+  final List<T> items;
+  final ValueChanged<T> radioButtonValue;
+  final String Function(T) valueToString;
   final double spacing;
-  final defaultValue;
+  final T value;
 
-  const RadioButtonGroup(
-      {Key key,
-      this.buttonLables,
-      this.buttonValues,
-      this.radioButtonValue,
-      this.spacing,
-      this.defaultValue})
-      : super(key: key);
-
-  @override
-  _RadioButtonGroupState createState() => _RadioButtonGroupState();
-}
-
-class _RadioButtonGroupState<T> extends State<RadioButtonGroup> {
-  List<RadioModel> sampleData = <RadioModel>[];
-
-  @override
-  void initState() {
-    super.initState();
-
-    for (var i = 0; i < widget.buttonLables.length; i++) {
-      var isSelected = false;
-
-      if (widget.defaultValue != null) {
-        if (widget.defaultValue == widget.buttonValues[i]) isSelected = true;
-      }
-
-      sampleData.add(RadioModel(
-          isSelected, widget.buttonLables[i], widget.buttonValues[i]));
-    }
-  }
+  const RadioButtonGroup({
+    Key key,
+    this.items,
+    this.radioButtonValue,
+    this.spacing = 10,
+    this.value,
+    this.valueToString,
+  }) : super(key: key);
 
   List<Widget> buildListItem() {
-    return sampleData
+    return items
         .mapIndexed(
           (item, index) => CustomItemChoice(
-            item.lable,
+            valueToString(item),
             onChange: () {
-              widget.radioButtonValue(sampleData[index].value);
-
-              setState(() {
-                sampleData.forEach((element) => element.isSelected = false);
-                sampleData[index].isSelected = true;
-              });
+              radioButtonValue(item);
             },
-            isSelected: sampleData[index].isSelected,
+            isSelected: value == item,
           ),
         )
         .toList();
@@ -61,16 +33,8 @@ class _RadioButtonGroupState<T> extends State<RadioButtonGroup> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: widget.spacing,
+      spacing: spacing,
       children: buildListItem(),
     );
   }
-}
-
-class RadioModel {
-  bool isSelected;
-  final String lable;
-  final String value;
-
-  RadioModel(this.isSelected, this.lable, this.value);
 }

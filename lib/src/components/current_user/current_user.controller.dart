@@ -70,6 +70,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     DateTime birthday,
     io.File avatar,
     io.File cover,
+    double latitude,
+    double longitude,
   }) async {
     final currentUser = model.currentUser.clone<User>();
     if (nickName != null) currentUser.nickName = nickName;
@@ -98,9 +100,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         avatar: avatar,
         cover: cover,
         birthday: birthday,
+        latitude: latitude,
+        longitude: longitude,
       );
       model.update(currentUser: result);
-      if (hobbies != null) {
+      if (hobbies != null || longitude != null || latitude != null) {
         unawaited(
             dependOn<RecommendableUsersController>().fetchRecommendableUsers());
       }

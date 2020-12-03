@@ -16,19 +16,21 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     _checkPermission();
     _onLoading = false;
     _currentAddress = '';
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _currentAddress = Momentum.controller<CurrentUserController>(context)
+              .model
+              .currentUser
+              ?.address ??
+          '';
+      setState(() {});
+    });
   }
 
   void _checkPermission() async {
     final checkPermission = await Geolocator.checkPermission();
     if (checkPermission == LocationPermission.denied ||
         checkPermission == LocationPermission.deniedForever) {
-      final requestPermission = await Geolocator.requestPermission();
-      if (requestPermission == LocationPermission.denied ||
-          requestPermission == LocationPermission.deniedForever) {
-        _getCurrentLocation();
-      } else {}
-    } else {
-      _getCurrentLocation();
+      await Geolocator.requestPermission();
     }
   }
 
@@ -72,18 +74,15 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
       appBar: BackAppBar(
         title: 'Vị trí hẹn hò',
         actions: [
-          InkWell(
-            onTap: () {},
-            child: Center(
-              child: Text(
-                'Lưu',
-                style: TextStyle(color: _theme.primaryColor, fontSize: 15.0),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: sizeHelper.rW(8),
-          ),
+          SaveButton(
+            onPressed: () {
+              Momentum.controller<CurrentUserController>(context).updateProfile(
+                latitude: _currentPosition.latitude,
+                longitude: _currentPosition.longitude,
+              );
+              RouterService.pop(context);
+            },
+          )
         ],
       ),
       body: Container(

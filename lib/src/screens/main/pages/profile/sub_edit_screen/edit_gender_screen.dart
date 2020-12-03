@@ -6,24 +6,45 @@ class EditGenderScreen extends StatefulWidget {
 }
 
 class _EditGenderScreenState extends State<EditGenderScreen> {
+  Gender selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.gender;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: Strings.common.gender),
+      appBar: BackAppBar(title: Strings.common.gender, actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(gender: selectedValue);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<Gender>(
                 spacing: 1.0,
-                buttonLables:
-                    Gender.getAll().map((e) => e.displayValue).toList(),
-                buttonValues: Gender.getAll().map((e) => e.rawValue).toList(),
-                radioButtonValue: (value) => print(value),
+                items: Gender.getAll(),
+                value: selectedValue,
+                valueToString: (v) => v.displayValue,
+                radioButtonValue: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(height: sizeHelper.rW(5)),
               ShowOnProfileText(),

@@ -142,6 +142,12 @@ void main() async {
       final height = Random().nextInt(190 - 160) + 160;
       final avatar = File(Assets.i.images.defaultAvatar);
       final cover = File(Assets.i.images.defaultAvatar);
+      final birthday =
+          DateTime(2000, Random().nextInt(12), Random().nextInt(28));
+      final latitude = Random().nextDouble() * 10 + 10;
+      final longitude = Random().nextDouble() * 10 + 10;
+      final address = await graphql.getAddressQuery(
+          latitude.toString(), longitude.toString());
 
       final json = await graphql.updateProfile(
         nickName,
@@ -153,6 +159,9 @@ void main() async {
         height,
         avatar,
         cover,
+        birthday,
+        latitude,
+        longitude,
       );
 
       final user = Mapper.fromJson(json).toObject<User>();
@@ -166,6 +175,8 @@ void main() async {
       expect(height, user.height);
       expect(currentAvatar != user.avatar, true);
       expect(currentCover != user.cover, true);
+      expect(birthday, user.birthday.toLocal());
+      expect(address, user.address);
     });
   });
 

@@ -7,8 +7,11 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      child: Text(Strings.button.save, style: context.textTheme.button),
+    return IconButton(
+      icon: Icon(
+        Icons.done,
+        color: context.colorScheme.onBackground,
+      ),
       onPressed: onPressed,
     );
   }

@@ -42,7 +42,7 @@ extension GraphqlMutation on GraphqlService {
               ${phoneNumber != null ? 'phoneNumber: "$phoneNumber"' : ''}
               ${job != null ? 'job: "$job"' : ''}
               ${height != null ? 'height: $height' : ''}
-              ${birthday != null ? 'birthday: $birthday' : ''}
+              ${birthday != null ? 'birthday: "${birthday.toUtc().toIso8601String()}"' : ''}
               ${latitude != null ? 'latitude: $latitude' : ''}
               ${longitude != null ? 'longitude: $longitude' : ''}
               avatar: \$avatar

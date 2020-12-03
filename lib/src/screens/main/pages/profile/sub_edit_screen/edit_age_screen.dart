@@ -26,7 +26,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
     final lastDate = DateTime.now().subtract(Duration(days: 365 * 18));
     final picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate, 
+      initialDate: selectedDate,
       firstDate: selectedDate.isBefore(firstDate) ? selectedDate : firstDate,
       lastDate: selectedDate.isAfter(lastDate) ? selectedDate : lastDate,
     );
@@ -48,6 +48,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
           SaveButton(onPressed: () {
             Momentum.controller<CurrentUserController>(context)
                 .updateProfile(birthday: selectedDate);
+            RouterService.pop(context);
           })
         ],
       ),
