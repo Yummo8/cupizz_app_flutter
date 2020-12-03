@@ -13,6 +13,8 @@ import '../base/base.dart';
 import '../models/index.dart';
 import 'graphql/index.dart';
 
+export 'graphql/index.dart';
+
 part 'auth_service.dart';
 part 'graphql_service.dart';
 part 'message_service.dart';

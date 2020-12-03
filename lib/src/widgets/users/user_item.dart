@@ -11,7 +11,7 @@ class UserItem extends StatelessWidget {
     if (onPressed != null) {
       onPressed(simpleUser);
     } else {
-      RouterService.goto(context, UserScreen,
+      Router.goto(context, UserScreen,
           params: UserScreenParams(user: simpleUser));
     }
   }

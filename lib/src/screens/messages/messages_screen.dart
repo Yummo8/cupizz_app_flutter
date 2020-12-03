@@ -30,7 +30,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller = Momentum.controller<MessagesScreenController>(context);
-      final params = RouterService.getParam<MessagesScreenParams>(context);
+      final params = Router.getParam<MessagesScreenParams>(context);
       if (params != null) {
         controller.loadData(params?.conversationKey);
       }
@@ -59,7 +59,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               size: 40,
             ),
             onPressed: () {
-              RouterService.pop(context);
+              Router.pop(context);
             }),
         title: MomentumBuilder(
             controllers: [MessagesScreenController],

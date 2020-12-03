@@ -43,7 +43,7 @@ Momentum momentum({bool isTesting = false}) {
       ),
       MessageService(),
       if (!isTesting) OneSignalService()..init(),
-      RouterService([
+      Router([
         MainScreen(),
         EditProfileScreen(),
         LoginScreen(),
@@ -159,7 +159,7 @@ class _MyApp extends StatelessWidget {
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
               navigatorObservers: [],
               theme: theme,
-              home: RouterService.getActivePage(context),
+              home: Router.getActivePage(context),
             ),
           );
         });

@@ -82,7 +82,7 @@ class CartImage extends StatelessWidget {
                           color: _theme.primaryColor,
                         ),
                         onPressed: () {
-                          RouterService.goto(context, EditPicturesScreen);
+                          Router.goto(context, EditPicturesScreen);
                         },
                       ),
                     ),

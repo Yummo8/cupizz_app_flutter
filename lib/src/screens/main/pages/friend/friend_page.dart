@@ -1,7 +1,6 @@
 library friend_page;
 
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/packages/momentum/src/momentum_base.dart';
 import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -5,7 +5,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget bottom;
   final String title;
   final Function onBackPressed;
-  final bool isRouterServicePop;
+  final bool isRouterPop;
 
   BackAppBar({
     Key key,
@@ -13,7 +13,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.title,
     this.onBackPressed,
-    this.isRouterServicePop = true,
+    this.isRouterPop = true,
   })  : preferredSize = Size.fromHeight(
             56.0 + (bottom != null ? bottom.preferredSize.height : 0)),
         super(key: key);
@@ -36,8 +36,8 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onPressed: () {
           if (onBackPressed == null) {
-            if (isRouterServicePop) {
-              RouterService.pop(context);
+            if (isRouterPop) {
+              Router.pop(context);
             } else {
               Navigator.pop(context);
             }

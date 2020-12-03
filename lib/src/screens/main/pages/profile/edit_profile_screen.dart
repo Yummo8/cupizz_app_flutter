@@ -1,7 +1,7 @@
 library edit_profile_screen;
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart' hide Router;
+import 'package:flutter/material.dart' hide Router;
 import 'package:geolocator/geolocator.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -179,7 +179,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Tên',
       value: user?.nickName,
       onClick: () {
-        RouterService.goto(context, EditTextScreen,
+        Router.goto(context, EditTextScreen,
             params: EditTextScreenParams(
               title: 'Tên',
               value: user.nickName,
@@ -195,7 +195,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: 'Độ tuổi',
         value: user?.age?.toString(),
         onClick: () {
-          RouterService.goto(context, EditAgeScreen);
+          Router.goto(context, EditAgeScreen);
         }));
 
     listWidgetItems.add(RowEditInfo(
@@ -203,7 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Vị trí hẹn hò',
       value: user?.address != null ? 'Đang ở ${user.address}' : null,
       onClick: () {
-        RouterService.goto(context, EditLocationScreen);
+        Router.goto(context, EditLocationScreen);
       },
     ));
 
@@ -212,7 +212,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Giới tính',
       value: user?.gender?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditGenderScreen);
+        Router.goto(context, EditGenderScreen);
       },
     ));
 
@@ -221,7 +221,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Đang tìm kiếm',
       value: user?.lookingFor?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditLookupScreen);
+        Router.goto(context, EditLookupScreen);
       },
     ));
 
@@ -230,7 +230,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Chiều cao',
       value: user?.height != null ? '${user?.height}cm' : null,
       onClick: () {
-        RouterService.goto(context, EditHeightScreen);
+        Router.goto(context, EditHeightScreen);
       },
     ));
 
@@ -252,7 +252,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     //   title: 'Chức danh',
     //   value: '-',
     //   onClick: () {
-    //     RouterService.goto(context, EditTextScreen,
+    //     Router.goto(context, EditTextScreen,
     //         params: EditTextScreenParams(
     //           title: 'Chức danh',
     //           onSave: (value) {},
@@ -265,7 +265,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     //   title: 'Công ty',
     //   value: '-',
     //   onClick: () {
-    //     RouterService.goto(context, EditTextScreen,
+    //     Router.goto(context, EditTextScreen,
     //         params: EditTextScreenParams(
     //           title: 'Bạn đang làm việc ở đâu',
     //           onSave: (value) {},
@@ -278,7 +278,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     //   title: 'Trường trung học',
     //   value: '-',
     //   onClick: () {
-    //     RouterService.goto(context, EditTextScreen,
+    //     Router.goto(context, EditTextScreen,
     //         params: EditTextScreenParams(
     //           title: 'Trường trung học',
     //           onSave: (value) {},
@@ -291,7 +291,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     //   title: 'Trường đại học cao/cao đẳng',
     //   value: '-',
     //   onClick: () {
-    //     RouterService.goto(context, EditTextScreen,
+    //     Router.goto(context, EditTextScreen,
     //         params: EditTextScreenParams(
     //           title: 'Trường đại học cao/cao đẳng',
     //           onSave: (value) {},
@@ -304,7 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Trình độ học vấn',
       value: user?.educationLevel?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditTextScreen,
+        Router.goto(context, EditTextScreen,
             params: EditTextScreenParams(
               title: 'Trình độ học vấn',
               onSave: (value) {},
@@ -322,7 +322,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Con bạn',
       value: user?.yourKids?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditMarriageScreen);
+        Router.goto(context, EditMarriageScreen);
       },
     ));
 
@@ -331,7 +331,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Hút thuốc',
       value: user?.smoking?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditSmokeScreen);
+        Router.goto(context, EditSmokeScreen);
       },
     ));
 
@@ -340,7 +340,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Uống rượu',
       value: user?.drinking?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditDrinkScreen);
+        Router.goto(context, EditDrinkScreen);
       },
     ));
     return buildWrapperRowEditInfo(
@@ -354,7 +354,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: 'Quan điểm tôn giáo',
       value: user?.religious?.displayValue,
       onClick: () {
-        RouterService.goto(context, EditReligionScreen);
+        Router.goto(context, EditReligionScreen);
       },
     ));
 
@@ -367,7 +367,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     listWidgetItems.add(CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
-        RouterService.goto(context, EditHobbiesScreen);
+        Router.goto(context, EditHobbiesScreen);
       },
       child: Container(
         decoration: BoxDecoration(

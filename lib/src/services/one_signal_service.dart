@@ -36,14 +36,13 @@ class OneSignalService extends MomentumService {
 
         if (type == NotificationType.like ||
             type == NotificationType.matching) {
-          RouterService.goto(
+          Router.goto(
             AppConfig.navigatorKey.currentContext,
             UserScreen,
             params: UserScreenParams(userId: refUserId),
           );
         } else if (type == NotificationType.newMessage) {
-          RouterService.goto(
-              AppConfig.navigatorKey.currentContext, MessagesScreen,
+          Router.goto(AppConfig.navigatorKey.currentContext, MessagesScreen,
               params: MessagesScreenParams(
                   ConversationKey(conversationId: refConversationId)));
         } else {}

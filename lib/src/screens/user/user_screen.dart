@@ -18,7 +18,7 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Momentum.controller<UserScreenController>(context);
-    final params = RouterService.getParam<UserScreenParams>(context);
+    final params = Router.getParam<UserScreenParams>(context);
     controller.loadData(chatUser: params?.user, userId: params?.userId);
 
     return MomentumBuilder(

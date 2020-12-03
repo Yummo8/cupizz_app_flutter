@@ -48,7 +48,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
           SaveButton(onPressed: () {
             Momentum.controller<CurrentUserController>(context)
                 .updateProfile(birthday: selectedDate);
-            RouterService.pop(context);
+            Router.pop(context);
           })
         ],
       ),

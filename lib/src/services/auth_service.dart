@@ -17,6 +17,5 @@ class AuthService extends MomentumService {
   Future<void> logout() async {
     await getService<StorageService>().deleteToken();
     await getService<StorageService>().deleteUserId();
-    Momentum.resetAll(context);
   }
 }

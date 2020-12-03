@@ -50,6 +50,7 @@ dependencies:
     git:
       url: https://github.com/hienlh/object_mapper.git
       ref: v1.1.0
+  momentum: ^1.3.2
 
 dev_dependencies:
   flutter_test:

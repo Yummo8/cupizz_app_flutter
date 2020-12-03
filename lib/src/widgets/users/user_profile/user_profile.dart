@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../base/base.dart';
@@ -91,7 +89,7 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                           size: 16,
                         ),
                         onPressed: () {
-                          RouterService.goto(context, EditProfileScreen);
+                          Router.goto(context, EditProfileScreen);
                         },
                       ),
                   ],
@@ -99,7 +97,7 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                 if (user == null || user?.introduction != null)
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(user.introduction,
+                    child: Text(user?.introduction ?? '',
                         style: context.textTheme.subtitle2),
                   ),
                 if (user == null || user?.address != null) ...[

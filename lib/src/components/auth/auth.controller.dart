@@ -35,15 +35,14 @@ class AuthController extends MomentumController<AuthModel> {
   }
 
   Future<void> gotoHome() async {
-    final router = getService<RouterService>();
+    final router = getService<Router>();
     await router.clearHistory();
-    await RouterService.goto(AppConfig.navigatorKey.currentContext, MainScreen);
+    await Router.goto(AppConfig.navigatorKey.currentContext, MainScreen);
   }
 
   Future<void> gotoAuth() async {
-    final router = getService<RouterService>();
+    final router = getService<Router>();
     await router.clearHistory();
-    await RouterService.goto(
-        AppConfig.navigatorKey.currentContext, LoginScreen);
+    await Router.goto(AppConfig.navigatorKey.currentContext, LoginScreen);
   }
 }

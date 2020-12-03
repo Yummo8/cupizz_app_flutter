@@ -80,7 +80,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                 latitude: _currentPosition.latitude,
                 longitude: _currentPosition.longitude,
               );
-              RouterService.pop(context);
+              Router.pop(context);
             },
           )
         ],

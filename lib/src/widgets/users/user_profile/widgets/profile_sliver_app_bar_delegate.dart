@@ -192,7 +192,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             size: 18,
           ),
           onPressed: () {
-            RouterService.goto(
+            Router.goto(
               context,
               isCurrentUser ? UserSettingScreen : MessagesScreen,
               params: isCurrentUser
@@ -219,7 +219,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             size: 40,
           ),
           onTap: () {
-            RouterService.pop(context);
+            Router.pop(context);
           },
         ),
       ),
