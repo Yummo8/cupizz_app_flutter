@@ -31,6 +31,14 @@ class _HomePageState extends State<HomePage> {
   final _headerHeight = 75.0;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Momentum.of<RecommendableUsersController>(context).initState();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
       body: SizedBox(

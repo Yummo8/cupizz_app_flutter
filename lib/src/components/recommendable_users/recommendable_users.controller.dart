@@ -7,6 +7,12 @@ class RecommendableUsersController
     return RecommendableUsersModel(this, users: []);
   }
 
+  Future initState() async {
+    if (!model.users.isExistAndNotEmpty) {
+      return await fetchRecommendableUsers();
+    }
+  }
+
   @override
   Future<void> bootstrapAsync() => fetchRecommendableUsers();
 

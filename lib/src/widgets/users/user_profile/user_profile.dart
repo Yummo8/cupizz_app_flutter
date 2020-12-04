@@ -44,193 +44,191 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
     return PrimaryScaffold(
       body: Skeleton(
         enabled: user == null,
-        child: NestedScrollView(
+        child: CustomScrollView(
           controller: scrollController,
-          headerSliverBuilder: (context, _) {
-            return <Widget>[
-              SliverPersistentHeader(
-                floating: false,
-                pinned: true,
-                delegate: _ProfileSliverAppBarDelegate(
-                  user,
-                  widget.isCurrentUser,
-                  expandedHeight: 300,
-                  showBackButton: widget.showBackButton,
-                ),
+          slivers: [
+            SliverPersistentHeader(
+              floating: false,
+              pinned: true,
+              delegate: _ProfileSliverAppBarDelegate(
+                user,
+                widget.isCurrentUser,
+                expandedHeight: 300,
+                showBackButton: widget.showBackButton,
               ),
-            ];
-          },
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${user?.displayName ?? ''},',
-                      style: context.textTheme.headline6.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    if (user?.age != null)
-                      Text(
-                        '${user?.age} tuổi',
-                        style: context.textTheme.subtitle1,
-                      ),
-                    if (widget.isCurrentUser)
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: context.colorScheme.primary,
-                          size: 16,
-                        ),
-                        onPressed: () {
-                          Router.goto(context, EditProfileScreen);
-                        },
-                      ),
-                  ],
-                ),
-                if (user == null || user?.introduction != null)
-                  ...[
-                    const SizedBox(height: 8.0),Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(user?.introduction ?? '',
-                        style: context.textTheme.subtitle2),
-                  )],
-                if (user == null || user?.address != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.location_on_rounded,
-                    semanticLabel: '',
-                    title: 'Đang ở ${user?.address ?? 'Address'}',
-                  ),
-                ],
-                if (user == null || user?.lookingFor != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.favorite,
-                    semanticLabel: '',
-                    title: user?.lookingFor?.displayValue ?? 'Looking for',
-                  ),
-                ],
-                if (user == null || user?.height != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.height,
-                    semanticLabel: '',
-                    title: '${user?.height} cm',
-                  ),
-                ],
-                // const SizedBox(height: 16.0),
-                // RowInfo(
-                //   iconData: Icons.work,
-                //   semanticLabel: '',
-                //   title: 'LÀM VIỆC TẠI CTY TNHH Freetrend',
-                // ),
-                // const SizedBox(height: 16.0),
-                // RowInfo(
-                //   iconData: Icons.school,
-                //   semanticLabel: '',
-                //   title:
-                //       'Trường đại học Công nghệ Thông tin - Đại học Quốc gia TP.HCM, THPT Bến Cát, Bến Cát, Bình Dương',
-                // ),
-                if (user == null || user.educationLevel != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.school,
-                    semanticLabel: '',
-                    title:
-                        user?.educationLevel?.displayValue ?? 'Education Level',
-                  ),
-                ],
-                // const SizedBox(height: 16.0),
-                // RowInfo(
-                //   iconData: Icons.house,
-                //   semanticLabel: '',
-                //   title: 'Quê quán Long Xuyên',
-                // ),
-                if (user == null || user.yourKids != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.family_restroom,
-                    semanticLabel: '',
-                    title: user?.yourKids?.displayValue ?? 'Have kids',
-                  ),
-                ],
-                if (user == null || user.smoking != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.smoking_rooms,
-                    semanticLabel: '',
-                    title: user?.smoking?.displayValue ?? 'Smoking',
-                  ),
-                ],
-                if (user == null || user.drinking != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.local_bar,
-                    semanticLabel: '',
-                    title: user?.drinking?.displayValue ?? 'Drinking',
-                  ),
-                ],
-                if (user == null || user.religious != null) ...[
-                  const SizedBox(height: 16.0),
-                  RowInfo(
-                    iconData: Icons.self_improvement,
-                    semanticLabel: '',
-                    title: user?.religious?.displayValue ?? 'religious',
-                  ),
-                ],
-                // const SizedBox(height: 16.0),
-                // RowInfo(
-                //   iconData: Icons.public,
-                //   semanticLabel: '',
-                //   title: 'Tiếng việt',
-                // ),
-                Divider(
-                  color: context.colorScheme.primary,
-                  height: 15,
-                  thickness: 1,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => CartImage(
-                    userImage: (user?.userImages ?? [])[index],
-                    readOnly: !widget.isCurrentUser,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: user?.userImages?.length ?? 0,
-                ),
-                if (widget.isCurrentUser)
-                  FlatButton(
-                    onPressed: () => {},
-                    color: _theme.primaryColor.withOpacity(0.2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.image,
-                          color: _theme.primaryColor,
-                        ),
-                        Text(
-                          'Thêm ảnh',
-                          style: TextStyle(
-                              color: _theme.primaryColor,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  )
-              ],
             ),
-          ),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '${user?.displayName ?? ''},',
+                    style: context.textTheme.headline6.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  if (user?.age != null)
+                    Text(
+                      '${user?.age} tuổi',
+                      style: context.textTheme.subtitle1,
+                    ),
+                  if (widget.isCurrentUser)
+                    IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: context.colorScheme.primary,
+                        size: 16,
+                      ),
+                      onPressed: () {
+                        Router.goto(context, EditProfileScreen);
+                      },
+                    ),
+                ],
+              ),
+              if (user == null || user?.introduction != null) ...[
+                const SizedBox(height: 8.0),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(user?.introduction ?? '',
+                      style: context.textTheme.subtitle2),
+                )
+              ],
+              if (user == null || user?.address != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.location_on_rounded,
+                  semanticLabel: '',
+                  title: 'Đang ở ${user?.address ?? 'Address'}',
+                ),
+              ],
+              if (user == null || user?.lookingFor != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.favorite,
+                  semanticLabel: '',
+                  title: user?.lookingFor?.displayValue ?? 'Looking for',
+                ),
+              ],
+              if (user == null || user?.height != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.height,
+                  semanticLabel: '',
+                  title: '${user?.height} cm',
+                ),
+              ],
+              // const SizedBox(height: 16.0),
+              // RowInfo(
+              //   iconData: Icons.work,
+              //   semanticLabel: '',
+              //   title: 'LÀM VIỆC TẠI CTY TNHH Freetrend',
+              // ),
+              // const SizedBox(height: 16.0),
+              // RowInfo(
+              //   iconData: Icons.school,
+              //   semanticLabel: '',
+              //   title:
+              //       'Trường đại học Công nghệ Thông tin - Đại học Quốc gia TP.HCM, THPT Bến Cát, Bến Cát, Bình Dương',
+              // ),
+              if (user == null || user.educationLevel != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.school,
+                  semanticLabel: '',
+                  title:
+                      user?.educationLevel?.displayValue ?? 'Education Level',
+                ),
+              ],
+              // const SizedBox(height: 16.0),
+              // RowInfo(
+              //   iconData: Icons.house,
+              //   semanticLabel: '',
+              //   title: 'Quê quán Long Xuyên',
+              // ),
+              if (user == null || user.yourKids != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.family_restroom,
+                  semanticLabel: '',
+                  title: user?.yourKids?.displayValue ?? 'Have kids',
+                ),
+              ],
+              if (user == null || user.smoking != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.smoking_rooms,
+                  semanticLabel: '',
+                  title: user?.smoking?.displayValue ?? 'Smoking',
+                ),
+              ],
+              if (user == null || user.drinking != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.local_bar,
+                  semanticLabel: '',
+                  title: user?.drinking?.displayValue ?? 'Drinking',
+                ),
+              ],
+              if (user == null || user.religious != null) ...[
+                const SizedBox(height: 16.0),
+                RowInfo(
+                  iconData: Icons.self_improvement,
+                  semanticLabel: '',
+                  title: user?.religious?.displayValue ?? 'religious',
+                ),
+              ],
+              // const SizedBox(height: 16.0),
+              // RowInfo(
+              //   iconData: Icons.public,
+              //   semanticLabel: '',
+              //   title: 'Tiếng việt',
+              // ),
+              Divider(
+                color: context.colorScheme.primary,
+                height: 15,
+                thickness: 1,
+                indent: 20,
+                endIndent: 20,
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) => CartImage(
+                  userImage: (user?.userImages ?? [])[index],
+                  readOnly: !widget.isCurrentUser,
+                ),
+                shrinkWrap: true,
+                itemCount: user?.userImages?.length ?? 0,
+              ),
+              if (widget.isCurrentUser)
+                FlatButton(
+                  onPressed: () => {},
+                  color: _theme.primaryColor.withOpacity(0.2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.image,
+                        color: _theme.primaryColor,
+                      ),
+                      Text(
+                        'Thêm ảnh',
+                        style: TextStyle(
+                            color: _theme.primaryColor,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                )
+            ]
+                    .map((e) => Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: e,
+                        ))
+                    .toList()))
+          ],
         ),
       ),
     );
