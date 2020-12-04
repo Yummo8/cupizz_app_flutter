@@ -25,7 +25,7 @@ Momentum momentum({bool isTesting = false}) {
       runApp(AppConfig.instance.copyWith(child: App()));
     },
     controllers: [
-      AuthController(),
+      AuthController()..config(strategy: BootstrapStrategy.lazyFirstCall),
       CurrentUserController(),
       ChatPageController()..config(lazy: true),
       FriendPageController()..config(lazy: true),
@@ -47,9 +47,9 @@ Momentum momentum({bool isTesting = false}) {
       MessageService(),
       if (!isTesting) OneSignalService()..init(),
       Router([
+        LoginScreen(),
         MainScreen(),
         EditProfileScreen(),
-        LoginScreen(),
         MessagesScreen(),
         RegisterScreen(),
         UserScreen(),

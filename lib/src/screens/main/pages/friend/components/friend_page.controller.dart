@@ -45,7 +45,8 @@ class FriendPageController extends MomentumController<FriendPageModel> {
   }
 
   Future loadmoreFriends() async {
-    if (model.isLastPage) return;
+    if (model.isLastPage || model.isLoadingMore) return;
+    model.update(isLoadingMore: true);
     try {
       final result = await getService<UserService>().getFriendsV2(
         type: model.filter,
@@ -62,6 +63,8 @@ class FriendPageController extends MomentumController<FriendPageModel> {
     } catch (e) {
       sendEvent(FriendPageEvent(
           action: FriendPageEventAction.error, message: e.toString()));
+    } finally {
+      model.update(isLoadingMore: false);
     }
   }
 

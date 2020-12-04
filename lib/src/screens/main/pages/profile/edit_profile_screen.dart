@@ -94,7 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                             EdgeInsets.symmetric(vertical: sizeHelper.rW(0.5)),
                         child: TextFormField(
                           // autovalidate: true,
-                          initialValue: user.introduction,
+                          initialValue: user?.introduction ?? ' ',
                           onChanged: _onBioChanged,
                           autocorrect: false,
                           keyboardType: TextInputType.multiline,

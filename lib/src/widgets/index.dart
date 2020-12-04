@@ -12,10 +12,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../base/base.dart';
 import '../models/index.dart';
-import '../packages/shimmer_1.1.2/shimmer.dart';
 import '../screens/user/user_screen.dart';
 
 export 'users/user_profile/user_profile.dart';

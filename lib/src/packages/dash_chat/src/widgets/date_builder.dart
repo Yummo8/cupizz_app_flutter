@@ -2,10 +2,11 @@ part of dash_chat;
 
 class DateBuilder extends StatelessWidget {
   DateBuilder({
+    Key key,
     @required this.date,
     this.customDateBuilder,
     this.dateFormat,
-  });
+  }) : super(key: key);
 
   final DateTime date;
   final Widget Function(String) customDateBuilder;

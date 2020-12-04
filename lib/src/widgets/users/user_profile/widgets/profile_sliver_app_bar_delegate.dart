@@ -55,7 +55,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
           _buildUpdateCoverButton(context, scrollRate),
-          if (user.meOrFriend)
+          if (user != null && user.meOrFriend)
             _buildSettingOrMessageButton(context, scrollRate),
         ],
       ),

@@ -6,4 +6,9 @@ class ConversationKey {
 
   ConversationKey({this.conversationId, this.targetUserId})
       : assert(conversationId != null || targetUserId != null);
+
+  @override
+  String toString() => conversationId.isExistAndNotEmpty
+      ? '{conversationId: $conversationId}'
+      : '{userId: $targetUserId}';
 }

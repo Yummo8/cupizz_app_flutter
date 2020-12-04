@@ -29,15 +29,15 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   Future loadData(ConversationKey key) async {
     model.update(isLoading: true);
     await _reload(key: key);
-
-    messageSupscription =
-        getService<MessageService>().onNewMessage(key).listen(onNewMessage);
+    subscribe(key);
     model.update(isLoading: false);
   }
 
   @override
   void reset({bool clearHistory}) {
     messageSupscription?.cancel();
+    messageSupscription = null;
+    debugPrint('Unsubscribed conversation');
     super.reset(clearHistory: clearHistory);
   }
 
@@ -110,6 +110,14 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
     } catch (e) {
       sendEvent(ChatPageEvent(
           action: ChatPageEventAction.error, message: e.toString()));
+    }
+  }
+
+  void subscribe(ConversationKey key) {
+    if (messageSupscription == null && key != null) {
+      messageSupscription =
+          getService<MessageService>().onNewMessage(key).listen(onNewMessage);
+      debugPrint('Subscribed conversation: $key');
     }
   }
 }

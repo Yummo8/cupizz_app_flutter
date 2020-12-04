@@ -6,16 +6,6 @@ class AuthController extends MomentumController<AuthModel> {
     return AuthModel(this);
   }
 
-  @override
-  Future<void> bootstrapAsync() async {
-    if (!await isAuthenticated) {
-      await gotoAuth();
-    }
-  }
-
-  Future<bool> get isAuthenticated async =>
-      (await getService<StorageService>().getToken) != null;
-
   Future<void> login(String email, String password) async {
     await getService<AuthService>().login(
         email, password, dependOn<CurrentUserController>().getCurrentUser);

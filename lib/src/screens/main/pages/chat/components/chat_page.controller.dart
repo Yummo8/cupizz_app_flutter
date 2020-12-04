@@ -19,6 +19,12 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     return ChatPageModel(this);
   }
 
+  @override
+  Future<void> bootstrapAsync() async {
+    await _reload();
+    _connectSubsciption();
+  }
+
   void initState() async {
     if (!model.conversations.isExistAndNotEmpty) {
       model.update(isLoading: true);
@@ -38,6 +44,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     conversationSupscription = getService<MessageService>()
         .onConversationChange()
         .listen(onConversationChange);
+    debugPrint('Subscribed conversation changes');
   }
 
   void onConversationChange(newConversation) {
@@ -89,6 +96,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
         currentPage: 1,
         isLastPage: data.isLastPage,
       );
+      debugPrint('Reload conversations');
     } catch (e) {
       sendEvent(ChatPageEvent(
           action: ChatPageEventAction.error, message: e.toString()));

@@ -9,13 +9,14 @@ class AvatarContainer extends StatelessWidget {
   final double avatarMaxSize;
 
   const AvatarContainer({
+    Key key,
     @required this.user,
     this.onPress,
     this.onLongPress,
     this.avatarBuilder,
     this.size,
     this.avatarMaxSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class AvatarContainer extends StatelessWidget {
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
         child: avatarBuilder != null && user != null
             ? avatarBuilder(user)
-            : SizedBox(child: UserAvatar.fromChatUser(user: user)),
+            : UserAvatar.fromChatUser(user: user),
       ),
     );
   }

@@ -183,14 +183,27 @@ class _MessageListViewState extends State<MessageListView> {
                     return Align(
                       child: Column(
                         children: <Widget>[
+                          // if (widget.messages[i] != null &&
+                          //     showDate &&
+                          //     (!widget.inverted ||
+                          //         widget.messages.length == 1 ||
+                          //         (last && widget.inverted)))
+                          //   DateBuilder(
+                          //     key: UniqueKey(),
+                          //     date:
+                          //         widget.inverted ? previousDate : currentDate,
+                          //     customDateBuilder: widget.dateBuilder,
+                          //     dateFormat: widget.dateFormat,
+                          //   ),
                           if (widget.messages[i] != null &&
-                              showDate &&
-                              (!widget.inverted ||
-                                  widget.messages.length == 1 ||
-                                  (last && widget.inverted)))
+                                  i >= widget.messages.length - 1 ||
+                              widget.messages[i] != null &&
+                                  widget.messages[i + 1] != null &&
+                                  !widget.messages[i].createdAt.inSameDay(
+                                      widget.messages[i + 1].createdAt))
                             DateBuilder(
-                              date:
-                                  widget.inverted ? previousDate : currentDate,
+                              key: UniqueKey(),
+                              date: widget.messages[i].createdAt,
                               customDateBuilder: widget.dateBuilder,
                               dateFormat: widget.dateFormat,
                             ),
@@ -208,6 +221,7 @@ class _MessageListViewState extends State<MessageListView> {
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: constraints.maxWidth * 0.02,
+                                    vertical: 5,
                                   ),
                                   child: Opacity(
                                     opacity: (widget.showAvatarForEverMessage ||
@@ -218,6 +232,7 @@ class _MessageListViewState extends State<MessageListView> {
                                         ? 1
                                         : 0,
                                     child: AvatarContainer(
+                                      key: UniqueKey(),
                                       user: widget.messages[i]?.sender,
                                       onPress: widget.onPressAvatar,
                                       onLongPress: widget.onLongPressAvatar,
@@ -328,16 +343,16 @@ class _MessageListViewState extends State<MessageListView> {
                               ],
                             ),
                           ),
-                          if (showDate &&
-                              widget.inverted &&
-                              widget.messages.length > 1 &&
-                              !last)
-                            DateBuilder(
-                              date:
-                                  widget.inverted ? previousDate : currentDate,
-                              customDateBuilder: widget.dateBuilder,
-                              dateFormat: widget.dateFormat,
-                            ),
+                          // if (showDate &&
+                          //     widget.inverted &&
+                          //     widget.messages.length > 1 &&
+                          //     !last)
+                          //   DateBuilder(
+                          //     date:
+                          //         widget.inverted ? previousDate : currentDate,
+                          //     customDateBuilder: widget.dateBuilder,
+                          //     dateFormat: widget.dateFormat,
+                          //   ),
                         ],
                       ),
                     );
