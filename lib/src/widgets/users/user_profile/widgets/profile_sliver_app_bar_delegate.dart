@@ -54,7 +54,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
-          if (isCurrentUser) _buildUpdateCoverButton(context, scrollRate),
+          _buildUpdateCoverButton(context, scrollRate),
           _buildSettingOrMessageButton(context, scrollRate),
         ],
       ),
@@ -111,22 +111,24 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 final model = snapshot<CurrentUserModel>();
                 return CupertinoButton(
                   padding: EdgeInsets.zero,
-                  onPressed: model.isUpdatingAvatar && isCurrentUser
-                      ? null
-                      : () {
-                          pickImage(
-                            context,
-                            (images) {
-                              if (images.isExistAndNotEmpty) {
-                                Momentum.controller<CurrentUserController>(
-                                        context)
-                                    .updateAvatar(images[0]);
-                              }
-                            },
-                            maxSelected: 1,
-                            title: Strings.public.updateAvatar,
-                          );
-                        },
+                  onPressed: () => Menu(
+                    [
+                      ViewImageMenuItem(context, [user.avatar]),
+                      if (!model.isUpdatingAvatar && isCurrentUser)
+                        ...getPickImagesMenuItem(
+                          context,
+                          (images) {
+                            if (images.isExistAndNotEmpty) {
+                              Momentum.controller<CurrentUserController>(
+                                      context)
+                                  .updateAvatar(images[0]);
+                            }
+                          },
+                          maxSelected: 1,
+                        )
+                    ],
+                    showCancel: true,
+                  ).show(context),
                   child: model.isUpdatingAvatar && isCurrentUser
                       ? Align(child: LoadingIndicator(size: size * 0.5))
                       : UserAvatar.fromChatUser(
@@ -161,16 +163,22 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                       )
                     : null,
                 onPressed: () {
-                  pickImage(
-                    context,
-                    (images) {
-                      if (images.isExistAndNotEmpty) {
-                        model.controller.updateCover(images[0]);
-                      }
-                    },
-                    title: Strings.public.updateCover,
-                    maxSelected: 1,
-                  );
+                  Menu(
+                    [
+                      ViewImageMenuItem(context, [user.cover]),
+                      if (!model.isUpdatingAvatar && isCurrentUser)
+                        ...getPickImagesMenuItem(
+                          context,
+                          (images) {
+                            if (images.isExistAndNotEmpty) {
+                              model.controller.updateCover(images[0]);
+                            }
+                          },
+                          maxSelected: 1,
+                        )
+                    ],
+                    showCancel: true,
+                  ).show(context);
                 },
               );
             }),

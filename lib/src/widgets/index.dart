@@ -34,6 +34,7 @@ part 'customs/custom_theme.dart';
 part 'customs/group_image.dart';
 part 'customs/heading_bar.dart';
 part 'customs/hidden_text.dart';
+part 'customs/menu.dart';
 part 'customs/network_image.dart';
 part 'customs/primary_scaffold.dart';
 part 'customs/rotate_animated_text_kit.dart';
