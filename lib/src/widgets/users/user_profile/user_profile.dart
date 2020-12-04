@@ -103,12 +103,16 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                   title: 'Đang ở ${user?.address ?? 'Address'}',
                 ),
               ],
-              if (user == null || user?.lookingFor != null) ...[
+              if (user == null || user.lookingFors.isExistAndNotEmpty) ...[
                 const SizedBox(height: 16.0),
                 RowInfo(
                   iconData: Icons.favorite,
                   semanticLabel: '',
-                  title: user?.lookingFor?.displayValue ?? 'Looking for',
+                  title: user?.lookingFors
+                          ?.map((e) => e.displayValue)
+                          ?.toList()
+                          ?.join(', ') ??
+                      'Looking for',
                 ),
               ],
               if (user == null || user?.height != null) ...[

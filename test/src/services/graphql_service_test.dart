@@ -155,8 +155,9 @@ void main() async {
           UsualType.getAll()[Random().nextInt(UsualType.getAll().length - 1)];
       final yourKids =
           HaveKids.getAll()[Random().nextInt(HaveKids.getAll().length - 1)];
-      final lookingFor =
-          LookingFor.getAll()[Random().nextInt(LookingFor.getAll().length - 1)];
+      final lookingFors = [
+        LookingFor.getAll()[Random().nextInt(LookingFor.getAll().length - 1)]
+      ];
       final religious =
           Religious.getAll()[Random().nextInt(Religious.getAll().length - 1)];
 
@@ -177,7 +178,7 @@ void main() async {
         smoking,
         drinking,
         yourKids,
-        lookingFor,
+        lookingFors,
         religious,
       );
 
@@ -196,7 +197,7 @@ void main() async {
       expect(user.smoking, smoking);
       expect(user.drinking, drinking);
       expect(user.yourKids, yourKids);
-      expect(user.lookingFor, lookingFor);
+      expect(user.lookingFors, lookingFors);
       expect(user.religious, religious);
       expect(currentAvatar != user.avatar, true);
       expect(currentCover != user.cover, true);

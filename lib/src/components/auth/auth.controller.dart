@@ -25,14 +25,15 @@ class AuthController extends MomentumController<AuthModel> {
     if (userId.isExistAndNotEmpty) {
       await getService<OneSignalService>().subscribe(userId);
     }
-    await dependOn<FriendPageController>().refresh();
   }
 
   Future<void> logout() async {
     await getService<AuthService>().logout();
     await getService<OneSignalService>().unSubscribe();
-    await gotoAuth();
+    await Router.resetWithContext<LoginScreen>(
+        AppConfig.navigatorKey.currentContext);
     Momentum.resetAll(AppConfig.navigatorKey.currentContext);
+    Momentum.restart(AppConfig.navigatorKey.currentContext, momentum());
   }
 
   Future<void> gotoHome() async {

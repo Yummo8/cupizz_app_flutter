@@ -35,7 +35,7 @@ extension GraphqlMutation on GraphqlService {
     UsualType smoking,
     UsualType drinking,
     HaveKids yourKids,
-    LookingFor lookingFor,
+    List<LookingFor> lookingFors,
     Religious religious,
   ]) async {
     final query = '''
@@ -57,7 +57,7 @@ extension GraphqlMutation on GraphqlService {
               ${smoking != null ? 'smoking: ${smoking.rawValue}' : ''}
               ${drinking != null ? 'drinking: ${drinking.rawValue}' : ''}
               ${yourKids != null ? 'yourKids: ${yourKids.rawValue}' : ''}
-              ${lookingFor != null ? 'lookingFor: ${lookingFor.rawValue}' : ''}
+              ${lookingFors != null ? 'lookingFors: ${lookingFors.map((e) => e.rawValue).toList()}' : ''}
               ${religious != null ? 'religious: ${religious.rawValue}' : ''}
             ) ${User.graphqlQuery}
           }''';

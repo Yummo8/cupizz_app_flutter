@@ -6,7 +6,19 @@ class EditLookupScreen extends StatefulWidget {
 }
 
 class _EditLookupScreenState extends State<EditLookupScreen> {
-  LookingFor selectedValue;
+  List<LookingFor> selectedValues = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValues = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.lookingFors;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +27,7 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
       appBar: BackAppBar(title: 'Đang tìm kiếm', actions: [
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
-              .updateProfile(lookingFor: selectedValue);
+              .updateProfile(lookingFors: selectedValues);
           Router.pop(context);
         })
       ]),
@@ -32,25 +44,18 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              CheckBoxGroup(
+              RadioButtonGroup<LookingFor>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Người trò chuyện',
-                  'Quan hệ bạn bè',
-                  'Hẹn hò thoải mái',
-                  'Mối quan hệ lâu dài',
-                  'Không muốn tiết lộ',
-                ],
-                buttonValues: [
-                  'Người trò chuyện',
-                  'Quan hệ bạn bè',
-                  'Hẹn hò thoải mái',
-                  'Mối quan hệ lâu dài',
-                  'Không muốn tiết lộ',
-                ],
-                checkBoxButtonValues: (values) {
-                  print(values);
-                },
+                items: LookingFor.getAll(),
+                selectedItems: selectedValues,
+                valueToString: (v) => v.displayValue,
+                onItemPressed: (value) => setState(() {
+                  if (selectedValues.contains(value)) {
+                    selectedValues.remove(value);
+                  } else {
+                    selectedValues.add(value);
+                  }
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),

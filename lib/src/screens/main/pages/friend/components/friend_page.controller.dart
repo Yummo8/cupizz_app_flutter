@@ -17,8 +17,8 @@ class FriendPageController extends MomentumController<FriendPageModel> {
     return FriendPageModel(this);
   }
 
-  // @override
-  // Future<void> bootstrapAsync() => _reloadFriends();
+  @override
+  Future<void> bootstrapAsync() => _reloadFriends();
 
   Future refresh() async {
     await _reloadFriends();

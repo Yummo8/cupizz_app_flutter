@@ -19,9 +19,10 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
     return MessagesScreenModel(this);
   }
 
-  void initState() {
+  @override
+  Future bootstrapAsync() async {
     if (model.conversation?.id != null) {
-      loadData(ConversationKey(conversationId: model.conversation?.id));
+      await loadData(ConversationKey(conversationId: model.conversation?.id));
     }
   }
 

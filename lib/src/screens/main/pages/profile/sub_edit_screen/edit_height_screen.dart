@@ -6,40 +6,69 @@ class EditHeightScreen extends StatefulWidget {
 }
 
 class _EditHeightScreenState extends State<EditHeightScreen> {
-  final elements = [for (var i = 140; i < 200; i += 1) '$i cm'];
-  int selectedIndex = 0;
-  String selected;
+  double selectedHeight = 160;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedHeight = Momentum.controller<CurrentUserController>(context)
+              .model
+              .currentUser
+              ?.height
+              ?.toDouble() ??
+          160;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: Strings.common.height),
+      appBar: BackAppBar(title: Strings.common.height, actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(height: selectedHeight.round());
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButton(
-                isExpanded: true,
-                hint: Text('Chọn chiều cao'),
-                value: selected,
-                onChanged: (String newValue) {
-                  setState(() {
-                    selected = newValue;
-                  });
-                },
-                items: elements.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: context.textTheme.bodyText2,
+              Row(
+                children: [
+                  Expanded(
+                    child: FlutterSlider(
+                      values: [selectedHeight],
+                      max: (200 < selectedHeight ? selectedHeight : 200)
+                          .toDouble(),
+                      min: (150 > selectedHeight ? selectedHeight : 150)
+                          .toDouble(),
+                      tooltip: FlutterSliderTooltip(
+                        disabled: true,
+                      ),
+                      trackBar: FlutterSliderTrackBar(
+                        activeTrackBar:
+                            BoxDecoration(color: context.colorScheme.primary),
+                      ),
+                      handler: HeartSliderHandler(context),
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
+                        setState(() {
+                          selectedHeight = lowerValue;
+                        });
+                      },
                     ),
-                  );
-                }).toList(),
+                  ),
+                  Text(
+                    '${selectedHeight.round()}cm',
+                    style: context.textTheme.caption,
+                  )
+                ],
               ),
               SizedBox(height: sizeHelper.rW(5)),
               ShowOnProfileText(),

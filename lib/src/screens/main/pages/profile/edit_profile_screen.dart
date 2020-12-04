@@ -1,7 +1,9 @@
 library edit_profile_screen;
 
+import 'package:cupizz_app/src/screens/main/pages/home/home_page.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -230,7 +232,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.account_circle_outlined,
       title: 'Đang tìm kiếm',
-      value: user?.lookingFor?.displayValue,
+      value: user?.lookingFors?.map((e) => e.displayValue)?.join(', '),
       onClick: () {
         Router.goto(context, EditLookupScreen);
       },

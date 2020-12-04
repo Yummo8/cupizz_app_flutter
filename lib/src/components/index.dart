@@ -3,6 +3,7 @@ library components;
 import 'dart:io' as io;
 import 'dart:math';
 
+import 'package:cupizz_app/src/app.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Router;

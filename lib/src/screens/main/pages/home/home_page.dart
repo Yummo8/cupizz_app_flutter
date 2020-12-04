@@ -31,14 +31,6 @@ class _HomePageState extends State<HomePage> {
   final _headerHeight = 75.0;
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Momentum.of<RecommendableUsersController>(context).initState();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
       body: SizedBox(
@@ -122,7 +114,13 @@ class _HomePageState extends State<HomePage> {
             },
             cards: model.users
                 .map((e) => ClipRRect(
-                      child: UserCard(simpleUser: e),
+                      child: UserCard(
+                        simpleUser: e,
+                        onPressed: () {
+                          Router.goto(context, UserScreen,
+                              params: UserScreenParams(user: e));
+                        },
+                      ),
                       borderRadius: BorderRadius.circular(15),
                     ))
                 .toList(),

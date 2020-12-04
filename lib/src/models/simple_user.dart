@@ -8,13 +8,12 @@ class SimpleUser extends ChatUser {
   String phoneNumber;
   String job;
   int height;
-  FriendType friendType;
   String address;
   EducationLevel educationLevel;
   UsualType smoking;
   UsualType drinking;
   HaveKids yourKids;
-  LookingFor lookingFor;
+  List<LookingFor> lookingFors;
   Religious religious;
   List<UserImage> userImages;
 
@@ -62,8 +61,6 @@ class SimpleUser extends ChatUser {
     map('data.phoneNumber', phoneNumber, (v) => phoneNumber = v);
     map('data.job', job, (v) => job = v);
     map('data.height', height, (v) => height = v);
-    map('data.friendType.status', friendType, (v) => friendType = v,
-        EnumTransform<FriendType, String>());
     map('data.address', address, (v) => address = v);
     map('data.educationLevel', educationLevel, (v) => educationLevel = v,
         EnumTransform<EducationLevel, String>());
@@ -73,7 +70,7 @@ class SimpleUser extends ChatUser {
         EnumTransform<UsualType, String>());
     map('data.yourKids', yourKids, (v) => yourKids = v,
         EnumTransform<HaveKids, String>());
-    map('data.lookingFor', lookingFor, (v) => lookingFor = v,
+    map<LookingFor>('data.lookingFors', lookingFors, (v) => lookingFors = v,
         EnumTransform<LookingFor, String>());
     map('data.religious', religious, (v) => religious = v,
         EnumTransform<Religious, String>());
@@ -102,7 +99,7 @@ class SimpleUser extends ChatUser {
       smoking
       drinking
       yourKids
-      lookingFor
+      lookingFors
       religious
       userImages ${UserImage.graphqlQuery}
     }

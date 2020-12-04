@@ -6,17 +6,12 @@ class ChatUser extends BaseModel {
   FileModel cover;
   OnlineStatus onlineStatus;
   DateTime lastOnline;
+  FriendType friendType;
 
   String get displayName => nickName;
 
-  ChatUser({
-    String id,
-    this.nickName,
-    this.avatar,
-    this.cover,
-    this.onlineStatus,
-    this.lastOnline,
-  }) : super(id: id);
+  bool get meOrFriend =>
+      friendType == FriendType.me || friendType == FriendType.friend;
 
   @override
   void mapping(Mapper map) {
@@ -27,6 +22,8 @@ class ChatUser extends BaseModel {
     map('data.onlineStatus', onlineStatus, (v) => onlineStatus = v,
         EnumTransform<OnlineStatus, String>());
     map('data.lastOnline', lastOnline, (v) => lastOnline = v, DateTransform());
+    map('data.friendType.status', friendType, (v) => friendType = v,
+        EnumTransform<FriendType, String>());
   }
 
   static String get graphqlQuery => '''
@@ -38,6 +35,7 @@ class ChatUser extends BaseModel {
       cover ${FileModel.graphqlQuery}
       onlineStatus
       lastOnline
+      friendType {status}
     }
   }''';
 }

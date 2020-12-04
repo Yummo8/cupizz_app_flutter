@@ -51,7 +51,7 @@ class User extends SimpleUser {
       smoking
       drinking
       yourKids
-      lookingFor
+      lookingFors
       religious
       minAgePrefer
       maxAgePrefer

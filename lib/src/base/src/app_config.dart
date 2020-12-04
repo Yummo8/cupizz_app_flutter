@@ -24,6 +24,22 @@ class AppConfig extends InheritedWidget {
     timeago.setLocaleMessages('vi', ViMessages());
   }
 
+  AppConfig copyWith({
+    String appName,
+    AppFlavor flavorName,
+    String apiUrl,
+    String wss,
+    Widget child,
+  }) {
+    return AppConfig(
+      appName: appName ?? this.appName,
+      flavorName: flavorName ?? this.flavorName,
+      apiUrl: apiUrl ?? this.apiUrl,
+      wss: wss ?? this.wss,
+      child: child ?? this.child,
+    );
+  }
+
   static AppConfig get instance => _globalKey.currentContext
       .dependOnInheritedWidgetOfExactType(aspect: AppConfig);
 

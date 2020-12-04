@@ -76,7 +76,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     UsualType smoking,
     UsualType drinking,
     HaveKids yourKids,
-    LookingFor lookingFor,
+    List<LookingFor> lookingFors,
     Religious religious,
   }) async {
     final currentUser = model.currentUser.clone<User>();
@@ -95,7 +95,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (smoking != null) currentUser.smoking = smoking;
     if (drinking != null) currentUser.drinking = drinking;
     if (yourKids != null) currentUser.yourKids = yourKids;
-    if (lookingFor != null) currentUser.lookingFor = lookingFor;
+    if (lookingFors != null) currentUser.lookingFors = lookingFors;
     if (religious != null) currentUser.religious = religious;
 
     model.update(currentUser: currentUser);
@@ -119,7 +119,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         smoking: smoking,
         drinking: drinking,
         yourKids: yourKids,
-        lookingFor: lookingFor,
+        lookingFors: lookingFors,
         religious: religious,
       );
       model.update(currentUser: result);

@@ -21,6 +21,9 @@ Momentum momentum({bool isTesting = false}) {
   return Momentum(
     key: UniqueKey(),
     maxTimeTravelSteps: 200,
+    restartCallback: () {
+      runApp(AppConfig.instance.copyWith(child: App()));
+    },
     controllers: [
       AuthController(),
       CurrentUserController(),

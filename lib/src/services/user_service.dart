@@ -46,7 +46,7 @@ class UserService extends MomentumService {
     UsualType smoking,
     UsualType drinking,
     HaveKids yourKids,
-    LookingFor lookingFor,
+    List<LookingFor> lookingFors,
     Religious religious,
   }) async {
     final graphql = getService<GraphqlService>();
@@ -67,7 +67,7 @@ class UserService extends MomentumService {
       smoking,
       drinking,
       yourKids,
-      lookingFor,
+      lookingFors,
       religious,
     );
     final user = Mapper.fromJson(data).toObject<User>();
