@@ -22,6 +22,8 @@ abstract class I18nProvider {
 
   I18NPermissionProvider getNotPermissionText(Options options);
 
+  static const I18nProvider japanese = JAProvider();
+
   static const I18nProvider vietnamese = VNProvider();
 
   static const I18nProvider chinese = CNProvider();
@@ -69,7 +71,7 @@ class VNProvider extends I18nProvider {
 
   @override
   I18NPermissionProvider getNotPermissionText(Options options) {
-    return I18NPermissionProvider(
+    return const I18NPermissionProvider(
         cancelText: 'Hủy',
         sureText: 'Đồng ý',
         titleText: 'Không có quyền truy cập album');
@@ -116,7 +118,7 @@ class CNProvider extends I18nProvider {
 
   @override
   I18NPermissionProvider getNotPermissionText(Options options) {
-    return I18NPermissionProvider(
+    return const I18NPermissionProvider(
         cancelText: '取消', sureText: '去开启', titleText: '没有访问相册的权限');
   }
 }
@@ -156,28 +158,72 @@ class ENProvider extends I18nProvider {
 
   @override
   I18NPermissionProvider getNotPermissionText(Options options) {
-    return I18NPermissionProvider(
+    return const I18NPermissionProvider(
         cancelText: 'Cancel',
         sureText: 'Allow',
         titleText: 'No permission to access gallery');
   }
 }
 
+class JAProvider extends I18nProvider {
+  const JAProvider() : super._();
+
+  @override
+  String getTitleText(Options options) {
+    return '';
+  }
+
+  @override
+  String getPreviewText(Options options, SelectedProvider selectedProvider) {
+    return 'プレビュー (${selectedProvider.selectedCount})';
+  }
+
+  @override
+  String getSureText(Options options, int currentCount) {
+    return options.isCropImage
+        ? '次へ ($currentCount/${options.maxSelected})'
+        : '送信 ($currentCount/${options.maxSelected})';
+  }
+
+  @override
+  String getSelectedOptionsText(Options options) {
+    return '選択済み';
+  }
+
+  @override
+  String getMaxTipText(Options options) {
+    return '最大${options.maxSelected}枚の写真を選択してください';
+  }
+
+  @override
+  String getAllGalleryText(Options options) {
+    return '最近の項目';
+  }
+
+  @override
+  I18NPermissionProvider getNotPermissionText(Options options) {
+    return const I18NPermissionProvider(
+        cancelText: 'キャンセル', sureText: '完了', titleText: 'ギャラリーにアクセスする権限がありません');
+  }
+}
+
 abstract class I18NCustomProvider implements I18nProvider {
+  I18NCustomProvider(
+    this.maxTipText,
+    this.previewText,
+    this.selectedOptionsText,
+    this.sureText,
+    this.titleText,
+    this.notPermissionText,
+  );
+
   final String maxTipText;
   final String previewText;
   final String selectedOptionsText;
   final String sureText;
   final String titleText;
-  final I18NPermissionProvider notPermissionText;
 
-  I18NCustomProvider(
-      this.maxTipText,
-      this.previewText,
-      this.selectedOptionsText,
-      this.sureText,
-      this.titleText,
-      this.notPermissionText);
+  final I18NPermissionProvider notPermissionText;
 
   @override
   String getMaxTipText(Options options) {
@@ -201,10 +247,14 @@ abstract class I18NCustomProvider implements I18nProvider {
 }
 
 class I18NPermissionProvider {
+  const I18NPermissionProvider({
+    this.titleText,
+    this.sureText,
+    this.cancelText,
+  });
+
   final String titleText;
   final String sureText;
-  final String cancelText;
 
-  const I18NPermissionProvider(
-      {this.titleText, this.sureText, this.cancelText});
+  final String cancelText;
 }

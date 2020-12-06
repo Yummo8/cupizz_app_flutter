@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../../provider/i18n_provider.dart';
 
 class NotPermissionDialog extends StatefulWidget {
-  final I18NPermissionProvider provider;
-
   const NotPermissionDialog(this.provider);
+
+  final I18NPermissionProvider provider;
 
   @override
   _NotPermissionDialogState createState() => _NotPermissionDialogState();
@@ -13,7 +13,7 @@ class NotPermissionDialog extends StatefulWidget {
 class _NotPermissionDialogState extends State<NotPermissionDialog> {
   @override
   Widget build(BuildContext context) {
-    var provider = widget.provider;
+    final provider = widget.provider;
     return AlertDialog(
       title: Text(provider.titleText),
       actions: <Widget>[

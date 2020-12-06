@@ -5,6 +5,25 @@ import '../delegate/loading_delegate.dart';
 import '../delegate/sort_delegate.dart';
 
 class Options {
+  const Options({
+    this.rowCount,
+    this.maxSelected,
+    this.padding,
+    this.itemRadio,
+    this.themeColor,
+    this.dividerColor,
+    this.textColor,
+    this.disableColor,
+    this.thumbSize,
+    this.sortDelegate,
+    this.checkBoxBuilderDelegate,
+    this.loadingDelegate,
+    this.badgeDelegate,
+    this.pickType,
+    this.autoCloseOnSelectionLimit,
+    this.isCropImage,
+  });
+
   final int rowCount;
 
   final int maxSelected;
@@ -33,22 +52,9 @@ class Options {
 
   final PickType pickType;
 
-  const Options({
-    this.rowCount,
-    this.maxSelected,
-    this.padding,
-    this.itemRadio,
-    this.themeColor,
-    this.dividerColor,
-    this.textColor,
-    this.disableColor,
-    this.thumbSize,
-    this.sortDelegate,
-    this.checkBoxBuilderDelegate,
-    this.loadingDelegate,
-    this.badgeDelegate,
-    this.pickType,
-  });
+  final bool autoCloseOnSelectionLimit;
+
+  final bool isCropImage;
 }
 
 enum PickType {

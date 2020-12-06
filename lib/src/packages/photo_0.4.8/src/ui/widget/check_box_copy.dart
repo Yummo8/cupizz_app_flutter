@@ -241,7 +241,9 @@ class _RenderCheckbox extends RenderToggleable {
 
   @override
   set value(bool newValue) {
-    if (newValue == value) return;
+    if (newValue == value) {
+      return;
+    }
     _oldValue = value;
     super.value = newValue;
   }

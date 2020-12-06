@@ -14,15 +14,16 @@ abstract class CheckBoxBuilderDelegate {
 }
 
 class DefaultCheckBoxBuilderDelegate extends CheckBoxBuilderDelegate {
-  Color activeColor;
-  Color unselectedColor;
-  Color checkColor;
-
   DefaultCheckBoxBuilderDelegate({
     this.activeColor = Colors.white,
     this.unselectedColor = Colors.white,
     this.checkColor = Colors.black,
   });
+
+  final Color activeColor;
+  final Color unselectedColor;
+
+  final Color checkColor;
 
   @override
   Widget buildCheckBox(
@@ -50,13 +51,13 @@ class DefaultCheckBoxBuilderDelegate extends CheckBoxBuilderDelegate {
 }
 
 class RadioCheckBoxBuilderDelegate extends CheckBoxBuilderDelegate {
-  Color activeColor;
-  Color unselectedColor;
-
   RadioCheckBoxBuilderDelegate({
     this.activeColor = Colors.white,
     this.unselectedColor = Colors.white,
   });
+
+  final Color activeColor;
+  final Color unselectedColor;
 
   @override
   Widget buildCheckBox(

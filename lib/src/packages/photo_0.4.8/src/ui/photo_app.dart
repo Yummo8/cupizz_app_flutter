@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:photo_manager/photo_manager.dart';
@@ -8,10 +10,6 @@ import '../provider/i18n_provider.dart';
 import '../ui/page/photo_main_page.dart';
 
 class PhotoApp extends StatelessWidget {
-  final Options options;
-  final I18nProvider provider;
-  final List<AssetPathEntity> photoList;
-  final List<AssetEntity> pickedAssetList;
   const PhotoApp({
     Key key,
     this.options,
@@ -20,6 +18,13 @@ class PhotoApp extends StatelessWidget {
     this.pickedAssetList,
   }) : super(key: key);
 
+  final Options options;
+  final I18nProvider provider;
+  final List<AssetPathEntity> photoList;
+  final List<AssetEntity> pickedAssetList;
+
+//  final List<AssetEntity> pickedAssetList;
+
   @override
   Widget build(BuildContext context) {
     final pickerProvider = PhotoPickerProvider(
@@ -27,8 +32,23 @@ class PhotoApp extends StatelessWidget {
       options: options,
       pickedAssetList: pickedAssetList,
       child: PhotoMainPage(
-        onClose: (List<AssetEntity> value) {
-          Navigator.pop(context, value);
+        onClose: (List<AssetEntity> value) async {
+          List<File> files;
+          if (options.isCropImage) {
+            // TODO navigate to crop
+            // final listFile =
+            //     await Future.wait(value.map((e) => e.file).toList());
+            // files = await Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => ImagesCropperScreen(files: listFile)),
+            // );
+          } else {
+            files = await Future.wait(value.map((e) => e.file).toList());
+          }
+          if (files != null && files.isNotEmpty) {
+            Navigator.pop(context, files);
+          }
         },
         options: options,
         photoList: photoList,

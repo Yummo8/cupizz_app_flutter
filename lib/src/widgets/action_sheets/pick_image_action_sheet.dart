@@ -36,8 +36,7 @@ List<MenuItem> getPickImagesMenuItem(
           maxSelected: maxSelected,
         ).then((assets) async {
           if (assets.isNotEmpty) {
-            final files = await Future.wait(assets.map((e) => e.file));
-            onPickedImage(files);
+            onPickedImage(assets);
           }
         }).whenComplete(() => Navigator.pop(context)),
       ),

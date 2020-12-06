@@ -4,11 +4,11 @@ part './sort_asset_delegate.dart';
 
 /// SortPathDelegate
 abstract class SortDelegate {
-  final SortAssetDelegate assetDelegate;
-
   const SortDelegate({
     this.assetDelegate = const DefaultAssetDelegate(),
   });
+
+  final SortAssetDelegate assetDelegate;
 
   void sort(List<AssetPathEntity> list);
 
