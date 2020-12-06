@@ -167,4 +167,20 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     unawaited(
         dependOn<RecommendableUsersController>().fetchRecommendableUsers());
   }
+
+  Future addImage(io.File image) async {
+    try {
+      model.update(isAddingImage: true);
+      final service = getService<UserService>();
+      final userImage = await service.addImage(image);
+      model.currentUser.userImages.add(userImage);
+      model.update(currentUser: model.currentUser);
+      unawaited(getCurrentUser());
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      model.update(isAddingImage: false);
+    }
+  }
 }

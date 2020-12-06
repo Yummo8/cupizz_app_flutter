@@ -127,4 +127,32 @@ class UserService extends MomentumService {
     final result = Mapper.fromJson(data).toObject<SimpleUser>();
     return result;
   }
+
+  Future<UserImage> addImage(io.File image) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.addUserImage(image);
+    final result = Mapper.fromJson(data).toObject<UserImage>();
+    return result;
+  }
+
+  Future<UserImage> answerQuestion(
+    String questionId,
+    String content, {
+    String color,
+    String textColor,
+    List<String> gradient,
+    io.File backgroundImage,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.answerQuestion(
+      questionId,
+      content,
+      color: color,
+      textColor: textColor,
+      gradient: gradient,
+      backgroundImage: backgroundImage,
+    );
+    final result = Mapper.fromJson(data).toObject<UserImage>();
+    return result;
+  }
 }

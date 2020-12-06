@@ -8,6 +8,7 @@ import '../entity/options.dart';
 import '../provider/config_provider.dart';
 import '../provider/i18n_provider.dart';
 import '../ui/page/photo_main_page.dart';
+import './image_cropper_screen.dart';
 
 class PhotoApp extends StatelessWidget {
   const PhotoApp({
@@ -35,14 +36,13 @@ class PhotoApp extends StatelessWidget {
         onClose: (List<AssetEntity> value) async {
           List<File> files;
           if (options.isCropImage) {
-            // TODO navigate to crop
-            // final listFile =
-            //     await Future.wait(value.map((e) => e.file).toList());
-            // files = await Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => ImagesCropperScreen(files: listFile)),
-            // );
+            final listFile =
+                await Future.wait(value.map((e) => e.file).toList());
+            files = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ImagesCropperScreen(files: listFile)),
+            );
           } else {
             files = await Future.wait(value.map((e) => e.file).toList());
           }

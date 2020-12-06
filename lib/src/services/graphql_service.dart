@@ -51,6 +51,7 @@ class GraphqlService extends MomentumService {
 
   Future<QueryResult> _processQueryResult(Future<QueryResult> future) async {
     final result = await future;
+    debugPrint(result.data?.keys?.toString());
     if (result.hasException) {
       if (result.exception.clientException != null &&
           result.exception.clientException.message.isExistAndNotEmpty) {

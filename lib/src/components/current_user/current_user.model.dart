@@ -7,12 +7,15 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     this.isLoading = false,
     this.isUpdatingCover = false,
     this.isUpdatingAvatar = false,
+    this.isAddingImage = false,
   }) : super(controller);
 
   final User currentUser;
+  // State
   final bool isLoading;
   final bool isUpdatingCover;
   final bool isUpdatingAvatar;
+  final bool isAddingImage;
 
   @override
   void update({
@@ -20,6 +23,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     bool isLoading,
     bool isUpdatingCover,
     bool isUpdatingAvatar,
+    bool isAddingImage,
   }) {
     CurrentUserModel(
       controller,
@@ -27,6 +31,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
       isLoading: isLoading ?? this.isLoading,
       isUpdatingCover: isUpdatingCover ?? this.isUpdatingCover,
       isUpdatingAvatar: isUpdatingAvatar ?? this.isUpdatingAvatar,
+      isAddingImage: isAddingImage ?? this.isAddingImage,
     ).updateMomentum();
   }
 
