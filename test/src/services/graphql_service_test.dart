@@ -17,7 +17,7 @@ void main() async {
 
   final graphql = tester.service<GraphqlService>();
   final storage = tester.service<StorageService>();
-  final loginEmail = 'test12@gmail.com';
+  final loginEmail = 'test111@gmail.com';
   final loginPassword = '123456789';
 
   final token = (await graphql.loginMutation(

@@ -115,8 +115,6 @@ class _MessageListViewState extends State<MessageListView> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime currentDate;
-
     final constraints = widget.constraints ??
         BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height,
@@ -140,7 +138,6 @@ class _MessageListViewState extends State<MessageListView> {
                   itemBuilder: (context, i) {
                     var first = false;
                     var last = false;
-                    var showDate = false;
                     final isUser = widget.messages[i] != null
                         ? widget.messages[i].sender.id == widget.user.id
                         : Random().nextInt(2) == 1;
@@ -154,47 +151,9 @@ class _MessageListViewState extends State<MessageListView> {
                       last = true;
                     }
 
-                    final messageDate = widget.messages[i] != null
-                        ? DateTime(
-                            widget.messages[i].createdAt.year,
-                            widget.messages[i].createdAt.month,
-                            widget.messages[i].createdAt.day,
-                          )
-                        : DateTime.now();
-
-                    // Needed for inverted list
-                    final previousDate = currentDate ?? messageDate;
-
-                    if (currentDate == null) {
-                      currentDate = messageDate;
-                      showDate =
-                          !widget.inverted || widget.messages.length == 1;
-                    } else if (currentDate.difference(messageDate).inDays !=
-                        0) {
-                      showDate = true;
-                      currentDate = messageDate;
-                    } else if (i == widget.messages.length - 1 &&
-                        widget.inverted) {
-                      showDate = true;
-                    } else {
-                      showDate = false;
-                    }
-
                     return Align(
                       child: Column(
                         children: <Widget>[
-                          // if (widget.messages[i] != null &&
-                          //     showDate &&
-                          //     (!widget.inverted ||
-                          //         widget.messages.length == 1 ||
-                          //         (last && widget.inverted)))
-                          //   DateBuilder(
-                          //     key: UniqueKey(),
-                          //     date:
-                          //         widget.inverted ? previousDate : currentDate,
-                          //     customDateBuilder: widget.dateBuilder,
-                          //     dateFormat: widget.dateFormat,
-                          //   ),
                           if (widget.messages[i] != null &&
                                   i >= widget.messages.length - 1 ||
                               widget.messages[i] != null &&
@@ -343,16 +302,6 @@ class _MessageListViewState extends State<MessageListView> {
                               ],
                             ),
                           ),
-                          // if (showDate &&
-                          //     widget.inverted &&
-                          //     widget.messages.length > 1 &&
-                          //     !last)
-                          //   DateBuilder(
-                          //     date:
-                          //         widget.inverted ? previousDate : currentDate,
-                          //     customDateBuilder: widget.dateBuilder,
-                          //     dateFormat: widget.dateFormat,
-                          //   ),
                         ],
                       ),
                     );
