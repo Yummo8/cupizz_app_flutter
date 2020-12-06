@@ -377,7 +377,7 @@ void main() async {
       final currentUserImages =
           Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
 
-      expect(currentUserImages.contains(userImage), false);
+      expect(currentUserImages.contains(userImage), true);
 
       await graphql.removeUserImage(userImage.id);
 
@@ -388,24 +388,52 @@ void main() async {
     });
 
     test('answerQuestion', () async {
-      // TODO missing api get questions
+      final allQuestions = (await graphql.questionsQuery() as List)
+          .map((e) => Mapper.fromJson(e).toObject<Question>())
+          .toList();
+      expect(allQuestions.isNotEmpty, true);
+
+      // Without image
+      final userImageWithoutImage = Mapper.fromJson(
+              await graphql.answerQuestion(allQuestions[0].id, 'Testing'))
+          .toObject<UserImage>();
+      expect(userImageWithoutImage?.answer != null, true);
+
+      // With image
+      final userImageWithImage = Mapper.fromJson(await graphql.answerQuestion(
+        allQuestions[0].id,
+        'Testing',
+        backgroundImage: File(Assets.i.images.defaultAvatar),
+      ))
+          .toObject<UserImage>();
+      expect(userImageWithImage?.answer != null, true);
+      expect(userImageWithImage?.image != null, true);
+
+      final currentUserImages =
+          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+
+      expect(currentUserImages.contains(userImageWithoutImage), true);
+      expect(currentUserImages.contains(userImageWithImage), true);
     });
 
     test('updateUserImagesSortOrder', () async {
-      final currentUserImages =
-          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+      final currentUserImages = Mapper.fromJson(await graphql.meQuery())
+          .toObject<User>()
+          .userImages
+          .map((e) => e.id)
+          .toList();
       final expectSort = [...currentUserImages];
       expectSort.shuffle();
 
-      final json = await graphql
-          .updateUserImagesSortOrder(expectSort.map((e) => e.id).toList());
+      final json = await graphql.updateUserImagesSortOrder(expectSort);
 
-      final afterSort = Mapper.fromJson(json).toObject<User>().userImages;
+      final afterSort = Mapper.fromJson(json)
+          .toObject<User>()
+          .userImages
+          .map((e) => e.id)
+          .toList();
 
-      expect(
-        afterSort.map((e) => e.id).toList(),
-        expectSort.map((e) => e.id).toList(),
-      );
+      expect(afterSort, expectSort);
     });
   });
 }

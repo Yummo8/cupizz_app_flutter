@@ -175,7 +175,7 @@ extension GraphqlMutation on GraphqlService {
   }) async {
     final query = '''
           mutation answerQuestion(\$backgroundImage: Upload) {
-            updateProfile(
+            answerQuestion(
               questionId: "$questionId"
               content: "$content"
               ${color != null ? 'color: $color' : ''}
@@ -212,7 +212,10 @@ extension GraphqlMutation on GraphqlService {
               userImagesSortOrder: ${jsonEncode(userImagesSortOrder)}
             ) ${User.graphqlQuery}
           }''';
-    final result = await mutate(MutationOptions(documentNode: gql(query)));
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
 
     return result.data['updateUserImagesSortOrder'];
   }

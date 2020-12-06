@@ -111,4 +111,18 @@ extension GraphqlQuery on GraphqlService {
     ));
     return result.data['getAddress'];
   }
+
+  Future questionsQuery([String keyword]) async {
+    final queryString = '''query questions(\$keyword: String){ 
+        questions(keyword: \$keyword) ${Question.graphqlQuery}
+      }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheFirst,
+        documentNode: gql(queryString),
+        variables: {'keyword': keyword},
+      ),
+    );
+    return result.data['questions'];
+  }
 }
