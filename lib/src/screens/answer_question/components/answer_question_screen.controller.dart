@@ -23,4 +23,26 @@ class AnswerQuestionScreenController
       }
     }
   }
+
+  Future sendToServer() async {
+    try {
+      model.update(isSending: true);
+      final userImage = await getService<UserService>().answerQuestion(
+        model.question?.id,
+        model.content,
+        backgroundImage: model.backgroundImage,
+        color: model.selectedColor?.color?.toHex(leadingHashSign: false),
+        textColor:
+            model.selectedColor?.textColor?.toHex(leadingHashSign: false),
+        gradient: model.selectedColor?.gradient
+            ?.map((e) => e.toHex(leadingHashSign: false))
+            ?.toList(),
+      );
+      unawaited(dependOn<CurrentUserController>().addAnswer(userImage));
+    } catch (e) {
+      unawaited(Fluttertoast.showToast(msg: '$e'));
+    } finally {
+      model.update(isSending: false);
+    }
+  }
 }

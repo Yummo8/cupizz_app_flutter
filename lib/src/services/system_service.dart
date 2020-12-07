@@ -25,4 +25,14 @@ class SystemService extends MomentumService {
         .toList();
     return result;
   }
+
+  Future<WithIsLastPageOutput<Question>> getQuestions({
+    String keyword,
+    int page,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.questionsQuery(keyword, page);
+    final result = WithIsLastPageOutput<Question>.fromJson(data);
+    return result;
+  }
 }

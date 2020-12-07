@@ -62,7 +62,17 @@ class ComposeBottomIconWidget extends StatelessWidget {
                           ),
                         ),
                       )
-                      .toList()
+                      .toList(),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    model.deleteSelected();
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: context.colorScheme.onBackground,
+                  ),
+                ),
               ],
             );
           }),

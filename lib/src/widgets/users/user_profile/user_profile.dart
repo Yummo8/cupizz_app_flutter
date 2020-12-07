@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
+import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../base/base.dart';
@@ -268,7 +269,7 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                                   ? null
                                   : () {
                                       Router.goto(
-                                          context, AnswerQuestionScreen);
+                                          context, SelectQuestionScreen);
                                     },
                               color: _theme.primaryColor.withOpacity(0.2),
                               child: Row(

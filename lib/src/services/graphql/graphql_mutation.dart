@@ -178,9 +178,9 @@ extension GraphqlMutation on GraphqlService {
             answerQuestion(
               questionId: "$questionId"
               content: "$content"
-              ${color != null ? 'color: $color' : ''}
-              ${textColor != null ? 'textColor: $textColor' : ''}
-              ${gradient != null ? 'gradient: $gradient' : ''}
+              ${color != null ? 'color: "$color"' : ''}
+              ${textColor != null ? 'textColor: "$textColor"' : ''}
+              ${gradient != null ? 'gradient: ${jsonEncode(gradient)}' : ''}
               backgroundImage: \$backgroundImage
             ) ${UserImage.graphqlQuery}
           }''';

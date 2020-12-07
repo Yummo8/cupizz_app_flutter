@@ -10,6 +10,7 @@ class AnswerQuestionScreenModel
     this.backgroundImage,
     this.content,
     this.question,
+    this.isSending = false,
   }) : super(controller);
 
   // Use for editing screen.
@@ -20,6 +21,8 @@ class AnswerQuestionScreenModel
   final String content;
   final Question question;
 
+  final bool isSending;
+
   @override
   void update({
     UserImage userImage,
@@ -28,6 +31,7 @@ class AnswerQuestionScreenModel
     File backgroundImage,
     String content,
     Question question,
+    bool isSending,
   }) {
     AnswerQuestionScreenModel(
       controller,
@@ -37,6 +41,19 @@ class AnswerQuestionScreenModel
       backgroundImage: backgroundImage ?? this.backgroundImage,
       content: content ?? this.content,
       question: question ?? this.question,
+      isSending: isSending ?? this.isSending,
+    ).updateMomentum();
+  }
+
+  void deleteSelected() {
+    AnswerQuestionScreenModel(
+      controller,
+      backgroundImage: null,
+      selectedColor: null,
+      userImage: userImage,
+      colors: colors,
+      content: content,
+      question: question,
     ).updateMomentum();
   }
 

@@ -183,4 +183,15 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       model.update(isAddingImage: false);
     }
   }
+
+  Future addAnswer(UserImage userImage) async {
+    try {
+      model.currentUser.userImages.add(userImage);
+      model.update(currentUser: model.currentUser);
+      unawaited(getCurrentUser());
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 }

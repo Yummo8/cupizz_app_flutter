@@ -6,6 +6,8 @@ import 'package:cupizz_app/src/models/index.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pedantic/pedantic.dart';
 
 part 'components/answer_question_screen.controller.dart';
 part 'components/answer_question_screen.model.dart';
@@ -15,53 +17,61 @@ part 'widgets/widgets.dart';
 
 class AnswerQuestionScreenParams extends RouterParam {
   final UserImage userImage;
+  final Question question;
 
-  AnswerQuestionScreenParams({this.userImage});
+  AnswerQuestionScreenParams({this.userImage, this.question});
 }
 
 class AnswerQuestionScreen extends StatelessWidget {
-  void _onSubmit(BuildContext context) {
-    FocusScope.of(context).unfocus();
+  void _onSubmit(BuildContext context) async {
+    await Momentum.controller<AnswerQuestionScreenController>(context)
+        .sendToServer();
+    Router.pop(context);
   }
 
-  void _onImageIconSelected(BuildContext context, File file) {
+  void _onImageIconSelected(BuildContext context, File file) async {
     if (file != null) {
-      Momentum.controller<AnswerQuestionScreenController>(context)
+      await Momentum.controller<AnswerQuestionScreenController>(context)
           .model
           .update(backgroundImage: file);
     }
   }
 
-  String _getTextFieldPlaceholder() {
-    return 'Hôm nay bạn thế nào?';
-  }
-
   @override
   Widget build(BuildContext context) {
+    final params = Router.getParam<AnswerQuestionScreenParams>(context);
     return MomentumBuilder(
         controllers: [AnswerQuestionScreenController],
         builder: (context, snapshot) {
           final model = snapshot<AnswerQuestionScreenModel>();
-          final params = Router.getParam<AnswerQuestionScreenParams>(context);
-          if (params?.userImage != null &&
-              model.userImage != params?.userImage) {
-            model.update(userImage: params.userImage);
-          }
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            if (params?.userImage != null &&
+                model.userImage != params?.userImage) {
+              model.update(userImage: params.userImage);
+            }
+            if (params?.question != null) {
+              model.update(question: params.question);
+            }
+          });
 
           final haveImageBackground =
               model.backgroundImage != null || model.userImage?.image != null;
           final backgroundColor = model.selectedColor != null
               ? model.selectedColor.color
-              : model.userImage?.answer?.color != null
-                  ? model.userImage.answer.color
-                  : model.userImage?.answer?.question?.color ??
-                      ColorOfAnswer.defaultColor.color;
+              : model.question?.color != null
+                  ? model.question.color
+                  : model.userImage?.answer?.color != null
+                      ? model.userImage.answer.color
+                      : model.userImage?.answer?.question?.color ??
+                          ColorOfAnswer.defaultColor.color;
           final textColor = model.selectedColor != null
               ? model.selectedColor.textColor
-              : model.userImage?.answer?.textColor != null
-                  ? model.userImage.answer.textColor
-                  : model.userImage?.answer?.question?.textColor ??
-                      ColorOfAnswer.defaultColor.textColor;
+              : model.question?.textColor != null
+                  ? model.question.textColor
+                  : model.userImage?.answer?.textColor != null
+                      ? model.userImage.answer.textColor
+                      : model.userImage?.answer?.question?.textColor ??
+                          ColorOfAnswer.defaultColor.textColor;
           final backgroundGradient = model.selectedColor != null
               ? model.selectedColor.gradient
               : model.userImage?.answer != null
@@ -100,9 +110,12 @@ class AnswerQuestionScreen extends StatelessWidget {
                   Column(
                     children: [
                       _AppBar(
-                        onActionPressed: _onSubmit,
+                        onActionPressed:
+                            model.content.isExistAndNotEmpty && !model.isSending
+                                ? () => _onSubmit(context)
+                                : null,
                         isCrossButton: true,
-                        submitButtonText: 'Đăng',
+                        submitButtonText: 'Trả lời',
                         isSubmitDisable: false,
                         isbootomLine: true,
                         textColor: textColor,
@@ -140,17 +153,20 @@ class AnswerQuestionScreen extends StatelessWidget {
                                 ),
                               Expanded(
                                 child: Center(
-                                  child: TextField(
+                                  child: TextFormField(
+                                    initialValue: model.content,
                                     keyboardType: TextInputType.multiline,
                                     maxLines: null,
                                     textAlign: TextAlign.center,
+                                    style: context.textTheme.headline6
+                                        .copyWith(color: textColor),
                                     onChanged: (value) =>
                                         model.update(content: value),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: _getTextFieldPlaceholder(),
-                                      hintStyle: TextStyle(
-                                          fontSize: 18, color: textColor),
+                                      hintText: 'Câu trả lời ...',
+                                      hintStyle: context.textTheme.headline6
+                                          .copyWith(color: textColor),
                                     ),
                                   ),
                                 ),

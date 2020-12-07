@@ -388,9 +388,9 @@ void main() async {
     });
 
     test('answerQuestion', () async {
-      final allQuestions = (await graphql.questionsQuery() as List)
-          .map((e) => Mapper.fromJson(e).toObject<Question>())
-          .toList();
+      final allQuestions = WithIsLastPageOutput<Question>.fromJson(
+              await graphql.questionsQuery())
+          .data;
       expect(allQuestions.isNotEmpty, true);
 
       // Without image

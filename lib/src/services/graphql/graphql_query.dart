@@ -112,15 +112,18 @@ extension GraphqlQuery on GraphqlService {
     return result.data['getAddress'];
   }
 
-  Future questionsQuery([String keyword]) async {
-    final queryString = '''query questions(\$keyword: String){ 
-        questions(keyword: \$keyword) ${Question.graphqlQuery}
+  Future questionsQuery([String keyword, int page]) async {
+    final queryString = '''query questions(\$keyword: String, \$page: Int){ 
+        questions(keyword: \$keyword, page: \$page) ${WithIsLastPageOutput.graphqlQuery(Question.graphqlQuery)}
       }''';
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheFirst,
         documentNode: gql(queryString),
-        variables: {'keyword': keyword},
+        variables: {
+          'keyword': keyword,
+          'page': page,
+        },
       ),
     );
     return result.data['questions'];
@@ -132,7 +135,7 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(
       QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
         documentNode: gql(queryString),
       ),
     );
