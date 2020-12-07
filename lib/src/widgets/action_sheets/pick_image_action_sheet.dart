@@ -35,7 +35,7 @@ List<MenuItem> getPickImagesMenuItem(
           themeColor: context.colorScheme.background,
           maxSelected: maxSelected,
         ).then((assets) async {
-          if (assets.isNotEmpty) {
+          if (assets.isExistAndNotEmpty) {
             onPickedImage(assets);
           }
         }).whenComplete(() => Navigator.pop(context)),

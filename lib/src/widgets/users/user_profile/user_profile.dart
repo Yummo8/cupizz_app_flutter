@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../base/base.dart';
@@ -217,47 +218,80 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                       controllers: [CurrentUserController],
                       builder: (context, snapshot) {
                         final model = snapshot<CurrentUserModel>();
-                        return FlatButton(
-                          onPressed: model.isAddingImage
-                              ? null
-                              : () {
-                                  pickImage(context, (files) {
-                                    if (files.isExistAndNotEmpty) {
-                                      model.controller
-                                          .addImage(files[0])
-                                          .then((_) {
-                                        WidgetsBinding.instance
-                                            .addPostFrameCallback((_) {
-                                          scrollController.animateTo(
-                                            scrollController
-                                                .position.maxScrollExtent,
-                                            curve: Curves.easeIn,
-                                            duration: Duration(seconds: 1),
-                                          );
-                                        });
-                                      });
-                                    }
-                                  }, maxSelected: 1);
-                                },
-                          color: _theme.primaryColor.withOpacity(0.2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              model.isAddingImage
-                                  ? LoadingIndicator(size: 20)
-                                  : Icon(
-                                      Icons.image,
-                                      color: _theme.primaryColor,
-                                    ),
-                              Text(
-                                'Thêm ảnh',
-                                style: TextStyle(
-                                    color: _theme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                        return Column(
+                          children: [
+                            FlatButton(
+                              onPressed: model.isAddingImage
+                                  ? null
+                                  : () {
+                                      pickImage(context, (files) {
+                                        if (files.isExistAndNotEmpty) {
+                                          model.controller
+                                              .addImage(files[0])
+                                              .then((_) {
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              scrollController.animateTo(
+                                                scrollController
+                                                    .position.maxScrollExtent,
+                                                curve: Curves.easeIn,
+                                                duration: Duration(seconds: 1),
+                                              );
+                                            });
+                                          });
+                                        }
+                                      }, maxSelected: 1);
+                                    },
+                              color: _theme.primaryColor.withOpacity(0.2),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  model.isAddingImage
+                                      ? LoadingIndicator(size: 20)
+                                      : Icon(
+                                          Icons.image,
+                                          color: _theme.primaryColor,
+                                        ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    'Thêm ảnh',
+                                    style: TextStyle(
+                                        color: _theme.primaryColor,
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: model.isAddingImage
+                                  ? null
+                                  : () {
+                                      Router.goto(
+                                          context, AnswerQuestionScreen);
+                                    },
+                              color: _theme.primaryColor.withOpacity(0.2),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  model.isAddingImage
+                                      ? LoadingIndicator(size: 20)
+                                      : Icon(
+                                          Icons.help_outline,
+                                          color: _theme.primaryColor,
+                                        ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    'Trả lời câu hỏi',
+                                    style: TextStyle(
+                                        color: _theme.primaryColor,
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         );
                       })
               ]

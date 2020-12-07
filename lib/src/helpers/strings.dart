@@ -41,6 +41,7 @@ class _Error {
   final unknownError = 'Lỗi không xác định';
   final invalidEmail = 'Email không đúng định dạng';
   final invalidPassword = 'Mật khẩu phải lớn hơn 8 ký tự';
+  final invalidUserAnswer = 'Câu trả lời phải nhiều hơn 10 ký tự';
   final errorClick = 'Đã xảy ra lỗi. Click để xem chi tiết.';
   final error = 'Đã xảy ra lỗi.';
 }

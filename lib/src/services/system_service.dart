@@ -16,4 +16,13 @@ class SystemService extends MomentumService {
     final address = await graphql.getAddressQuery(latitude, longitude);
     return address;
   }
+
+  Future<List<ColorOfAnswer>> getColorsOfAnswer() async {
+    final graphql = getService<GraphqlService>();
+    final json = await graphql.colorsOfAnswerQuery();
+    final result = (json as List)
+        .map((e) => Mapper.fromJson(e).toObject<ColorOfAnswer>())
+        .toList();
+    return result;
+  }
 }

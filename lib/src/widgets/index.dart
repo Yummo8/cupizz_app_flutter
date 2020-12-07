@@ -28,6 +28,7 @@ part 'buttons/opacity_icon_button.dart';
 part 'buttons/option_button.dart';
 part 'buttons/save_button.dart';
 part 'customs/animated_list.dart';
+part 'customs/answer_gradient.dart';
 part 'customs/button_bar.dart';
 part 'customs/custom_grid_view.dart';
 part 'customs/custom_theme.dart';

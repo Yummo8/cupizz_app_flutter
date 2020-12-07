@@ -125,4 +125,17 @@ extension GraphqlQuery on GraphqlService {
     );
     return result.data['questions'];
   }
+
+  Future colorsOfAnswerQuery() async {
+    final queryString = '''{ 
+        colorsOfAnswer ${ColorOfAnswer.graphqlQuery}
+      }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['colorsOfAnswer'];
+  }
 }

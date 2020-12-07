@@ -6,6 +6,7 @@ import '../base/base.dart';
 
 part 'base.dart';
 part 'chat_user.dart';
+part 'colorOfAnswer.dart';
 part 'conversation.dart';
 part 'conversation_key.dart';
 part 'enum.dart';
@@ -25,6 +26,7 @@ part 'with_is_past_page_output.dart';
 void objectMapping() {
   Mappable.factories = {
     ChatUser: () => ChatUser(),
+    ColorOfAnswer: () => ColorOfAnswer(),
     Conversation: () => Conversation(),
     EducationLevel: (v) => EducationLevel(rawValue: v),
     FileModel: () => FileModel(),
