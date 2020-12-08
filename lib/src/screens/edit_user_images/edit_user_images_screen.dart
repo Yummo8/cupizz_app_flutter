@@ -10,7 +10,17 @@ class EditUserImagesScreen extends StatefulWidget {
   _EditUserImagesScreenState createState() => _EditUserImagesScreenState();
 }
 
-class _EditUserImagesScreenState extends State<EditUserImagesScreen> {
+class _EditUserImagesScreenState extends State<EditUserImagesScreen>
+    with KeepScrollOffsetMixin {
+  static double lastScrollOffset = 0;
+  @override
+  double get lastOffset => lastScrollOffset;
+
+  @override
+  set lastOffset(double value) {
+    lastScrollOffset = value;
+  }
+
   bool isEdit;
 
   void _onReorder(int oldIndex, int newIndex) {
@@ -50,6 +60,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen> {
                     child: ReorderableListView(
                       onReorder: _onReorder,
                       scrollDirection: Axis.vertical,
+                      scrollController: scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       children: model.currentUser.userImages
                           .map((e) => _buildListTile(context, e))

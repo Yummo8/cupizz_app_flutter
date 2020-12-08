@@ -435,5 +435,41 @@ void main() async {
 
       expect(afterSort, expectSort);
     });
+
+    test('editAnswer', () async {
+      final currentUserImages = Mapper.fromJson(await graphql.meQuery())
+          .toObject<User>()
+          .userImages
+          .toList();
+
+      expect(currentUserImages.isExistAndNotEmpty, true);
+      final userImage =
+          currentUserImages.firstWhere((element) => element.answer != null);
+
+      final content = 'Unit test edit answer ${Random().nextDouble()}';
+      final color = Color((Random().nextDouble() * 0xFFFFFF).toInt());
+      final textColor = Color((Random().nextDouble() * 0xFFFFFF).toInt());
+      final gradient = [
+        Color((Random().nextDouble() * 0xFFFFFF).toInt()),
+        Color((Random().nextDouble() * 0xFFFFFF).toInt()),
+      ];
+
+      final json = await graphql.editAnswer(
+        userImage.answer.id,
+        content,
+        color,
+        textColor,
+        gradient,
+        File(Assets.i.images.defaultAvatar),
+      );
+
+      final afterEdit = Mapper.fromJson(json).toObject<UserImage>();
+
+      expect(afterEdit.answer?.content, content);
+      expect(afterEdit.answer?.color, color);
+      expect(afterEdit.answer?.textColor, textColor);
+      expect(afterEdit.answer?.gradient, gradient);
+      expect(afterEdit.image != userImage.image, true);
+    });
   });
 }

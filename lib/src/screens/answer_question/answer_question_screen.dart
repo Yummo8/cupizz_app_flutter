@@ -12,7 +12,6 @@ import 'package:pedantic/pedantic.dart';
 
 part 'components/answer_question_screen.controller.dart';
 part 'components/answer_question_screen.model.dart';
-part 'widgets/compose_bottom_icon_widget.dart';
 
 class AnswerQuestionScreenParams extends RouterParam {
   final UserImage userImage;
@@ -47,14 +46,17 @@ class AnswerQuestionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final params = Router.getParam<AnswerQuestionScreenParams>(context);
+    final controller =
+        Momentum.controller<AnswerQuestionScreenController>(context);
+    ;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (Momentum.controller<AnswerQuestionScreenController>(context)
-                  .model
-                  .question ==
-              null &&
-          params.userImage == null) {
+      if (controller.model.question == null && params?.userImage == null) {
+        controller.model.deleteUserImage();
         _selectQuestion(context);
+      } else if (params?.userImage != null) {
+        controller.reset();
+        controller.model.update(userImage: params.userImage);
       }
     });
     return MomentumBuilder(
@@ -75,22 +77,16 @@ class AnswerQuestionScreen extends StatelessWidget {
               ? model.selectedColor.color
               : model.question?.color != null
                   ? model.question.color
-                  : model.userImage?.answer?.color != null
-                      ? model.userImage.answer.color
-                      : model.userImage?.answer?.question?.color ??
-                          ColorOfAnswer.defaultColor.color;
+                  : model.userImage.color;
           final textColor = model.selectedColor != null
               ? model.selectedColor.textColor
               : model.question?.textColor != null
                   ? model.question.textColor
-                  : model.userImage?.answer?.textColor != null
-                      ? model.userImage.answer.textColor
-                      : model.userImage?.answer?.question?.textColor ??
-                          ColorOfAnswer.defaultColor.textColor;
+                  : model.userImage?.textColor;
           final backgroundGradient = model.selectedColor != null
               ? model.selectedColor.gradient
               : model.userImage?.answer != null
-                  ? model.userImage.answer.gradient
+                  ? model.userImage.gradient
                   : null;
 
           return PrimaryScaffold(
@@ -114,10 +110,10 @@ class AnswerQuestionScreen extends StatelessWidget {
                           haveImageBackground ? Config.userImageOpacity : 1,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: backgroundGradient != null
+                            color: backgroundGradient.isExistAndNotEmpty
                                 ? null
                                 : backgroundColor,
-                            gradient: backgroundGradient != null
+                            gradient: backgroundGradient.isExistAndNotEmpty
                                 ? AnswerGradient(backgroundGradient)
                                 : null),
                       ),
@@ -157,7 +153,10 @@ class AnswerQuestionScreen extends StatelessWidget {
                                           _selectQuestion(context);
                                         },
                                         child: Text(
-                                          model.question?.content ?? '',
+                                          model.question?.content ??
+                                              model.userImage.answer.question
+                                                  .content ??
+                                              '',
                                           style: context.textTheme.bodyText1
                                               .copyWith(color: textColor),
                                         ),

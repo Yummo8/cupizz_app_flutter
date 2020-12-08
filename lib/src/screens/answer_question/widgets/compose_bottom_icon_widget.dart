@@ -1,8 +1,8 @@
-part of '../answer_question_screen.dart';
+part of 'screen_widget.dart';
 
 class ComposeBottomIconWidget extends StatelessWidget {
   final Function(File) onImageIconSelected;
-  final Function(ColorOfAnswer) onColorChanged; // TODO handle color change
+  final Function(ColorOfAnswer) onColorChanged;
 
   ComposeBottomIconWidget(
       {Key key, this.onImageIconSelected, this.onColorChanged})

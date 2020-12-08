@@ -27,27 +27,45 @@ class AnswerQuestionScreenController
   Future sendToServer() async {
     try {
       model.update(isSending: true);
-      final userImage = await getService<UserService>().answerQuestion(
-        model.question?.id,
-        model.content,
-        backgroundImage: model.backgroundImage,
-        color: model.selectedColor?.color?.toHex(leadingHashSign: false),
-        textColor:
-            model.selectedColor?.textColor?.toHex(leadingHashSign: false),
-        gradient: model.selectedColor?.gradient
-            ?.map((e) => e.toHex(leadingHashSign: false))
-            ?.toList(),
-      );
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        unawaited(dependOn<CurrentUserController>().addAnswer(userImage));
-        reset();
-        UserProfileState.lastScrollOffset = double.maxFinite;
-      });
+      if (model.userImage?.answer != null) {
+        await _edit();
+      } else {
+        await _addNew();
+      }
     } catch (e) {
       unawaited(Fluttertoast.showToast(msg: '$e'));
-      rethrow;
     } finally {
       model.update(isSending: false);
     }
+  }
+
+  Future _addNew() async {
+    final userImage = await getService<UserService>().answerQuestion(
+      model.question?.id,
+      model.content,
+      backgroundImage: model.backgroundImage,
+      color: model.selectedColor?.color?.toHex(leadingHashSign: false),
+      textColor: model.selectedColor?.textColor?.toHex(leadingHashSign: false),
+      gradient: model.selectedColor?.gradient
+          ?.map((e) => e.toHex(leadingHashSign: false))
+          ?.toList(),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      unawaited(dependOn<CurrentUserController>().addAnswer(userImage));
+      reset();
+      UserProfileState.lastScrollOffset = double.maxFinite;
+    });
+  }
+
+  Future _edit() async {
+    await getService<UserService>().editAnswer(
+      model.userImage.answer.id,
+      content: model.content,
+      backgroundImage: model.backgroundImage,
+      color: model.selectedColor?.color,
+      textColor: model.selectedColor?.textColor,
+      gradient: model.selectedColor?.gradient,
+    );
+    await dependOn<CurrentUserController>().getCurrentUser();
   }
 }

@@ -224,4 +224,26 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       await Fluttertoast.showToast(msg: e.toString());
     }
   }
+
+  Future editAnswer(
+    UserImage userImage, {
+    String content,
+    ColorOfAnswer color,
+    io.File image,
+  }) async {
+    try {
+      await getService<UserService>().editAnswer(
+        userImage.id,
+        content: content,
+        color: color.color,
+        textColor: color.textColor,
+        gradient: color.gradient,
+        backgroundImage: image,
+      );
+      await getCurrentUser();
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 }

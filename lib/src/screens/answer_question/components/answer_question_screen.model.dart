@@ -57,6 +57,18 @@ class AnswerQuestionScreenModel
     ).updateMomentum();
   }
 
+  void deleteUserImage() {
+    AnswerQuestionScreenModel(
+      controller,
+      backgroundImage: backgroundImage,
+      selectedColor: selectedColor,
+      userImage: null,
+      colors: colors,
+      content: content,
+      question: question,
+    ).updateMomentum();
+  }
+
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
     return AnswerQuestionScreenModel(

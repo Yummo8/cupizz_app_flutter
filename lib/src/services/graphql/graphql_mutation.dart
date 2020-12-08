@@ -220,4 +220,35 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['updateUserImagesSortOrder'];
   }
+
+  Future editAnswer(
+    String answerId, [
+    String content,
+    Color color,
+    Color textColor,
+    List<Color> gradient,
+    io.File backgroundImage,
+  ]) async {
+    final query = '''
+          mutation editAnswer(\$backgroundImage: Upload) {
+            editAnswer(
+              answerId: "$answerId"
+              content: "$content"
+              color: "${color.toHex(leadingHashSign: false)}"
+              textColor: "${textColor.toHex(leadingHashSign: false)}"
+              gradient: ${jsonEncode(gradient.map((e) => e.toHex(leadingHashSign: false)).toList())}
+              backgroundImage: \$backgroundImage
+            ) ${UserImage.graphqlQuery}
+          }''';
+    final result = await mutate(MutationOptions(
+        documentNode: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+        variables: {
+          'backgroundImage': backgroundImage != null
+              ? await multiPartFile(backgroundImage)
+              : null,
+        }));
+
+    return result.data['editAnswer'];
+  }
 }
