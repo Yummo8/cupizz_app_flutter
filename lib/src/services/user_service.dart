@@ -135,6 +135,11 @@ class UserService extends MomentumService {
     return result;
   }
 
+  Future removeUserImage(String imageId) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.removeUserImage(imageId);
+  }
+
   Future<UserImage> answerQuestion(
     String questionId,
     String content, {

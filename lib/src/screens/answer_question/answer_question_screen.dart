@@ -50,9 +50,10 @@ class AnswerQuestionScreen extends StatelessWidget {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (Momentum.controller<AnswerQuestionScreenController>(context)
-              .model
-              .question ==
-          null) {
+                  .model
+                  .question ==
+              null &&
+          params.userImage == null) {
         _selectQuestion(context);
       }
     });
@@ -63,6 +64,7 @@ class AnswerQuestionScreen extends StatelessWidget {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             if (params?.userImage != null &&
                 model.userImage != params?.userImage) {
+              model.controller.reset();
               model.update(userImage: params.userImage);
             }
           });
@@ -168,7 +170,8 @@ class AnswerQuestionScreen extends StatelessWidget {
                               Expanded(
                                 child: Center(
                                   child: TextFormField(
-                                    initialValue: model.content,
+                                    initialValue: model.content ??
+                                        model.userImage?.answer?.content,
                                     keyboardType: TextInputType.multiline,
                                     maxLines: null,
                                     textAlign: TextAlign.center,

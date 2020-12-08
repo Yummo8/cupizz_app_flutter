@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'base/base.dart';
 import 'screens/auth/index.dart';
+import 'screens/edit_user_images/edit_user_images_screen.dart';
 import 'screens/main/components/main_screen.controller.dart';
 import 'screens/main/main_screen.dart';
 import 'screens/main/pages/chat/chat_page.dart';
@@ -69,7 +70,7 @@ Momentum momentum({bool isTesting = false}) {
           EditLocationScreen(),
           EditLookupScreen(),
           EditMarriageScreen(),
-          EditPicturesScreen(),
+          EditUserImagesScreen(),
           EditReligionScreen(),
           EditSmokeScreen(),
           EditSmokeScreen(),
