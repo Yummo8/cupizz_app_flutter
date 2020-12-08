@@ -105,7 +105,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
         conversation: futureRes.length > 1 ? futureRes[1] : null,
         messages: messagesData.data,
         currentPage: 1,
-        isLastPage: messagesData.isLoading,
+        isLastPage: messagesData.isLastPage,
       );
     } catch (e) {
       sendEvent(ChatPageEvent(
