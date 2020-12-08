@@ -10,7 +10,6 @@ class CartImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
     return Padding(
       padding: EdgeInsets.only(top: 4.0, bottom: 10.0),
       child: Stack(
@@ -29,72 +28,78 @@ class CartImage extends StatelessWidget {
                 ),
               ],
             ),
-            child: CustomNetworkImage(
-              userImage.image.thumbnail,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
+            child: userImage?.image != null
+                ? CustomNetworkImage(
+                    userImage.image.thumbnail,
+                    borderRadius: BorderRadius.circular(10.0),
+                  )
+                : null,
           ),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: (userImage.answer?.color ??
-                            userImage.answer?.question?.color)
-                        ?.withOpacity(0.7) ??
-                    Colors.transparent,
-              ),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        userImage?.answer?.question?.content ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.bodyText1
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
+          if (userImage.answer != null)
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: userImage?.color?.withOpacity(userImage?.opacity),
+                  gradient:
+                      userImage != null && userImage.gradient.isExistAndNotEmpty
+                          ? AnswerGradient(userImage.gradient
+                              .map((e) => e.withOpacity(userImage.opacity))
+                              .toList())
+                          : null,
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          userImage?.answer?.content ?? '',
-                          textAlign: TextAlign.center,
-                          style: context.textTheme.headline6
-                              .copyWith(color: Colors.white),
+                          userImage?.answer?.question?.content ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.bodyText1
+                              .copyWith(color: userImage?.textColor),
                         ),
                       ),
                     ),
-                  ),
-                  if (!readOnly)
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: RaisedButton(
-                          elevation: 2.0,
-                          color: context.colorScheme.background,
-                          padding: EdgeInsets.all(10.0),
-                          shape: CircleBorder(),
-                          child: Icon(
-                            Icons.edit,
-                            color: _theme.primaryColor,
+                    Expanded(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            userImage?.answer?.content ?? '',
+                            textAlign: TextAlign.center,
+                            style: context.textTheme.headline6
+                                .copyWith(color: userImage?.textColor),
                           ),
-                          onPressed: () {
-                            Router.goto(context, EditPicturesScreen);
-                          },
                         ),
                       ),
                     ),
-                ],
+                    if (!readOnly)
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: RaisedButton(
+                            elevation: 2.0,
+                            color: context.colorScheme.background,
+                            padding: EdgeInsets.all(10.0),
+                            shape: CircleBorder(),
+                            child: Icon(
+                              Icons.edit,
+                              color: _theme.primaryColor,
+                            ),
+                            onPressed: () {
+                              Router.goto(context, EditPicturesScreen);
+                            },
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

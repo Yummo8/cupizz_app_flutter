@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:cupizz_app/src/models/index.dart';
+import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -11,22 +12,24 @@ import 'package:pedantic/pedantic.dart';
 
 part 'components/answer_question_screen.controller.dart';
 part 'components/answer_question_screen.model.dart';
-part 'widgets/app_bar.dart';
 part 'widgets/compose_bottom_icon_widget.dart';
-part 'widgets/widgets.dart';
 
 class AnswerQuestionScreenParams extends RouterParam {
   final UserImage userImage;
-  final Question question;
+  final Function onSaveSuccess;
 
-  AnswerQuestionScreenParams({this.userImage, this.question});
+  AnswerQuestionScreenParams({this.userImage, this.onSaveSuccess});
 }
 
 class AnswerQuestionScreen extends StatelessWidget {
   void _onSubmit(BuildContext context) async {
-    await Momentum.controller<AnswerQuestionScreenController>(context)
-        .sendToServer();
+    final controller =
+        Momentum.controller<AnswerQuestionScreenController>(context);
+    await controller.sendToServer();
     Router.pop(context);
+
+    controller.sendEvent(
+        CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
   }
 
   void _onImageIconSelected(BuildContext context, File file) async {
@@ -37,9 +40,22 @@ class AnswerQuestionScreen extends StatelessWidget {
     }
   }
 
+  void _selectQuestion(BuildContext context) {
+    Router.goto(context, SelectQuestionScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final params = Router.getParam<AnswerQuestionScreenParams>(context);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (Momentum.controller<AnswerQuestionScreenController>(context)
+              .model
+              .question ==
+          null) {
+        _selectQuestion(context);
+      }
+    });
     return MomentumBuilder(
         controllers: [AnswerQuestionScreenController],
         builder: (context, snapshot) {
@@ -48,9 +64,6 @@ class AnswerQuestionScreen extends StatelessWidget {
             if (params?.userImage != null &&
                 model.userImage != params?.userImage) {
               model.update(userImage: params.userImage);
-            }
-            if (params?.question != null) {
-              model.update(question: params.question);
             }
           });
 
@@ -95,7 +108,8 @@ class AnswerQuestionScreen extends StatelessWidget {
                 children: <Widget>[
                   Positioned.fill(
                     child: Opacity(
-                      opacity: haveImageBackground ? 0.5 : 1,
+                      opacity:
+                          haveImageBackground ? Config.userImageOpacity : 1,
                       child: Container(
                         decoration: BoxDecoration(
                             color: backgroundGradient != null
@@ -109,16 +123,18 @@ class AnswerQuestionScreen extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      _AppBar(
-                        onActionPressed:
-                            model.content.isExistAndNotEmpty && !model.isSending
-                                ? () => _onSubmit(context)
-                                : null,
-                        isCrossButton: true,
-                        submitButtonText: 'Trả lời',
-                        isSubmitDisable: false,
-                        isbootomLine: true,
+                      BackAppBar(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                         textColor: textColor,
+                        actions: [
+                          SaveButton(
+                            onPressed: () {
+                              if (model.content.isExistAndNotEmpty &&
+                                  !model.isSending) _onSubmit(context);
+                            },
+                          )
+                        ],
                       ),
                       Expanded(
                         child: Container(
@@ -127,30 +143,28 @@ class AnswerQuestionScreen extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              if (model.question != null)
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                              if (model.question != null) ...[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Flexible(
-                                          fit: FlexFit.loose,
-                                          child: Text(
-                                            model.question?.content ?? '',
-                                            style: context.textTheme.bodyText1
-                                                .copyWith(color: textColor),
-                                          ),
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: InkWell(
+                                        onTap: () {
+                                          _selectQuestion(context);
+                                        },
+                                        child: Text(
+                                          model.question?.content ?? '',
+                                          style: context.textTheme.bodyText1
+                                              .copyWith(color: textColor),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                    const SizedBox(height: 10),
                                   ],
                                 ),
+                                const SizedBox(height: 10),
+                              ],
                               Expanded(
                                 child: Center(
                                   child: TextFormField(

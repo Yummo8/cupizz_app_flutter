@@ -9,6 +9,23 @@ class UserImage extends BaseModel {
   UserAnswer get answer => _answer;
   int get sortOrder => _sortOrder;
 
+  List<Color> get gradient => _answer?.gradient ?? _answer?.question?.gradient;
+
+  Color get color => gradient.isExistAndNotEmpty
+      ? null
+      : _answer != null
+          ? _answer._color ??
+              _answer.question?.color ??
+              ColorOfAnswer.defaultColor.color
+          : Colors.transparent;
+  Color get textColor => _answer != null
+      ? _answer.textColor ??
+          _answer.question?.textColor ??
+          ColorOfAnswer.defaultColor.textColor
+      : null;
+
+  double get opacity => _image != null ? Config.userImageOpacity : 1.0;
+
   @override
   void mapping(Mapper map) {
     super.mapping(map);

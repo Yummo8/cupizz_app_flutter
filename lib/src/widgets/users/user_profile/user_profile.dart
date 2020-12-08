@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
-import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../base/base.dart';
@@ -29,7 +28,8 @@ class UserProfile extends StatefulWidget {
   UserProfileState createState() => UserProfileState();
 }
 
-class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
+class UserProfileState extends MomentumState<UserProfile>
+    with KeepScrollOffsetMixin {
   static double lastScrollOffset = 0;
 
   @override
@@ -38,6 +38,32 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
   @override
   set lastOffset(double value) {
     lastScrollOffset = value;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isCurrentUser) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Momentum.controller<CurrentUserController>(context)
+            .listen<CurrentUserEvent>(
+                state: this,
+                invoke: (event) {
+                  switch (event.action) {
+                    case CurrentUserEventAction.newUserImage:
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        scrollController.animateTo(
+                          scrollController.position.maxScrollExtent,
+                          curve: Curves.easeIn,
+                          duration: Duration(seconds: 1),
+                        );
+                      });
+                      break;
+                    default:
+                  }
+                });
+      });
+    }
   }
 
   @override
@@ -219,6 +245,7 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                       controllers: [CurrentUserController],
                       builder: (context, snapshot) {
                         final model = snapshot<CurrentUserModel>();
+                        if (model.isAddingImage) return LoadingIndicator();
                         return Column(
                           children: [
                             FlatButton(
@@ -227,19 +254,7 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                                   : () {
                                       pickImage(context, (files) {
                                         if (files.isExistAndNotEmpty) {
-                                          model.controller
-                                              .addImage(files[0])
-                                              .then((_) {
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback((_) {
-                                              scrollController.animateTo(
-                                                scrollController
-                                                    .position.maxScrollExtent,
-                                                curve: Curves.easeIn,
-                                                duration: Duration(seconds: 1),
-                                              );
-                                            });
-                                          });
+                                          model.controller.addImage(files[0]);
                                         }
                                       }, maxSelected: 1);
                                     },
@@ -269,7 +284,10 @@ class UserProfileState extends State<UserProfile> with KeepScrollOffsetMixin {
                                   ? null
                                   : () {
                                       Router.goto(
-                                          context, SelectQuestionScreen);
+                                        context,
+                                        AnswerQuestionScreen,
+                                        params: AnswerQuestionScreenParams(),
+                                      );
                                     },
                               color: _theme.primaryColor.withOpacity(0.2),
                               child: Row(

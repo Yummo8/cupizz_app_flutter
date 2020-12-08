@@ -1,5 +1,16 @@
 part of '../index.dart';
 
+enum CurrentUserEventAction {
+  newUserImage,
+}
+
+class CurrentUserEvent {
+  final CurrentUserEventAction action;
+  final String message;
+
+  CurrentUserEvent({@required this.action, this.message});
+}
+
 class CurrentUserController extends MomentumController<CurrentUserModel> {
   @override
   CurrentUserModel init() {
@@ -176,6 +187,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       model.currentUser.userImages.add(userImage);
       model.update(currentUser: model.currentUser);
       unawaited(getCurrentUser());
+      sendEvent(CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
     } catch (e) {
       debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
@@ -188,7 +200,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     try {
       model.currentUser.userImages.add(userImage);
       model.update(currentUser: model.currentUser);
-      unawaited(getCurrentUser());
+      unawaited(getCurrentUser().then((value) => sendEvent(
+          CurrentUserEvent(action: CurrentUserEventAction.newUserImage))));
     } catch (e) {
       debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());

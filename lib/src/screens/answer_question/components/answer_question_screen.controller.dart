@@ -38,9 +38,14 @@ class AnswerQuestionScreenController
             ?.map((e) => e.toHex(leadingHashSign: false))
             ?.toList(),
       );
-      unawaited(dependOn<CurrentUserController>().addAnswer(userImage));
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        unawaited(dependOn<CurrentUserController>().addAnswer(userImage));
+        reset();
+        UserProfileState.lastScrollOffset = double.maxFinite;
+      });
     } catch (e) {
       unawaited(Fluttertoast.showToast(msg: '$e'));
+      rethrow;
     } finally {
       model.update(isSending: false);
     }

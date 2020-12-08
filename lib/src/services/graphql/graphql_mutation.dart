@@ -174,10 +174,10 @@ extension GraphqlMutation on GraphqlService {
     io.File backgroundImage,
   }) async {
     final query = '''
-          mutation answerQuestion(\$backgroundImage: Upload) {
+          mutation answerQuestion(\$backgroundImage: Upload, \$content: String!) {
             answerQuestion(
               questionId: "$questionId"
-              content: "$content"
+              content: \$content
               ${color != null ? 'color: "$color"' : ''}
               ${textColor != null ? 'textColor: "$textColor"' : ''}
               ${gradient != null ? 'gradient: ${jsonEncode(gradient)}' : ''}
@@ -189,6 +189,7 @@ extension GraphqlMutation on GraphqlService {
         'backgroundImage': backgroundImage != null
             ? await multiPartFile(backgroundImage)
             : null,
+        'content': content,
       }),
     );
 

@@ -43,9 +43,11 @@ class SelectQuestionScreen extends StatelessWidget {
                   enabled: item == null,
                   child: InkWell(
                     onTap: () {
-                      Router.goto(context, AnswerQuestionScreen,
-                          params: AnswerQuestionScreenParams(
-                              question: model.data.data[index]));
+                      Momentum.controller<AnswerQuestionScreenController>(
+                              context)
+                          .model
+                          .update(question: model.data.data[index]);
+                      Router.pop(context);
                     },
                     child: Container(
                         padding: EdgeInsets.all(10),
@@ -63,9 +65,9 @@ class SelectQuestionScreen extends StatelessWidget {
                                 blurRadius: 10.0),
                           ],
                         ),
-                        child: Text(item.content,
+                        child: Text(item?.content ?? '',
                             style: context.textTheme.bodyText1
-                                .copyWith(color: item.textColor))),
+                                .copyWith(color: item?.textColor))),
                   ),
                 );
               },

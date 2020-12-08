@@ -20,6 +20,7 @@ export '../packages/index.dart';
 export '../screens/index.dart';
 export '../services/index.dart';
 export '../widgets/index.dart';
+export '../config.dart';
 
 part 'src/app_base.dart';
 part 'src/app_config.dart';
