@@ -8,6 +8,7 @@ class PrimaryScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
   final PreferredSizeWidget appBar;
   final Widget drawer;
+  final Function onBack;
 
   PrimaryScaffold({
     Key key,
@@ -18,11 +19,13 @@ class PrimaryScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.appBar,
     this.drawer,
+    this.onBack,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RouterPage(
+      onWillPop: onBack,
       child: Stack(
         children: [
           Scaffold(

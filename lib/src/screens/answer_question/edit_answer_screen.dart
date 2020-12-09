@@ -1,21 +1,26 @@
 import 'dart:io';
 
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/models/index.dart';
-import 'package:cupizz_app/src/screens/answer_question/widgets/screen_widget.dart';
-import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pedantic/pedantic.dart';
 
-part 'components/answer_question_screen.controller.dart';
-part 'components/answer_question_screen.model.dart';
+import '../../base/base.dart';
+import '../../models/index.dart';
+import '../../screens/answer_question/widgets/screen_widget.dart';
 
-class AnswerQuestionScreen extends StatelessWidget {
+part 'components/edit_answer_screen.controller.dart';
+part 'components/edit_answer_screen.model.dart';
+
+class EditAnswerScreenParams extends RouterParam {
+  final UserImage userImage;
+
+  EditAnswerScreenParams(this.userImage);
+}
+
+class EditAnswerScreen extends StatelessWidget {
   void _onSubmit(BuildContext context) async {
-    final controller =
-        Momentum.controller<AnswerQuestionScreenController>(context);
+    final controller = Momentum.controller<EditAnswerScreenController>(context);
     await controller.sendToServer();
     Router.pop(context);
 
@@ -23,40 +28,44 @@ class AnswerQuestionScreen extends StatelessWidget {
         CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
   }
 
-  void _selectQuestion(BuildContext context) {
-    Router.goto(context, SelectQuestionScreen);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final controller =
-        Momentum.controller<AnswerQuestionScreenController>(context);
+    final controller = Momentum.controller<EditAnswerScreenController>(context);
     final textEditingController =
         TextEditingController(text: controller.model.content);
-
+    final params = Router.getParam<EditAnswerScreenParams>(context);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (controller.model.question == null) {
-        _selectQuestion(context);
+      if (params?.userImage == null && controller.model.userImage == null) {
+        Router.pop(context);
+        Fluttertoast.showToast(msg: 'Đã xảy ra lỗi, vui lòng thử lại.');
+      } else if (params?.userImage != null) {
+        if (params.userImage != controller.model.userImage) {
+          controller.reset();
+          controller.model.update(userImage: params.userImage);
+          textEditingController.text = params.userImage.answer.content;
+        }
       }
     });
+
     return MomentumBuilder(
-        controllers: [AnswerQuestionScreenController],
+        controllers: [EditAnswerScreenController],
         builder: (context, snapshot) {
-          final model = snapshot<AnswerQuestionScreenModel>();
+          final model = snapshot<EditAnswerScreenModel>();
           final colors = model.selectedColor ??
-              model.question?.colors ??
+              model.userImage?.colors ??
               ColorOfAnswer.defaultColor;
 
           return AnswerScreenWidget(
             key: UniqueKey(),
             textEditingController: textEditingController,
             isSending: model.isSending,
-            answerContent: model.content,
+            answerContent: model.content ?? model.userImage?.answer?.content,
             color: colors.color,
             textColor: colors.textColor,
             gradient: colors.gradient,
             imageFile: model.backgroundImage,
-            questionContent: model.question?.content,
+            imageUrl: model.userImage?.image?.url,
+            questionContent: model.userImage?.answer?.question?.content,
             onColorChanged: (color) {
               model.update(selectedColor: color);
             },
@@ -65,9 +74,6 @@ class AnswerQuestionScreen extends StatelessWidget {
             },
             onImageSelected: (v) {
               model.update(backgroundImage: v);
-            },
-            onQuestionPressed: () {
-              _selectQuestion(context);
             },
             onSave: () {
               model.update(content: textEditingController.text);

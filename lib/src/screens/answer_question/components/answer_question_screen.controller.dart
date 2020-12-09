@@ -27,11 +27,7 @@ class AnswerQuestionScreenController
   Future sendToServer() async {
     try {
       model.update(isSending: true);
-      if (model.userImage?.answer != null) {
-        await _edit();
-      } else {
-        await _addNew();
-      }
+      await _addNew();
     } catch (e) {
       unawaited(Fluttertoast.showToast(msg: '$e'));
     } finally {
@@ -53,19 +49,7 @@ class AnswerQuestionScreenController
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       unawaited(dependOn<CurrentUserController>().addAnswer(userImage));
       reset();
-      UserProfileState.lastScrollOffset = double.maxFinite;
+      UserProfileState.lastScrollOffset = 9999;
     });
-  }
-
-  Future _edit() async {
-    await getService<UserService>().editAnswer(
-      model.userImage.answer.id,
-      content: model.content,
-      backgroundImage: model.backgroundImage,
-      color: model.selectedColor?.color,
-      textColor: model.selectedColor?.textColor,
-      gradient: model.selectedColor?.gradient,
-    );
-    await dependOn<CurrentUserController>().getCurrentUser();
   }
 }

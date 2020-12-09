@@ -26,6 +26,8 @@ class UserImage extends BaseModel {
 
   double get opacity => _image != null ? Config.userImageOpacity : 1.0;
 
+  ColorOfAnswer get colors => _answer?.colors ?? ColorOfAnswer.defaultColor;
+
   @override
   void mapping(Mapper map) {
     super.mapping(map);

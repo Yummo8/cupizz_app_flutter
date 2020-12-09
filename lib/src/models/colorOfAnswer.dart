@@ -9,6 +9,14 @@ class ColorOfAnswer with Mappable {
   List<Color> get gradient => _gradient;
   Color get textColor => _textColor;
 
+  ColorOfAnswer({
+    Color color,
+    List<Color> gradient,
+    Color textColor,
+  })  : _color = color,
+        _gradient = gradient,
+        _textColor = textColor;
+
   @override
   void mapping(Mapper map) {
     map('color', _color, (v) => _color = v, ColorTransform());

@@ -13,6 +13,12 @@ class UserAnswer extends BaseModel {
   List<Color> get gradient => _gradient;
   Question get question => _question;
 
+  ColorOfAnswer get colors => ColorOfAnswer(
+        color: _color ?? _question.color,
+        textColor: _textColor ?? _question.textColor,
+        gradient: _gradient ?? _question.gradient,
+      );
+
   @override
   void mapping(Mapper map) {
     super.mapping(map);

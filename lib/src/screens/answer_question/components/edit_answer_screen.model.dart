@@ -1,22 +1,21 @@
-part of '../answer_question_screen.dart';
+part of '../edit_answer_screen.dart';
 
-class AnswerQuestionScreenModel
-    extends MomentumModel<AnswerQuestionScreenController> {
-  AnswerQuestionScreenModel(
-    AnswerQuestionScreenController controller, {
+class EditAnswerScreenModel extends MomentumModel<EditAnswerScreenController> {
+  EditAnswerScreenModel(
+    EditAnswerScreenController controller, {
+    this.userImage,
     this.colors,
     this.selectedColor,
     this.backgroundImage,
     this.content,
-    this.question,
     this.isSending = false,
   }) : super(controller);
 
+  final UserImage userImage;
   final List<ColorOfAnswer> colors;
   final ColorOfAnswer selectedColor;
   final File backgroundImage;
   final String content;
-  final Question question;
 
   final bool isSending;
 
@@ -30,32 +29,46 @@ class AnswerQuestionScreenModel
     Question question,
     bool isSending,
   }) {
-    AnswerQuestionScreenModel(
+    EditAnswerScreenModel(
       controller,
+      userImage: userImage ?? this.userImage,
       colors: colors ?? this.colors,
       selectedColor: selectedColor ?? this.selectedColor,
       backgroundImage: backgroundImage ?? this.backgroundImage,
       content: content ?? this.content,
-      question: question ?? this.question,
       isSending: isSending ?? this.isSending,
     ).updateMomentum();
   }
 
   void deleteSelected() {
-    AnswerQuestionScreenModel(
+    EditAnswerScreenModel(
       controller,
       backgroundImage: null,
       selectedColor: null,
+      userImage: userImage,
       colors: colors,
       content: content,
-      question: question,
+    ).updateMomentum();
+  }
+
+  void deleteUserImage() {
+    EditAnswerScreenModel(
+      controller,
+      backgroundImage: backgroundImage,
+      selectedColor: selectedColor,
+      userImage: null,
+      colors: colors,
+      content: content,
     ).updateMomentum();
   }
 
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
-    return AnswerQuestionScreenModel(
+    return EditAnswerScreenModel(
       controller,
+      userImage: json['userImage'] != null
+          ? Mapper.fromJson(json['userImage']).toObject<UserImage>()
+          : null,
       colors: ((json['colors'] ?? []) as List)
           .map((e) => Mapper.fromJson(e).toObject<ColorOfAnswer>())
           .toList(),
@@ -66,18 +79,15 @@ class AnswerQuestionScreenModel
           ? File(json['backgroundImagePath'])
           : null,
       content: json['content'],
-      question: json['question'] != null
-          ? Mapper.fromJson(json['question']).toObject<Question>()
-          : null,
     );
   }
 
   @override
   Map<String, dynamic> toJson() => {
+        'userImage': userImage?.toJson(),
         'colors': colors?.map((e) => e.toJson())?.toList() ?? [],
         'selectedColor': selectedColor?.toJson(),
         'backgroundImagePath': backgroundImage?.path,
         'content': content,
-        'question': question?.toJson(),
       };
 }

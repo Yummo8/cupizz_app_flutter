@@ -287,7 +287,6 @@ class UserProfileState extends MomentumState<UserProfile>
                                       Router.goto(
                                         context,
                                         AnswerQuestionScreen,
-                                        params: AnswerQuestionScreenParams(),
                                       );
                                     },
                               color: _theme.primaryColor.withOpacity(0.2),

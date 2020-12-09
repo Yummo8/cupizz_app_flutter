@@ -3,6 +3,7 @@ library app;
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
+import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,6 +30,7 @@ Momentum momentum({bool isTesting = false}) {
     },
     controllers: [
       AnswerQuestionScreenController()..config(lazy: true),
+      EditAnswerScreenController()..config(lazy: true),
       AuthController()..config(strategy: BootstrapStrategy.lazyFirstCall),
       CurrentUserController(),
       ChatPageController()..config(lazy: true),
@@ -60,6 +62,7 @@ Momentum momentum({bool isTesting = false}) {
         UserScreen(),
         UserSettingScreen(),
         AnswerQuestionScreen(),
+        EditAnswerScreen(),
         SelectQuestionScreen(),
         ...[
           EditAgeScreen(),

@@ -11,6 +11,12 @@ class Question extends BaseModel {
   Color get textColor => _textColor;
   List<Color> get gradient => _gradient;
 
+  ColorOfAnswer get colors => ColorOfAnswer(
+        color: _color ?? ColorOfAnswer.defaultColor.color,
+        textColor: _textColor ?? ColorOfAnswer.defaultColor.textColor,
+        gradient: _gradient ?? ColorOfAnswer.defaultColor.gradient,
+      );
+
   Question({String id, String content})
       : _content = content,
         super(id: id);

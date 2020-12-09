@@ -1,6 +1,5 @@
-import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
-
 import '../../base/base.dart';
+import '../answer_question/edit_answer_screen.dart';
 
 part 'components/edit_user_images_screen.controller.dart';
 part 'components/edit_user_images_screen.model.dart';
@@ -88,8 +87,8 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
               IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  Router.goto(context, AnswerQuestionScreen,
-                      params: AnswerQuestionScreenParams(userImage: userImage));
+                  Router.goto(context, EditAnswerScreen,
+                      params: EditAnswerScreenParams(userImage));
                 },
               ),
             IconButton(

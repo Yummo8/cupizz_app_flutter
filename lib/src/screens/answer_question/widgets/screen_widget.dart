@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' hide Router;
 import '../../../base/base.dart';
 part 'compose_bottom_icon_widget.dart';
 
@@ -16,9 +16,14 @@ class AnswerScreenWidget extends StatelessWidget {
   final Function onSave;
   final Function onQuestionPressed;
   final Function(String v) onValueChanged;
-  final Function(File v) onImageIconSelected;
+  final Function(File v) onImageSelected;
+  final Function(ColorOfAnswer color) onColorChanged;
+  final Function onDeleteSelected;
+  final bool isSending;
+  final Function onBack;
+  final TextEditingController textEditingController;
 
-  const AnswerScreenWidget({
+  AnswerScreenWidget({
     Key key,
     this.color,
     this.textColor,
@@ -30,7 +35,12 @@ class AnswerScreenWidget extends StatelessWidget {
     this.onQuestionPressed,
     this.answerContent,
     this.onValueChanged,
-    this.onImageIconSelected,
+    this.onImageSelected,
+    this.onColorChanged,
+    this.onDeleteSelected,
+    this.isSending = false,
+    this.onBack,
+    this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -38,6 +48,7 @@ class AnswerScreenWidget extends StatelessWidget {
     final haveImageBackground =
         imageFile != null || imageUrl.isExistAndNotEmpty;
     return PrimaryScaffold(
+      onBack: onBack,
       body: Container(
         decoration: haveImageBackground
             ? BoxDecoration(
@@ -56,8 +67,10 @@ class AnswerScreenWidget extends StatelessWidget {
                 opacity: haveImageBackground ? Config.userImageOpacity : 1,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: gradient.isExistAndNotEmpty ? null : color,
-                      gradient: gradient.isExistAndNotEmpty
+                      color: gradient != null && gradient.length > 1
+                          ? null
+                          : color,
+                      gradient: gradient != null && gradient.length > 1
                           ? AnswerGradient(gradient)
                           : null),
                 ),
@@ -69,9 +82,15 @@ class AnswerScreenWidget extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   textColor: textColor,
+                  onBackPressed: () {
+                    onBack?.call();
+
+                    Router.pop(context);
+                  },
                   actions: [
                     SaveButton(
                       onPressed: onSave,
+                      loading: isSending,
                     )
                   ],
                 ),
@@ -105,13 +124,12 @@ class AnswerScreenWidget extends StatelessWidget {
                         Expanded(
                           child: Center(
                             child: TextFormField(
-                              initialValue: answerContent,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               textAlign: TextAlign.center,
                               style: context.textTheme.headline6
                                   .copyWith(color: textColor),
-                              onChanged: onValueChanged,
+                              controller: textEditingController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Câu trả lời ...',
@@ -128,7 +146,9 @@ class AnswerScreenWidget extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ComposeBottomIconWidget(
-                    onImageIconSelected: onImageIconSelected,
+                    onImageIconSelected: onImageSelected,
+                    onColorChanged: onColorChanged,
+                    onDeletePressed: onDeleteSelected,
                   ),
                 ),
               ],

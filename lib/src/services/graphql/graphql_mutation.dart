@@ -226,28 +226,43 @@ extension GraphqlMutation on GraphqlService {
     String content,
     Color color,
     Color textColor,
-    List<Color> gradient,
+    List<Color> gradient = const [],
     io.File backgroundImage,
   ]) async {
     final query = '''
-          mutation editAnswer(\$backgroundImage: Upload) {
+          mutation editAnswer(
+            \$backgroundImage: Upload 
+            \$answerId: ID!
+            \$content: String
+            \$color: String
+            \$textColor: String
+            \$gradient: [String]
+          ) {
             editAnswer(
-              answerId: "$answerId"
-              content: "$content"
-              color: "${color.toHex(leadingHashSign: false)}"
-              textColor: "${textColor.toHex(leadingHashSign: false)}"
-              gradient: ${jsonEncode(gradient.map((e) => e.toHex(leadingHashSign: false)).toList())}
+              answerId: \$answerId
+              content: \$content
+              color: \$color
+              textColor: \$textColor
+              gradient: \$gradient
               backgroundImage: \$backgroundImage
             ) ${UserImage.graphqlQuery}
           }''';
+    final variables = {
+      'backgroundImage':
+          backgroundImage != null ? await multiPartFile(backgroundImage) : null,
+      'answerId': answerId,
+      'content': content,
+      'color': color?.toHex(leadingHashSign: false),
+      'textColor': textColor?.toHex(leadingHashSign: false),
+      'gradient':
+          gradient?.map((e) => e.toHex(leadingHashSign: false))?.toList() ??
+              (color != null ? [] : null),
+    };
     final result = await mutate(MutationOptions(
-        documentNode: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly,
-        variables: {
-          'backgroundImage': backgroundImage != null
-              ? await multiPartFile(backgroundImage)
-              : null,
-        }));
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+      variables: variables,
+    ));
 
     return result.data['editAnswer'];
   }
