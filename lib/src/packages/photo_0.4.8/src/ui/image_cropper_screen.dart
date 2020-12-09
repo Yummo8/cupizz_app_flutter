@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+
 import '../../../../base/base.dart';
 
 class ImagesCropperScreen extends StatefulWidget {
-  const ImagesCropperScreen({this.files});
+  const ImagesCropperScreen({this.files, this.aspectRatio});
 
   final List<File> files;
+  final CropAspectRatio aspectRatio;
 
   @override
   _ImagesCropperScreenState createState() => _ImagesCropperScreenState();
@@ -19,27 +21,8 @@ class _ImagesCropperScreenState extends State<ImagesCropperScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.files.length == 1) {
-        ImageCropper.cropImage(
-          sourcePath: widget.files[0].path,
-          aspectRatio: const CropAspectRatio(
-            ratioX: 1,
-            ratioY: 1,
-          ),
-          compressQuality: 100,
-          maxHeight: context.height.toInt(),
-          maxWidth: context.width.toInt(),
-          androidUiSettings: AndroidUiSettings(
-            toolbarColor: context.colorScheme.onPrimary,
-            toolbarTitle: '',
-            statusBarColor: context.colorScheme.onBackground,
-            backgroundColor: context.colorScheme.background,
-            activeControlsWidgetColor: context.colorScheme.primary,
-            cropFrameColor: context.colorScheme.onSurface,
-            cropGridColor: context.colorScheme.onSurface,
-            dimmedLayerColor: context.colorScheme.background,
-            toolbarWidgetColor: context.colorScheme.primary,
-          ),
-        ).then((v) => Navigator.pop(context, [v]));
+        cropImage(context, widget.files[0], widget.aspectRatio)
+            .then((v) => Navigator.pop(context, [v]));
       }
     });
   }
@@ -83,22 +66,8 @@ class _ImagesCropperScreenState extends State<ImagesCropperScreen> {
                 right: 15,
                 child: InkWell(
                   onTap: () async {
-                    final croppedFile = await ImageCropper.cropImage(
-                      sourcePath: widget.files[index].path,
-                      aspectRatio: const CropAspectRatio(
-                        ratioX: 1,
-                        ratioY: 1,
-                      ),
-                      compressQuality: 100,
-                      maxHeight: context.height.toInt(),
-                      maxWidth: context.width.toInt(),
-                      androidUiSettings: AndroidUiSettings(
-                        toolbarColor: context.colorScheme.primary,
-                        toolbarTitle: '',
-                        statusBarColor: context.colorScheme.primary,
-                        backgroundColor: Colors.white,
-                      ),
-                    );
+                    final croppedFile = await cropImage(
+                        context, widget.files[index], widget.aspectRatio);
                     if (croppedFile != null) {
                       setState(() {
                         widget.files[index] = File(croppedFile.path);

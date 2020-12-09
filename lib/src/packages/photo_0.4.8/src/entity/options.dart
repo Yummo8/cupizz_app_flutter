@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import '../delegate/badge_delegate.dart';
 import '../delegate/checkbox_builder_delegate.dart';
 import '../delegate/loading_delegate.dart';
@@ -22,6 +23,7 @@ class Options {
     this.pickType,
     this.autoCloseOnSelectionLimit,
     this.isCropImage,
+    this.cropAspectRatio,
   });
 
   final int rowCount;
@@ -55,6 +57,8 @@ class Options {
   final bool autoCloseOnSelectionLimit;
 
   final bool isCropImage;
+
+  final CropAspectRatio cropAspectRatio;
 }
 
 enum PickType {

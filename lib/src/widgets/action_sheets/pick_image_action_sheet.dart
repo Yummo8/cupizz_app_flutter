@@ -1,10 +1,22 @@
 part of '../index.dart';
 
-void pickImage(BuildContext context, Function(List<File> image) onPickedImage,
-    {int maxSelected = 9, String title}) async {
+void pickImage(
+  BuildContext context,
+  Function(List<File> image) onPickedImage, {
+  int maxSelected = 9,
+  String title,
+  bool isCropImage = true,
+  CropAspectRatio cropAspectRatio,
+}) async {
   FocusScope.of(context).unfocus();
   await Menu(
-    getPickImagesMenuItem(context, onPickedImage, maxSelected: maxSelected),
+    getPickImagesMenuItem(
+      context,
+      onPickedImage,
+      maxSelected: maxSelected,
+      isCropImage: isCropImage,
+      cropAspectRatio: cropAspectRatio,
+    ),
     title: title,
     showCancel: true,
   ).show(context);
@@ -14,15 +26,28 @@ List<MenuItem> getPickImagesMenuItem(
   BuildContext context,
   Function(List<File> image) onPickedImage, {
   int maxSelected = 9,
+  bool isCropImage = true,
+  CropAspectRatio cropAspectRatio,
 }) =>
     [
       MenuItem(
         title: Strings.button.takeAPicture,
-        onPressed: () => ImagePicker()
-            .getImage(source: ImageSource.camera)
-            .then((image) async {
-          onPickedImage([File(image.path)]);
-        }).whenComplete(() => Navigator.pop(context)),
+        onPressed: () async {
+          try {
+            var rawImage = File(
+                (await ImagePicker().getImage(source: ImageSource.camera))
+                    .path);
+
+            if (isCropImage) {
+              rawImage = await cropImage(context, rawImage, cropAspectRatio);
+            }
+            onPickedImage([rawImage]);
+          } catch (e) {
+            await Fluttertoast.showToast(msg: 'Đã xảy ra lỗi.\n$e');
+          } finally {
+            Navigator.pop(context);
+          }
+        },
       ),
       MenuItem(
         title: Strings.button.pickFromGallery,
@@ -34,6 +59,8 @@ List<MenuItem> getPickImagesMenuItem(
           textColor: context.colorScheme.primary,
           themeColor: context.colorScheme.background,
           maxSelected: maxSelected,
+          isCropImage: isCropImage,
+          cropAspectRatio: cropAspectRatio,
         ).then((assets) async {
           if (assets.isExistAndNotEmpty) {
             onPickedImage(assets);
@@ -41,3 +68,24 @@ List<MenuItem> getPickImagesMenuItem(
         }).whenComplete(() => Navigator.pop(context)),
       ),
     ];
+
+Future<File> cropImage(BuildContext context, File image,
+        [CropAspectRatio ratio]) =>
+    ImageCropper.cropImage(
+      sourcePath: image.path,
+      aspectRatio: ratio,
+      compressQuality: 100,
+      maxWidth: 1800,
+      maxHeight: 1800,
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: context.colorScheme.onPrimary,
+        toolbarTitle: '',
+        statusBarColor: context.colorScheme.onBackground,
+        backgroundColor: context.colorScheme.background,
+        activeControlsWidgetColor: context.colorScheme.primary,
+        cropFrameColor: context.colorScheme.onSurface,
+        cropGridColor: context.colorScheme.onSurface,
+        dimmedLayerColor: context.colorScheme.background,
+        toolbarWidgetColor: context.colorScheme.primary,
+      ),
+    );

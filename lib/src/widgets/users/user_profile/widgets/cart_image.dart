@@ -30,7 +30,7 @@ class CartImage extends StatelessWidget {
             ),
             child: userImage?.image != null
                 ? CustomNetworkImage(
-                    userImage.image.thumbnail,
+                    userImage.image.url,
                     borderRadius: BorderRadius.circular(10.0),
                   )
                 : null,

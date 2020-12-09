@@ -41,7 +41,10 @@ class PhotoApp extends StatelessWidget {
             files = await Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ImagesCropperScreen(files: listFile)),
+                  builder: (context) => ImagesCropperScreen(
+                        files: listFile,
+                        aspectRatio: options.cropAspectRatio,
+                      )),
             );
           } else {
             files = await Future.wait(value.map((e) => e.file).toList());

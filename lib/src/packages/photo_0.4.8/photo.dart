@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'src/delegate/badge_delegate.dart';
@@ -56,6 +57,7 @@ class PhotoPicker {
     List<AssetEntity> pickedAssetList,
     bool autoCloseOnSelectionLimit = false,
     bool isCropImage = true,
+    CropAspectRatio cropAspectRatio,
   }) {
     assert(provider != null, 'provider must be not null');
     assert(context != null, 'context must be not null');
@@ -88,6 +90,7 @@ class PhotoPicker {
       pickType: pickType,
       autoCloseOnSelectionLimit: autoCloseOnSelectionLimit,
       isCropImage: isCropImage,
+      cropAspectRatio: cropAspectRatio,
     );
 
     return PhotoPicker()._pickAsset(
