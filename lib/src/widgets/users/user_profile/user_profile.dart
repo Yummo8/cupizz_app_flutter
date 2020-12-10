@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/edit_user_images/edit_user_images_screen.dart';
+import 'package:cupizz_app/src/screens/user_image_view/user_image_view_screen.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_cropper/image_cropper.dart';
 

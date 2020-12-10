@@ -179,7 +179,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                         },
                             maxSelected: 1,
                             cropAspectRatio:
-                                CropAspectRatio(ratioX: 9, ratioY: 16))
+                                CropAspectRatio(ratioX: 3, ratioY: 5))
                     ],
                     showCancel: true,
                   ).show(context);
