@@ -4,6 +4,12 @@ import '../answer_question/edit_answer_screen.dart';
 part 'components/edit_user_images_screen.controller.dart';
 part 'components/edit_user_images_screen.model.dart';
 
+class EditUserImagesScreenParams extends RouterParam {
+  final UserImage focusItem;
+
+  EditUserImagesScreenParams(this.focusItem);
+}
+
 class EditUserImagesScreen extends StatefulWidget {
   @override
   _EditUserImagesScreenState createState() => _EditUserImagesScreenState();
@@ -12,6 +18,9 @@ class EditUserImagesScreen extends StatefulWidget {
 class _EditUserImagesScreenState extends State<EditUserImagesScreen>
     with KeepScrollOffsetMixin {
   static double lastScrollOffset = 0;
+  final focusItemKey = GlobalKey();
+  UserImage forcusItem;
+
   @override
   double get lastOffset => lastScrollOffset;
 
@@ -30,6 +39,23 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
         }
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final params = Router.getParam<EditUserImagesScreenParams>(context);
+      if (params?.focusItem != null) {
+        setState(() {
+          forcusItem = params.focusItem;
+        });
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Scrollable.ensureVisible(focusItemKey.currentContext,
+              duration: Duration(milliseconds: 500));
+        });
+      }
+    });
   }
 
   @override
@@ -75,7 +101,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
 
   Widget _buildListTile(BuildContext context, UserImage userImage) {
     return Row(
-      key: Key(userImage.id),
+      key: forcusItem?.id == userImage.id ? focusItemKey : Key(userImage.id),
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

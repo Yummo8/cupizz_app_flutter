@@ -172,15 +172,14 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                     [
                       ViewImageMenuItem(context, [user.cover]),
                       if (!model.isUpdatingAvatar && isCurrentUser)
-                        ...getPickImagesMenuItem(
-                          context,
-                          (images) {
-                            if (images.isExistAndNotEmpty) {
-                              model.controller.updateCover(images[0]);
-                            }
-                          },
-                          maxSelected: 1,
-                        )
+                        ...getPickImagesMenuItem(context, (images) {
+                          if (images.isExistAndNotEmpty) {
+                            model.controller.updateCover(images[0]);
+                          }
+                        },
+                            maxSelected: 1,
+                            cropAspectRatio:
+                                CropAspectRatio(ratioX: 9, ratioY: 16))
                     ],
                     showCancel: true,
                   ).show(context);

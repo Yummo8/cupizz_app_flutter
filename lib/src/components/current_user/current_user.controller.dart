@@ -206,8 +206,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       unawaited(getCurrentUser());
       sendEvent(CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
     } catch (e) {
-      debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     } finally {
       model.update(isAddingImage: false);
     }

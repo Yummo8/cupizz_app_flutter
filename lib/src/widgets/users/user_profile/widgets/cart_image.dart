@@ -76,28 +76,46 @@ class CartImage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (!readOnly)
-                      Align(
-                        alignment: Alignment.bottomRight,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Opacity(
+                        opacity: 0,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: RaisedButton(
-                            elevation: 2.0,
-                            color: context.colorScheme.background,
-                            padding: EdgeInsets.all(10.0),
-                            shape: CircleBorder(),
-                            child: Icon(
-                              Icons.edit,
-                              color: _theme.primaryColor,
-                            ),
-                            onPressed: () {
-                              Router.goto(context, EditUserImagesScreen);
-                            },
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            userImage?.answer?.question?.content ?? '',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textTheme.bodyText1
+                                .copyWith(color: userImage?.textColor),
                           ),
                         ),
                       ),
+                    ),
                   ],
                 ),
+              ),
+            ),
+          if (!readOnly)
+            Positioned(
+              right: 0,
+              bottom: 10,
+              child: RaisedButton(
+                elevation: 2.0,
+                color: context.colorScheme.background,
+                padding: EdgeInsets.all(10.0),
+                shape: CircleBorder(),
+                child: Icon(
+                  Icons.edit,
+                  color: _theme.primaryColor,
+                ),
+                onPressed: () {
+                  Router.goto(
+                    context,
+                    EditUserImagesScreen,
+                    params: EditUserImagesScreenParams(userImage),
+                  );
+                },
               ),
             ),
         ],
