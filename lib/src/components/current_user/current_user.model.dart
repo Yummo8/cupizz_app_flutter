@@ -9,7 +9,9 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     this.isUpdatingAvatar = false,
     this.isAddingImage = false,
     this.isDeletingImage = false,
-  }) : super(controller);
+    List<UserImage> newOrderList,
+  })  : newOrderList = newOrderList ?? [],
+        super(controller);
 
   final User currentUser;
   // State
@@ -18,10 +20,12 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
   final bool isUpdatingAvatar;
   final bool isAddingImage;
   final bool isDeletingImage;
+  final List<UserImage> newOrderList;
 
   @override
   void update({
     User currentUser,
+    List<UserImage> newOrderList,
     bool isLoading,
     bool isUpdatingCover,
     bool isUpdatingAvatar,
@@ -31,12 +35,17 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     CurrentUserModel(
       controller,
       currentUser: currentUser ?? this.currentUser,
+      newOrderList: newOrderList ?? this.newOrderList,
       isLoading: isLoading ?? this.isLoading,
       isUpdatingCover: isUpdatingCover ?? this.isUpdatingCover,
       isUpdatingAvatar: isUpdatingAvatar ?? this.isUpdatingAvatar,
       isAddingImage: isAddingImage ?? this.isAddingImage,
       isDeletingImage: isDeletingImage ?? this.isDeletingImage,
     ).updateMomentum();
+  }
+
+  void resetNewOrderList() {
+    update(newOrderList: [...currentUser.userImages]);
   }
 
   @override
@@ -46,6 +55,11 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
       currentUser: json != null && json['currentUser'] != null
           ? Mapper.fromJson(json['currentUser']).toObject<User>()
           : null,
+      newOrderList: json['newOrderList'] != null
+          ? (json['newOrderList'] as List)
+              .map((e) => Mapper.fromJson(e).toObject<UserImage>())
+              .toList()
+          : [],
     );
   }
 
@@ -53,6 +67,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
   Map<String, dynamic> toJson() {
     final result = {
       'currentUser': currentUser?.toJson(),
+      'newOrderList': newOrderList?.map((e) => e.toJson())?.toList() ?? [],
     };
     return result;
   }

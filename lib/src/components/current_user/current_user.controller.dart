@@ -20,6 +20,9 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     );
   }
 
+  @override
+  Future bootstrapAsync() => getCurrentUser();
+
   Future<void> getCurrentUser() async {
     final service = getService<UserService>();
     final result = await service.getCurrentUser();
@@ -185,7 +188,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       final service = getService<UserService>();
       await service.removeUserImage(image.id);
       model.currentUser.userImages.remove(image);
-      model.update(currentUser: model.currentUser);
+      model.newOrderList.remove(image);
+      model.update(
+        currentUser: model.currentUser,
+        newOrderList: model.newOrderList,
+      );
       unawaited(getCurrentUser());
     } catch (e) {
       debugPrint(e.toString());
@@ -202,7 +209,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       final service = getService<UserService>();
       final userImage = await service.addImage(image);
       model.currentUser.userImages.add(userImage);
-      model.update(currentUser: model.currentUser);
+      model.newOrderList.add(userImage);
+      model.update(
+        currentUser: model.currentUser,
+        newOrderList: model.newOrderList,
+      );
       unawaited(getCurrentUser());
       sendEvent(CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
     } catch (e) {
@@ -216,7 +227,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future addAnswer(UserImage userImage) async {
     try {
       model.currentUser.userImages.add(userImage);
-      model.update(currentUser: model.currentUser);
+      model.newOrderList.add(userImage);
+      model.update(
+        currentUser: model.currentUser,
+        newOrderList: model.newOrderList,
+      );
       unawaited(getCurrentUser().then((value) => sendEvent(
           CurrentUserEvent(action: CurrentUserEventAction.newUserImage))));
     } catch (e) {
@@ -232,7 +247,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     io.File image,
   }) async {
     try {
-      await getService<UserService>().editAnswer(
+      final result = await getService<UserService>().editAnswer(
         userImage.id,
         content: content,
         color: color.color,
@@ -241,19 +256,34 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         backgroundImage: image,
       );
       await getCurrentUser();
+      final index = model.newOrderList.indexOf(userImage);
+      model.newOrderList[index] = result;
+      model.update(newOrderList: model.newOrderList);
     } catch (e) {
       debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
     }
   }
 
-  Future updateUserImagesOrder(List<UserImage> newOrderList) async {
+  Future updateUserImagesOrder() async {
     try {
       model.update(
-          currentUser: await getService<UserService>()
-              .updateUserImagesSortOrder(newOrderList));
+        currentUser: await getService<UserService>()
+            .updateUserImagesSortOrder(model.newOrderList),
+        newOrderList: [],
+      );
     } catch (_) {
       await Fluttertoast.showToast(msg: '$e');
     }
+  }
+
+  void changeOrder(int oldIndex, int newIndex) {
+    if (!model.newOrderList.isExistAndNotEmpty) {
+      model.newOrderList.addAll(model.currentUser.userImages);
+    }
+    if (newIndex > model.newOrderList.length - 1) return;
+    final userImage = model.newOrderList.removeAt(oldIndex);
+    model.newOrderList.insert(newIndex, userImage);
+    model.update(newOrderList: model.newOrderList);
   }
 }

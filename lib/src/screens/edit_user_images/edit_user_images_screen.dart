@@ -1,9 +1,6 @@
 import '../../base/base.dart';
 import '../answer_question/edit_answer_screen.dart';
 
-part 'components/edit_user_images_screen.controller.dart';
-part 'components/edit_user_images_screen.model.dart';
-
 class EditUserImagesScreenParams extends RouterParam {
   final UserImage focusItem;
 
@@ -53,23 +50,20 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
     final sizeHelper = SizeHelper(context);
 
     return MomentumBuilder(
-        controllers: [CurrentUserController, EditUserImagesScreenController],
+        controllers: [CurrentUserController],
         builder: (context, snapshot) {
-          final userModel = snapshot<CurrentUserModel>();
-          final model = snapshot<EditUserImagesScreenModel>();
+          final model = snapshot<CurrentUserModel>();
 
           return PrimaryScaffold(
-            isLoading: userModel.isDeletingImage,
+            isLoading: model.isDeletingImage,
             appBar: BackAppBar(
               title: 'Ảnh',
               actions: model.newOrderList.isExistAndNotEmpty &&
-                      model.newOrderList != userModel.currentUser.userImages
+                      model.newOrderList != model.currentUser.userImages
                   ? [
                       SaveButtonAsync(
                         onPressed: () async {
-                          await userModel.controller
-                              .updateUserImagesOrder(model.newOrderList);
-                          model.controller.reset();
+                          await model.controller.updateUserImagesOrder();
                           Router.pop(context);
                         },
                       )
@@ -93,7 +87,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       children: (model.newOrderList.isExistAndNotEmpty
                               ? model.newOrderList
-                              : userModel.currentUser.userImages)
+                              : model.currentUser.userImages)
                           .map((e) => _buildListTile(context, e))
                           .toList(),
                     ),
