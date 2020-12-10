@@ -181,4 +181,12 @@ class UserService extends MomentumService {
     final result = Mapper.fromJson(data).toObject<UserImage>();
     return result;
   }
+
+  Future<User> updateUserImagesSortOrder(List<UserImage> newOrderList) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql
+        .updateUserImagesSortOrder(newOrderList.map((e) => e.id).toList());
+    final result = Mapper.fromJson(data).toObject<User>();
+    return result;
+  }
 }

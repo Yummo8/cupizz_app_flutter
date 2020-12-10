@@ -31,16 +31,6 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
 
   bool isEdit;
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(
-      () {
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -63,14 +53,28 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
     final sizeHelper = SizeHelper(context);
 
     return MomentumBuilder(
-        controllers: [CurrentUserController],
+        controllers: [CurrentUserController, EditUserImagesScreenController],
         builder: (context, snapshot) {
-          final model = snapshot<CurrentUserModel>();
+          final userModel = snapshot<CurrentUserModel>();
+          final model = snapshot<EditUserImagesScreenModel>();
+
           return PrimaryScaffold(
-            isLoading: model.isDeletingImage,
+            isLoading: userModel.isDeletingImage,
             appBar: BackAppBar(
               title: 'Ảnh',
-              actions: [SaveButton()],
+              actions: model.newOrderList.isExistAndNotEmpty &&
+                      model.newOrderList != userModel.currentUser.userImages
+                  ? [
+                      SaveButtonAsync(
+                        onPressed: () async {
+                          await userModel.controller
+                              .updateUserImagesOrder(model.newOrderList);
+                          model.controller.reset();
+                          Router.pop(context);
+                        },
+                      )
+                    ]
+                  : null,
             ),
             body: Container(
               child: Column(
@@ -83,11 +87,13 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
                   SizedBox(height: sizeHelper.rW(5)),
                   Expanded(
                     child: ReorderableListView(
-                      onReorder: _onReorder,
+                      onReorder: model.controller.changeOrder,
                       scrollDirection: Axis.vertical,
                       scrollController: scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      children: model.currentUser.userImages
+                      children: (model.newOrderList.isExistAndNotEmpty
+                              ? model.newOrderList
+                              : userModel.currentUser.userImages)
                           .map((e) => _buildListTile(context, e))
                           .toList(),
                     ),
@@ -100,33 +106,37 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
   }
 
   Widget _buildListTile(BuildContext context, UserImage userImage) {
-    return Row(
+    return IntrinsicHeight(
       key: forcusItem?.id == userImage.id ? focusItemKey : Key(userImage.id),
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        Expanded(child: CartImage(readOnly: true, userImage: userImage)),
-        Column(
-          children: [
-            if (userImage.answer != null)
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+          Expanded(child: CartImage(readOnly: true, userImage: userImage)),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (userImage.answer != null)
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    Router.goto(context, EditAnswerScreen,
+                        params: EditAnswerScreenParams(userImage));
+                  },
+                ),
               IconButton(
-                icon: Icon(Icons.edit),
+                icon: Icon(Icons.delete),
                 onPressed: () {
-                  Router.goto(context, EditAnswerScreen,
-                      params: EditAnswerScreenParams(userImage));
+                  Momentum.controller<CurrentUserController>(context)
+                      .removeUserImage(userImage);
                 },
               ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                Momentum.controller<CurrentUserController>(context)
-                    .removeUserImage(userImage);
-              },
-            ),
-          ],
-        )
-      ],
+            ],
+          )
+        ],
+      ),
     );
   }
 }

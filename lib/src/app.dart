@@ -31,6 +31,7 @@ Momentum momentum({bool isTesting = false}) {
     controllers: [
       AnswerQuestionScreenController()..config(lazy: true),
       EditAnswerScreenController()..config(lazy: true),
+      EditUserImagesScreenController(),
       AuthController()..config(strategy: BootstrapStrategy.lazyFirstCall),
       CurrentUserController(),
       ChatPageController()..config(lazy: true),

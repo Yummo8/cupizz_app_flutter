@@ -20,3 +20,44 @@ class SaveButton extends StatelessWidget {
     );
   }
 }
+
+class SaveButtonAsync extends StatefulWidget {
+  final Future Function() onPressed;
+
+  const SaveButtonAsync({Key key, this.onPressed}) : super(key: key);
+
+  @override
+  _SaveButtonAsyncState createState() => _SaveButtonAsyncState();
+}
+
+class _SaveButtonAsyncState extends State<SaveButtonAsync> {
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: loading
+          ? LoadingIndicator(size: 12)
+          : Icon(
+              Icons.done,
+              color: context.colorScheme.onBackground,
+            ),
+      onPressed: widget.onPressed != null
+          ? () async {
+              setState(() {
+                loading = true;
+              });
+              try {
+                await widget.onPressed();
+              } finally {
+                if (mounted) {
+                  setState(() {
+                    loading = false;
+                  });
+                }
+              }
+            }
+          : null,
+    );
+  }
+}

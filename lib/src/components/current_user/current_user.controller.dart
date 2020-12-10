@@ -246,4 +246,14 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       await Fluttertoast.showToast(msg: e.toString());
     }
   }
+
+  Future updateUserImagesOrder(List<UserImage> newOrderList) async {
+    try {
+      model.update(
+          currentUser: await getService<UserService>()
+              .updateUserImagesSortOrder(newOrderList));
+    } catch (_) {
+      await Fluttertoast.showToast(msg: '$e');
+    }
+  }
 }
