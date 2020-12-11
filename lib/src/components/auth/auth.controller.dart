@@ -6,15 +6,19 @@ class AuthController extends MomentumController<AuthModel> {
     return AuthModel(this);
   }
 
-  Future<void> login(String email, String password) async {
-    await getService<AuthService>().login(
-        email, password, dependOn<CurrentUserController>().getCurrentUser);
-
-    await gotoHome();
-    final userId = await getService<StorageService>().getUserId;
-    if (userId.isExistAndNotEmpty) {
-      await getService<OneSignalService>().subscribe(userId);
+  void navigateToHomeIfAutheticated() async {
+    if (await isAuthenticated) {
+      await gotoHome();
     }
+  }
+
+  Future<bool> get isAuthenticated async =>
+      (await getService<StorageService>().getToken) != null;
+
+  Future<void> loginEmail(String email, String password) async {
+    await getService<AuthService>().loginEmail(
+        email, password, dependOn<CurrentUserController>().getCurrentUser);
+    await _afterLogin();
   }
 
   Future<void> loginSocial(SocialProviderType type) async {
@@ -34,6 +38,21 @@ class AuthController extends MomentumController<AuthModel> {
 
         await getService<AuthService>().loginSocial(type, tokenGoogle,
             dependOn<CurrentUserController>().getCurrentUser);
+      } else if (type == SocialProviderType.facebook) {
+        final facebookSignIn = FacebookLogin();
+        final facebookLogin = await facebookSignIn.logIn(['email']);
+        if (facebookLogin.status == FacebookLoginStatus.loggedIn) {
+          debugPrint('Token facebook: ' + facebookLogin.accessToken.token);
+          await getService<AuthService>().loginSocial(
+              SocialProviderType.facebook,
+              facebookLogin.accessToken.token,
+              dependOn<CurrentUserController>().getCurrentUser);
+        } else if (facebookLogin.status == FacebookLoginStatus.error) {
+          await Fluttertoast.showToast(msg: facebookLogin.errorMessage);
+          throw facebookLogin.errorMessage;
+        } else {
+          return;
+        }
       } else {
         return;
       }

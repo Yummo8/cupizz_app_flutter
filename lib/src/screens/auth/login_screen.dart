@@ -22,6 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
       email.text = 'test12@gmail.com';
       password.text = '123456789';
     }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Momentum.controller<AuthController>(context)
+          .navigateToHomeIfAutheticated();
+    });
   }
 
   void _getDisposeController() {
@@ -35,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (formKey.currentState.validate()) {
       final authCtl = Momentum.of<AuthController>(context);
       try {
-        await authCtl.login(email.text, password.text);
+        await authCtl.loginEmail(email.text, password.text);
       } catch (e) {
         debugPrint(e.toString());
         await Fluttertoast.showToast(msg: e.toString());

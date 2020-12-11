@@ -1,7 +1,7 @@
 part of 'index.dart';
 
 class AuthService extends MomentumService {
-  Future<void> login(String email, String password,
+  Future<void> loginEmail(String email, String password,
       [Future Function() postLogin]) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.loginMutation(email: email, password: password);

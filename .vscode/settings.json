@@ -1,6 +1,10 @@
 {
     "cSpell.words": [
-        "cupizz"
+        "cupizz",
+        "geolocator",
+        "mockito",
+        "sidemenu",
+        "xlider"
     ],
     "files.watcherExclude": {
         "**/.dart_tool/**": true,
