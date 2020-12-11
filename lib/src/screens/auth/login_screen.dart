@@ -194,10 +194,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       SocialButton(
                         imageName: Assets.i.icons.google,
                         margin: EdgeInsets.only(left: 30.0),
+                        type: SocialProviderType.google,
                       ),
                       SocialButton(
                         imageName: Assets.i.icons.facebook,
                         margin: EdgeInsets.only(right: 30.0),
+                        type: SocialProviderType.facebook,
                       ),
                     ],
                   ),

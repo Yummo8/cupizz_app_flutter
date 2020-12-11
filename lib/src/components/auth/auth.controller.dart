@@ -17,6 +17,41 @@ class AuthController extends MomentumController<AuthModel> {
     }
   }
 
+  Future<void> loginSocial(SocialProviderType type) async {
+    try {
+      if (type == SocialProviderType.google) {
+        final googleSignIn = GoogleSignIn(
+          scopes: <String>[
+            'email',
+            'profile',
+            'https://www.googleapis.com/auth/contacts.readonly'
+          ],
+        );
+        await googleSignIn.signIn();
+        GoogleSignInAuthentication auth;
+        auth = await googleSignIn.currentUser.authentication;
+        final tokenGoogle = auth.accessToken;
+
+        await getService<AuthService>().loginSocial(type, tokenGoogle,
+            dependOn<CurrentUserController>().getCurrentUser);
+      } else {
+        return;
+      }
+      await _afterLogin();
+    } catch (e) {
+      await Fluttertoast.showToast(msg: '$e');
+      rethrow;
+    }
+  }
+
+  Future _afterLogin() async {
+    await gotoHome();
+    final userId = await getService<StorageService>().getUserId;
+    if (userId.isExistAndNotEmpty) {
+      await getService<OneSignalService>().subscribe(userId);
+    }
+  }
+
   Future<void> logout() async {
     await getService<AuthService>().logout();
     await getService<OneSignalService>().unSubscribe();

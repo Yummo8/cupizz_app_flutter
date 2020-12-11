@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pedantic/pedantic.dart';
 
 import '../base/base.dart';

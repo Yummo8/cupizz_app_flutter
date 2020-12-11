@@ -18,6 +18,23 @@ extension GraphqlMutation on GraphqlService {
     return result.data['login'];
   }
 
+  Future loginSocialMutation(
+      {@required SocialProviderType type, @required String accessToken}) async {
+    final result = await mutate(MutationOptions(
+      documentNode: gql('''
+          mutation loginSocialNetwork(\$type: SocialProviderEnumType!, \$accessToken: String!){
+            loginSocialNetwork(type: \$type accessToken: \$accessToken) {
+              token
+              info { id }
+            }
+          }
+        '''),
+      variables: {'type': type, 'accessToken': accessToken},
+    ));
+    debugPrint(result.data['loginSocialNetwork']['info']['id']);
+    return result.data['loginSocialNetwork'];
+  }
+
   Future updateProfile([
     String nickName,
     String introduction,
