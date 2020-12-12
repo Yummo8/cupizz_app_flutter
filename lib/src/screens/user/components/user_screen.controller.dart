@@ -8,6 +8,13 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
     );
   }
 
+  Future refresh() async {
+    if (model.user == null) return;
+
+    final user = await getService<UserService>().getUser(id: model.user.id);
+    model.update(user: user);
+  }
+
   Future loadData({String userId, ChatUser chatUser}) async {
     if (chatUser == null && userId == null) return;
 
@@ -20,5 +27,20 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
       model.update(user: user);
     }
     UserProfileState.lastScrollOffset = 0;
+  }
+
+  Future addFriend() async {
+    model.update(isLoading: true);
+    try {
+      if (model.user.friendType == FriendType.received) {
+        await getService<UserService>().addFriend(model.user.id);
+        await refresh();
+      }
+    } catch (e) {
+      await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
+    } finally {
+      model.update(isLoading: false);
+    }
   }
 }

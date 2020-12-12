@@ -1,16 +1,24 @@
 part of '../user_screen.dart';
 
 class _UserScreenModel extends MomentumModel<UserScreenController> {
-  _UserScreenModel(UserScreenController controller, {this.user})
-      : super(controller);
+  _UserScreenModel(
+    UserScreenController controller, {
+    this.user,
+    this.isLoading = false,
+  }) : super(controller);
 
   final SimpleUser user;
+  final bool isLoading;
 
   @override
-  void update({SimpleUser user}) {
+  void update({
+    SimpleUser user,
+    bool isLoading,
+  }) {
     _UserScreenModel(
       controller,
       user: user ?? this.user,
+      isLoading: isLoading ?? this.isLoading,
     ).updateMomentum();
   }
 

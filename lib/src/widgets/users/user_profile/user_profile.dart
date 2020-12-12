@@ -15,16 +15,16 @@ part 'widgets/row_info.dart';
 
 class UserProfile extends StatefulWidget {
   final SimpleUser user;
-  final bool isCurrentUser;
   final bool showBackButton;
   final Future Function() onRefresh;
+  final bool isLoading;
 
   const UserProfile({
     Key key,
     @required this.user,
-    this.isCurrentUser = false,
     this.showBackButton = false,
     this.onRefresh,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class UserProfileState extends MomentumState<UserProfile>
   @override
   void initState() {
     super.initState();
-    if (widget.isCurrentUser) {
+    if (widget.user.isCurrentUser) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Momentum.controller<CurrentUserController>(context)
             .listen<CurrentUserEvent>(
@@ -75,13 +75,15 @@ class UserProfileState extends MomentumState<UserProfile>
     final user = widget.user;
 
     return PrimaryScaffold(
+      isLoading: widget.isLoading,
       body: Skeleton(
         enabled: user == null,
         child: RefreshIndicator(
-          onRefresh: () async {
-            await Momentum.controller<CurrentUserController>(context)
-                .getCurrentUser();
-          },
+          onRefresh: widget.onRefresh ??
+              () async {
+                await Momentum.controller<CurrentUserController>(context)
+                    .getCurrentUser();
+              },
           child: CustomScrollView(
             controller: scrollController,
             slivers: [
@@ -90,7 +92,6 @@ class UserProfileState extends MomentumState<UserProfile>
                 pinned: true,
                 delegate: _ProfileSliverAppBarDelegate(
                   user,
-                  widget.isCurrentUser,
                   expandedHeight: 300,
                   showBackButton: widget.showBackButton,
                 ),
@@ -112,7 +113,7 @@ class UserProfileState extends MomentumState<UserProfile>
                         '${user?.age} tuổi',
                         style: context.textTheme.subtitle1,
                       ),
-                    if (widget.isCurrentUser)
+                    if (widget.user.isCurrentUser)
                       IconButton(
                         icon: Icon(
                           Icons.edit,
@@ -238,12 +239,12 @@ class UserProfileState extends MomentumState<UserProfile>
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => CartImage(
                     userImage: (user?.userImages ?? [])[index],
-                    readOnly: !widget.isCurrentUser,
+                    readOnly: !widget.user.isCurrentUser,
                   ),
                   shrinkWrap: true,
                   itemCount: user?.userImages?.length ?? 0,
                 ),
-                if (widget.isCurrentUser)
+                if (widget.user.isCurrentUser)
                   MomentumBuilder(
                       controllers: [CurrentUserController],
                       builder: (context, snapshot) {

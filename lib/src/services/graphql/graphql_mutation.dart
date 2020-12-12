@@ -29,7 +29,7 @@ extension GraphqlMutation on GraphqlService {
             }
           }
         '''),
-      variables: {'type': type, 'accessToken': accessToken},
+      variables: {'type': type.rawValue, 'accessToken': accessToken},
     ));
     debugPrint(result.data['loginSocialNetwork']['info']['id']);
     return result.data['loginSocialNetwork'];

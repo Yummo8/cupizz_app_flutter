@@ -150,7 +150,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                   buildJobAndEducation(sizeHelper),
                   buildLifeStyle(sizeHelper),
                   buildReligion(sizeHelper),
-                  buildFavorites(sizeHelper)
+                  // buildFavorites(sizeHelper)
                 ],
               ),
             );

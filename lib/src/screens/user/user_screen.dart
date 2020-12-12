@@ -1,6 +1,7 @@
 library user_screen;
 
 import 'package:flutter/material.dart' hide Router;
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../base/base.dart';
 
 part 'components/user_screen.controller.dart';
@@ -28,6 +29,8 @@ class UserScreen extends StatelessWidget {
         return UserProfile(
           user: model.user,
           showBackButton: true,
+          onRefresh: controller.refresh,
+          isLoading: model.isLoading,
         );
       },
     );

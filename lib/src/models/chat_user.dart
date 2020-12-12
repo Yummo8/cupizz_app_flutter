@@ -13,6 +13,8 @@ class ChatUser extends BaseModel {
   bool get meOrFriend =>
       friendType == FriendType.me || friendType == FriendType.friend;
 
+  bool get isCurrentUser => friendType == FriendType.me;
+
   @override
   void mapping(Mapper map) {
     super.mapping(map);

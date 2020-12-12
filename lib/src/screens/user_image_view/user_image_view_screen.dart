@@ -56,6 +56,7 @@ class UserImageViewScreen extends StatelessWidget {
                     Column(
                       children: [
                         BackAppBar(
+                          title: '',
                           onBackPressed: () {
                             Navigator.pop(context);
                           },

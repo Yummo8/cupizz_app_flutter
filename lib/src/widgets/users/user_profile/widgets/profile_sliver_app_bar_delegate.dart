@@ -7,15 +7,15 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final PreferredSizeWidget bottom;
   final ChatUser user;
-  final bool isCurrentUser;
   final bool showBackButton;
+
+  bool get isCurrentUser => user.isCurrentUser;
 
   @override
   final FloatingHeaderSnapConfiguration snapConfiguration;
 
   _ProfileSliverAppBarDelegate(
-    this.user,
-    this.isCurrentUser, {
+    this.user, {
     @required this.expandedHeight,
     this.bottom,
     this.snapConfiguration,
@@ -55,8 +55,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
           _buildUpdateCoverButton(context, scrollRate),
-          if (user != null && user.meOrFriend)
-            _buildSettingOrMessageButton(context, scrollRate),
+          _buildSettingOrMessageButton(context, scrollRate),
         ],
       ),
     );
@@ -191,6 +190,29 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   Widget _buildSettingOrMessageButton(BuildContext context, double scrollRate) {
+    IconData icon;
+    Function onPressed;
+    if (user.friendType == FriendType.me) {
+      icon = Icons.settings;
+      onPressed = () {
+        Router.goto(context, UserSettingScreen);
+      };
+    } else if (user.friendType == FriendType.friend) {
+      icon = Icons.message_outlined;
+      onPressed = () {
+        Router.goto(
+          context,
+          MessagesScreen,
+          params: MessagesScreenParams(ConversationKey(targetUserId: user.id)),
+        );
+      };
+    } else if (user.friendType == FriendType.received) {
+      icon = Icons.done;
+      onPressed = () {
+        Momentum.controller<UserScreenController>(context).addFriend();
+      };
+    }
+
     return Positioned(
       right: 10,
       bottom: 10 - 30 * scrollRate,
@@ -199,20 +221,8 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child: FlatButton(
           color: context.colorScheme.background,
           shape: CircleBorder(),
-          child: Icon(
-            isCurrentUser ? Icons.settings : Icons.message_outlined,
-            size: 18,
-          ),
-          onPressed: () {
-            Router.goto(
-              context,
-              isCurrentUser ? UserSettingScreen : MessagesScreen,
-              params: isCurrentUser
-                  ? null
-                  : MessagesScreenParams(
-                      ConversationKey(targetUserId: user.id)),
-            );
-          },
+          child: Icon(icon, size: 18),
+          onPressed: onPressed,
         ),
       ),
     );

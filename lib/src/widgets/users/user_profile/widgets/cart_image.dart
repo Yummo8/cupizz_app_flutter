@@ -22,29 +22,29 @@ class CartImage extends StatelessWidget {
         padding: EdgeInsets.only(top: 4.0, bottom: 10.0),
         child: Stack(
           children: [
-            Container(
-              height: 300.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: userImage?.image != null
-                  ? Hero(
-                      tag: userImage.id,
-                      child: CustomNetworkImage(
+            Hero(
+              tag: userImage.id,
+              child: Container(
+                height: 300.0,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: userImage?.image != null
+                    ? CustomNetworkImage(
                         userImage.image.url,
                         borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    )
-                  : null,
+                      )
+                    : null,
+              ),
             ),
             if (userImage.answer != null)
               Positioned.fill(
