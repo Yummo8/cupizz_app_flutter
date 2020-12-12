@@ -2,7 +2,6 @@ library friend_page;
 
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:cupizz_app/src/widgets/index.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
@@ -117,6 +116,29 @@ class _FriendPageState extends MomentumState<FriendPage>
                           model.friends.length % 2 == 0 ? 2 : 3, (_) => null)
                       : []
                 ];
+                if (!friendsList.isExistAndNotEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: Text(
+                          'Những người đã được ghép đôi, đã thích bạn hay bạn đã thích sẽ xuất hiện ở đây.',
+                          style: context.textTheme.subtitle1
+                              .copyWith(color: context.colorScheme.onSurface),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      OptionButton(
+                        title: 'Cập nhật thông tin',
+                        onPressed: () {
+                          Router.goto(context, EditProfileScreen);
+                        },
+                      ),
+                    ],
+                  );
+                }
                 return GridView(
                   padding: const EdgeInsets.all(12).copyWith(top: 100),
                   physics: const BouncingScrollPhysics(),

@@ -146,15 +146,18 @@ class MessageContainer extends StatelessWidget {
       if (messageImageBuilder != null) {
         return messageImageBuilder(message.attachments[0].thumbnail, message);
       } else {
+        final images = GroupImage(images: message.attachments);
         return Padding(
           padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: SizedBox(
-              height: constraints.maxHeight * 0.3,
-              width: constraints.maxWidth * 0.7,
-              child: GroupImage(images: message.attachments),
-            ),
+            child: message.attachments.length > 1
+                ? SizedBox(
+                    height: constraints.maxHeight * 0.3,
+                    width: constraints.maxWidth * 0.7,
+                    child: images,
+                  )
+                : images,
           ),
         );
       }

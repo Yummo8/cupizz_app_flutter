@@ -25,7 +25,7 @@ class CartImage extends StatelessWidget {
             Hero(
               tag: userImage.id,
               child: Container(
-                height: 300.0,
+                height: userImage.image == null ? 300.0 : null,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),

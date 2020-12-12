@@ -104,6 +104,12 @@ class _HomePageState extends State<HomePage> {
               MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height,
             ),
+            onEnd: () {
+              model.update(isLoading: true);
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                model.update(isLoading: false);
+              });
+            },
             onSwipeLeft: () {
               Momentum.controller<RecommendableUsersController>(context)
                   .onSwipe();

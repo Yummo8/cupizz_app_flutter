@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/edit_user_images/edit_user_images_screen.dart';
 import 'package:cupizz_app/src/screens/user_image_view/user_image_view_screen.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_cropper/image_cropper.dart';
 
+import '../../../assets.dart';
 import '../../../base/base.dart';
 
 part 'widgets/cart_image.dart';
@@ -102,7 +104,7 @@ class UserProfileState extends MomentumState<UserProfile>
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      '${user?.displayName ?? ''},',
+                      '${user?.displayName ?? ''}${user?.age != null ? ',' : ''}',
                       style: context.textTheme.headline6.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -235,15 +237,39 @@ class UserProfileState extends MomentumState<UserProfile>
                   indent: 20,
                   endIndent: 20,
                 ),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) => CartImage(
-                    userImage: (user?.userImages ?? [])[index],
-                    readOnly: !widget.user.isCurrentUser,
+                if (user.userImages.isExistAndNotEmpty)
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => CartImage(
+                      userImage: user.userImages[index],
+                      readOnly: !widget.user.isCurrentUser,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: user?.userImages?.length ?? 0,
+                  )
+                else if (user.isCurrentUser)
+                  Column(
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 150,
+                        margin: const EdgeInsets.all(10),
+                        child: FlareActor(
+                          Assets.i.flares.brokenHeart,
+                          fit: BoxFit.cover,
+                          sizeFromArtboard: false,
+                          color: context.colorScheme.primary,
+                          animation: 'Heart Break',
+                        ),
+                      ),
+                      Text(
+                        'Hãy cập nhật thêm hình ảnh \nvà trả lời các câu hỏi \nđể mọi người biết thêm về bạn nào!',
+                        style: context.textTheme.subtitle1,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
+                    ],
                   ),
-                  shrinkWrap: true,
-                  itemCount: user?.userImages?.length ?? 0,
-                ),
                 if (widget.user.isCurrentUser)
                   MomentumBuilder(
                       controllers: [CurrentUserController],

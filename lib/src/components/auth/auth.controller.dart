@@ -35,7 +35,7 @@ class AuthController extends MomentumController<AuthModel> {
         GoogleSignInAuthentication auth;
         auth = await googleSignIn.currentUser.authentication;
         final tokenGoogle = auth.accessToken;
-
+        debugPrint('Token Google: $tokenGoogle');
         await getService<AuthService>().loginSocial(type, tokenGoogle,
             dependOn<CurrentUserController>().getCurrentUser);
       } else if (type == SocialProviderType.facebook) {

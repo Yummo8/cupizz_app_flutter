@@ -15,6 +15,7 @@ class Assets {
 class _Flares {
   final String splashScreen = _FLARE_PATH + 'splash_screen.flr';
   final String logo = _FLARE_PATH + 'logo.flr';
+  final String brokenHeart = _FLARE_PATH + 'broken_heart.flr';
 }
 
 class _Icon {

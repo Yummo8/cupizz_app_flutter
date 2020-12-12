@@ -55,7 +55,24 @@ class _ChatPageState extends State<ChatPage> {
                   child: model.isLoading
                       ? LoadingIndicator()
                       : model.conversations.isEmpty
-                          ? NotFoundIndicator()
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Hãy cập nhật thông tin cá nhân \nđể có thể ghép đôi với nhiều người hơn.',
+                                  style: context.textTheme.subtitle1.copyWith(
+                                      color: context.colorScheme.onSurface),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 10),
+                                OptionButton(
+                                  title: 'Cập nhật thông tin',
+                                  onPressed: () {
+                                    Router.goto(context, EditProfileScreen);
+                                  },
+                                ),
+                              ],
+                            )
                           : ListView.builder(
                               padding: EdgeInsets.zero,
                               itemCount: model.conversations.length,

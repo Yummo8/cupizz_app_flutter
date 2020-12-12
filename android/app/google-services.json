@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "131297444871-m03vnbfkh3etbqaai8v3kiqfdeob1thu.apps.googleusercontent.com",
+          "client_id": "131297444871-ii4upvp9a6geugbuojm309odtlt2l3sn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "cf.cupizz.cupizz_app",
-            "certificate_hash": "ab99cb4448f2f69ca90580c83dddb5261b4dcb87"
+            "certificate_hash": "02b65f391e50183ac59104fae300c06afd0a2e22"
           }
         },
         {

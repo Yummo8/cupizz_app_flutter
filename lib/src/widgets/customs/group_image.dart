@@ -28,7 +28,7 @@ class GroupImage extends StatelessWidget {
     if (images.isEmpty) {
       return const SizedBox.shrink();
     } else if (images.length == 1) {
-      return _buildImage(images[0]);
+      return _buildOneImage(images[0]);
     } else if (images.length == 2) {
       return _build2Images();
     } else {
@@ -98,17 +98,20 @@ class GroupImage extends StatelessWidget {
     );
   }
 
-  Widget _buildImage(FileModel image) {
+  Widget _buildOneImage(FileModel image) {
     return Hero(
       tag: image?.url,
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ClipRRect(
-          borderRadius: borderRadius ?? BorderRadius.circular(0),
-          child:
-              CachedNetworkImage(imageUrl: image.thumbnail, fit: BoxFit.cover),
-        ),
+      child: ClipRRect(
+        borderRadius: borderRadius ?? BorderRadius.circular(0),
+        child: CachedNetworkImage(imageUrl: image.thumbnail, fit: BoxFit.cover),
       ),
+    );
+  }
+
+  Widget _buildImage(FileModel image) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: _buildOneImage(image),
     );
   }
 }
