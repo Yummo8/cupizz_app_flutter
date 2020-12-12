@@ -26,6 +26,7 @@ class CartImage extends StatelessWidget {
               tag: userImage.id,
               child: Container(
                 height: userImage.image == null ? 300.0 : null,
+                constraints: BoxConstraints(minHeight: 300),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),

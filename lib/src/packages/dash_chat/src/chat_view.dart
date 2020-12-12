@@ -277,43 +277,59 @@ class DashChatState extends State<DashChat> {
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.end,
                 children: <Widget>[
-                  MessageListView(
-                      avatarMaxSize: widget.avatarMaxSize,
-                      messagePadding: widget.messagePadding,
-                      constraints: constraints,
-                      shouldShowLoadEarlier: widget.shouldShowLoadEarlier,
-                      showLoadEarlierWidget: widget.showLoadEarlierWidget,
-                      onLoadEarlier: widget.onLoadEarlier,
-                      defaultLoadCallback: changeDefaultLoadMore,
-                      messageContainerPadding: widget.messageContainerPadding,
-                      scrollController:
-                          widget.scrollController ?? scrollController,
-                      user: widget.user,
-                      messages: widget.messages,
-                      showuserAvatar: widget.showUserAvatar,
-                      dateFormat: widget.dateFormat,
-                      timeFormat: widget.timeFormat,
-                      inverted: widget.inverted,
-                      showAvatarForEverMessage:
-                          widget.showAvatarForEveryMessage,
-                      onLongPressAvatar: widget.onLongPressAvatar,
-                      onPressAvatar: widget.onPressAvatar,
-                      onLongPressMessage: widget.onLongPressMessage,
-                      avatarBuilder: widget.avatarBuilder,
-                      messageBuilder: widget.messageBuilder,
-                      messageTextBuilder: widget.messageTextBuilder,
-                      messageImageBuilder: widget.messageImageBuilder,
-                      messageTimeBuilder: widget.messageTimeBuilder,
-                      dateBuilder: widget.dateBuilder,
-                      messageContainerDecoration:
-                          widget.messageContainerDecoration,
-                      parsePatterns: widget.parsePatterns,
-                      changeVisible: changeVisible,
-                      visible: visible,
-                      showLoadMore: showLoadMore,
-                      messageButtonsBuilder: widget.messageButtonsBuilder,
-                      messageDecorationBuilder:
-                          widget.messageDecorationBuilder),
+                  if (!widget.messages.isExistAndNotEmpty)
+                    Expanded(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          child: Text(
+                            'Hai bạn chưa nhắn tin với nhau. Hãy chủ động để tìm hiểu đối phương đi nào!',
+                            style: context.textTheme.subtitle1.copyWith(
+                              color: context.colorScheme.onSurface,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    MessageListView(
+                        avatarMaxSize: widget.avatarMaxSize,
+                        messagePadding: widget.messagePadding,
+                        constraints: constraints,
+                        shouldShowLoadEarlier: widget.shouldShowLoadEarlier,
+                        showLoadEarlierWidget: widget.showLoadEarlierWidget,
+                        onLoadEarlier: widget.onLoadEarlier,
+                        defaultLoadCallback: changeDefaultLoadMore,
+                        messageContainerPadding: widget.messageContainerPadding,
+                        scrollController:
+                            widget.scrollController ?? scrollController,
+                        user: widget.user,
+                        messages: widget.messages,
+                        showuserAvatar: widget.showUserAvatar,
+                        dateFormat: widget.dateFormat,
+                        timeFormat: widget.timeFormat,
+                        inverted: widget.inverted,
+                        showAvatarForEverMessage:
+                            widget.showAvatarForEveryMessage,
+                        onLongPressAvatar: widget.onLongPressAvatar,
+                        onPressAvatar: widget.onPressAvatar,
+                        onLongPressMessage: widget.onLongPressMessage,
+                        avatarBuilder: widget.avatarBuilder,
+                        messageBuilder: widget.messageBuilder,
+                        messageTextBuilder: widget.messageTextBuilder,
+                        messageImageBuilder: widget.messageImageBuilder,
+                        messageTimeBuilder: widget.messageTimeBuilder,
+                        dateBuilder: widget.dateBuilder,
+                        messageContainerDecoration:
+                            widget.messageContainerDecoration,
+                        parsePatterns: widget.parsePatterns,
+                        changeVisible: changeVisible,
+                        visible: visible,
+                        showLoadMore: showLoadMore,
+                        messageButtonsBuilder: widget.messageButtonsBuilder,
+                        messageDecorationBuilder:
+                            widget.messageDecorationBuilder),
                   if (widget.chatFooterBuilder != null)
                     widget.chatFooterBuilder(),
                   if (!widget.readOnly)
