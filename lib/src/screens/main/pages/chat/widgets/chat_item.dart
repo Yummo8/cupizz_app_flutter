@@ -27,7 +27,7 @@ class _ChatItemState extends State<ChatItem> {
         if (widget.onPressed != null) {
           widget.onPressed?.call();
         } else {
-          RouterService.goto(context, MessagesScreen,
+          Router.goto(context, MessagesScreen,
               params: MessagesScreenParams(
                   ConversationKey(conversationId: widget.conversation.id)));
         }
@@ -98,14 +98,14 @@ class _ChatItemState extends State<ChatItem> {
                 Container(
                   padding: EdgeInsets.all(5),
                   alignment: Alignment.center,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Color(0xFFFF5555),
                     shape: BoxShape.circle,
                   ),
                   constraints: BoxConstraints(minWidth: 20, minHeight: 20),
-                  child: new Text(
+                  child: Text(
                     widget.conversation.unreadMessageCount.toString(),
-                    style: new TextStyle(
+                    style: TextStyle(
                       color: context.colorScheme.onError,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,

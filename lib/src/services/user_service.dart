@@ -38,6 +38,16 @@ class UserService extends MomentumService {
     String job,
     int height,
     io.File avatar,
+    io.File cover,
+    DateTime birthday,
+    double latitude,
+    double longitude,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    List<LookingFor> lookingFors,
+    Religious religious,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.updateProfile(
@@ -49,6 +59,16 @@ class UserService extends MomentumService {
       job,
       height,
       avatar,
+      cover,
+      birthday,
+      latitude,
+      longitude,
+      educationLevel,
+      smoking,
+      drinking,
+      yourKids,
+      lookingFors,
+      religious,
     );
     final user = Mapper.fromJson(data).toObject<User>();
     return user;
@@ -98,6 +118,75 @@ class UserService extends MomentumService {
     final graphql = getService<GraphqlService>();
     final data = await graphql.friendsV2Query(type, orderBy, page);
     final result = WithIsLastPageOutput<FriendData>.fromJson(data);
+    return result;
+  }
+
+  Future<SimpleUser> getUser({String id}) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.userQuery(id);
+    final result = Mapper.fromJson(data).toObject<SimpleUser>();
+    return result;
+  }
+
+  Future<UserImage> addImage(io.File image) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.addUserImage(image);
+    final result = Mapper.fromJson(data).toObject<UserImage>();
+    return result;
+  }
+
+  Future removeUserImage(String imageId) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.removeUserImage(imageId);
+  }
+
+  Future<UserImage> answerQuestion(
+    String questionId,
+    String content, {
+    String color,
+    String textColor,
+    List<String> gradient,
+    io.File backgroundImage,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.answerQuestion(
+      questionId,
+      content,
+      color: color,
+      textColor: textColor,
+      gradient: gradient,
+      backgroundImage: backgroundImage,
+    );
+    final result = Mapper.fromJson(data).toObject<UserImage>();
+    return result;
+  }
+
+  Future<UserImage> editAnswer(
+    String answerId, {
+    String content,
+    Color color,
+    Color textColor,
+    List<Color> gradient,
+    io.File backgroundImage,
+  }) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.editAnswer(
+      answerId,
+      content,
+      color,
+      textColor,
+      gradient,
+      backgroundImage,
+    );
+    final result = Mapper.fromJson(data).toObject<UserImage>();
+    return result;
+  }
+
+  Future<User> updateUserImagesSortOrder(List<UserImage> newOrderList) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql
+        .updateUserImagesSortOrder(newOrderList.map((e) => e.id).toList());
+    final result = Mapper.fromJson(data).toObject<User>();
     return result;
   }
 }

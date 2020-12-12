@@ -7,7 +7,8 @@ class BaseModel with Mappable implements Comparable<BaseModel> {
 
   BaseModel({String id}) : _id = id;
 
-  int compareTo(BaseModel other) => this.id.compareTo(other.id);
+  @override
+  int compareTo(BaseModel other) => id.compareTo(other.id);
 
   @override
   void mapping(Mapper map) {

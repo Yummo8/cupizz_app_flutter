@@ -3,26 +3,45 @@ part of '../index.dart';
 class UserAvatar extends StatelessWidget {
   final FileModel image;
   final OnlineStatus onlineStatus;
+  final double size;
+  final bool showOnline;
 
-  const UserAvatar({Key key, this.image, this.onlineStatus}) : super(key: key);
+  const UserAvatar({
+    Key key,
+    this.image,
+    this.onlineStatus,
+    this.size = 50.0,
+    this.showOnline = true,
+  }) : super(key: key);
 
-  factory UserAvatar.fromSimpleUser(
-      {Key key, @required SimpleUser simpleUser}) {
+  factory UserAvatar.fromChatUser({
+    Key key,
+    @required ChatUser user,
+    double size = 50,
+    bool showOnline = true,
+  }) {
     return UserAvatar(
       key: key,
-      image: simpleUser?.avatar,
-      onlineStatus: simpleUser?.onlineStatus,
+      image: user?.avatar,
+      onlineStatus: user?.onlineStatus,
+      size: size,
+      showOnline: showOnline,
     );
   }
 
   factory UserAvatar.fromConversation(
-      {Key key, @required Conversation conversation}) {
+      {Key key,
+      @required Conversation conversation,
+      double size = 50,
+      bool showOnline = true}) {
     return UserAvatar(
       key: key,
       image: (conversation?.images ?? []).isExistAndNotEmpty
           ? conversation.images[0]
           : null,
       onlineStatus: conversation?.onlineStatus,
+      size: size,
+      showOnline: showOnline,
     );
   }
 
@@ -31,17 +50,17 @@ class UserAvatar extends StatelessWidget {
     return Stack(
       children: <Widget>[
         SizedBox(
-          width: 50,
-          height: 50,
+          width: size,
+          height: size,
           child: CustomNetworkImage(
             image?.thumbnail ?? image?.url ?? '',
             isAvatar: true,
           ),
         ),
-        if (onlineStatus == OnlineStatus.online)
+        if (onlineStatus == OnlineStatus.online && showOnline)
           Positioned(
-            bottom: 0,
-            right: 0,
+            bottom: size * 0.05,
+            right: size * 0.05,
             child: Container(
               width: 14,
               height: 14,

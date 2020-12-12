@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import '../delegate/badge_delegate.dart';
 import '../delegate/checkbox_builder_delegate.dart';
 import '../delegate/loading_delegate.dart';
 import '../delegate/sort_delegate.dart';
 
 class Options {
+  const Options({
+    this.rowCount,
+    this.maxSelected,
+    this.padding,
+    this.itemRadio,
+    this.themeColor,
+    this.dividerColor,
+    this.textColor,
+    this.disableColor,
+    this.thumbSize,
+    this.sortDelegate,
+    this.checkBoxBuilderDelegate,
+    this.loadingDelegate,
+    this.badgeDelegate,
+    this.pickType,
+    this.autoCloseOnSelectionLimit,
+    this.isCropImage,
+    this.cropAspectRatio,
+  });
+
   final int rowCount;
 
   final int maxSelected;
@@ -33,22 +54,11 @@ class Options {
 
   final PickType pickType;
 
-  const Options({
-    this.rowCount,
-    this.maxSelected,
-    this.padding,
-    this.itemRadio,
-    this.themeColor,
-    this.dividerColor,
-    this.textColor,
-    this.disableColor,
-    this.thumbSize,
-    this.sortDelegate,
-    this.checkBoxBuilderDelegate,
-    this.loadingDelegate,
-    this.badgeDelegate,
-    this.pickType,
-  });
+  final bool autoCloseOnSelectionLimit;
+
+  final bool isCropImage;
+
+  final CropAspectRatio cropAspectRatio;
 }
 
 enum PickType {

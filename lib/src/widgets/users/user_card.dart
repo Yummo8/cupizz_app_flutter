@@ -124,8 +124,7 @@ class UserCard extends StatelessWidget {
   }
 
   List<Widget> _buildHobbyList(BuildContext context) {
-    List<HobbyWithIsSelect> hobbiesToShow =
-        simpleUser.getSameHobbies(context) ?? [];
+    var hobbiesToShow = simpleUser.getSameHobbies(context) ?? [];
 
     return hobbiesToShow.isEmpty
         ? []

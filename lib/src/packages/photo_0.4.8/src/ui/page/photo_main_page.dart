@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
+
 import '../../delegate/badge_delegate.dart';
 import '../../delegate/loading_delegate.dart';
 import '../../engine/lru_cache.dart';
@@ -14,22 +16,24 @@ import '../../provider/i18n_provider.dart';
 import '../../provider/selected_provider.dart';
 import '../../ui/dialog/change_gallery_dialog.dart';
 import '../../ui/page/photo_preview_page.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 part './main/bottom_widget.dart';
+
 part './main/image_item.dart';
 
 class PhotoMainPage extends StatefulWidget {
-  final ValueChanged<List<AssetEntity>> onClose;
-  final Options options;
-  final List<AssetPathEntity> photoList;
-
   const PhotoMainPage({
     Key key,
     this.onClose,
     this.options,
     this.photoList,
+    this.isCrop = false,
   }) : super(key: key);
+
+  final ValueChanged<List<AssetEntity>> onClose;
+  final Options options;
+  final List<AssetPathEntity> photoList;
+  final bool isCrop;
 
   @override
   _PhotoMainPageState createState() => _PhotoMainPageState();
@@ -40,6 +44,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   Options get options => widget.options;
 
   I18nProvider get i18nProvider => PhotoPickerProvider.of(context).provider;
+
   AssetProvider get assetProvider =>
       PhotoPickerProvider.of(context).assetProvider;
 
@@ -66,7 +71,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     if (currentPath?.isAll == true) {
       return i18nProvider.getAllGalleryText(options);
     }
-    return currentPath?.name ?? "Chọn thư mục";
+    return currentPath?.name ?? 'Chọn một thư mục';
   }
 
   GlobalKey scaffoldKey;
@@ -109,7 +114,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   @override
   Widget build(BuildContext context) {
-    var textStyle = TextStyle(
+    final textStyle = TextStyle(
       color: options.textColor,
       fontSize: 14.0,
     );
@@ -163,18 +168,25 @@ class _PhotoMainPageState extends State<PhotoMainPage>
 
   void _cancel() {
     selectedList.clear();
-    widget.onClose(selectedList);
+//    widget.onClose(selectedList);
+    Navigator.pop(context);
   }
 
   @override
   bool isUpperLimit() {
-    var result = selectedCount == options.maxSelected;
-    if (result) _showTip(i18nProvider.getMaxTipText(options));
+    final result = selectedCount == options.maxSelected;
+    if (result) {
+      _showTip(i18nProvider.getMaxTipText(options));
+    }
     return result;
   }
 
+  @override
   void sure() {
     widget.onClose?.call(selectedList);
+//    if (widget.isCrop) {
+//      Navigator.pushNamed(context, Routes.cropImages, arguments: selectedList);
+//    }
   }
 
   void _showTip(String msg) {
@@ -190,24 +202,24 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             fontSize: 14.0,
           ),
         ),
-        duration: Duration(milliseconds: 1500),
+        duration: const Duration(milliseconds: 1500),
         backgroundColor: themeColor.withOpacity(0.7),
       ),
     );
   }
 
-  void _refreshList() async {
+  Future<void> _refreshList() async {
     await Future.delayed(Duration.zero);
     if (!useAlbum) {
-      _refreshListFromWidget();
+      await _refreshListFromWidget();
       return;
     }
 
-    _refreshListFromGallery();
+    await _refreshListFromGallery();
   }
 
   Future<void> _refreshListFromWidget() async {
-    _onRefreshAssetPathList(widget.photoList);
+    await _onRefreshAssetPathList(widget.photoList);
   }
 
   Future<void> _refreshListFromGallery() async {
@@ -223,7 +235,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         pathList = await PhotoManager.getAssetPathList();
     }
 
-    _onRefreshAssetPathList(pathList);
+    await _onRefreshAssetPathList(pathList);
   }
 
   Future<void> _onRefreshAssetPathList(List<AssetPathEntity> pathList) async {
@@ -253,13 +265,16 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   }
 
   Widget _buildBody() {
+    final noMore = assetProvider.noMore;
+    final count = assetProvider.count + (noMore ? 0 : 1);
+
     if (!_isInit) {
-      return _buildLoading();
+      return Center(child: _buildLoading());
     }
 
-    final noMore = assetProvider.noMore;
-
-    final count = assetProvider.count + (noMore ? 0 : 1);
+    if (assetProvider.count < 1) {
+      return const Center(child: Text('画像無し'));
+    }
 
     return Container(
       color: options.dividerColor,
@@ -284,10 +299,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       return _buildLoading();
     }
 
-    var data = list[index];
+    final data = list[index];
     return RepaintBoundary(
       child: GestureDetector(
-        onTap: () => _onItemClick(data, index),
+        onTap: () => changeCheck(!containsEntity(data), data),
         child: Stack(
           children: <Widget>[
             ImageItem(
@@ -305,22 +320,22 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     );
   }
 
-  _loadMore() async {
+  Future<void> _loadMore() async {
     await assetProvider.loadMore();
     setState(() {});
   }
 
-  _buildMask(bool showMask) {
+  Widget _buildMask(bool showMask) {
     return IgnorePointer(
       child: AnimatedContainer(
         color: showMask ? Colors.black.withOpacity(0.5) : Colors.transparent,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
       ),
     );
   }
 
   Widget _buildSelected(AssetEntity entity) {
-    var currentSelected = containsEntity(entity);
+    final currentSelected = containsEntity(entity);
     return Positioned(
       right: 0.0,
       width: 36.0,
@@ -336,7 +351,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   }
 
   Widget _buildText(AssetEntity entity) {
-    var isSelected = containsEntity(entity);
+    final isSelected = containsEntity(entity);
     Widget child;
     BoxDecoration decoration;
     if (isSelected) {
@@ -360,7 +375,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         decoration: decoration,
         alignment: Alignment.center,
         child: child,
@@ -371,13 +386,16 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   void changeCheck(bool value, AssetEntity entity) {
     if (value) {
       addSelectEntity(entity);
+      if (isUpperLimit() && options.autoCloseOnSelectionLimit) {
+        sure();
+      }
     } else {
       removeSelectEntity(entity);
     }
     setState(() {});
   }
 
-  void _onGalleryChange(AssetPathEntity assetPathEntity) async {
+  Future<void> _onGalleryChange(AssetPathEntity assetPathEntity) async {
     // _currentPath = assetPathEntity;
 
     // _currentPath.assetList.then((v) async {
@@ -395,41 +413,10 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     }
   }
 
-  void _onItemClick(AssetEntity data, int index) {
-    var result = PhotoPreviewResult();
+  Future<void> _onTapPreview() async {
+    final result = PhotoPreviewResult();
     isPushed = true;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) {
-          return PhotoPickerProvider(
-            provider: PhotoPickerProvider.of(context).provider,
-            options: options,
-            child: PhotoPreviewPage(
-              selectedProvider: this,
-              list: List.of(list),
-              initIndex: index,
-              changeProviderOnCheckChange: true,
-              result: result,
-              isPreview: false,
-              assetProvider: assetProvider,
-            ),
-          );
-        },
-      ),
-    ).then((v) {
-      if (handlePreviewResult(v)) {
-        Navigator.pop(context, v);
-        return;
-      }
-      isPushed = false;
-      setState(() {});
-    });
-  }
-
-  void _onTapPreview() async {
-    var result = PhotoPreviewResult();
-    isPushed = true;
-    var v = await Navigator.of(context).push(
+    final value = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => PhotoPickerProvider(
           provider: PhotoPickerProvider.of(context).provider,
@@ -445,9 +432,9 @@ class _PhotoMainPageState extends State<PhotoMainPage>
         ),
       ),
     );
-    if (handlePreviewResult(v)) {
+    if (handlePreviewResult(value)) {
       // print(v);
-      Navigator.pop(context, v);
+//      Navigator.pop(context, value);
       return;
     }
     isPushed = false;
@@ -498,7 +485,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     }
   }
 
-  void _onPhotoRefresh() async {
+  Future<void> _onPhotoRefresh() async {
     List<AssetPathEntity> pathList;
     switch (options.pickType) {
       case PickType.onlyImage:
@@ -515,17 +502,17 @@ class _PhotoMainPageState extends State<PhotoMainPage>
       return;
     }
 
-    this.galleryPathList.clear();
-    this.galleryPathList.addAll(pathList);
+    galleryPathList.clear();
+    galleryPathList.addAll(pathList);
 
-    if (!this.galleryPathList.contains(this.currentPath)) {
+    if (!galleryPathList.contains(currentPath)) {
       // current path is deleted , 当前的相册被删除, 应该提示刷新
-      if (this.galleryPathList.length > 0) {
-        _onGalleryChange(this.galleryPathList[0]);
+      if (galleryPathList.isNotEmpty) {
+        await _onGalleryChange(galleryPathList[0]);
       }
       return;
     }
     // Not deleted
-    _onGalleryChange(this.currentPath);
+    await _onGalleryChange(currentPath);
   }
 }

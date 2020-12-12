@@ -51,10 +51,10 @@ class ScrollToBottomStyle {
     this.textColor,
     this.bottom = 70.0,
     this.left,
-    this.right: 20.0,
+    this.right = 20.0,
     this.top,
-    this.height: 45.0,
-    this.width: 45.0,
+    this.height = 45.0,
+    this.width = 45.0,
     this.icon,
   });
 }

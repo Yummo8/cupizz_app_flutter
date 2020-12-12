@@ -18,9 +18,12 @@ class FriendPageController extends MomentumController<FriendPageModel> {
   }
 
   @override
-  bootstrapAsync() => _reloadFriends();
+  Future<void> bootstrapAsync() => _reloadFriends();
 
-  Future refresh() => _reloadFriends();
+  Future refresh() async {
+    await _reloadFriends();
+    model.animationController?.fling();
+  }
 
   Future updateSettings({
     FriendQueryType filter,
@@ -28,50 +31,55 @@ class FriendPageController extends MomentumController<FriendPageModel> {
     bool isMultiColumn,
   }) async {
     if (filter != null || sort != null || isMultiColumn != null) {
-      this.model.update(
-            isLoading: true,
-            filter: filter,
-            sort: sort,
-            isMultiColumn: isMultiColumn,
-          );
+      model.update(
+        isLoading: true,
+        filter: filter,
+        sort: sort,
+        isMultiColumn: isMultiColumn,
+      );
       await _reloadFriends();
-      this.model.update(isLoading: false);
+      model.update(isLoading: false);
+      model.animationController?.reset();
+      model.animationController?.forward();
     }
   }
 
   Future loadmoreFriends() async {
-    if (this.model.isLastPage) return;
+    if (model.isLastPage || model.isLoadingMore) return;
+    model.update(isLoadingMore: true);
     try {
       final result = await getService<UserService>().getFriendsV2(
-        type: this.model.filter,
-        orderBy: this.model.sort,
-        page: this.model.currentPage + 1,
+        type: model.filter,
+        orderBy: model.sort,
+        page: model.currentPage + 1,
       );
-      this.model.friends.addAll(result.data);
+      model.friends.addAll(result.data);
 
-      this.model.update(
-            friends: this.model.friends,
-            currentPage: this.model.currentPage + 1,
-            isLastPage: result.isLastPage,
-          );
+      model.update(
+        friends: model.friends,
+        currentPage: model.currentPage + 1,
+        isLastPage: result.isLastPage,
+      );
     } catch (e) {
       sendEvent(FriendPageEvent(
           action: FriendPageEventAction.error, message: e.toString()));
+    } finally {
+      model.update(isLoadingMore: false);
     }
   }
 
   Future _reloadFriends() async {
     try {
       final result = await getService<UserService>().getFriendsV2(
-        type: this.model.filter,
-        orderBy: this.model.sort,
+        type: model.filter,
+        orderBy: model.sort,
         page: 1,
       );
-      this.model.update(
-            friends: result.data,
-            currentPage: 1,
-            isLastPage: result.isLastPage,
-          );
+      model.update(
+        friends: result.data,
+        currentPage: 1,
+        isLastPage: result.isLastPage,
+      );
     } catch (e) {
       sendEvent(FriendPageEvent(
           action: FriendPageEventAction.error, message: e.toString()));

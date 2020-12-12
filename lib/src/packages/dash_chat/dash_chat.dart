@@ -18,8 +18,6 @@ export 'package:intl/intl.dart' hide TextDirection;
 part 'src/chat_input_toolbar.dart';
 part 'src/chat_view.dart';
 part 'src/message_listview.dart';
-part 'src/models/chat_message.dart';
-part 'src/models/chat_user.dart';
 part 'src/models/quick_replies.dart';
 part 'src/models/reply.dart';
 part 'src/models/scroll_to_bottom_style.dart';

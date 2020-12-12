@@ -8,11 +8,11 @@ abstract class BadgeDelegate {
 }
 
 class DefaultBadgeDelegate extends BadgeDelegate {
-  final AlignmentGeometry alignment;
-
   const DefaultBadgeDelegate({
     this.alignment = Alignment.topLeft,
   });
+
+  final AlignmentGeometry alignment;
 
   @override
   Widget buildBadge(BuildContext context, AssetType type, Duration duration) {
@@ -26,9 +26,9 @@ class DefaultBadgeDelegate extends BadgeDelegate {
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(3.0),
             ),
-            child: Text(
-              "video",
-              style: const TextStyle(
+            child: const Text(
+              'video',
+              style: TextStyle(
                 fontSize: 12.0,
                 color: Colors.white,
               ),
@@ -44,18 +44,19 @@ class DefaultBadgeDelegate extends BadgeDelegate {
 }
 
 class DurationBadgeDelegate extends BadgeDelegate {
-  final AlignmentGeometry alignment;
   const DurationBadgeDelegate({this.alignment = Alignment.bottomRight});
+
+  final AlignmentGeometry alignment;
 
   @override
   Widget buildBadge(BuildContext context, AssetType type, Duration duration) {
     if (type == AssetType.video) {
-      var s = duration.inSeconds % 60;
-      var m = duration.inMinutes % 60;
-      var h = duration.inHours;
+      final s = duration.inSeconds % 60;
+      final m = duration.inMinutes % 60;
+      final h = duration.inHours;
 
-      String text =
-          "$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}";
+      final text =
+          '$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
 
       return Padding(
         padding: const EdgeInsets.all(2.0),

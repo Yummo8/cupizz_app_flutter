@@ -28,7 +28,7 @@ mixin LoadmoreMixin<T extends StatefulWidget> on State<T> {
   }
 
   @protected
-  onLoadMore();
+  void onLoadMore();
 }
 
 mixin LoadmoreActionMixin {
@@ -38,7 +38,7 @@ mixin LoadmoreActionMixin {
 
   double get bottomOffset => 20;
 
-  initLoadMore() {
+  void initLoadMore() {
     scrollController.addListener(() {
       if (!_isLocking) {
         if (scrollController.position.pixels >=
@@ -55,5 +55,5 @@ mixin LoadmoreActionMixin {
   }
 
   @protected
-  onLoadMore();
+  void onLoadMore();
 }

@@ -11,26 +11,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MomentumBuilder(
-                controllers: [CurrentUserController],
-                builder: (context, snapshot) {
-                  var model = snapshot<CurrentUserModel>();
-                  return Text(model.currentUser?.nickName ?? 'No User');
-                }),
-            TextButton(
-              onPressed: () {
-                Momentum.of<AuthController>(context).logout();
-              },
-              child: Text('Logout'),
-            ),
-          ],
-        ),
-      ),
+    return MomentumBuilder(
+      controllers: [CurrentUserController],
+      builder: (context, snapshot) {
+        var model = snapshot<CurrentUserModel>();
+        return UserProfile(user: model.currentUser);
+      },
     );
   }
 }

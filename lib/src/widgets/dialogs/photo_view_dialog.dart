@@ -45,8 +45,9 @@ class _PhotoView extends StatefulWidget {
 class __PhotoViewState extends State<_PhotoView> {
   int currentPage = 0;
 
-  _onBack(BuildContext context) {
+  Future<bool> _onBack(BuildContext context) async {
     Navigator.pop(context);
+    return true;
   }
 
   @override

@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/custom_radio_button_group.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditReligionScreen extends StatefulWidget {
   @override
@@ -9,57 +6,51 @@ class EditReligionScreen extends StatefulWidget {
 }
 
 class _EditReligionScreenState extends State<EditReligionScreen> {
+  Religious selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.religious;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
+    final sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Quan điểm tôn giáo',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: 'Quan điểm tôn giáo', actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(religious: selectedValue);
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<Religious>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Không muốn tiết lộ',
-                  'Công giáo',
-                  'Do thái',
-                  'Hindu giáo',
-                  'Khác'
-                ],
-                buttonValues: [
-                  'Không muốn tiết lộ',
-                  'Công giáo',
-                  'Do thái',
-                  'Hindu giáo',
-                  'Khác'
-                ],
-                radioButtonValue: (value) => print(value),
+                items: Religious.getAll(),
+                selectedItems: [selectedValue],
+                valueToString: (v) => v.displayValue,
+                onItemPressed: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

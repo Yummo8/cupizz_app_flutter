@@ -32,7 +32,7 @@ class AuthButton extends StatelessWidget {
             child: Container(
               height: (60.0),
               decoration: BoxDecoration(
-                gradient: new LinearGradient(
+                gradient: LinearGradient(
                   colors: [
                     context.colorScheme.onPrimary,
                     context.colorScheme.onPrimary.withOpacity(0.7),

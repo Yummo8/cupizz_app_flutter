@@ -20,7 +20,7 @@ class CustomGridView extends StatelessWidget {
 
     for (var i = 0; i < children.length / crossAxisCount; i++) {
       final endIndex = i * crossAxisCount + crossAxisCount;
-      final List<Widget> items = children.sublist(
+      final items = children.sublist(
           i * crossAxisCount, endIndex > children.length ? null : endIndex);
 
       if (items.length < crossAxisCount) {

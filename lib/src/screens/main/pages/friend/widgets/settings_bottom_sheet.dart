@@ -5,7 +5,7 @@ class SettingsBottomSheet {
 
   SettingsBottomSheet(this.context);
 
-  show() async {
+  void show() async {
     return await showSlidingBottomSheet(context, builder: (context) {
       return SlidingSheetDialog(
         elevation: 8,

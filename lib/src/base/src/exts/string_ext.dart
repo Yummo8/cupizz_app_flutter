@@ -1,7 +1,7 @@
 part of base;
 
 extension StringExt on String {
-  bool get isExistAndNotEmpty => this != null && this.isNotEmpty;
+  bool get isExistAndNotEmpty => this != null && isNotEmpty;
 
   bool get isEmail {
     return RegExp(

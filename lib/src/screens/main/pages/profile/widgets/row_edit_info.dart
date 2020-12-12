@@ -1,5 +1,4 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class RowEditInfo extends StatelessWidget {
   final String semanticLabel;
@@ -10,7 +9,7 @@ class RowEditInfo extends StatelessWidget {
 
   RowEditInfo(
       {Key key,
-      this.semanticLabel = "",
+      this.semanticLabel = '',
       this.iconData,
       this.title,
       this.value,
@@ -19,44 +18,34 @@ class RowEditInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
     return InkWell(
-      onTap: () => {
-        if (onClick != null) {onClick()}
-      },
+      onTap: onClick,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
-            this.iconData,
-            color: Colors.black87,
+            iconData,
+            color: context.colorScheme.onBackground,
             size: sizeHelper.rW(10.0),
-            semanticLabel: this.semanticLabel,
+            semanticLabel: semanticLabel,
           ),
-          SizedBox(
-            width: sizeHelper.rW(3.0),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                this.title,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: sizeHelper.rW(5),
-                    fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: sizeHelper.rH(1),
-              ),
-              Text(
-                this.value,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: sizeHelper.rW(4.8),
+          SizedBox(width: sizeHelper.rW(3.0)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: context.textTheme.bodyText1,
                 ),
-              ),
-            ],
+                SizedBox(height: sizeHelper.rH(1)),
+                Text(
+                  value ?? ' - ',
+                  style: context.textTheme.bodyText2,
+                ),
+              ],
+            ),
           )
         ],
       ),

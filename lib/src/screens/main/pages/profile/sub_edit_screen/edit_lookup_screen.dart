@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/custom_check_box_group.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditLookupScreen extends StatefulWidget {
   @override
@@ -9,24 +6,31 @@ class EditLookupScreen extends StatefulWidget {
 }
 
 class _EditLookupScreenState extends State<EditLookupScreen> {
+  List<LookingFor> selectedValues = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValues = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.lookingFors;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Đang tìm kiếm',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    final sizeHelper = SizeHelper(context);
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: 'Đang tìm kiếm', actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(lookingFors: selectedValues);
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
@@ -34,42 +38,29 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Bạn mong muốn điều gì? Hãy chọn tất cả đáp án phù hợp.",
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold),
+                'Bạn mong muốn điều gì? Hãy chọn tất cả đáp án phù hợp.',
+                style: context.textTheme.bodyText1,
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              CheckBoxGroup(
+              RadioButtonGroup<LookingFor>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Người trò chuyện',
-                  'Quan hệ bạn bè',
-                  'Hẹn hò thoải mái',
-                  'Mối quan hệ lâu dài',
-                  'Không muốn tiết lộ',
-                ],
-                buttonValues: [
-                  'Người trò chuyện',
-                  'Quan hệ bạn bè',
-                  'Hẹn hò thoải mái',
-                  'Mối quan hệ lâu dài',
-                  'Không muốn tiết lộ',
-                ],
-                checkBoxButtonValues: (values) {
-                  print(values);
-                },
+                items: LookingFor.getAll(),
+                selectedItems: selectedValues,
+                valueToString: (v) => v.displayValue,
+                onItemPressed: (value) => setState(() {
+                  if (selectedValues.contains(value)) {
+                    selectedValues.remove(value);
+                  } else {
+                    selectedValues.add(value);
+                  }
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

@@ -12,5 +12,6 @@ class HobbyWithIsSelect implements Comparable<HobbyWithIsSelect> {
 
   HobbyWithIsSelect(this.hobby, this.isSelected);
 
-  compareTo(HobbyWithIsSelect other) => this.hobby.compareTo(other.hobby);
+  @override
+  int compareTo(HobbyWithIsSelect other) => hobby.compareTo(other.hobby);
 }

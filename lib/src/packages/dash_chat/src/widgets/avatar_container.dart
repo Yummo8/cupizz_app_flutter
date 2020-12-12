@@ -1,7 +1,7 @@
 part of dash_chat;
 
 class AvatarContainer extends StatelessWidget {
-  final SimpleUser user;
+  final ChatUser user;
   final Function(SimpleUser user) onPress;
   final Function(SimpleUser user) onLongPress;
   final Widget Function(SimpleUser user) avatarBuilder;
@@ -9,13 +9,14 @@ class AvatarContainer extends StatelessWidget {
   final double avatarMaxSize;
 
   const AvatarContainer({
+    Key key,
     @required this.user,
     this.onPress,
     this.onLongPress,
     this.avatarBuilder,
     this.size,
     this.avatarMaxSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class AvatarContainer extends StatelessWidget {
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
         child: avatarBuilder != null && user != null
             ? avatarBuilder(user)
-            : SizedBox(child: UserAvatar.fromSimpleUser(simpleUser: user)),
+            : UserAvatar.fromChatUser(user: user),
       ),
     );
   }

@@ -8,7 +8,7 @@ class SizeHelper {
   double _widthPadding;
 
   SizeHelper(this.context) {
-    MediaQueryData _queryData = MediaQuery.of(context);
+    final _queryData = MediaQuery.of(context);
     _height = _queryData.size.height / 100.0;
     _width = _queryData.size.width / 100.0;
     _heightPadding = _height -
@@ -22,10 +22,11 @@ class SizeHelper {
   }
 
   double rW(double v) {
-    if (_width < _height)
+    if (_width < _height) {
       return _width * v;
-    else
+    } else {
       return _height * v;
+    }
   }
 
   double rHP(double v) {

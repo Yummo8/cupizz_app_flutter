@@ -2,17 +2,22 @@ library app;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cupizz_app/src/screens/main/main_screen.dart';
-import 'package:cupizz_app/src/screens/main/pages/chat/chat_page.dart';
-import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
-import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
+import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
+import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
+import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'base/base.dart';
 import 'screens/auth/index.dart';
+import 'screens/edit_user_images/edit_user_images_screen.dart';
 import 'screens/main/components/main_screen.controller.dart';
+import 'screens/main/main_screen.dart';
+import 'screens/main/pages/chat/chat_page.dart';
+import 'screens/main/pages/friend/friend_page.dart';
+import 'screens/main/pages/profile/edit_profile_screen.dart';
+import 'screens/messages/messages_screen.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
 
@@ -20,8 +25,13 @@ Momentum momentum({bool isTesting = false}) {
   return Momentum(
     key: UniqueKey(),
     maxTimeTravelSteps: 200,
+    restartCallback: () {
+      runApp(AppConfig.instance.copyWith(child: App()));
+    },
     controllers: [
-      AuthController(),
+      AnswerQuestionScreenController()..config(lazy: true),
+      EditAnswerScreenController()..config(lazy: true),
+      AuthController()..config(strategy: BootstrapStrategy.lazyFirstCall),
       CurrentUserController(),
       ChatPageController()..config(lazy: true),
       FriendPageController()..config(lazy: true),
@@ -30,6 +40,8 @@ Momentum momentum({bool isTesting = false}) {
       MessagesScreenController(),
       RecommendableUsersController()..config(lazy: true),
       ThemeController(),
+      UserScreenController(),
+      SelectQuestionScreenController(),
     ],
     services: [
       AuthService(),
@@ -41,11 +53,33 @@ Momentum momentum({bool isTesting = false}) {
       ),
       MessageService(),
       if (!isTesting) OneSignalService()..init(),
-      RouterService([
+      Router([
         LoginScreen(),
         MainScreen(),
+        EditProfileScreen(),
         MessagesScreen(),
         RegisterScreen(),
+        UserScreen(),
+        UserSettingScreen(),
+        AnswerQuestionScreen(),
+        EditAnswerScreen(),
+        SelectQuestionScreen(),
+        ...[
+          EditAgeScreen(),
+          EditDrinkScreen(),
+          EditGenderScreen(),
+          EditHeightScreen(),
+          EditHobbiesScreen(),
+          EditLocationScreen(),
+          EditLookupScreen(),
+          EditMarriageScreen(),
+          EditUserImagesScreen(),
+          EditReligionScreen(),
+          EditSmokeScreen(),
+          EditSmokeScreen(),
+          EditTextScreen(),
+          EditEducationLevelScreen(),
+        ]
       ]),
       StorageService(isTesting: isTesting),
       SystemService(),
@@ -95,8 +129,8 @@ class AppLoader extends StatelessWidget {
             width: 250.0,
             child: ColorizeAnimatedTextKit(
               text: [
-                "Cupizz",
-                "Loading...",
+                'Cupizz',
+                'Loading...',
               ],
               repeatForever: true,
               textStyle: GoogleFonts.pacifico(
@@ -137,8 +171,9 @@ class _MyApp extends StatelessWidget {
                   AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
               title: 'Cupizz',
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
+              navigatorObservers: [],
               theme: theme,
-              home: RouterService.getActivePage(context),
+              home: Router.getActivePage(context),
             ),
           );
         });

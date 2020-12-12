@@ -1,5 +1,16 @@
 part of '../index.dart';
 
+enum CurrentUserEventAction {
+  newUserImage,
+}
+
+class CurrentUserEvent {
+  final CurrentUserEventAction action;
+  final String message;
+
+  CurrentUserEvent({@required this.action, this.message});
+}
+
 class CurrentUserController extends MomentumController<CurrentUserModel> {
   @override
   CurrentUserModel init() {
@@ -9,30 +20,57 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     );
   }
 
+  @override
+  Future bootstrapAsync() => getCurrentUser();
+
   Future<void> getCurrentUser() async {
     final service = getService<UserService>();
     final result = await service.getCurrentUser();
-    this.model.update(currentUser: result);
+    model.update(currentUser: result);
   }
 
   Future toggleGenderButton(Gender gender) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
     if (currentUser.genderPrefer.contains(gender)) {
       currentUser.genderPrefer.remove(gender);
     } else {
       currentUser.genderPrefer.add(gender);
     }
-    await this.updateSetting(genderPrefer: currentUser.genderPrefer);
+    await updateSetting(genderPrefer: currentUser.genderPrefer);
   }
 
   Future toggleHobbyButton(Hobby hobby) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
     if (currentUser.hobbies.contains(hobby)) {
       currentUser.hobbies.remove(hobby);
     } else {
       currentUser.hobbies.add(hobby);
     }
-    await this.updateProfile(hobbies: currentUser.hobbies);
+    await updateProfile(hobbies: currentUser.hobbies);
+  }
+
+  Future updateCover(io.File cover) async {
+    try {
+      model.update(isUpdatingCover: true);
+      await updateProfile(cover: cover);
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      model.update(isUpdatingCover: false);
+    }
+  }
+
+  Future updateAvatar(io.File avatar) async {
+    try {
+      model.update(isUpdatingAvatar: true);
+      await updateProfile(avatar: avatar);
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      model.update(isUpdatingAvatar: false);
+    }
   }
 
   Future<void> updateProfile({
@@ -43,9 +81,19 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     String phoneNumber,
     String job,
     int height,
+    DateTime birthday,
     io.File avatar,
+    io.File cover,
+    double latitude,
+    double longitude,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    List<LookingFor> lookingFors,
+    Religious religious,
   }) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
     if (nickName != null) currentUser.nickName = nickName;
     if (introduction != null) currentUser.introduction = introduction;
     if (gender != null) currentUser.gender = gender;
@@ -53,11 +101,22 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (phoneNumber != null) currentUser.phoneNumber = phoneNumber;
     if (job != null) currentUser.job = job;
     if (height != null) currentUser.height = height;
-    this.model.update(currentUser: currentUser);
+    if (birthday != null) {
+      currentUser.birthday = birthday;
+      currentUser.age = birthday.getAge();
+    }
+    if (educationLevel != null) currentUser.educationLevel = educationLevel;
+    if (smoking != null) currentUser.smoking = smoking;
+    if (drinking != null) currentUser.drinking = drinking;
+    if (yourKids != null) currentUser.yourKids = yourKids;
+    if (lookingFors != null) currentUser.lookingFors = lookingFors;
+    if (religious != null) currentUser.religious = religious;
+
+    model.update(currentUser: currentUser);
 
     try {
       final service = getService<UserService>();
-      await service.updateProfile(
+      final result = await service.updateProfile(
         nickName: nickName,
         introduction: introduction,
         gender: gender,
@@ -66,12 +125,25 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         job: job,
         height: height,
         avatar: avatar,
+        cover: cover,
+        birthday: birthday,
+        latitude: latitude,
+        longitude: longitude,
+        educationLevel: educationLevel,
+        smoking: smoking,
+        drinking: drinking,
+        yourKids: yourKids,
+        lookingFors: lookingFors,
+        religious: religious,
       );
-      if (hobbies != null) {
-        dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+      model.update(currentUser: result);
+      if (hobbies != null || longitude != null || latitude != null) {
+        unawaited(
+            dependOn<RecommendableUsersController>().fetchRecommendableUsers());
       }
-    } catch (_) {
-      this.backward();
+    } catch (e) {
+      backward();
+      unawaited(Fluttertoast.showToast(msg: e.toString()));
       rethrow;
     }
   }
@@ -85,7 +157,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     int distancePrefer,
     List<String> mustHaveFields,
   }) async {
-    final currentUser = this.model.currentUser.clone<User>();
+    final currentUser = model.currentUser.clone<User>();
 
     if (minAgePrefer != null) currentUser.minAgePrefer = minAgePrefer;
     if (maxAgePrefer != null) currentUser.maxAgePrefer = maxAgePrefer;
@@ -94,7 +166,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (genderPrefer != null) currentUser.genderPrefer = genderPrefer;
     if (distancePrefer != null) currentUser.distancePrefer = distancePrefer;
 
-    this.model.update(currentUser: currentUser);
+    model.update(currentUser: currentUser);
 
     final service = getService<UserService>();
     await service.updateSetting(
@@ -106,6 +178,112 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       distancePrefer: distancePrefer,
       mustHaveFields: mustHaveFields,
     );
-    dependOn<RecommendableUsersController>().fetchRecommendableUsers();
+    unawaited(
+        dependOn<RecommendableUsersController>().fetchRecommendableUsers());
+  }
+
+  Future removeUserImage(UserImage image) async {
+    try {
+      model.update(isDeletingImage: true);
+      final service = getService<UserService>();
+      await service.removeUserImage(image.id);
+      model.currentUser.userImages.remove(image);
+      model.newOrderList.remove(image);
+      model.update(
+        currentUser: model.currentUser,
+        newOrderList: model.newOrderList,
+      );
+      unawaited(getCurrentUser());
+    } catch (e) {
+      debugPrint(e.toString());
+      backward();
+      await Fluttertoast.showToast(msg: e.toString());
+    } finally {
+      model.update(isDeletingImage: false);
+    }
+  }
+
+  Future addImage(io.File image) async {
+    try {
+      model.update(isAddingImage: true);
+      final service = getService<UserService>();
+      final userImage = await service.addImage(image);
+      model.currentUser.userImages.add(userImage);
+      model.newOrderList.add(userImage);
+      model.update(
+        currentUser: model.currentUser,
+        newOrderList: model.newOrderList,
+      );
+      unawaited(getCurrentUser());
+      sendEvent(CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
+    } catch (e) {
+      await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
+    } finally {
+      model.update(isAddingImage: false);
+    }
+  }
+
+  Future addAnswer(UserImage userImage) async {
+    try {
+      model.currentUser.userImages.add(userImage);
+      model.newOrderList.add(userImage);
+      model.update(
+        currentUser: model.currentUser,
+        newOrderList: model.newOrderList,
+      );
+      unawaited(getCurrentUser().then((value) => sendEvent(
+          CurrentUserEvent(action: CurrentUserEventAction.newUserImage))));
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Future editAnswer(
+    UserImage userImage, {
+    String content,
+    ColorOfAnswer color,
+    io.File image,
+  }) async {
+    try {
+      final result = await getService<UserService>().editAnswer(
+        userImage.id,
+        content: content,
+        color: color.color,
+        textColor: color.textColor,
+        gradient: color.gradient,
+        backgroundImage: image,
+      );
+      await getCurrentUser();
+      final index = model.newOrderList.indexOf(userImage);
+      model.newOrderList[index] = result;
+      model.update(newOrderList: model.newOrderList);
+    } catch (e) {
+      debugPrint(e.toString());
+      await Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  Future updateUserImagesOrder() async {
+    try {
+      model.update(
+        currentUser: await getService<UserService>()
+            .updateUserImagesSortOrder(model.newOrderList),
+        newOrderList: [],
+      );
+    } catch (_) {
+      await Fluttertoast.showToast(msg: '$e');
+    }
+  }
+
+  void changeOrder(int oldIndex, int newIndex) {
+    if (!model.newOrderList.isExistAndNotEmpty) {
+      model.newOrderList.addAll(model.currentUser.userImages);
+    }
+    if (newIndex > model.newOrderList.length - 1) return;
+    final userImage = model.newOrderList.removeAt(oldIndex);
+    model.newOrderList.insert(newIndex, userImage);
+    model.update(newOrderList: model.newOrderList);
   }
 }

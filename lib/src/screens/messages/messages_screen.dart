@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide Router;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pedantic/pedantic.dart';
 
 import '../../base/base.dart';
 
@@ -17,33 +18,17 @@ class MessagesScreenParams extends RouterParam {
   MessagesScreenParams(this.conversationKey);
 }
 
-class MessagesScreen extends StatefulWidget {
+class MessagesScreen extends StatelessWidget {
   @override
-  _MessagesScreenState createState() => _MessagesScreenState();
-}
-
-class _MessagesScreenState extends State<MessagesScreen> {
-  MessagesScreenController controller;
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    final controller = Momentum.controller<MessagesScreenController>(context);
+    controller.reset();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller = Momentum.controller<MessagesScreenController>(context);
-      final params = RouterService.getParam<MessagesScreenParams>(context);
+      final params = Router.getParam<MessagesScreenParams>(context);
       if (params != null) {
         controller.loadData(params?.conversationKey);
       }
     });
-  }
-
-  @override
-  void dispose() {
-    controller?.reset();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return PrimaryScaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -58,7 +43,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               size: 40,
             ),
             onPressed: () {
-              RouterService.pop(context);
+              Router.pop(context);
             }),
         title: MomentumBuilder(
             controllers: [MessagesScreenController],
@@ -71,12 +56,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Align(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: UserAvatar.fromConversation(
-                            conversation: model.conversation,
-                          ),
+                        child: UserAvatar.fromConversation(
+                          size: 30,
+                          conversation: model.conversation,
                         ),
                       ),
                       const SizedBox(width: 10),

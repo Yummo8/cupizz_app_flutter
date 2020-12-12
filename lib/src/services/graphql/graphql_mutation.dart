@@ -3,7 +3,7 @@ part of 'index.dart';
 extension GraphqlMutation on GraphqlService {
   Future loginMutation(
       {@required String email, @required String password}) async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
       documentNode: gql('''
           mutation login(\$email: String, \$password: String){
             login(email: \$email password: \$password) {
@@ -18,6 +18,23 @@ extension GraphqlMutation on GraphqlService {
     return result.data['login'];
   }
 
+  Future loginSocialMutation(
+      {@required SocialProviderType type, @required String accessToken}) async {
+    final result = await mutate(MutationOptions(
+      documentNode: gql('''
+          mutation loginSocialNetwork(\$type: SocialProviderEnumType!, \$accessToken: String!){
+            loginSocialNetwork(type: \$type accessToken: \$accessToken) {
+              token
+              info { id }
+            }
+          }
+        '''),
+      variables: {'type': type.rawValue, 'accessToken': accessToken},
+    ));
+    debugPrint(result.data['loginSocialNetwork']['info']['id']);
+    return result.data['loginSocialNetwork'];
+  }
+
   Future updateProfile([
     String nickName,
     String introduction,
@@ -27,9 +44,19 @@ extension GraphqlMutation on GraphqlService {
     String job,
     int height,
     io.File avatar,
+    io.File cover,
+    DateTime birthday,
+    double latitude,
+    double longitude,
+    EducationLevel educationLevel,
+    UsualType smoking,
+    UsualType drinking,
+    HaveKids yourKids,
+    List<LookingFor> lookingFors,
+    Religious religious,
   ]) async {
     final query = '''
-          mutation updateProfile(\$avatar: Upload) {
+          mutation updateProfile(\$avatar: Upload, \$cover: Upload) {
             updateProfile(
               ${nickName != null ? 'nickName: "$nickName"' : ''}
               ${introduction != null ? 'introduction: "$introduction"' : ''}
@@ -38,12 +65,23 @@ extension GraphqlMutation on GraphqlService {
               ${phoneNumber != null ? 'phoneNumber: "$phoneNumber"' : ''}
               ${job != null ? 'job: "$job"' : ''}
               ${height != null ? 'height: $height' : ''}
+              ${birthday != null ? 'birthday: "${birthday.toUtc().toIso8601String()}"' : ''}
+              ${latitude != null ? 'latitude: $latitude' : ''}
+              ${longitude != null ? 'longitude: $longitude' : ''}
               avatar: \$avatar
+              cover: \$cover
+              ${educationLevel != null ? 'educationLevel: ${educationLevel.rawValue}' : ''}
+              ${smoking != null ? 'smoking: ${smoking.rawValue}' : ''}
+              ${drinking != null ? 'drinking: ${drinking.rawValue}' : ''}
+              ${yourKids != null ? 'yourKids: ${yourKids.rawValue}' : ''}
+              ${lookingFors != null ? 'lookingFors: ${lookingFors.map((e) => e.rawValue).toList()}' : ''}
+              ${religious != null ? 'religious: ${religious.rawValue}' : ''}
             ) ${User.graphqlQuery}
           }''';
-    final result = await this.mutate(
+    final result = await mutate(
       MutationOptions(documentNode: gql(query), variables: {
-        'avatar': avatar != null ? await multiPartFile(avatar) : null
+        'avatar': avatar != null ? await multiPartFile(avatar) : null,
+        'cover': cover != null ? await multiPartFile(cover) : null,
       }),
     );
 
@@ -59,7 +97,7 @@ extension GraphqlMutation on GraphqlService {
     int distancePrefer,
     List<String> mustHaveFields,
   ]) async {
-    final result = await this.mutate(
+    final result = await mutate(
       MutationOptions(
         documentNode: gql('''
           mutation {
@@ -81,7 +119,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future addFriendMutation(
       {@required String id, bool isSuperLike = false}) async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
       documentNode: gql('''mutation {
         addFriend(userId: "$id" isSuperLike: $isSuperLike) { status }
       }'''),
@@ -91,7 +129,7 @@ extension GraphqlMutation on GraphqlService {
   }
 
   Future<void> removeFriendMutation({@required String id}) async {
-    await this.mutate(MutationOptions(
+    await mutate(MutationOptions(
       documentNode: gql('''mutation {
         removeFriend(userId: "$id")
       }'''),
@@ -99,7 +137,7 @@ extension GraphqlMutation on GraphqlService {
   }
 
   Future undoLastDislikeUserMutation() async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
       documentNode: gql('''mutation {
         undoLastDislikedUser ${SimpleUser.graphqlQuery}
       }'''),
@@ -110,7 +148,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future sendMessage(ConversationKey key,
       [String message, List<io.File> attachments = const []]) async {
-    final result = await this.mutate(MutationOptions(
+    final result = await mutate(MutationOptions(
         documentNode: gql(
             '''mutation sendMessage(\$attachments: [Upload], \$message: String) {
           sendMessage(
@@ -128,5 +166,121 @@ extension GraphqlMutation on GraphqlService {
         }));
 
     return result.data['sendMessage'];
+  }
+
+  Future addUserImage(io.File image) async {
+    final query = '''
+          mutation addUserImage(\$image: Upload!) {
+            addUserImage(image: \$image) ${UserImage.graphqlQuery}
+          }''';
+    final result = await mutate(
+      MutationOptions(documentNode: gql(query), variables: {
+        'image': await multiPartFile(image),
+      }),
+    );
+
+    return result.data['addUserImage'];
+  }
+
+  Future answerQuestion(
+    String questionId,
+    String content, {
+    String color,
+    String textColor,
+    List<String> gradient,
+    io.File backgroundImage,
+  }) async {
+    final query = '''
+          mutation answerQuestion(\$backgroundImage: Upload, \$content: String!) {
+            answerQuestion(
+              questionId: "$questionId"
+              content: \$content
+              ${color != null ? 'color: "$color"' : ''}
+              ${textColor != null ? 'textColor: "$textColor"' : ''}
+              ${gradient != null ? 'gradient: ${jsonEncode(gradient)}' : ''}
+              backgroundImage: \$backgroundImage
+            ) ${UserImage.graphqlQuery}
+          }''';
+    final result = await mutate(
+      MutationOptions(documentNode: gql(query), variables: {
+        'backgroundImage': backgroundImage != null
+            ? await multiPartFile(backgroundImage)
+            : null,
+        'content': content,
+      }),
+    );
+
+    return result.data['answerQuestion'];
+  }
+
+  Future removeUserImage(String id) async {
+    final query = '''
+          mutation {
+            removeUserImage(id: "$id") { id }
+          }''';
+    final result = await mutate(MutationOptions(documentNode: gql(query)));
+
+    return result.data['removeUserImage'];
+  }
+
+  Future updateUserImagesSortOrder(List<String> userImagesSortOrder) async {
+    final query = '''
+          mutation {
+            updateUserImagesSortOrder(
+              userImagesSortOrder: ${jsonEncode(userImagesSortOrder)}
+            ) ${User.graphqlQuery}
+          }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+
+    return result.data['updateUserImagesSortOrder'];
+  }
+
+  Future editAnswer(
+    String answerId, [
+    String content,
+    Color color,
+    Color textColor,
+    List<Color> gradient = const [],
+    io.File backgroundImage,
+  ]) async {
+    final query = '''
+          mutation editAnswer(
+            \$backgroundImage: Upload 
+            \$answerId: ID!
+            \$content: String
+            \$color: String
+            \$textColor: String
+            \$gradient: [String]
+          ) {
+            editAnswer(
+              answerId: \$answerId
+              content: \$content
+              color: \$color
+              textColor: \$textColor
+              gradient: \$gradient
+              backgroundImage: \$backgroundImage
+            ) ${UserImage.graphqlQuery}
+          }''';
+    final variables = {
+      'backgroundImage':
+          backgroundImage != null ? await multiPartFile(backgroundImage) : null,
+      'answerId': answerId,
+      'content': content,
+      'color': color?.toHex(leadingHashSign: false),
+      'textColor': textColor?.toHex(leadingHashSign: false),
+      'gradient':
+          gradient?.map((e) => e.toHex(leadingHashSign: false))?.toList() ??
+              (color != null ? [] : null),
+    };
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+      variables: variables,
+    ));
+
+    return result.data['editAnswer'];
   }
 }

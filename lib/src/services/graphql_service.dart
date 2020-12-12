@@ -14,16 +14,16 @@ class GraphqlService extends MomentumService {
   void reset() {
     _socketLink?.dispose();
 
-    final HttpLink httpLink = HttpLink(
+    final httpLink = HttpLink(
       uri: apiUrl,
     );
 
-    final AuthLink authLink = AuthLink(
+    final authLink = AuthLink(
       getToken: () async => await getService<StorageService>().getToken,
     );
 
     _socketLink = WebSocketLink(
-      url: this.wss,
+      url: wss,
       config: SocketClientConfig(
         autoReconnect: true,
         initPayload: () async {
@@ -34,7 +34,7 @@ class GraphqlService extends MomentumService {
       ),
     );
 
-    final Link link = authLink.concat(httpLink).concat(_socketLink);
+    final link = authLink.concat(httpLink).concat(_socketLink);
 
     _client = GraphQLClient(
       cache: InMemoryCache(),
@@ -51,6 +51,7 @@ class GraphqlService extends MomentumService {
 
   Future<QueryResult> _processQueryResult(Future<QueryResult> future) async {
     final result = await future;
+    debugPrint(result.data?.keys?.toString());
     if (result.hasException) {
       if (result.exception.clientException != null &&
           result.exception.clientException.message.isExistAndNotEmpty) {
@@ -65,7 +66,9 @@ class GraphqlService extends MomentumService {
             (element) => element.extensions['code'] == 'CLIENT_ERROR',
             orElse: () => null);
         if (unauthenticatedError != null) {
-          await Momentum.controller<AuthController>(context).logout();
+          await Momentum.controller<AuthController>(
+                  AppConfig.navigatorKey.currentContext)
+              .logout();
           throw 'UNAUTHENTICATED';
         } else if (clientError != null) {
           throw clientError.message;

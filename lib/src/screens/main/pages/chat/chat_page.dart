@@ -25,6 +25,14 @@ class _ChatPageState extends State<ChatPage> {
   String selectId;
   int selectAction;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Momentum.controller<ChatPageController>(context).initState();
+    });
+  }
+
   void updateBubble(int val) {
     setState(() {
       messageLength = val;

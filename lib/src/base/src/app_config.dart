@@ -6,7 +6,7 @@ class AppConfig extends InheritedWidget {
   final String apiUrl;
   final String wss;
   static final GlobalKey<NavigatorState> navigatorKey =
-      new GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
   static GlobalKey _globalKey;
   static GlobalKey get globalKey => _globalKey;
 
@@ -22,6 +22,22 @@ class AppConfig extends InheritedWidget {
     _globalKey = child.key;
 
     timeago.setLocaleMessages('vi', ViMessages());
+  }
+
+  AppConfig copyWith({
+    String appName,
+    AppFlavor flavorName,
+    String apiUrl,
+    String wss,
+    Widget child,
+  }) {
+    return AppConfig(
+      appName: appName ?? this.appName,
+      flavorName: flavorName ?? this.flavorName,
+      apiUrl: apiUrl ?? this.apiUrl,
+      wss: wss ?? this.wss,
+      child: child ?? this.child,
+    );
   }
 
   static AppConfig get instance => _globalKey.currentContext

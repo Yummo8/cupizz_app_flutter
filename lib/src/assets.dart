@@ -1,25 +1,29 @@
-const _FLARE_PATH = 'assets/flares/';
-const _IMAGE_PATH = 'assets/images/';
-const _ICON_PATH = 'assets/icons/';
+const String _FLARE_PATH = 'assets/flares/';
+const String _IMAGE_PATH = 'assets/images/';
+const String _ICON_PATH = 'assets/icons/';
 
 class Assets {
-  static _Flares flares = _Flares();
-  static _Icon icons = _Icon();
-  static _Image images = _Image();
+  static Assets i = Assets._();
+  factory Assets() => i;
+  Assets._();
+
+  _Flares flares = _Flares();
+  _Icon icons = _Icon();
+  _Image images = _Image();
 }
 
 class _Flares {
-  final splashScreen = _FLARE_PATH + 'splash_screen.flr';
-  final logo = _FLARE_PATH + 'logo.flr';
+  final String splashScreen = _FLARE_PATH + 'splash_screen.flr';
+  final String logo = _FLARE_PATH + 'logo.flr';
 }
 
 class _Icon {
-  final facebook = _ICON_PATH + 'facebook.png';
-  final google = _ICON_PATH + 'google.png';
-  final likeUser = _ICON_PATH + 'like_user.svg';
-  final dislikeUser = _ICON_PATH + 'dislike_user.svg';
+  final String facebook = _ICON_PATH + 'facebook.png';
+  final String google = _ICON_PATH + 'google.png';
+  final String likeUser = _ICON_PATH + 'like_user.svg';
+  final String dislikeUser = _ICON_PATH + 'dislike_user.svg';
 }
 
 class _Image {
-  final defaultAvatar = _IMAGE_PATH + 'default_avatar.png';
+  final String defaultAvatar = _IMAGE_PATH + 'default_avatar.png';
 }

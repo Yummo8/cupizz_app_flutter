@@ -3,6 +3,7 @@ part of 'index.dart';
 class Strings {
   static const APP_TITLE = 'Cupizz';
   static final _Common common = _Common();
+  static final _Public public = _Public();
   static final _Button button = _Button();
   static final _Error error = _Error();
   static final _Drawer drawer = _Drawer();
@@ -10,6 +11,7 @@ class Strings {
   static final _RegisterScreen register = _RegisterScreen();
   static final _FriendPage friendPage = _FriendPage();
   static final _MessageScreen messageScreen = _MessageScreen();
+  static final _EditProfileScreen editProfile = _EditProfileScreen();
 }
 
 class _Common {
@@ -20,22 +22,32 @@ class _Common {
   final distance = 'Khoảng cách';
   final age = 'Tuổi';
   final height = 'Chiều cao';
+  final gender = 'Giới tính';
   final man = 'Nam';
   final woman = 'Nữ';
   final other = 'Khác';
   final image = 'Hình ảnh';
+  final showOnYourProfile = 'Hiển thị trên hồ sơ của bạn';
+  final birthday = 'Ngày sinh';
+  final notDisclose = 'Không muốn tiết lộ';
+}
+
+class _Public {
+  final updateCover = 'Cập nhật ảnh bìa';
+  final updateAvatar = 'Đổi avatar';
 }
 
 class _Error {
   final unknownError = 'Lỗi không xác định';
   final invalidEmail = 'Email không đúng định dạng';
   final invalidPassword = 'Mật khẩu phải lớn hơn 8 ký tự';
+  final invalidUserAnswer = 'Câu trả lời phải nhiều hơn 10 ký tự';
   final errorClick = 'Đã xảy ra lỗi. Click để xem chi tiết.';
   final error = 'Đã xảy ra lỗi.';
 }
 
 class _Button {
-  final login = "Đăng nhập";
+  final login = 'Đăng nhập';
   final register = 'Đăng ký';
   final forgotPassword = 'Quên mật khẩu?';
   final reload = 'Tải lại';
@@ -45,6 +57,7 @@ class _Button {
   final takeAPicture = 'Chụp ảnh';
   final pickFromGallery = 'Chọn từ thư viện';
   final cancel = 'Hủy bỏ';
+  final save = 'Lưu';
 }
 
 class _LoginScreen {
@@ -73,4 +86,9 @@ class _FriendPage {
 class _MessageScreen {
   final hint = 'Nhập tin nhắn';
   String lastOnlineAt(String time) => 'Truy cập $time';
+}
+
+class _EditProfileScreen {
+  final title = 'Chỉnh sửa hồ sơ hẹn hò';
+  final introduction = 'Giới thiệu bản thân';
 }

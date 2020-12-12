@@ -1,33 +1,34 @@
 part of '../index.dart';
 
-// TODO change color onSurface and surface for bright and dark theme
 ThemeData _themeData(
   Color primary,
   Color secondary, {
   bool isDark = false,
   Color primaryVariant,
   Color secondaryVariant,
-}) =>
-    ThemeData(
-        primaryColor: primary,
-        accentColor: secondary,
-        colorScheme: !isDark
-            ? ColorScheme.light(
-                primary: primary,
-                primaryVariant: primaryVariant,
-                secondary: secondary,
-                secondaryVariant: secondaryVariant,
-                surface: Color(0xffE5E5E5),
-                onSurface: Color(0xff6c6c6c),
-              )
-            : ColorScheme.dark(
-                primary: primary,
-                primaryVariant: primaryVariant,
-                secondary: secondary,
-                secondaryVariant: secondaryVariant,
-                surface: Color(0xff6c6c6c),
-                onSurface: Color(0xffE5E5E5),
-              ));
+}) {
+  return ThemeData(
+      primaryColor: primary,
+      accentColor: primary,
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      colorScheme: !isDark
+          ? ColorScheme.light(
+              primary: primary,
+              primaryVariant: primaryVariant,
+              secondary: secondary,
+              secondaryVariant: secondaryVariant,
+              surface: Color(0xffE5E5E5),
+              onSurface: Color(0xff6c6c6c),
+            )
+          : ColorScheme.dark(
+              primary: primary,
+              primaryVariant: primaryVariant,
+              secondary: secondary,
+              secondaryVariant: secondaryVariant,
+              surface: Color(0xff6c6c6c),
+              onSurface: Color(0xffE5E5E5),
+            ));
+}
 
 final indigoPinkLight = _themeData(
   Color(0xfffb6c6d),

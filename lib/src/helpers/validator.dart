@@ -14,4 +14,11 @@ class Validator {
     }
     return null;
   }
+
+  static String userAnswer(String value) {
+    if (value.length < 10) {
+      return Strings.error.invalidUserAnswer;
+    }
+    return null;
+  }
 }

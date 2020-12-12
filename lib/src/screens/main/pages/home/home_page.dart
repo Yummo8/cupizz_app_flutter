@@ -19,7 +19,6 @@ import '../../../../widgets/index.dart';
 
 part 'widgets/animated_background.dart';
 part 'widgets/c_card.dart';
-part 'widgets/options_button.dart';
 part 'widgets/options_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,7 +49,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildHeader() {
     return Builder(builder: (context) {
-      return OptionsButton(
+      return OpacityIconButton(
+        icon: Icons.tune,
         onPressed: () {
           _drawerController.openMenu();
         },
@@ -74,12 +74,28 @@ class _HomePageState extends State<HomePage> {
               },
             );
           } else if (model.users == null || model.users.isEmpty) {
-            // TODO handle no users.
             if (model.users == null) {
               Momentum.of<RecommendableUsersController>(context)
                   .fetchRecommendableUsers();
             }
-            return Center(child: Text('Notfound'));
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Hiện tại chúng tôi không còn gợi ý ghép đôi dành cho bạn.\nHãy thử thay đổi mẫu người mà bạn tìm kiếm.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                OptionButton(
+                  title: 'Đổi cài đặt',
+                  isSelected: true,
+                  onPressed: () {
+                    _drawerController.openMenu();
+                  },
+                ),
+              ],
+            ));
           }
 
           return CCard(
@@ -98,7 +114,13 @@ class _HomePageState extends State<HomePage> {
             },
             cards: model.users
                 .map((e) => ClipRRect(
-                      child: UserCard(simpleUser: e),
+                      child: UserCard(
+                        simpleUser: e,
+                        onPressed: () {
+                          Router.goto(context, UserScreen,
+                              params: UserScreenParams(user: e));
+                        },
+                      ),
                       borderRadius: BorderRadius.circular(15),
                     ))
                 .toList(),

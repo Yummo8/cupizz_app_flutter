@@ -13,46 +13,6 @@ class User extends SimpleUser {
   List<Gender> genderPrefer;
   List<SocialProvider> socialProviders;
 
-  User({
-    String id,
-    String name,
-    FileModel avatar,
-    int age,
-    String bio,
-    List<Hobby> hobbies,
-    Gender gender,
-    int height,
-    String job,
-    DateTime lastOnline,
-    OnlineStatus onlineStatus,
-    String phoneNumber,
-    FriendType friendType,
-    this.birthday,
-    this.minAgePrefer,
-    this.maxAgePrefer,
-    this.minHeightPrefer,
-    this.maxHeightPrefer,
-    this.distancePrefer,
-    this.allowMatching,
-    this.isPrivate,
-    this.showActive,
-    this.genderPrefer,
-  }) : super(
-          id: id,
-          age: age,
-          avatar: avatar,
-          nickName: name,
-          introduction: bio,
-          hobbies: hobbies,
-          gender: gender,
-          height: height,
-          job: job,
-          lastOnline: lastOnline,
-          onlineStatus: onlineStatus,
-          phoneNumber: phoneNumber,
-          friendType: friendType,
-        );
-
   @override
   void mapping(Mapper map) {
     super.mapping(map);
@@ -77,6 +37,7 @@ class User extends SimpleUser {
     data {
       nickName
       avatar ${FileModel.graphqlQuery}
+      cover ${FileModel.graphqlQuery}
       age
       birthday
       introduction
@@ -85,6 +46,13 @@ class User extends SimpleUser {
       phoneNumber
       job
       height
+      address
+      educationLevel
+      smoking
+      drinking
+      yourKids
+      lookingFors
+      religious
       minAgePrefer
       maxAgePrefer
       minHeightPrefer
@@ -100,6 +68,7 @@ class User extends SimpleUser {
         showActive
       }
       socialProviders ${SocialProvider.graphqlQuery}
+      userImages ${UserImage.graphqlQuery}
     }
   }
 ''';

@@ -6,6 +6,16 @@ class UserItem extends StatelessWidget {
 
   const UserItem({Key key, @required this.simpleUser, this.onPressed})
       : super(key: key);
+
+  void handlePressed(BuildContext context) {
+    if (onPressed != null) {
+      onPressed(simpleUser);
+    } else {
+      Router.goto(context, UserScreen,
+          params: UserScreenParams(user: simpleUser));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.only(
@@ -30,8 +40,7 @@ class UserItem extends StatelessWidget {
           enabled: simpleUser == null,
           autoContainer: true,
           child: GestureDetector(
-            onTap:
-                simpleUser != null ? () => onPressed?.call(simpleUser) : null,
+            onTap: () => handlePressed(context),
             child: Stack(
               children: <Widget>[
                 // ignore: can_be_null_after_null_aware

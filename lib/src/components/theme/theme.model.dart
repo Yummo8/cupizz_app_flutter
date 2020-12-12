@@ -19,12 +19,14 @@ class ThemeModel extends MomentumModel<ThemeController> with EquatableMixin {
     ).updateMomentum();
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'activeTheme': activeTheme,
     };
   }
 
+  @override
   ThemeModel fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
 

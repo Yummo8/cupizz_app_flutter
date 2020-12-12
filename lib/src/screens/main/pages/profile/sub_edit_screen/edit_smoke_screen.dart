@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/custom_radio_button_group.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditSmokeScreen extends StatefulWidget {
   @override
@@ -9,55 +6,51 @@ class EditSmokeScreen extends StatefulWidget {
 }
 
 class _EditSmokeScreenState extends State<EditSmokeScreen> {
+  UsualType selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.drinking;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
+    final sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Hút thuốc',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: 'Hút thuốc', actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(smoking: selectedValue);
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<UsualType>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Không bao giờ',
-                  'Thỉnh thoảng',
-                  'Thường xuyên',
-                  'Không muốn tiết lộ'
-                ],
-                buttonValues: [
-                  'Không bao giờ',
-                  'Thỉnh thoảng',
-                  'Thường xuyên',
-                  'Không muốn tiết lộ'
-                ],
-                radioButtonValue: (value) => print(value),
+                items: UsualType.getAll(),
+                selectedItems: [selectedValue],
+                valueToString: (v) => v.displayValue,
+                onItemPressed: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

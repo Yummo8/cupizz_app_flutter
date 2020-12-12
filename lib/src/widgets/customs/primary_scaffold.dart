@@ -8,6 +8,7 @@ class PrimaryScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
   final PreferredSizeWidget appBar;
   final Widget drawer;
+  final Function onBack;
 
   PrimaryScaffold({
     Key key,
@@ -18,17 +19,30 @@ class PrimaryScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.appBar,
     this.drawer,
+    this.onBack,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RouterPage(
-      child: Scaffold(
-        appBar: appBar,
-        backgroundColor: context.colorScheme.background,
-        drawer: drawer,
-        body: body,
-        bottomNavigationBar: bottomNavigationBar,
+      onWillPop: onBack,
+      child: Stack(
+        children: [
+          Scaffold(
+            appBar: appBar,
+            backgroundColor: context.colorScheme.background,
+            drawer: drawer,
+            body: body,
+            bottomNavigationBar: bottomNavigationBar,
+          ),
+          if (isLoading)
+            Positioned.fill(
+              child: Container(
+                color: context.colorScheme.background.withOpacity(0.5),
+                child: LoadingIndicator(),
+              ),
+            )
+        ],
       ),
     );
   }

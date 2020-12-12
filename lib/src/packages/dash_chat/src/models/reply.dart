@@ -18,7 +18,7 @@ class Reply {
     String messageId,
     this.value,
   }) {
-    this.messageId = messageId != null ? messageId : Uuid().v4().toString();
+    this.messageId = messageId ?? Uuid().v4().toString();
   }
 
   Reply.fromJson(Map<dynamic, dynamic> json) {
@@ -28,7 +28,7 @@ class Reply {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
 
     data['messageId'] = messageId;
     data['title'] = title;

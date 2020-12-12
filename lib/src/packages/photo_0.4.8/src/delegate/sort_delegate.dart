@@ -4,11 +4,11 @@ part './sort_asset_delegate.dart';
 
 /// SortPathDelegate
 abstract class SortDelegate {
-  final SortAssetDelegate assetDelegate;
-
   const SortDelegate({
     this.assetDelegate = const DefaultAssetDelegate(),
   });
+
+  final SortAssetDelegate assetDelegate;
 
   void sort(List<AssetPathEntity> list);
 
@@ -67,11 +67,11 @@ class CommonSortDelegate extends SortDelegate {
   }
 
   bool _isCamera(AssetPathEntity entity) {
-    return entity.name.toUpperCase() == "camera".toUpperCase();
+    return entity.name.toUpperCase() == 'camera'.toUpperCase();
   }
 
   bool _isScreenShot(AssetPathEntity entity) {
-    return entity.name.toUpperCase() == "screenshots".toUpperCase() ||
-        entity.name.toUpperCase() == "screenshot".toUpperCase();
+    return entity.name.toUpperCase() == 'screenshots'.toUpperCase() ||
+        entity.name.toUpperCase() == 'screenshot'.toUpperCase();
   }
 }

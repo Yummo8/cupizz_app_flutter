@@ -1,6 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditHeightScreen extends StatefulWidget {
   @override
@@ -8,83 +6,72 @@ class EditHeightScreen extends StatefulWidget {
 }
 
 class _EditHeightScreenState extends State<EditHeightScreen> {
-  final elements = [for (var i = 140; i < 200; i += 1) '$i cm'];
-  int selectedIndex = 0;
-  String selected;
+  double selectedHeight = 160;
 
-  List<Widget> _buildItems() {
-    return elements
-        .map((val) => MySelectionItem(
-              title: val,
-            ))
-        .toList();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedHeight = Momentum.controller<CurrentUserController>(context)
+              .model
+              .currentUser
+              ?.height
+              ?.toDouble() ??
+          160;
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Chiều cao',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: Strings.common.height, actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(height: selectedHeight.round());
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButton(
-                isExpanded: true,
-                hint: new Text("Chọn chiều cao"),
-                value: selected,
-                onChanged: (String newValue) {
-                  setState(() {
-                    selected = newValue;
-                  });
-                },
-                items: elements.map((String value) {
-                  return new DropdownMenuItem<String>(
-                    value: value,
-                    child: new Text(
-                      value,
-                      style: new TextStyle(color: Colors.black),
+              Row(
+                children: [
+                  Expanded(
+                    child: FlutterSlider(
+                      values: [selectedHeight],
+                      max: (200 < selectedHeight ? selectedHeight : 200)
+                          .toDouble(),
+                      min: (150 > selectedHeight ? selectedHeight : 150)
+                          .toDouble(),
+                      tooltip: FlutterSliderTooltip(
+                        disabled: true,
+                      ),
+                      trackBar: FlutterSliderTrackBar(
+                        activeTrackBar:
+                            BoxDecoration(color: context.colorScheme.primary),
+                      ),
+                      handler: HeartSliderHandler(context),
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
+                        setState(() {
+                          selectedHeight = lowerValue;
+                        });
+                      },
                     ),
-                  );
-                }).toList(),
+                  ),
+                  Text(
+                    '${selectedHeight.round()}cm',
+                    style: context.textTheme.caption,
+                  )
+                ],
               ),
-              // DirectSelect(
-              //   itemExtent: 35.0,
-              //   selectedIndex: selectedIndex,
-              //   child: MySelectionItem(
-              //     isForList: false,
-              //     title: elements[selectedIndex],
-              //   ),
-              //   onSelectedItemChanged: (index) {
-              //     setState(() {
-              //       selectedIndex = index;
-              //     });
-              //   },
-              //   items: _buildItems(),
-              // ),
-              SizedBox(
-                height: sizeHelper.rW(5),
-              ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              SizedBox(height: sizeHelper.rW(5)),
+              ShowOnProfileText(),
             ],
           ),
         ),
@@ -125,7 +112,7 @@ class MySelectionItem extends StatelessWidget {
     );
   }
 
-  _buildItem(BuildContext context) {
+  Widget _buildItem(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,

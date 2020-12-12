@@ -1,5 +1,4 @@
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/multiselect_dialog_hobby.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class MultiSelectHobby extends FormField<dynamic> {
   final Widget title;
@@ -22,6 +21,7 @@ class MultiSelectHobby extends FormField<dynamic> {
   final ShapeBorder dialogShapeBorder;
   final Color checkBoxCheckColor;
   final Color checkBoxActiveColor;
+  @override
   final bool enabled;
 
   MultiSelectHobby({
@@ -59,8 +59,8 @@ class MultiSelectHobby extends FormField<dynamic> {
           // ignore: deprecated_member_use
           autovalidate: autovalidate,
           builder: (FormFieldState<dynamic> state) {
-            List<Widget> _buildSelectedOptions(state) {
-              List<Widget> selectedOptions = [];
+            List<Widget> _buildSelectedOptions(FormFieldState<dynamic> state) {
+              var selectedOptions = <Widget>[];
 
               if (state.value != null) {
                 state.value.forEach((item) {
@@ -71,10 +71,12 @@ class MultiSelectHobby extends FormField<dynamic> {
                     padding: EdgeInsets.symmetric(horizontal: 5.0),
                     labelStyle: chipLabelStyle,
                     backgroundColor: chipBackGroundColor,
-                    avatar: Icon(existingItem.icon, color: Colors.white),
+                    avatar: Icon(existingItem.icon,
+                        color: state.context.colorScheme.onPrimary),
                     label: Text(
                       existingItem.label,
-                      style: TextStyle(color: Colors.white),
+                      style:
+                          TextStyle(color: state.context.colorScheme.onPrimary),
                     ),
                   ));
                 });
@@ -88,11 +90,9 @@ class MultiSelectHobby extends FormField<dynamic> {
                   ? null
                   : () async {
                       List initialSelected = state.value;
-                      if (initialSelected == null) {
-                        initialSelected = List();
-                      }
+                      initialSelected ??= [];
 
-                      List selectedValues = await showDialog<List>(
+                      var selectedValues = await showDialog<List>(
                         context: state.context,
                         builder: (BuildContext context) {
                           return MultiSelectDialogHobby(
@@ -139,16 +139,13 @@ class MultiSelectHobby extends FormField<dynamic> {
                                   padding: EdgeInsets.only(top: 5, right: 5),
                                   child: Text(
                                     ' *',
-                                    style: TextStyle(
-                                      color: Colors.red.shade700,
-                                      fontSize: 17.0,
-                                    ),
+                                    style: state.context.textTheme.bodyText1,
                                   ),
                                 )
                               : Container(),
                           Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.black87,
+                            color: state.context.colorScheme.onBackground,
                             size: 25.0,
                           ),
                         ],
@@ -160,7 +157,7 @@ class MultiSelectHobby extends FormField<dynamic> {
                             runSpacing: 0.0,
                             children: _buildSelectedOptions(state),
                           )
-                        : new Container(
+                        : Container(
                             padding: EdgeInsets.only(top: 4),
                             child: hintWidget,
                           )

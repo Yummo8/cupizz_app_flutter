@@ -1,8 +1,4 @@
-import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
+part of '../edit_profile_screen.dart';
 
 class EditLocationScreen extends StatefulWidget {
   @override
@@ -19,25 +15,26 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     super.initState();
     _checkPermission();
     _onLoading = false;
-    _currentAddress = "";
+    _currentAddress = '';
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _currentAddress = Momentum.controller<CurrentUserController>(context)
+              .model
+              .currentUser
+              ?.address ??
+          '';
+      setState(() {});
+    });
   }
 
-  _checkPermission() async {
-    LocationPermission checkPermission = await Geolocator.checkPermission();
+  void _checkPermission() async {
+    final checkPermission = await Geolocator.checkPermission();
     if (checkPermission == LocationPermission.denied ||
         checkPermission == LocationPermission.deniedForever) {
-      LocationPermission requestPermission =
-          await Geolocator.requestPermission();
-      if (requestPermission == LocationPermission.denied ||
-          requestPermission == LocationPermission.deniedForever) {
-        _getCurrentLocation();
-      } else {}
-    } else {
-      _getCurrentLocation();
+      await Geolocator.requestPermission();
     }
   }
 
-  _getCurrentLocation() {
+  void _getCurrentLocation() {
     setState(() {
       _onLoading = true;
     });
@@ -52,13 +49,13 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     });
   }
 
-  _getAddressFromLatLng() async {
+  void _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
-      Placemark place = p[0];
-      String address = "${place.locality}, ${place.country}";
-      print(address);
+      final address =
+          await Momentum.getService<SystemService>(context).getAddress(
+        latitude: _currentPosition.latitude.toString(),
+        longitude: _currentPosition.longitude.toString(),
+      );
       setState(() {
         _currentAddress = address;
         _onLoading = false;
@@ -70,36 +67,22 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
-    final ThemeData _theme = Theme.of(context);
+    final sizeHelper = SizeHelper(context);
+    final _theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Vị trí hẹn hò',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(
+        title: 'Vị trí hẹn hò',
         actions: [
-          InkWell(
-            onTap: () {},
-            child: Center(
-              child: Text(
-                "Lưu",
-                style: TextStyle(color: _theme.primaryColor, fontSize: 15.0),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: sizeHelper.rW(8),
-          ),
+          SaveButton(
+            onPressed: () {
+              Momentum.controller<CurrentUserController>(context).updateProfile(
+                latitude: _currentPosition.latitude,
+                longitude: _currentPosition.longitude,
+              );
+              Router.pop(context);
+            },
+          )
         ],
       ),
       body: Container(
@@ -112,9 +95,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                 height: sizeHelper.rH(7),
                 margin: EdgeInsets.only(bottom: sizeHelper.rH(3)),
                 child: _onLoading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
+                    ? Center(child: LoadingIndicator())
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -127,8 +108,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                           ),
                           Text(
                             _currentAddress,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20.0),
+                            style: context.textTheme.bodyText1,
                           ),
                         ],
                       ),
@@ -149,7 +129,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                       width: 4.0,
                     ),
                     Text(
-                      "Cập nhật vị trí hẹn hò",
+                      'Cập nhật vị trí hẹn hò',
                       style:
                           TextStyle(color: _theme.primaryColor, fontSize: 18.0),
                     ),
@@ -160,16 +140,13 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                 height: sizeHelper.rW(5),
               ),
               Text(
-                "Vị trí hẹn hò của bạn chỉ cập nhật khi bạn chọn thay đổi ở đây.",
-                style: TextStyle(color: Colors.black, fontSize: 20.0),
+                'Vị trí hẹn hò của bạn chỉ cập nhật khi bạn chọn thay đổi ở đây.',
+                style: context.textTheme.subtitle1,
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

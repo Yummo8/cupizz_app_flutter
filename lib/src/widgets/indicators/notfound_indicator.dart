@@ -7,6 +7,6 @@ class NotFoundIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Không tìm thấy${' $type' ?? ''}!');
+    return Text('Không tìm thấy${type.isExistAndNotEmpty ? ' $type' : ''}!');
   }
 }

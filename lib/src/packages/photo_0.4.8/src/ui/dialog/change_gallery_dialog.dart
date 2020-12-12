@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
 import '../../entity/options.dart';
 import '../../provider/i18n_provider.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 class ChangeGalleryDialog extends StatefulWidget {
-  final List<AssetPathEntity> galleryList;
-  final I18nProvider i18n;
-  final Options options;
-
   const ChangeGalleryDialog({
     Key key,
     this.galleryList,
     this.i18n,
     this.options,
   }) : super(key: key);
+
+  final List<AssetPathEntity> galleryList;
+  final I18nProvider i18n;
+
+  final Options options;
 
   @override
   _ChangeGalleryDialogState createState() => _ChangeGalleryDialogState();
@@ -31,7 +32,7 @@ class _ChangeGalleryDialogState extends State<ChangeGalleryDialog> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    var entity = widget.galleryList[index];
+    final entity = widget.galleryList[index];
     String text;
 
     if (entity.isAll) {
@@ -42,7 +43,7 @@ class _ChangeGalleryDialogState extends State<ChangeGalleryDialog> {
 
     return FlatButton(
       child: ListTile(
-        title: Text("$text (${entity.assetCount})"),
+        title: Text('$text (${entity.assetCount})'),
       ),
       onPressed: () {
         Navigator.pop(context, entity);

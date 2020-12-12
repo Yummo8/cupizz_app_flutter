@@ -1,29 +1,24 @@
 part of '../photo_main_page.dart';
 
 class _BottomWidget extends StatefulWidget {
-  final ValueChanged<AssetPathEntity> onGalleryChange;
-
-  final Options options;
-
-  final I18nProvider provider;
-
-  final SelectedProvider selectedProvider;
-
-  final String galleryName;
-
-  final GalleryListProvider galleryListProvider;
-  final VoidCallback onTapPreview;
-
   const _BottomWidget({
     Key key,
     this.onGalleryChange,
     this.options,
     this.provider,
     this.selectedProvider,
-    this.galleryName = "",
+    this.galleryName = '',
     this.galleryListProvider,
     this.onTapPreview,
   }) : super(key: key);
+
+  final ValueChanged<AssetPathEntity> onGalleryChange;
+  final Options options;
+  final I18nProvider provider;
+  final SelectedProvider selectedProvider;
+  final String galleryName;
+  final GalleryListProvider galleryListProvider;
+  final VoidCallback onTapPreview;
 
   @override
   __BottomWidgetState createState() => __BottomWidgetState();
@@ -36,8 +31,8 @@ class __BottomWidgetState extends State<_BottomWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var textStyle = TextStyle(fontSize: 14.0);
-    const textPadding = const EdgeInsets.symmetric(horizontal: 16.0);
+    const textStyle = TextStyle(fontSize: 14.0);
+    const textPadding = EdgeInsets.symmetric(horizontal: 16.0);
     return Container(
       color: options.themeColor,
       child: SafeArea(
@@ -86,8 +81,8 @@ class __BottomWidgetState extends State<_BottomWidget> {
     );
   }
 
-  void _showGallerySelectDialog() async {
-    var result = await showModalBottomSheet(
+  Future<void> _showGallerySelectDialog() async {
+    final result = await showModalBottomSheet(
       context: context,
       builder: (ctx) => ChangeGalleryDialog(
         galleryList: widget.galleryListProvider.galleryPathList,
@@ -96,6 +91,8 @@ class __BottomWidgetState extends State<_BottomWidget> {
       ),
     );
 
-    if (result != null) widget.onGalleryChange?.call(result);
+    if (result != null) {
+      widget.onGalleryChange?.call(result);
+    }
   }
 }

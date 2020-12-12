@@ -1,13 +1,14 @@
-import 'package:cupizz_app/src/packages/object_mapper/object_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:object_mapper/object_mapper.dart';
 
 class TestEnum extends Enumerable<int> {
+  @override
   final int rawValue;
   const TestEnum({@required this.rawValue});
 
-  static const a = const TestEnum(rawValue: 0);
-  static const b = const TestEnum(rawValue: 1);
+  static const a = TestEnum(rawValue: 0);
+  static const b = TestEnum(rawValue: 1);
 }
 
 void main() {
@@ -15,7 +16,7 @@ void main() {
     Mappable.factories = {TestEnum: (v) => TestEnum(rawValue: v)};
   });
 
-  test("fromJson", () {
+  test('fromJson', () {
     final transform = EnumTransform<TestEnum, int>();
 
     // null
@@ -27,15 +28,15 @@ void main() {
     expect(value, TestEnum.a);
 
     // empty string
-    value = transform.fromJson("");
+    value = transform.fromJson('');
     expect(value, null);
 
     // a in string
-    value = transform.fromJson("0");
+    value = transform.fromJson('0');
     expect(value, null);
   });
 
-  test("toJson", () {
+  test('toJson', () {
     final transform = EnumTransform<TestEnum, int>();
 
     // null

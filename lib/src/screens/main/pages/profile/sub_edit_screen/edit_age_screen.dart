@@ -1,6 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditAgeScreen extends StatefulWidget {
   @override
@@ -10,37 +8,49 @@ class EditAgeScreen extends StatefulWidget {
 class _EditAgeScreenState extends State<EditAgeScreen> {
   DateTime selectedDate = DateTime(1998, 04, 25);
 
-  _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        selectedDate = Momentum.controller<CurrentUserController>(context)
+            .model
+            .currentUser
+            .birthday;
+      });
+    });
+  }
+
+  void _selectDate(BuildContext context) async {
+    final firstDate = DateTime.now().subtract(Duration(days: 365 * 80));
+    final lastDate = DateTime.now().subtract(Duration(days: 365 * 18));
+    final picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime.now().subtract(new Duration(days: 365 * 50)),
-      lastDate: DateTime.now().subtract(new Duration(days: 365 * 18)),
+      initialDate: selectedDate,
+      firstDate: selectedDate.isBefore(firstDate) ? selectedDate : firstDate,
+      lastDate: selectedDate.isAfter(lastDate) ? selectedDate : lastDate,
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    var sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Ngày sinh',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(
+        title: Strings.common.birthday,
+        actions: [
+          SaveButton(onPressed: () {
+            Momentum.controller<CurrentUserController>(context)
+                .updateProfile(birthday: selectedDate);
+            Router.pop(context);
+          })
+        ],
       ),
       body: Container(
         child: Padding(
@@ -60,10 +70,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

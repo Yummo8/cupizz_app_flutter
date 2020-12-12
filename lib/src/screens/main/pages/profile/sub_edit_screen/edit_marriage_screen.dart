@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/widgets/custom_radio_button_group.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class EditMarriageScreen extends StatefulWidget {
   @override
@@ -9,54 +6,51 @@ class EditMarriageScreen extends StatefulWidget {
 }
 
 class _EditMarriageScreenState extends State<EditMarriageScreen> {
+  HaveKids selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      selectedValue = Momentum.controller<CurrentUserController>(context)
+          .model
+          .currentUser
+          ?.yourKids;
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    SizeHelper sizeHelper = SizeHelper(context);
+    final sizeHelper = SizeHelper(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Có con',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-      ),
+    return PrimaryScaffold(
+      appBar: BackAppBar(title: 'Có con', actions: [
+        SaveButton(onPressed: () {
+          Momentum.controller<CurrentUserController>(context)
+              .updateProfile(yourKids: selectedValue);
+          Router.pop(context);
+        })
+      ]),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(sizeHelper.rW(3)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup(
+              RadioButtonGroup<HaveKids>(
                 spacing: 1.0,
-                buttonLables: [
-                  'Tôi chưa có con',
-                  'Tôi đã có con',
-                  'Không muốn tiết lộ',
-                ],
-                buttonValues: [
-                  'Tôi chưa có con',
-                  'Tôi đã có con',
-                  'Không muốn tiết lộ',
-                ],
-                radioButtonValue: (value) {
-                  print(value);
-                },
+                items: HaveKids.getAll(),
+                selectedItems: [selectedValue],
+                valueToString: (v) => v.displayValue,
+                onItemPressed: (value) => setState(() {
+                  selectedValue = value;
+                }),
               ),
               SizedBox(
                 height: sizeHelper.rW(5),
               ),
-              Text(
-                "Hiển thị trên hồ sơ của bạn",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              )
+              ShowOnProfileText(),
             ],
           ),
         ),

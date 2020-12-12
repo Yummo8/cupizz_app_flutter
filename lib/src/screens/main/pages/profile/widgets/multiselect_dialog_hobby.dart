@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../edit_profile_screen.dart';
 
 class MultiSelectDialogItem<V> {
   const MultiSelectDialogItem(
@@ -38,8 +38,9 @@ class MultiSelectDialogHobby<V> extends StatefulWidget {
 }
 
 class _MultiSelectDialogHobbyState<V> extends State<MultiSelectDialogHobby<V>> {
-  final _selectedValues = List<V>();
+  final _selectedValues = <V>[];
 
+  @override
   void initState() {
     super.initState();
     if (widget.initialSelectedValues != null) {
@@ -103,7 +104,7 @@ class _MultiSelectDialogHobbyState<V> extends State<MultiSelectDialogHobby<V>> {
         children: [
           Icon(
             item.icon,
-            color: Colors.black,
+            color: context.colorScheme.onBackground,
           ),
           SizedBox(
             width: 15.0,

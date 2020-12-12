@@ -3,10 +3,15 @@ library components;
 import 'dart:io' as io;
 import 'dart:math';
 
-import 'package:cupizz_app/src/packages/momentum/src/momentum_base.dart';
+import 'package:cupizz_app/src/app.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pedantic/pedantic.dart';
 
 import '../base/base.dart';
 import '../screens/index.dart';

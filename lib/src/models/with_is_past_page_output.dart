@@ -22,6 +22,11 @@ class WithIsLastPageOutput<T extends Mappable> {
     );
   }
 
+  void add(WithIsLastPageOutput<T> other) {
+    _data.addAll(other._data);
+    _isLastPage = other._isLastPage;
+  }
+
   Map<String, dynamic> toJson() => {
         'data': data.map((e) => e.toJson()).toList(),
         'isLastPage': isLastPage,

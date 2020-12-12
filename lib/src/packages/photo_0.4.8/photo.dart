@@ -1,9 +1,10 @@
 library photo;
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-
+import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'src/delegate/badge_delegate.dart';
@@ -14,57 +15,28 @@ import 'src/entity/options.dart';
 import 'src/provider/i18n_provider.dart';
 import 'src/ui/dialog/not_permission_dialog.dart';
 import 'src/ui/photo_app.dart';
+
+export 'src/delegate/badge_delegate.dart';
 export 'src/delegate/checkbox_builder_delegate.dart';
 export 'src/delegate/loading_delegate.dart';
 export 'src/delegate/sort_delegate.dart';
+export 'src/entity/options.dart' show PickType;
 export 'src/provider/i18n_provider.dart'
     show I18NCustomProvider, I18nProvider, VNProvider, ENProvider;
-export 'src/entity/options.dart' show PickType;
-export 'src/delegate/badge_delegate.dart';
 
 class PhotoPicker {
-  static PhotoPicker _instance;
-
-  PhotoPicker._();
-
   factory PhotoPicker() {
     _instance ??= PhotoPicker._();
     return _instance;
   }
 
-  static const String rootRouteName = "photo_picker_image";
+  PhotoPicker._();
 
-  /// 没有授予权限的时候,会开启一个dialog去帮助用户去应用设置页面开启权限
-  /// 确定开启设置页面,取消关闭弹窗,无论选择什么,返回值都是null
-  ///
-  ///
-  /// 当用户给予权限后
-  ///
-  ///   当用户确定时,返回一个图片[AssetEntity]列表
-  ///
-  ///   当用户取消时返回一个空数组
-  ///
-  ///   [photoPathList] 一旦设置 则 [pickType]参数无效
-  ///
-  ///   [pickedAssetList] 已选择的asset
-  ///
-  /// 关于参数可以查看readme文档介绍
-  ///
-  /// if user not grand permission, then return null and show a dialog to help user open setting.
-  /// sure is open setting cancel ,cancel to dismiss dialog, return null
-  ///
-  /// when user give permission.
-  ///
-  ///   when user sure , return a [AssetEntity] of [List]
-  ///
-  ///   when user cancel selected,result is empty list
-  ///
-  ///   when [photoPathList] is not null , [pickType] invalid
-  ///
-  ///   [pickedAssetList]: The results of the last selection can be passed in for easy secondary selection.
-  ///
-  /// params see readme.md
-  static Future<List<AssetEntity>> pickAsset({
+  static PhotoPicker _instance;
+
+  static const String rootRouteName = 'photo_picker_image';
+
+  static Future<List<File>> pickAsset({
     @required BuildContext context,
     int rowCount = 4,
     int maxSelected = 9,
@@ -83,10 +55,13 @@ class PhotoPicker {
     BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
     List<AssetPathEntity> photoPathList,
     List<AssetEntity> pickedAssetList,
+    bool autoCloseOnSelectionLimit = false,
+    bool isCropImage = true,
+    CropAspectRatio cropAspectRatio,
   }) {
-    assert(provider != null, "provider must be not null");
-    assert(context != null, "context must be not null");
-    assert(pickType != null, "pickType must be not null");
+    assert(provider != null, 'provider must be not null');
+    assert(context != null, 'context must be not null');
+    assert(pickType != null, 'pickType must be not null');
 
     themeColor ??= Theme.of(context)?.primaryColor ?? Colors.black;
     dividerColor ??= Theme.of(context)?.dividerColor ?? Colors.grey;
@@ -98,7 +73,7 @@ class PhotoPicker {
 
     loadingDelegate ??= DefaultLoadingDelegate();
 
-    var options = Options(
+    final options = Options(
       rowCount: rowCount,
       dividerColor: dividerColor,
       maxSelected: maxSelected,
@@ -113,6 +88,9 @@ class PhotoPicker {
       loadingDelegate: loadingDelegate,
       badgeDelegate: badgeDelegate,
       pickType: pickType,
+      autoCloseOnSelectionLimit: autoCloseOnSelectionLimit,
+      isCropImage: isCropImage,
+      cropAspectRatio: cropAspectRatio,
     );
 
     return PhotoPicker()._pickAsset(
@@ -124,16 +102,16 @@ class PhotoPicker {
     );
   }
 
-  Future<List<AssetEntity>> _pickAsset(
+  Future<List<File>> _pickAsset(
     BuildContext context,
     Options options,
     I18nProvider provider,
     List<AssetPathEntity> photoList,
     List<AssetEntity> pickedAssetList,
   ) async {
-    var requestPermission = await PhotoManager.requestPermission();
+    final requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
-      var result = await showDialog(
+      final result = await showDialog(
         context: context,
         builder: (ctx) => NotPermissionDialog(
           provider.getNotPermissionText(options),
@@ -154,7 +132,7 @@ class PhotoPicker {
     );
   }
 
-  Future<List<AssetEntity>> _openGalleryContentPage(
+  Future<List<File>> _openGalleryContentPage(
     BuildContext context,
     Options options,
     I18nProvider provider,

@@ -2,14 +2,26 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
+
 import '../../entity/options.dart';
 import '../../provider/asset_provider.dart';
 import '../../provider/config_provider.dart';
 import '../../provider/selected_provider.dart';
 import '../../ui/page/photo_main_page.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 class PhotoPreviewPage extends StatefulWidget {
+  const PhotoPreviewPage({
+    Key key,
+    @required this.selectedProvider,
+    @required this.list,
+    @required this.changeProviderOnCheckChange,
+    @required this.result,
+    @required this.assetProvider,
+    this.initIndex = 0,
+    this.isPreview = false,
+  }) : super(key: key);
+
   final SelectedProvider selectedProvider;
 
   final List<AssetEntity> list;
@@ -26,17 +38,6 @@ class PhotoPreviewPage extends StatefulWidget {
   final PhotoPreviewResult result;
 
   final AssetProvider assetProvider;
-
-  const PhotoPreviewPage({
-    Key key,
-    @required this.selectedProvider,
-    @required this.list,
-    @required this.changeProviderOnCheckChange,
-    @required this.result,
-    @required this.assetProvider,
-    this.initIndex = 0,
-    this.isPreview = false,
-  }) : super(key: key);
 
   @override
   _PhotoPreviewPageState createState() => _PhotoPreviewPageState();
@@ -77,7 +78,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   /// 选中的数据
-  List<AssetEntity> _selectedList = [];
+  final List<AssetEntity> _selectedList = [];
 
   List<AssetEntity> get selectedList {
     if (changeProviderOnCheckChange) {
@@ -110,15 +111,15 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    int totalCount = assetProvider.current.assetCount ?? 0;
+    var totalCount = assetProvider.current?.assetCount ?? 0;
     if (!widget.isPreview) {
-      totalCount = assetProvider.current.assetCount;
+      totalCount = assetProvider.current?.assetCount;
     } else {
       totalCount = list.length;
     }
 
-    var data = Theme.of(context);
-    var textStyle = TextStyle(
+    final data = Theme.of(context);
+    final textStyle = TextStyle(
       color: options.textColor,
       fontSize: 14.0,
     );
@@ -137,7 +138,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
             initialData: widget.initIndex,
             builder: (ctx, snap) {
               return Text(
-                "${snap.data + 1}/$totalCount",
+                '${snap.data + 1}/$totalCount',
                 style: TextStyle(
                   color: options.textColor,
                 ),
@@ -149,10 +150,10 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
               stream: pageStream,
               builder: (ctx, s) => FlatButton(
                 splashColor: Colors.transparent,
-                onPressed: selectedList.length == 0 ? null : sure,
+                onPressed: selectedList.isEmpty ? null : sure,
                 child: Text(
                   config.provider.getSureText(options, selectedList.length),
-                  style: selectedList.length == 0
+                  style: selectedList.isEmpty
                       ? textStyle.copyWith(color: options.disableColor)
                       : textStyle,
                 ),
@@ -193,14 +194,12 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
   Container _buildCheckbox() {
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: 150.0,
-      ),
+      constraints: const BoxConstraints(maxWidth: 200.0),
       child: StreamBuilder<int>(
         builder: (ctx, snapshot) {
-          var index = snapshot.data;
-          var data = list[index];
-          var checked = selectedList.contains(data);
+          final index = snapshot.data;
+          final data = list[index];
+          final checked = selectedList.contains(data);
           return Stack(
             children: <Widget>[
               IgnorePointer(
@@ -246,7 +245,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
   /// 仅仅修改预览时的状态,在退出时,再更新provider的顺序,这里无论添加与否不修改顺序
   void _onCheckInOnlyPreview(bool check, int index) {
-    var item = list[index];
+    final item = list[index];
     if (check) {
       selectedList.add(item);
     } else {
@@ -257,7 +256,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
   /// 直接修改预览状态,会直接移除item
   void _onChangeProvider(bool check, int index) {
-    var item = list[index];
+    final item = list[index];
     if (check) {
       selectedProvider.addSelectEntity(item);
     } else {
@@ -271,7 +270,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
       _loadMore();
     }
 
-    var data = list[index];
+    final data = list[index];
     return BigPhotoImage(
       assetEntity: data,
       loadingWidget: _buildLoadingWidget(data),
@@ -279,7 +278,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   Future<void> _loadMore() async {
-    assetProvider.loadMore();
+    await assetProvider.loadMore();
   }
 
   Widget _buildLoadingWidget(AssetEntity entity) {
@@ -306,7 +305,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   Widget _buildThumbItem(BuildContext context, int index) {
-    var item = previewList[index];
+    final item = previewList[index];
     return RepaintBoundary(
       child: GestureDetector(
         onTap: () => changeSelected(item, index),
@@ -341,8 +340,10 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   void changeSelected(AssetEntity entity, int index) {
-    var itemIndex = list.indexOf(entity);
-    if (itemIndex != -1) pageController.jumpToPage(itemIndex);
+    final itemIndex = list.indexOf(entity);
+    if (itemIndex != -1) {
+      pageController.jumpToPage(itemIndex);
+    }
   }
 
   void sure() {
@@ -351,14 +352,14 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 }
 
 class BigPhotoImage extends StatefulWidget {
-  final AssetEntity assetEntity;
-  final Widget loadingWidget;
-
   const BigPhotoImage({
     Key key,
     this.assetEntity,
     this.loadingWidget,
   }) : super(key: key);
+
+  final AssetEntity assetEntity;
+  final Widget loadingWidget;
 
   @override
   _BigPhotoImageState createState() => _BigPhotoImageState();
@@ -373,15 +374,14 @@ class _BigPhotoImageState extends State<BigPhotoImage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return FutureBuilder(
       future:
           widget.assetEntity.thumbDataWithSize(width.floor(), height.floor()),
       builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
-        var file = snapshot.data;
+        final file = snapshot.data;
         if (snapshot.connectionState == ConnectionState.done && file != null) {
-          print(file.length);
           return Image.memory(
             file,
             fit: BoxFit.contain,

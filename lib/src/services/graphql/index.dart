@@ -15,7 +15,7 @@ part 'graphql_query.dart';
 part 'graphql_supscription.dart';
 
 Future<MultipartFile> multiPartFile(io.File file) async {
-  return MultipartFile.fromBytes("photo", file.readAsBytesSync(),
+  return MultipartFile.fromBytes('photo', file.readAsBytesSync(),
       filename: '${DateTime.now().second}-${DateTime.now().hour}.jpg',
-      contentType: MediaType("image", "jpg"));
+      contentType: MediaType('image', 'jpg'));
 }

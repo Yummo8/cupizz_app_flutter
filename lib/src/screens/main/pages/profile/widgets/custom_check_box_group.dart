@@ -1,7 +1,4 @@
-import 'package:cupizz_app/src/helpers/extensions.dart';
-import 'package:flutter/cupertino.dart';
-
-import 'custom_item_choice.dart';
+part of '../edit_profile_screen.dart';
 
 class CheckBoxGroup extends StatefulWidget {
   final List<String> buttonLables;
@@ -24,16 +21,16 @@ class CheckBoxGroup extends StatefulWidget {
 }
 
 class _CheckBoxGroupState extends State<CheckBoxGroup> {
-  List<CheckBoxModel> sampleData = new List<CheckBoxModel>();
+  List<CheckBoxModel> sampleData = <CheckBoxModel>[];
 
   @override
   void initState() {
     super.initState();
 
-    for (int i = 0; i < widget.buttonLables.length; i++) {
-      bool isSelected = false;
+    for (var i = 0; i < widget.buttonLables.length; i++) {
+      var isSelected = false;
 
-      if (widget.defaultValues != null && widget.defaultValues.length > 0) {
+      if (widget.defaultValues != null && widget.defaultValues.isNotEmpty) {
         if (_checkDefaultValue(widget.buttonValues[i])) isSelected = true;
       }
 

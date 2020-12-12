@@ -5,7 +5,7 @@ import 'src/app.dart';
 import 'src/base/base.dart';
 
 void main() {
-  var configuredApp = new AppConfig(
+  var configuredApp = AppConfig(
     appName: 'Cupizz Production',
     flavorName: AppFlavor.PRODUCTION,
     apiUrl: 'http://cupizz.cf/graphql',

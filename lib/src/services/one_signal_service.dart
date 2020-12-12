@@ -4,12 +4,12 @@ class OneSignalService extends MomentumService {
   bool _isInited = false;
 
   Future init() async {
-    await OneSignal.shared.init("3adf348e-2781-4d56-8003-f0813dee3bfe",
+    await OneSignal.shared.init('3adf348e-2781-4d56-8003-f0813dee3bfe',
         iOSSettings: {
           OSiOSSettings.autoPrompt: false,
           OSiOSSettings.inAppLaunchUrl: true
         });
-    OneSignal.shared
+    await OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
     await OneSignal.shared
@@ -19,26 +19,32 @@ class OneSignalService extends MomentumService {
       debugPrint('New notification: ${notification.payload.additionalData}');
     });
 
-    this._handleOpenWhenClick();
+    _handleOpenWhenClick();
     _isInited = true;
     debugPrint('OneSignal: Finished setting up.');
   }
 
-  _handleOpenWhenClick() {
+  void _handleOpenWhenClick() {
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       final data = result.notification.payload.additionalData;
 
       if (data != null && data is Map) {
-        final NotificationType type = NotificationType(rawValue: data['type']);
+        final type = NotificationType(rawValue: data['type']);
         final String refUserId = data['refUserId'];
         final String refConversationId = data['refConversationId'];
 
         if (type == NotificationType.like ||
             type == NotificationType.matching) {
-          // TODO handle go to user profile
+          Router.goto(
+            AppConfig.navigatorKey.currentContext,
+            UserScreen,
+            params: UserScreenParams(userId: refUserId),
+          );
         } else if (type == NotificationType.newMessage) {
-          // TODO handle go to message screen
+          Router.goto(AppConfig.navigatorKey.currentContext, MessagesScreen,
+              params: MessagesScreenParams(
+                  ConversationKey(conversationId: refConversationId)));
         } else {}
 
         debugPrint(
@@ -52,9 +58,9 @@ class OneSignalService extends MomentumService {
       await init();
     }
     await OneSignal.shared.setSubscription(true);
-    OneSignal.shared
+    unawaited(OneSignal.shared
         .setExternalUserId(userId)
-        .then((_) => debugPrint('Sent tags userId: $userId to OneSignal.'));
+        .then((_) => debugPrint('Sent tags userId: $userId to OneSignal.')));
   }
 
   Future<void> unSubscribe() async {

@@ -33,21 +33,21 @@ abstract class SelectedProvider {
   }
 
   void compareAndRemoveEntities(List<AssetEntity> previewSelectedList) {
-    var srcList = List.of(selectedList);
+    final srcList = List.of(selectedList);
     selectedList.clear();
-    srcList.forEach((entity) {
+    for (var entity in srcList) {
       if (previewSelectedList.contains(entity)) {
         selectedList.add(entity);
       }
-    });
+    }
   }
 
   void sure();
 
   Future checkPickImageEntity() async {
-    List<AssetEntity> notExistsList = [];
+    final notExistsList = [];
     for (var entity in selectedList) {
-      var exists = await entity.exists;
+      final exists = await entity.exists;
       if (!exists) {
         notExistsList.add(entity);
       }
@@ -58,9 +58,7 @@ abstract class SelectedProvider {
     });
   }
 
-  addPickedAsset(List<AssetEntity> list) {
-    for (final entity in list) {
-      addSelectEntity(entity);
-    }
+  void addPickedAsset(List<AssetEntity> list) {
+    list.forEach(addSelectEntity);
   }
 }

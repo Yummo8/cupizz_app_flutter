@@ -3,7 +3,7 @@ part of 'index.dart';
 class RegisterScreen extends StatefulWidget {
   @override
   RegisterScreenState createState() {
-    return new RegisterScreenState();
+    return RegisterScreenState();
   }
 }
 
@@ -12,14 +12,14 @@ class RegisterScreenState extends State<RegisterScreen> {
   var bottom = FractionalOffset.bottomCenter;
   double width = 400.0;
   double widthIcon = 200.0;
-  TextEditingController name = new TextEditingController();
-  TextEditingController email = new TextEditingController();
-  TextEditingController password = new TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   final FlareControls controls = FlareControls();
 
-  FocusNode nameFocus = new FocusNode();
-  FocusNode emailFocus = new FocusNode();
-  FocusNode passwordFocus = new FocusNode();
+  FocusNode nameFocus = FocusNode();
+  FocusNode emailFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
 
   var list = [
     Colors.lightGreen,
@@ -36,7 +36,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  _backToLogin() {
+  void _backToLogin() {
     Navigator.pop(
       context,
       // ignore: missing_required_param
@@ -72,7 +72,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                 padding: EdgeInsets.only(),
                 height: size.height,
                 decoration: BoxDecoration(
-                  gradient: new LinearGradient(
+                  gradient: LinearGradient(
                     colors: [
                       context.colorScheme.primaryVariant.withOpacity(0.8),
                       context.colorScheme.primary,
@@ -239,12 +239,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       SocialButton(
-                        imageName: Assets.icons.google,
+                        imageName: Assets.i.icons.google,
                         margin: EdgeInsets.only(left: 30.0),
+                        type: SocialProviderType.google,
                       ),
                       SocialButton(
-                        imageName: Assets.icons.facebook,
+                        imageName: Assets.i.icons.facebook,
                         margin: EdgeInsets.only(right: 30.0),
+                        type: SocialProviderType.facebook,
                       ),
                     ],
                   ),
