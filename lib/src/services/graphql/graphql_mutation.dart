@@ -96,6 +96,10 @@ extension GraphqlMutation on GraphqlService {
     List<Gender> genderPrefer,
     int distancePrefer,
     List<String> mustHaveFields,
+    bool allowMatching,
+    bool isPrivate,
+    bool showActive,
+    List<NotificationType> pushNotiSetting,
   ]) async {
     final result = await mutate(
       MutationOptions(
@@ -109,6 +113,10 @@ extension GraphqlMutation on GraphqlService {
               ${genderPrefer != null ? 'genderPrefer: ${genderPrefer?.map((e) => e.rawValue)?.toList()}' : ''}
               ${distancePrefer != null ? 'distancePrefer: $distancePrefer' : ''}
               ${mustHaveFields != null ? 'mustHaveFields: $mustHaveFields' : ''}
+              ${allowMatching != null ? 'allowMatching: $allowMatching' : ''}
+              ${isPrivate != null ? 'isPrivate: $isPrivate' : ''}
+              ${showActive != null ? 'showActive: $showActive' : ''}
+              ${pushNotiSetting != null ? 'pushNotiSetting: ${pushNotiSetting.map((e) => e.rawValue).toList()}' : ''}
             ) ${User.graphqlQuery}
           }'''),
       ),

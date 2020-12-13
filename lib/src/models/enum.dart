@@ -119,13 +119,20 @@ class SocialProviderType extends Enumerable<String> {
 class NotificationType extends Enumerable<String> {
   @override
   final String rawValue;
+  final String displayValue;
 
-  const NotificationType({@required this.rawValue});
+  NotificationType({@required this.rawValue, String displayValue})
+      : displayValue = displayValue ??
+            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue;
 
-  static const like = NotificationType(rawValue: 'like');
-  static const matching = NotificationType(rawValue: 'matching');
-  static const newMessage = NotificationType(rawValue: 'newMessage');
-  static const other = NotificationType(rawValue: 'other');
+  static final like = NotificationType(
+      rawValue: 'like', displayValue: 'Khi có người thích bạn');
+  static final matching = NotificationType(
+      rawValue: 'matching', displayValue: 'Khi ghép đôi thành công');
+  static final newMessage = NotificationType(
+      rawValue: 'newMessage', displayValue: 'Khi có tin nhắn mới');
+  static final other =
+      NotificationType(rawValue: 'other', displayValue: 'Những thông báo khác');
 
   static List<NotificationType> getAll() => [like, matching, newMessage, other];
 }

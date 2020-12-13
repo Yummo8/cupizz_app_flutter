@@ -82,6 +82,10 @@ class UserService extends MomentumService {
     List<Gender> genderPrefer,
     int distancePrefer,
     List<String> mustHaveFields,
+    bool allowMatching,
+    bool isPrivate,
+    bool showActive,
+    List<NotificationType> pushNotiSetting,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.updateMySetting(
@@ -92,6 +96,10 @@ class UserService extends MomentumService {
       genderPrefer,
       distancePrefer,
       mustHaveFields,
+      allowMatching,
+      isPrivate,
+      showActive,
+      pushNotiSetting,
     );
     final user = Mapper.fromJson(data).toObject<User>();
     return user;

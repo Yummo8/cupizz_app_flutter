@@ -36,7 +36,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     } else {
       currentUser.genderPrefer.add(gender);
     }
-    await updateSetting(genderPrefer: currentUser.genderPrefer);
+    await updateDatingSetting(genderPrefer: currentUser.genderPrefer);
   }
 
   Future toggleHobbyButton(Hobby hobby) async {
@@ -148,7 +148,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     }
   }
 
-  Future<void> updateSetting({
+  Future<void> updateDatingSetting({
     int minAgePrefer,
     int maxAgePrefer,
     int minHeightPrefer,
@@ -180,6 +180,63 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     );
     unawaited(
         dependOn<RecommendableUsersController>().fetchRecommendableUsers());
+  }
+
+  Future updateSetting({
+    bool allowMatching,
+    bool isPrivate,
+    bool showActive,
+  }) async {
+    if (model.isUpdatingSetting) return;
+    try {
+      final currentUser = model.currentUser.clone<User>();
+      if (allowMatching != null) currentUser.allowMatching = allowMatching;
+      if (isPrivate != null) currentUser.isPrivate = isPrivate;
+      if (showActive != null) currentUser.showActive = showActive;
+
+      model.update(currentUser: currentUser, isUpdatingSetting: true);
+
+      final service = getService<UserService>();
+      model.update(
+          currentUser: await service.updateSetting(
+        allowMatching: allowMatching,
+        isPrivate: isPrivate,
+        showActive: showActive,
+      ));
+    } catch (e) {
+      backward();
+      await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
+    } finally {
+      model.update(isUpdatingSetting: false);
+    }
+  }
+
+  Debouncer updatePushNotiDebouncer =
+      Debouncer(delay: Duration(milliseconds: 500));
+  void updatePushNoti(NotificationType noti, bool active) {
+    final currentUser = model.currentUser.clone<User>();
+    if (active && !currentUser.pushNotiSetting.contains(noti)) {
+      currentUser.pushNotiSetting.add(noti);
+    } else if (!active) {
+      currentUser.pushNotiSetting.remove(noti);
+    } else {
+      return;
+    }
+    model.update(currentUser: currentUser);
+    updatePushNotiDebouncer.debounce(() async {
+      try {
+        final service = getService<UserService>();
+        model.update(
+            currentUser: await service.updateSetting(
+          pushNotiSetting: currentUser.pushNotiSetting,
+        ));
+      } catch (e) {
+        backward();
+        await Fluttertoast.showToast(msg: e.toString());
+        rethrow;
+      }
+    });
   }
 
   Future removeUserImage(UserImage image) async {

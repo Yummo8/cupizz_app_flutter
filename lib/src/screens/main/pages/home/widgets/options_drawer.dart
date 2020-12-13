@@ -259,7 +259,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               tooltip: CustomSliderTooltip(context, unit: 'km'),
               onDragCompleted: (handlerIndex, lowerValue, upperValue) {
                 Momentum.controller<CurrentUserController>(context)
-                    .updateSetting(
+                    .updateDatingSetting(
                         distancePrefer:
                             double.tryParse(lowerValue.toString()).round());
               },
@@ -301,7 +301,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               tooltip: CustomSliderTooltip(context, unit: 'tuổi'),
               onDragCompleted: (handlerIndex, lowerValue, upperValue) {
                 Momentum.controller<CurrentUserController>(context)
-                    .updateSetting(
+                    .updateDatingSetting(
                         minAgePrefer:
                             double.tryParse(lowerValue.toString()).round(),
                         maxAgePrefer:
@@ -346,7 +346,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               tooltip: CustomSliderTooltip(context, unit: 'cm'),
               onDragCompleted: (handlerIndex, lowerValue, upperValue) {
                 Momentum.controller<CurrentUserController>(context)
-                    .updateSetting(
+                    .updateDatingSetting(
                         minHeightPrefer:
                             double.tryParse(lowerValue.toString()).round(),
                         maxHeightPrefer:

@@ -43,6 +43,7 @@ part 'customs/primary_scaffold.dart';
 part 'customs/rotate_animated_text_kit.dart';
 part 'customs/skeleton.dart';
 part 'customs/text_field.dart';
+part 'customs/title_toggle.dart';
 part 'dialogs/photo_view_dialog.dart';
 part 'errors/error_indicator.dart';
 part 'hobbies/hobby_item.dart';

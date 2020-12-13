@@ -8,7 +8,7 @@ void main() {
   var configuredApp = AppConfig(
     appName: 'Cupizz Production',
     flavorName: AppFlavor.PRODUCTION,
-    apiUrl: 'http://cupizz.cf/graphql',
+    apiUrl: 'https://cupizz.cf/graphql',
     wss: 'ws://cupizz.cf/graphql',
     child: App(),
   );

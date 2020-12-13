@@ -1,33 +1,77 @@
 library user_setting_screen;
 
+import 'package:sliding_sheet/sliding_sheet.dart';
+
 import '../../base/base.dart';
 import 'package:flutter/material.dart';
+
+part 'widgets/text_tile.dart';
+part 'widgets/setting_noti_bottom_sheet.dart';
 
 class UserSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PrimaryScaffold(
-      body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MomentumBuilder(
-                  controllers: [CurrentUserController],
-                  builder: (context, snapshot) {
-                    var model = snapshot<CurrentUserModel>();
-                    return Text(model.currentUser?.nickName ?? 'No User');
-                  }),
-              TextButton(
-                onPressed: () {
-                  Momentum.of<AuthController>(context).logout();
-                },
-                child: Text('Logout'),
+    return MomentumBuilder(
+        controllers: [CurrentUserController],
+        builder: (context, snapshot) {
+          final model = snapshot<CurrentUserModel>();
+          return PrimaryScaffold(
+            appBar: BackAppBar(
+              title: 'Cài đặt',
+              actions: [
+                if (model.isUpdatingSetting) Center(child: Text('Đang lưu...'))
+              ],
+            ),
+            body: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: [
+                  TitleToggle(
+                    paddingAbove: const EdgeInsets.symmetric(horizontal: 10),
+                    paddingBelow: const EdgeInsets.all(10),
+                    title: 'Cho phép người khác thích bạn',
+                    description:
+                        'Nếu bật tính năng này, thông tin của bạn sẽ được gợi ý cho người dùng phù hợp tại trang chủ của ứng dụng.',
+                    value: model.currentUser?.allowMatching ?? false,
+                    divider: true,
+                    valueChanged: (value) {
+                      if (value != null) {
+                        model.controller.updateSetting(allowMatching: value);
+                      }
+                    },
+                  ),
+                  TitleToggle(
+                    paddingAbove: const EdgeInsets.symmetric(horizontal: 10),
+                    paddingBelow: const EdgeInsets.all(10),
+                    title: 'Hiển thị trạng thái hoạt động',
+                    description:
+                        'Cho phép người dùng khác biết được thời điểm lần cuối truy cập của bạn trên ứng dụng Cupizz. Khi tắt tính năng này, bạn sẽ không thể thấy trạng thái hoạt động của các người dùng khác.',
+                    value: model.currentUser?.showActive ?? false,
+                    divider: true,
+                    valueChanged: (value) {
+                      if (value != null) {
+                        model.controller.updateSetting(showActive: value);
+                      }
+                    },
+                  ),
+                  _TextTile(
+                    text: 'Cài đặt thông báo',
+                    onTap: () {
+                      _SettingNotiBottomSheet(context).show();
+                    },
+                  ),
+                  Divider(),
+                  _TextTile(
+                    text: 'Đăng xuất',
+                    onTap: () {
+                      Momentum.controller<AuthController>(context).logout();
+                    },
+                  ),
+                  Divider(),
+                ],
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 }

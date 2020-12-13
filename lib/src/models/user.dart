@@ -12,6 +12,7 @@ class User extends SimpleUser {
   bool showActive;
   List<Gender> genderPrefer;
   List<SocialProvider> socialProviders;
+  List<NotificationType> pushNotiSetting;
 
   @override
   void mapping(Mapper map) {
@@ -27,6 +28,8 @@ class User extends SimpleUser {
     map('data.settings.allowMatching', allowMatching, (v) => allowMatching = v);
     map('data.settings.isPrivate', isPrivate, (v) => isPrivate = v);
     map('data.settings.showActive', showActive, (v) => showActive = v);
+    map<NotificationType>('data.settings.pushNotiSetting', pushNotiSetting,
+        (v) => pushNotiSetting = v, EnumTransform<NotificationType, String>());
     map<SocialProvider>(
         'data.socialProviders', socialProviders, (v) => socialProviders = v);
   }
@@ -66,6 +69,7 @@ class User extends SimpleUser {
         allowMatching
         isPrivate
         showActive
+        pushNotiSetting
       }
       socialProviders ${SocialProvider.graphqlQuery}
       userImages ${UserImage.graphqlQuery}
