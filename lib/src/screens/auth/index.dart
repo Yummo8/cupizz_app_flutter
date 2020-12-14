@@ -3,6 +3,7 @@ library auth_screen;
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cupizz_app/src/screens/auth/vertification_otp.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/cupertino.dart' hide Router;

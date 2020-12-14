@@ -690,6 +690,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.3"
+  pin_code_fields:
+    dependency: "direct main"
+    description:
+      name: pin_code_fields
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.1"
   platform:
     dependency: transitive
     description:

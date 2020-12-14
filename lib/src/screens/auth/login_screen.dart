@@ -148,13 +148,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 8, top: 18),
-                      child: Text(
-                        Strings.button.forgotPassword,
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: context.colorScheme.onPrimary.withOpacity(0.9),
-                          fontWeight: FontWeight.w600,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Text(
+                          Strings.button.forgotPassword,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color:
+                                context.colorScheme.onPrimary.withOpacity(0.9),
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),

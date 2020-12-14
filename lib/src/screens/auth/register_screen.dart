@@ -108,6 +108,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                         obscureText: false,
                         prefixIconData: Icons.account_circle,
                         textEditingController: name,
+                        onChanged: (v) {
+                          Momentum.controller<AuthController>(context)
+                              .model
+                              .update(nickname: v);
+                        },
                         focusNode: nameFocus,
                       ),
                     ),
@@ -121,6 +126,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                         prefixIconData: Icons.email,
                         textEditingController: email,
                         focusNode: emailFocus,
+                        onChanged: (v) {
+                          Momentum.controller<AuthController>(context)
+                              .model
+                              .update(email: v);
+                        },
                       ),
                     ),
                     SizedBox(
@@ -133,6 +143,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                         prefixIconData: Icons.lock,
                         focusNode: passwordFocus,
                         textEditingController: password,
+                        onChanged: (v) {
+                          Momentum.controller<AuthController>(context)
+                              .model
+                              .update(password: v);
+                        },
                       ),
                     ),
                     Container(
@@ -147,9 +162,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: AuthButton(
                         text: Strings.button.register,
                         onPressed: () async {
-                          await Future.delayed(Duration(seconds: 2));
-                          Momentum.controller<ThemeController>(context)
-                              .randomTheme();
+                          await Momentum.controller<AuthController>(context)
+                              .registerEmail();
+                          await showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return VerificationOtpScreen();
+                            },
+                          );
                         },
                       ),
                     ),

@@ -75,8 +75,11 @@ class AuthButton extends StatelessWidget {
                 ),
                 onTap: (startLoading, stopLoading, btnState) async {
                   startLoading();
-                  if (onPressed != null) await onPressed();
-                  stopLoading();
+                  try {
+                    if (onPressed != null) await onPressed();
+                  } finally {
+                    stopLoading();
+                  }
                 },
               ),
             ),

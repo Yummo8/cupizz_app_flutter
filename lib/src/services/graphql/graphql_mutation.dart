@@ -35,6 +35,45 @@ extension GraphqlMutation on GraphqlService {
     return result.data['loginSocialNetwork'];
   }
 
+  Future registerMutation(
+      {@required String nickname,
+      @required String token,
+      @required String password}) async {
+    final result = await mutate(MutationOptions(
+      documentNode: gql('''
+          mutation register(\$nickname: String!, \$password: String, \$token: String!){
+            register(nickname: \$nickname password: \$password token: "\$token") {
+              token
+              info { id }
+            }
+          }
+        '''),
+      variables: {'nickname': nickname, 'password': password, 'token': token},
+    ));
+    debugPrint(result.data['register']['info']['id']);
+    return result.data['register'];
+  }
+
+  Future<String> registerEmailMutation(String email) async {
+    final result = await mutate(MutationOptions(
+      documentNode: gql('''
+          mutation { registerEmail(email:"$email") { token } }
+        '''),
+    ));
+    debugPrint('registerEmail token: ' + result.data['registerEmail']['token']);
+    return result.data['registerEmail']['token'];
+  }
+
+  Future<String> verifyOtpMutation(String token, String otp) async {
+    final result = await mutate(MutationOptions(
+      documentNode: gql('''
+          mutation { verifyOtp(token: "$token" otp: "$otp") { token } }
+        '''),
+    ));
+    debugPrint('verifyOtp token: ' + result.data['verifyOtp']['token']);
+    return result.data['verifyOtp']['token'];
+  }
+
   Future updateProfile([
     String nickName,
     String introduction,

@@ -69,6 +69,36 @@ class AuthController extends MomentumController<AuthModel> {
     if (userId.isExistAndNotEmpty) {
       await getService<OneSignalService>().subscribe(userId);
     }
+    reset();
+  }
+
+  Future<void> _register(String registerToken) async {
+    await trycatch(() async {
+      await getService<AuthService>().register(
+        registerToken,
+        model.nickname,
+        model.password,
+        dependOn<CurrentUserController>().getCurrentUser,
+      );
+      await _afterLogin();
+    });
+  }
+
+  Future<void> registerEmail() async {
+    await trycatch(() async {
+      final otpToken =
+          await getService<AuthService>().registerEmail(model.email);
+      model.update(otpToken: otpToken);
+    }, throwError: true);
+  }
+
+  Future<void> vertifyOtp(String otp) async {
+    if (!model.otpToken.isExistAndNotEmpty) return;
+    await trycatch(() async {
+      final registerToken =
+          await getService<AuthService>().verifyOtpEmail(model.otpToken, otp);
+      await _register(registerToken);
+    });
   }
 
   Future<void> logout() async {
