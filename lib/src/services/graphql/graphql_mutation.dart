@@ -41,14 +41,14 @@ extension GraphqlMutation on GraphqlService {
       @required String password}) async {
     final result = await mutate(MutationOptions(
       documentNode: gql('''
-          mutation register(\$nickname: String!, \$password: String, \$token: String!){
-            register(nickname: \$nickname password: \$password token: "\$token") {
+          mutation register(\$nickName: String!, \$password: String, \$token: String!){
+            register(nickName: \$nickName password: \$password token: \$token) {
               token
               info { id }
             }
           }
         '''),
-      variables: {'nickname': nickname, 'password': password, 'token': token},
+      variables: {'nickName': nickname, 'password': password, 'token': token},
     ));
     debugPrint(result.data['register']['info']['id']);
     return result.data['register'];

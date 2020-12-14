@@ -24,10 +24,12 @@ class CustomNetworkImage extends StatelessWidget {
         imageUrl: url ?? '',
         fit: fit,
         errorWidget: (context, url, error) {
-          return Skeleton(
-              child: Container(
-            color: context.colorScheme.background,
-          ));
+          if (isAvatar) {
+            return Image.asset(Assets.i.images.defaultAvatar, fit: fit);
+          }
+          return Container(
+            color: context.colorScheme.surface,
+          );
         },
         progressIndicatorBuilder: (ctx, url, process) {
           return Skeleton(

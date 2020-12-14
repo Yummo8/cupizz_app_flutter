@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
 import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../base/base.dart';
 
@@ -174,9 +175,14 @@ class _ChatPageState extends State<ChatPage> {
                 borderRadius: BorderRadius.circular(20.0)),
           ),
           SizedBox(width: 12.0),
-          Text(
-            'Ẩn danh',
-            style: TextStyle(color: Colors.grey),
+          InkWell(
+            onTap: () {
+              Fluttertoast.showToast(msg: Strings.common.inDeveloping);
+            },
+            child: Text(
+              'Ẩn danh',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
         ],
       ),

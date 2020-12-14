@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:ui' show lerpDouble;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cupizz_app/src/assets.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_slidable/flutter_slidable.dart';
