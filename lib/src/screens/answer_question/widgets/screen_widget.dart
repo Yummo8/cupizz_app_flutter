@@ -82,6 +82,7 @@ class AnswerScreenWidget extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   textColor: textColor,
+                  title: '',
                   onBackPressed: () {
                     onBack?.call();
 
@@ -91,6 +92,7 @@ class AnswerScreenWidget extends StatelessWidget {
                     SaveButton(
                       onPressed: onSave,
                       loading: isSending,
+                      textColor: textColor,
                     )
                   ],
                 ),

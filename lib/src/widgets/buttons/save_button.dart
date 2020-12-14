@@ -3,8 +3,10 @@ part of '../index.dart';
 class SaveButton extends StatelessWidget {
   final Function onPressed;
   final bool loading;
+  final Color textColor;
 
-  const SaveButton({Key key, this.onPressed, this.loading = false})
+  const SaveButton(
+      {Key key, this.onPressed, this.textColor, this.loading = false})
       : super(key: key);
 
   @override
@@ -14,7 +16,7 @@ class SaveButton extends StatelessWidget {
           ? LoadingIndicator(size: 12)
           : Icon(
               Icons.done,
-              color: context.colorScheme.onBackground,
+              color: textColor ?? context.colorScheme.onBackground,
             ),
       onPressed: onPressed,
     );

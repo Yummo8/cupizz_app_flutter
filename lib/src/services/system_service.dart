@@ -26,6 +26,12 @@ class SystemService extends MomentumService {
     return result;
   }
 
+  Future<int> getUnreadMessageCount() async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.unreadMessageCountQuery();
+    return data;
+  }
+
   Future<WithIsLastPageOutput<Question>> getQuestions({
     String keyword,
     int page,

@@ -62,6 +62,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     }
 
     model.update(conversations: model.conversations);
+    dependOn<SystemController>().getUnreadMessageCount();
   }
 
   Future refresh() => _reload();

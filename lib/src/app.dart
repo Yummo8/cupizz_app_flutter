@@ -30,10 +30,10 @@ Momentum momentum({bool isTesting = false}) {
     },
     controllers: [
       AnswerQuestionScreenController()..config(lazy: true),
-      EditAnswerScreenController()..config(lazy: true),
       AuthController()..config(strategy: BootstrapStrategy.lazyFirstCall),
       CurrentUserController(),
       ChatPageController()..config(lazy: true),
+      EditAnswerScreenController()..config(lazy: true),
       FriendPageController()..config(lazy: true),
       HobbyListController()..config(lazy: true),
       MainScreenController(),
@@ -42,6 +42,7 @@ Momentum momentum({bool isTesting = false}) {
       ThemeController(),
       UserScreenController(),
       SelectQuestionScreenController(),
+      SystemController(),
     ],
     services: [
       AuthService(),

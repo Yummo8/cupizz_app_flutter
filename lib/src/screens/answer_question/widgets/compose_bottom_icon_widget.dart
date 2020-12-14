@@ -29,48 +29,44 @@ class ComposeBottomIconWidget extends StatelessWidget {
               color: context.colorScheme.primary,
             ),
           ),
-          // TODO handle in system controller.
-          FutureBuilder<List<ColorOfAnswer>>(
-            future:
-                Momentum.getService<SystemService>(context).getColorsOfAnswer(),
-            builder: (context, snapshot) {
-              return Row(
-                children: !snapshot.hasData
-                    ? []
-                    : snapshot.data
-                        .map<Widget>((e) => CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              minSize: 0,
-                              onPressed: () {
-                                onColorChanged?.call(e);
-                              },
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                margin: EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: e.gradient != null ? null : e.color,
-                                  gradient: e.gradient != null
-                                      ? AnswerGradient(e.gradient)
-                                      : null,
-                                ),
-                                child: Center(
-                                  child: Container(
-                                    width: 7,
-                                    height: 7,
-                                    decoration: BoxDecoration(
-                                      color: e.textColor,
-                                      shape: BoxShape.circle,
-                                    ),
+          MomentumBuilder(
+              controllers: [SystemController],
+              builder: (context, snapshot) {
+                final model = snapshot<SystemModel>();
+                return Row(
+                  children: (model.colorsOfAnswer ?? [])
+                      .map<Widget>((e) => CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            minSize: 0,
+                            onPressed: () {
+                              onColorChanged?.call(e);
+                            },
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              margin: EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: e.gradient != null ? null : e.color,
+                                gradient: e.gradient != null
+                                    ? AnswerGradient(e.gradient)
+                                    : null,
+                              ),
+                              child: Center(
+                                child: Container(
+                                  width: 7,
+                                  height: 7,
+                                  decoration: BoxDecoration(
+                                    color: e.textColor,
+                                    shape: BoxShape.circle,
                                   ),
                                 ),
                               ),
-                            ))
-                        .toList(),
-              );
-            },
-          ),
+                            ),
+                          ))
+                      .toList(),
+                );
+              }),
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: onDeletePressed,

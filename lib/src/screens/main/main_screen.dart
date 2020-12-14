@@ -3,6 +3,7 @@ library main_screen;
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:badges/badges.dart';
 
 import '../../base/base.dart';
 import '../../widgets/index.dart';
@@ -79,9 +80,10 @@ class _MainScreenState extends MomentumState<MainScreen>
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: MomentumBuilder(
-                controllers: [MainScreenController],
+                controllers: [MainScreenController, SystemController],
                 builder: (context, snapshot) {
                   final model = snapshot<MainScreenModel>();
+                  final systemModel = snapshot<SystemModel>();
                   return GNav(
                       gap: 8,
                       activeColor: context.colorScheme.onBackground,
@@ -96,17 +98,39 @@ class _MainScreenState extends MomentumState<MainScreen>
                             context.colorScheme.primary),
                         _BottomNavButtonData(Icons.favorite_outline_sharp,
                             'Yêu thích', context.colorScheme.secondary),
-                        _BottomNavButtonData(Icons.chat_bubble_outline_rounded,
-                            'Tin nhắn', context.colorScheme.primaryVariant),
+                        _BottomNavButtonData(
+                          Icons.chat_bubble_outline_rounded,
+                          'Tin nhắn',
+                          context.colorScheme.primaryVariant,
+                          number: systemModel.unreadMessageCount,
+                        ),
                         _BottomNavButtonData(Icons.person_outline_rounded,
                             'Cá nhân', context.colorScheme.secondaryVariant),
                       ]
-                          .map((e) => GButton(
+                          .mapIndexed((e, i) => GButton(
                                 icon: e.icon,
                                 text: e.text,
                                 backgroundColor: e.color.withOpacity(0.2),
                                 iconActiveColor: e.color,
                                 textColor: e.color,
+                                leading: e.number != null && e.number > 0
+                                    ? Badge(
+                                        badgeColor: Colors.red.shade100,
+                                        elevation: 0,
+                                        position: BadgePosition.topEnd(
+                                            top: -12, end: -12),
+                                        badgeContent: Text(
+                                          e.number.toString(),
+                                          style: TextStyle(
+                                              color: Colors.red.shade900),
+                                        ),
+                                        child: Icon(
+                                          e.icon,
+                                          color: model.currentTabIndex == i
+                                              ? e.color
+                                              : context.colorScheme.onSurface,
+                                        ))
+                                    : null,
                               ))
                           .toList(),
                       selectedIndex: model.currentTabIndex,
@@ -125,6 +149,7 @@ class _BottomNavButtonData {
   final IconData icon;
   final String text;
   final Color color;
+  final int number;
 
-  _BottomNavButtonData(this.icon, this.text, this.color);
+  _BottomNavButtonData(this.icon, this.text, this.color, {this.number});
 }

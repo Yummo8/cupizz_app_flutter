@@ -141,4 +141,15 @@ extension GraphqlQuery on GraphqlService {
     );
     return result.data['colorsOfAnswer'];
   }
+
+  Future<int> unreadMessageCountQuery() async {
+    final queryString = '''{ unreadMessageCount }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['unreadMessageCount'] ?? 0;
+  }
 }

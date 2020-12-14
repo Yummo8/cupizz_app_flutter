@@ -28,3 +28,5 @@ part 'recommendable_users/recommendable_users.model.dart';
 part 'theme/theme.controller.dart';
 part 'theme/theme.data.dart';
 part 'theme/theme.model.dart';
+part 'system/system.controller.dart';
+part 'system/system.model.dart';
