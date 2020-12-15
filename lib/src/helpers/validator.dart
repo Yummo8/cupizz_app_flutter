@@ -1,6 +1,13 @@
 part of 'index.dart';
 
 class Validator {
+  static String name(String name) {
+    if (name.length < 3) {
+      return Strings.error.invalidName;
+    }
+    return null;
+  }
+
   static String email(String email) {
     if (!email.isEmail) {
       return Strings.error.invalidEmail;

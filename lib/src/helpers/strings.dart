@@ -41,6 +41,7 @@ class _Public {
 class _Error {
   final unknownError = 'Lỗi không xác định';
   final invalidEmail = 'Email không đúng định dạng';
+  final invalidName = 'Hãy điền tên dài hơn';
   final invalidPassword = 'Mật khẩu phải lớn hơn 8 ký tự';
   final invalidUserAnswer = 'Câu trả lời phải nhiều hơn 10 ký tự';
   final errorClick = 'Đã xảy ra lỗi. Click để xem chi tiết.';

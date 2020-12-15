@@ -16,6 +16,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final FlareControls controls = FlareControls();
+  final _formKey = GlobalKey<FormState>();
 
   FocusNode nameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
@@ -65,7 +66,8 @@ class RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       body: SingleChildScrollView(
-        child: Container(
+        child: Form(
+          key: _formKey,
           child: Stack(
             children: <Widget>[
               Container(
@@ -108,6 +110,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         obscureText: false,
                         prefixIconData: Icons.account_circle,
                         textEditingController: name,
+                        validator: Validator.name,
                         onChanged: (v) {
                           Momentum.controller<AuthController>(context)
                               .model
@@ -125,6 +128,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         obscureText: false,
                         prefixIconData: Icons.email,
                         textEditingController: email,
+                        validator: Validator.email,
                         focusNode: emailFocus,
                         onChanged: (v) {
                           Momentum.controller<AuthController>(context)
@@ -143,6 +147,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         prefixIconData: Icons.lock,
                         focusNode: passwordFocus,
                         textEditingController: password,
+                        validator: Validator.password,
                         onChanged: (v) {
                           Momentum.controller<AuthController>(context)
                               .model
@@ -162,14 +167,16 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: AuthButton(
                         text: Strings.button.register,
                         onPressed: () async {
-                          await Momentum.controller<AuthController>(context)
-                              .registerEmail();
-                          await showCupertinoDialog(
-                            context: context,
-                            builder: (context) {
-                              return VerificationOtpScreen();
-                            },
-                          );
+                          if (_formKey.currentState.validate()) {
+                            await Momentum.controller<AuthController>(context)
+                                .registerEmail();
+                            await showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return VerificationOtpScreen();
+                              },
+                            );
+                          }
                         },
                       ),
                     ),

@@ -32,6 +32,8 @@ class AuthController extends MomentumController<AuthModel> {
           ],
         );
         await googleSignIn.signIn();
+        if (googleSignIn.currentUser == null) return;
+
         GoogleSignInAuthentication auth;
         auth = await googleSignIn.currentUser.authentication;
         final tokenGoogle = auth.accessToken;
