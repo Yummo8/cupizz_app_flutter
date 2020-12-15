@@ -6,7 +6,9 @@ import 'dart:ui' show lerpDouble;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupizz_app/src/assets.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart' hide Router;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,6 +17,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../base/base.dart';
@@ -45,6 +48,7 @@ part 'customs/rotate_animated_text_kit.dart';
 part 'customs/skeleton.dart';
 part 'customs/text_field.dart';
 part 'customs/title_toggle.dart';
+part 'dialogs/otp_dialog.dart';
 part 'dialogs/photo_view_dialog.dart';
 part 'errors/error_indicator.dart';
 part 'hobbies/hobby_item.dart';

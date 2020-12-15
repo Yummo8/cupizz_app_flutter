@@ -56,6 +56,7 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   pin_code_fields: ^6.0.1
   badges: ^1.1.6
+  giffy_dialog: ^1.8.0
 
 dev_dependencies:
   flutter_test:

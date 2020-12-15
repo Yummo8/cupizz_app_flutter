@@ -170,6 +170,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           if (_formKey.currentState.validate()) {
                             await Momentum.controller<AuthController>(context)
                                 .registerEmail();
+
                             await showCupertinoDialog(
                               context: context,
                               builder: (context) {

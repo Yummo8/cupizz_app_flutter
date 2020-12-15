@@ -14,8 +14,8 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../assets.dart';
 import '../../base/base.dart';
-import '../../widgets/index.dart';
 import '../../helpers/index.dart';
+import '../../widgets/index.dart';
 
 part 'login_screen.dart';
 part 'register_screen.dart';

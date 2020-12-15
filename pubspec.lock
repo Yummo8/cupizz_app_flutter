@@ -394,6 +394,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.8"
+  giffy_dialog:
+    dependency: "direct main"
+    description:
+      name: giffy_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.8.0"
   glob:
     dependency: transitive
     description:

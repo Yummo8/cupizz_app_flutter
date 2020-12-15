@@ -149,7 +149,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       margin: EdgeInsets.only(right: 8, top: 18),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          OtpDialog.show(context);
+                        },
                         child: Text(
                           Strings.button.forgotPassword,
                           textAlign: TextAlign.end,

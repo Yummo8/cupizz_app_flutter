@@ -23,7 +23,6 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
 
   bool hasError = false;
   String currentText = '';
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -47,7 +46,6 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorScheme.background,
-      key: scaffoldKey,
       body: GestureDetector(
         onTap: () {},
         child: Container(
