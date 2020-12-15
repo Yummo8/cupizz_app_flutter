@@ -18,11 +18,23 @@ class MessagesScreenParams extends RouterParam {
   MessagesScreenParams(this.conversationKey);
 }
 
-class MessagesScreen extends StatelessWidget {
+class MessagesScreen extends StatefulWidget {
+  @override
+  _MessagesScreenState createState() => _MessagesScreenState();
+}
+
+class _MessagesScreenState extends State<MessagesScreen> {
+  MessagesScreenController controller;
+
+  @override
+  void dispose() {
+    controller?.reset();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final controller = Momentum.controller<MessagesScreenController>(context);
-    controller.reset();
+    controller ??= Momentum.controller<MessagesScreenController>(context);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final params = Router.getParam<MessagesScreenParams>(context);
       if (params != null) {
