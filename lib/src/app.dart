@@ -34,6 +34,7 @@ Momentum momentum({bool isTesting = false}) {
       CurrentUserController(),
       ChatPageController()..config(lazy: true),
       EditAnswerScreenController()..config(lazy: true),
+      ForgotController(),
       FriendPageController()..config(lazy: true),
       HobbyListController()..config(lazy: true),
       MainScreenController(),

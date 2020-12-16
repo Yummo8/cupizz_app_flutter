@@ -18,6 +18,8 @@ class _Common {
   final inDeveloping = 'Tính năng đang phát triển';
   final email = 'Email';
   final password = 'Mật khẩu';
+  final oldPassword = 'Mật khẩu cũ';
+  final newPassword = 'Mật khẩu mới';
   final name = 'Tên';
   final hobbies = 'Sở thích';
   final distance = 'Khoảng cách';

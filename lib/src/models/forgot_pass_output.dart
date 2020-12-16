@@ -12,5 +12,6 @@ class ForgotPassOutput with Mappable {
     map('token', token, (v) => token = v);
   }
 
-  static String get graphqlQuery => '''{ nickName token avatar }''';
+  static String get graphqlQuery =>
+      '''{ nickName token avatar ${FileModel.graphqlQuery} }''';
 }

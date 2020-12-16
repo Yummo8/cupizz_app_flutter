@@ -32,6 +32,7 @@ void objectMapping() {
     EducationLevel: (v) => EducationLevel(rawValue: v),
     FileModel: () => FileModel(),
     FileType: (v) => FileType(rawValue: v),
+    ForgotPassOutput: () => ForgotPassOutput(),
     FriendData: () => FriendData(),
     FriendType: (v) => FriendType(rawValue: v),
     Gender: (v) => Gender(rawValue: v),

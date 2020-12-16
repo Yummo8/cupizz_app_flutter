@@ -1,8 +1,10 @@
 part of '../index.dart';
 
 class OtpDialog {
-  static void show(BuildContext context,
-      {Future Function(String otp) onSubmit, String email, Function resend}) {
+  static Future show(BuildContext context,
+      {Future Function(String otp) onSubmit,
+      String email,
+      Function resend}) async {
     var onTapRecognizer = TapGestureRecognizer()..onTap = resend;
     var textEditingController = TextEditingController();
     StreamController<ErrorAnimationType> errorController;
@@ -10,7 +12,7 @@ class OtpDialog {
     var currentText = '';
 
     final formKey = GlobalKey<FormState>();
-    showCupertinoDialog(
+    await showCupertinoDialog(
         context: context,
         builder: (_) => Dialog(
               child: Container(
@@ -138,62 +140,14 @@ class OtpDialog {
                     ),
                     const SizedBox(height: 30),
                     Align(
-                      child: Container(
-                        height: (40.0),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              context.colorScheme.onPrimary,
-                              context.colorScheme.onPrimary.withOpacity(0.7),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          color: context.colorScheme.onPrimary,
-                          boxShadow: [
-                            BoxShadow(
-                              color:
-                                  context.colorScheme.primary.withOpacity(0.6),
-                              spreadRadius: 5,
-                              blurRadius: 20,
-                            ),
-                          ],
-                          border: Border.all(
-                            width: 2,
-                            color: context.colorScheme.primaryVariant,
-                          ),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular((22.0))),
-                        ),
-                        child: ArgonButton(
-                          height: 40,
-                          width: 100,
-                          borderRadius: 22.0,
-                          roundLoadingShape: false,
-                          color: Colors.transparent,
-                          child: Text(
-                            'Xác thực',
-                            style: TextStyle(
-                                color: context.colorScheme.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          loader: Center(
-                            child: LoadingIndicator(
-                              color: context.colorScheme.primaryVariant,
-                              size: 30,
-                            ),
-                          ),
-                          onTap: (startLoading, stopLoading, btnState) async {
-                            startLoading();
-                            try {
-                              if (onSubmit != null) await onSubmit(currentText);
-                            } finally {
-                              stopLoading();
-                            }
-                          },
-                        ),
+                      child: SmallAnimButton(
+                        text: 'Xác thực',
+                        onPressed: () async {
+                          if (onSubmit != null) {
+                            await onSubmit(currentText);
+                          }
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                     const SizedBox(height: 10),

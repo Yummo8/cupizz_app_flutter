@@ -7,6 +7,7 @@ class AuthModel extends MomentumModel<AuthController> {
     this.email,
     this.nickname,
     this.password,
+    this.isLoading,
   }) : super(controller);
 
   final String otpToken;
@@ -15,6 +16,8 @@ class AuthModel extends MomentumModel<AuthController> {
   final String nickname;
   final String password;
 
+  final bool isLoading;
+
   @override
   void update({
     String otpToken,
@@ -22,6 +25,7 @@ class AuthModel extends MomentumModel<AuthController> {
     String email,
     String nickname,
     String password,
+    bool isLoading,
   }) {
     AuthModel(
       controller,
@@ -29,6 +33,7 @@ class AuthModel extends MomentumModel<AuthController> {
       email: email ?? this.email,
       nickname: nickname ?? this.nickname,
       password: password ?? this.password,
+      isLoading: isLoading ?? this.isLoading,
     ).updateMomentum();
   }
 }

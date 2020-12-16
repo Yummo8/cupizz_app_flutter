@@ -23,6 +23,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   Future<void> loginSocial(SocialProviderType type) async {
     try {
+      model.update(isLoading: true);
       if (type == SocialProviderType.google) {
         final googleSignIn = GoogleSignIn(
           scopes: <String>[
@@ -62,6 +63,8 @@ class AuthController extends MomentumController<AuthModel> {
     } catch (e) {
       await Fluttertoast.showToast(msg: '$e');
       rethrow;
+    } finally {
+      model.update(isLoading: false);
     }
   }
 
