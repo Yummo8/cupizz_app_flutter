@@ -4,12 +4,12 @@ class OtpDialog {
   static Future show(BuildContext context,
       {Future Function(String otp) onSubmit,
       String email,
-      Function resend}) async {
-    var onTapRecognizer = TapGestureRecognizer()..onTap = resend;
+      Future Function() resend}) async {
     var textEditingController = TextEditingController();
     StreamController<ErrorAnimationType> errorController;
     var hasError = false;
     var currentText = '';
+    var isLoading = false;
 
     final formKey = GlobalKey<FormState>();
     await showCupertinoDialog(
@@ -123,32 +123,54 @@ class OtpDialog {
                         ),
                       ),
                     const SizedBox(height: 20),
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                          text: 'Không nhận được mã xác thực? ',
-                          style: context.textTheme.bodyText1,
-                          children: [
-                            TextSpan(
-                                text: ' GỬI LẠI',
-                                recognizer: onTapRecognizer,
-                                style: context.textTheme.subtitle1.copyWith(
-                                  color: context.colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
-                                ))
-                          ]),
-                    ),
-                    const SizedBox(height: 30),
-                    Align(
-                      child: SmallAnimButton(
-                        text: 'Xác thực',
-                        onPressed: () async {
-                          if (onSubmit != null) {
-                            await onSubmit(currentText);
-                          }
-                          Navigator.pop(context);
-                        },
-                      ),
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        final onTapRecognizer = TapGestureRecognizer()
+                          ..onTap = () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            resend?.call()?.whenComplete(() => setState(() {
+                                  isLoading = false;
+                                }));
+                          };
+
+                        return isLoading
+                            ? LoadingIndicator()
+                            : Column(
+                                children: [
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                        text: 'Không nhận được mã xác thực? ',
+                                        style: context.textTheme.bodyText1,
+                                        children: [
+                                          TextSpan(
+                                              text: ' GỬI LẠI',
+                                              recognizer: onTapRecognizer,
+                                              style: context.textTheme.subtitle1
+                                                  .copyWith(
+                                                color:
+                                                    context.colorScheme.primary,
+                                                fontWeight: FontWeight.bold,
+                                              ))
+                                        ]),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  Align(
+                                    child: SmallAnimButton(
+                                      text: 'Xác thực',
+                                      onPressed: () async {
+                                        if (onSubmit != null) {
+                                          await onSubmit(currentText);
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              );
+                      },
                     ),
                     const SizedBox(height: 10),
                   ],

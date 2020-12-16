@@ -23,6 +23,13 @@ class ChangePassDialog {
               padding: EdgeInsets.all(20),
               shrinkWrap: true,
               children: [
+                Text(
+                  'Đổi mật khẩu',
+                  style: context.textTheme.headline6
+                      .copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
                 if (requireOldPass) ...[
                   TextFieldWidget(
                     hintText: Strings.common.oldPassword,
@@ -33,21 +40,46 @@ class ChangePassDialog {
                     textColor: context.colorScheme.onBackground,
                   ),
                   const SizedBox(height: 15),
+                ] else if (nickName.isExistAndNotEmpty) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CustomNetworkImage(
+                          avatar ?? '',
+                          isAvatar: true,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(nickName,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ))
+                    ],
+                  ),
+                  const SizedBox(height: 15),
                 ],
                 TextFieldWidget(
                   hintText: Strings.common.newPassword,
                   obscureText: true,
                   prefixIconData: Icons.lock,
                   textEditingController: newPassword,
-                  validator: Validator.password,
+                  validator: (v) {
+                    if (newPassword.text == oldPassword.text) {
+                      return 'Mật khẩu mới phải khác mật khẩu cũ';
+                    }
+                    return Validator.password(v);
+                  },
                   textColor: context.colorScheme.onBackground,
                 ),
                 const SizedBox(height: 15),
                 TextFieldWidget(
-                  hintText: 'Nhập lại mật khẩu mới',
+                  hintText: 'Nhập lại mật khẩu',
                   obscureText: true,
                   prefixIconData: Icons.lock,
-                  textEditingController: oldPassword,
                   textColor: context.colorScheme.onBackground,
                   validator: (v) {
                     if (v != newPassword.text) {
@@ -59,13 +91,16 @@ class ChangePassDialog {
                 const SizedBox(height: 25),
                 Align(
                   child: SmallAnimButton(
-                    text: 'Đổi mật khẩu',
+                    text: Strings.button.save,
                     width: 120,
                     onPressed: () async {
-                      if (onSend != null) {
-                        await onSend(oldPassword.text, newPassword.text);
+                      FocusScope.of(context).unfocus();
+                      if (formKey.currentState.validate()) {
+                        if (onSend != null) {
+                          await onSend(oldPassword.text, newPassword.text);
+                        }
+                        Navigator.pop(context);
                       }
-                      Navigator.pop(context);
                     },
                   ),
                 ),

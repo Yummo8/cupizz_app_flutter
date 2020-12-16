@@ -10,6 +10,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     this.isUpdatingSetting = false,
     this.isAddingImage = false,
     this.isDeletingImage = false,
+    this.isChangingPass = false,
     List<UserImage> newOrderList,
   })  : newOrderList = newOrderList ?? [],
         super(controller);
@@ -22,6 +23,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
   final bool isUpdatingSetting;
   final bool isAddingImage;
   final bool isDeletingImage;
+  final bool isChangingPass;
   final List<UserImage> newOrderList;
 
   @override
@@ -34,6 +36,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     bool isUpdatingSetting,
     bool isAddingImage,
     bool isDeletingImage,
+    bool isChangingPass,
   }) {
     CurrentUserModel(
       controller,
@@ -45,6 +48,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
       isUpdatingSetting: isUpdatingSetting ?? this.isUpdatingSetting,
       isAddingImage: isAddingImage ?? this.isAddingImage,
       isDeletingImage: isDeletingImage ?? this.isDeletingImage,
+      isChangingPass: isChangingPass ?? this.isChangingPass,
     ).updateMomentum();
   }
 

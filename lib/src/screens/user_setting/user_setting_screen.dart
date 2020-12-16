@@ -62,6 +62,26 @@ class UserSettingScreen extends StatelessWidget {
                   ),
                   Divider(),
                   _TextTile(
+                    text: 'Đổi mật khẩu',
+                    onTap: () {
+                      final controller =
+                          Momentum.controller<CurrentUserController>(context);
+                      if (controller.model.currentUser != null) {
+                        ChangePassDialog.show(
+                          context,
+                          avatar: controller.model.currentUser.avatar?.url,
+                          nickName: controller.model.currentUser.nickName,
+                          isLoading: false,
+                          requireOldPass: true,
+                          onSend: (oldPass, newPass) async {
+                            await controller.changePassword(oldPass, newPass);
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  Divider(),
+                  _TextTile(
                     text: 'Đăng xuất',
                     onTap: () {
                       Momentum.controller<AuthController>(context).logout();

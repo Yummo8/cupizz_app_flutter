@@ -365,4 +365,16 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['changePasswordByForgotPasswordToken'];
   }
+
+  Future changePassword(String oldPassword, String newPassword) async {
+    final query = '''mutation {
+      changePassword(oldPass: "$oldPassword" newPass: "$newPassword")
+    }
+    ''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['changePassword'];
+  }
 }

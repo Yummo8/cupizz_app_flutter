@@ -217,4 +217,9 @@ class UserService extends MomentumService {
     final graphql = getService<GraphqlService>();
     await graphql.changePasswordByForgotPasswordToken(token, newPassword);
   }
+
+  Future changePassword(String oldPassword, String newPassword) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.changePassword(oldPassword, newPassword);
+  }
 }

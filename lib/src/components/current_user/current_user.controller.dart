@@ -343,4 +343,14 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     model.newOrderList.insert(newIndex, userImage);
     model.update(newOrderList: model.newOrderList);
   }
+
+  Future changePassword(String oldPassword, String newPassword) async {
+    if (oldPassword == newPassword) return;
+    await trycatch(() async {
+      await getService<UserService>().changePassword(oldPassword, newPassword);
+    }, throwError: true);
+    await Fluttertoast.showToast(
+        msg: 'Đổi mật khẩu thành công.\nVui lòng đăng nhập lại.');
+    unawaited(dependOn<AuthController>().logout());
+  }
 }

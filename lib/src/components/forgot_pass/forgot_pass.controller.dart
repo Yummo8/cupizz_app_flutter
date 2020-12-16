@@ -43,6 +43,9 @@ class ForgotController extends MomentumController<ForgotPassModel> {
       await service.changePasswordByForgotPasswordToken(
           model.data?.token, newPass);
       reset();
+      await Fluttertoast.showToast(
+          msg:
+              'Cài lại mật khẩu thành công.\nBạn hãy đăng nhập lại bằng mật khẩu mới.');
     } catch (e) {
       await Fluttertoast.showToast(msg: e.toString());
       rethrow;

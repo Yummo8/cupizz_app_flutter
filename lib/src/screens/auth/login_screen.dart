@@ -35,23 +35,25 @@ class _LoginScreenState extends State<LoginScreen> {
             (value) => OtpDialog.show(
               context,
               email: email.text,
-              resend: () {
-                controller.sendOtp(email.text);
+              resend: () async {
+                await controller.sendOtp(email.text);
               },
               onSubmit: (otp) async {
                 await controller.verifyOtp(otp);
               },
             ).then((v) {
-              ChangePassDialog.show(
-                context,
-                avatar: controller.model.data?.avatar?.thumbnail,
-                nickName: controller.model.data?.nickName,
-                requireOldPass: false,
-                isLoading: controller.model.isChangingPass,
-                onSend: (oldPass, newPass) async {
-                  await controller.changePass(newPass);
-                },
-              );
+              if (controller.model.data != null) {
+                ChangePassDialog.show(
+                  context,
+                  avatar: controller.model.data?.avatar?.thumbnail,
+                  nickName: controller.model.data?.nickName,
+                  requireOldPass: false,
+                  isLoading: controller.model.isChangingPass,
+                  onSend: (oldPass, newPass) async {
+                    await controller.changePass(newPass);
+                  },
+                );
+              }
             }),
           );
     }
