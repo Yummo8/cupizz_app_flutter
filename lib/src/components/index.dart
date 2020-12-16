@@ -30,3 +30,5 @@ part 'theme/theme.data.dart';
 part 'theme/theme.model.dart';
 part 'system/system.controller.dart';
 part 'system/system.model.dart';
+part 'forgot_pass/forgot_pass.controller.dart';
+part 'forgot_pass/forgot_pass.model.dart';

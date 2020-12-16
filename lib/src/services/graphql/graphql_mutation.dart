@@ -330,4 +330,39 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['editAnswer'];
   }
+
+  Future forgotPassword(String email) async {
+    final query = '''mutation { forgotPassword(email: "$email") }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['forgotPassword'];
+  }
+
+  Future validateForgotPasswordToken(String token, String otp) async {
+    final query = '''mutation {
+      validateForgotPasswordToken(token: "$token" otp: "$otp") 
+        ${ForgotPassOutput.graphqlQuery}
+    }
+    ''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['validateForgotPasswordToken'];
+  }
+
+  Future changePasswordByForgotPasswordToken(
+      String token, String newPassword) async {
+    final query = '''mutation {
+      changePasswordByForgotPasswordToken(token: "$token" newPassword: "$newPassword")
+    }
+    ''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['changePasswordByForgotPasswordToken'];
+  }
 }

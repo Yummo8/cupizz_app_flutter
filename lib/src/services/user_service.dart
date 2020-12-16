@@ -197,4 +197,24 @@ class UserService extends MomentumService {
     final result = Mapper.fromJson(data).toObject<User>();
     return result;
   }
+
+  Future<String> forgotPassword(String email) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.forgotPassword(email);
+    return data;
+  }
+
+  Future<ForgotPassOutput> validateForgotPasswordToken(
+      String token, String otp) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.validateForgotPasswordToken(token, otp);
+    final result = Mapper.fromJson(data).toObject<ForgotPassOutput>();
+    return result;
+  }
+
+  Future changePasswordByForgotPasswordToken(
+      String token, String newPassword) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.changePasswordByForgotPasswordToken(token, newPassword);
+  }
 }

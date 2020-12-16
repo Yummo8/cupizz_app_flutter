@@ -22,6 +22,7 @@ part 'user.dart';
 part 'user_answer.dart';
 part 'user_image.dart';
 part 'with_is_past_page_output.dart';
+part 'forgot_pass_output.dart';
 
 void objectMapping() {
   Mappable.factories = {
