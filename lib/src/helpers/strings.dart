@@ -75,8 +75,8 @@ class _RegisterScreen {
 }
 
 class _Drawer {
-  final filter = 'Bộ lọc tìm kiếm';
-  final whoAreYouLookingFor = 'Giới tính của người bạn cần tìm?';
+  final filter = 'Mẫu người bạn thích';
+  final whoAreYouLookingFor = 'Giới tính là ...';
   final upTo5Pieces = 'Tối đa 5 sở thích';
   final chooseOtherHoddies = 'Chọn sở thích khác';
 }

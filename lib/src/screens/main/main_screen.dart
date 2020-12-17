@@ -1,9 +1,9 @@
 library main_screen;
 
+import 'package:badges/badges.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:badges/badges.dart';
 
 import '../../base/base.dart';
 import '../../widgets/index.dart';
@@ -11,7 +11,6 @@ import 'components/main_screen.controller.dart';
 import 'pages/chat/chat_page.dart';
 import 'pages/friend/friend_page.dart';
 import 'pages/home/home_page.dart';
-import 'pages/profile/profile_page.dart';
 
 export 'pages/profile/edit_profile_screen.dart';
 
@@ -26,7 +25,7 @@ class _MainScreenState extends MomentumState<MainScreen>
     HomePage(),
     FriendPage(),
     ChatPage(),
-    ProfilePage(),
+    // ProfilePage(),
   ];
 
   TabController _tabController;
@@ -61,7 +60,7 @@ class _MainScreenState extends MomentumState<MainScreen>
               controllers: [MainScreenController],
               builder: (context, snapshot) {
                 return ExtendedTabBarView(
-                  cacheExtent: 4,
+                  cacheExtent: _tabs.length,
                   physics: [0, 2].contains(_tabController.index)
                       ? NeverScrollableScrollPhysics()
                       : BouncingScrollPhysics(),
@@ -104,8 +103,8 @@ class _MainScreenState extends MomentumState<MainScreen>
                           context.colorScheme.primaryVariant,
                           number: systemModel.unreadMessageCount,
                         ),
-                        _BottomNavButtonData(Icons.person_outline_rounded,
-                            'Cá nhân', context.colorScheme.secondaryVariant),
+                        // _BottomNavButtonData(Icons.person_outline_rounded,
+                        //     'Cá nhân', context.colorScheme.secondaryVariant),
                       ]
                           .mapIndexed((e, i) => GButton(
                                 icon: e.icon,

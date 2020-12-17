@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cupizz_app/src/helpers/index.dart';
+import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             AnimatedBackground(),
-            Positioned(right: 0, top: 30, child: _buildHeader()),
+            Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
             Positioned.fill(child: _buildCards()),
             OptionsDrawer(controller: _drawerController),
           ],
@@ -49,11 +50,44 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildHeader() {
     return Builder(builder: (context) {
-      return OpacityIconButton(
-        icon: Icons.tune,
-        onPressed: () {
-          _drawerController.openMenu();
-        },
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          MomentumBuilder(
+            controllers: [CurrentUserController],
+            builder: (context, snapshot) {
+              final model = snapshot<CurrentUserModel>();
+              return model.currentUser != null
+                  ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(90),
+                        border: Border.all(
+                          color:
+                              context.colorScheme.background.withOpacity(0.2),
+                          width: 4,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Router.goto(context, ProfilePage);
+                        },
+                        child: UserAvatar.fromChatUser(
+                          user: model.currentUser,
+                          size: 38,
+                          showOnline: false,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink();
+            },
+          ),
+          OpacityIconButton(
+            icon: Icons.tune,
+            onPressed: () {
+              _drawerController.openMenu();
+            },
+          ),
+        ],
       );
     });
   }

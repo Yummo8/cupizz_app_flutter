@@ -60,26 +60,31 @@ class UserSettingScreen extends StatelessWidget {
                       _SettingNotiBottomSheet(context).show();
                     },
                   ),
-                  Divider(),
-                  _TextTile(
-                    text: 'Đổi mật khẩu',
-                    onTap: () {
-                      final controller =
-                          Momentum.controller<CurrentUserController>(context);
-                      if (controller.model.currentUser != null) {
-                        ChangePassDialog.show(
-                          context,
-                          avatar: controller.model.currentUser.avatar?.url,
-                          nickName: controller.model.currentUser.nickName,
-                          isLoading: false,
-                          requireOldPass: true,
-                          onSend: (oldPass, newPass) async {
-                            await controller.changePassword(oldPass, newPass);
-                          },
-                        );
-                      }
-                    },
-                  ),
+                  if (model.currentUser.socialProviders.firstWhere(
+                          (e) => e.type == SocialProviderType.email,
+                          orElse: () => null) !=
+                      null) ...[
+                    Divider(),
+                    _TextTile(
+                      text: 'Đổi mật khẩu',
+                      onTap: () {
+                        final controller =
+                            Momentum.controller<CurrentUserController>(context);
+                        if (controller.model.currentUser != null) {
+                          ChangePassDialog.show(
+                            context,
+                            avatar: controller.model.currentUser.avatar?.url,
+                            nickName: controller.model.currentUser.nickName,
+                            isLoading: false,
+                            requireOldPass: true,
+                            onSend: (oldPass, newPass) async {
+                              await controller.changePassword(oldPass, newPass);
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ],
                   Divider(),
                   _TextTile(
                     text: 'Đăng xuất',
