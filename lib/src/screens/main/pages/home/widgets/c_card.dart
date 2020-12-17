@@ -104,7 +104,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   double xOffset = 100;
   double left = -100;
   double right = -100;
-  double limit = 10;
+  double limit = 3;
 
   Widget _frontCard(BoxConstraints constraints) {
     final child = _frontCardIndex < _cards.length
@@ -128,10 +128,16 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                     child: Container(
                       decoration: BoxDecoration(
                         color: _frontCardAlignment.x > 0
-                            ? context.colorScheme.primary.withOpacity(
-                                _frontCardAlignment.x.abs() / (limit * 2))
-                            : Colors.grey.withOpacity(
-                                _frontCardAlignment.x.abs() / (limit * 2)),
+                            ? context.colorScheme.primary.withOpacity(math.min(
+                                1.0,
+                                _frontCardAlignment.x.abs() /
+                                    (limit + _frontCardAlignment.x.abs()),
+                              ))
+                            : Colors.grey.withOpacity(math.min(
+                                1.0,
+                                _frontCardAlignment.x.abs() /
+                                    (limit + _frontCardAlignment.x.abs()),
+                              )),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
@@ -463,6 +469,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                       _stop();
                     },
                     onPanUpdate: (DragUpdateDetails details) {
+                      print(_frontCardAlignment.x);
                       _updateFrontCardAlignment(details, size);
                       if (_frontCardAlignment.x < 0) {
                         setState(() {
