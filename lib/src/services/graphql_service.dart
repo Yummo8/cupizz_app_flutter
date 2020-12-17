@@ -3,17 +3,38 @@ part of 'index.dart';
 class GraphqlService extends MomentumService {
   GraphQLClient _client;
   GraphQLClient get client => _client;
+  WebSocketLink _socketLink;
+  final String apiUrl;
+  final String wss;
 
-  GraphqlService() {
-    final HttpLink httpLink = HttpLink(
-      uri: AppConfig.instance.apiUrl,
+  GraphqlService({@required this.apiUrl, @required this.wss}) {
+    reset();
+  }
+
+  void reset() {
+    _socketLink?.dispose();
+
+    final httpLink = HttpLink(
+      uri: apiUrl,
     );
 
-    final AuthLink authLink = AuthLink(
+    final authLink = AuthLink(
       getToken: () async => await getService<StorageService>().getToken,
     );
 
-    final Link link = authLink.concat(httpLink);
+    _socketLink = WebSocketLink(
+      url: wss,
+      config: SocketClientConfig(
+        autoReconnect: true,
+        initPayload: () async {
+          return {
+            'Authorization': await getService<StorageService>().getToken,
+          };
+        },
+      ),
+    );
+
+    final link = authLink.concat(httpLink).concat(_socketLink);
 
     _client = GraphQLClient(
       cache: InMemoryCache(),
@@ -30,28 +51,34 @@ class GraphqlService extends MomentumService {
 
   Future<QueryResult> _processQueryResult(Future<QueryResult> future) async {
     final result = await future;
+    debugPrint(result.data?.keys?.toString());
     if (result.hasException) {
       if (result.exception.clientException != null &&
           result.exception.clientException.message.isExistAndNotEmpty) {
+        debugPrint(result.exception.clientException.message);
         throw result.exception.clientException.message;
       } else if (result.exception.graphqlErrors != null &&
           result.exception.graphqlErrors.isNotEmpty) {
         final unauthenticatedError = result.exception.graphqlErrors.firstWhere(
-            (element) => element.extensions['code'] == 'UNAUTHENTICATED');
+            (element) => element.extensions['code'] == 'UNAUTHENTICATED',
+            orElse: () => null);
         final clientError = result.exception.graphqlErrors.firstWhere(
-            (element) => element.extensions['code'] == 'CLIENT_ERROR');
+            (element) => element.extensions['code'] == 'CLIENT_ERROR',
+            orElse: () => null);
         if (unauthenticatedError != null) {
-          await getService<AuthService>().logout();
+          await Momentum.controller<AuthController>(
+                  AppConfig.navigatorKey.currentContext)
+              .logout();
           throw 'UNAUTHENTICATED';
         } else if (clientError != null) {
           throw clientError.message;
         } else {
-          debugPrint(result.exception.toString());
-          throw 'Lỗi server';
+          inspect(result.exception);
+          throw 'Lỗi server: ${result.exception.graphqlErrors[0].message}';
         }
       } else {
         debugPrint(result.exception.toString());
-        throw 'Lỗi không xác định';
+        throw 'Xảy ra lỗi khi tải dữ liệu:\n${result.exception.toString()}';
       }
     }
 
@@ -60,7 +87,7 @@ class GraphqlService extends MomentumService {
 
   Stream<FetchResult> _processFetchResult(Stream<FetchResult> stream) async* {
     await for (final result in stream) {
-      // TODO handle exception
+      // TODO handle realtime exception
       yield result;
     }
   }

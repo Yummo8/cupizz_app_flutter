@@ -1,7 +1,7 @@
 part of base;
 
 class StorageProvider {
-  final _storage = Storage.FlutterSecureStorage();
+  final _storage = storage.FlutterSecureStorage();
 
   Future<void> save(String key, String data) =>
       _storage.write(key: key, value: data);

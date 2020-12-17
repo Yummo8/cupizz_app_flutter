@@ -1,10 +1,11 @@
 part of base;
 
 extension ListExt<T> on List<T> {
+  bool get isExistAndNotEmpty => this != null && isNotEmpty;
+
   List<T> addBetweenEvery(T value) {
-    List<T> r = [];
-    this.asMap().forEach(
-        (i, e) => i < this.length - 1 ? r.addAll([e, value]) : r.add(e));
+    final r = [];
+    asMap().forEach((i, e) => i < length - 1 ? r.addAll([e, value]) : r.add(e));
     return r;
   }
 }

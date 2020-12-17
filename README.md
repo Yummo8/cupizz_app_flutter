@@ -1,6 +1,6 @@
 # cupizz_app
 
-A new Flutter project.
+Cupizz App
 
 ## Getting Started
 

@@ -1,11 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:momentum/momentum.dart';
-
-import './theme.data.dart';
-import '../../services/index.dart';
-import 'index.dart';
+part of '../index.dart';
 
 class ThemeController extends MomentumController<ThemeModel> {
   StorageService _storage;
@@ -29,6 +22,15 @@ class ThemeController extends MomentumController<ThemeModel> {
   void _selectTheme(int index) {
     _storage.saveTheme(index);
     model.update(activeTheme: index);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: themes[index].brightness,
+        statusBarColor: themes[index].colorScheme.onBackground.withOpacity(0),
+        statusBarIconBrightness: themes[index].brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark,
+      ),
+    );
   }
 
   ThemeData get selectedTheme => themes[model.activeTheme];

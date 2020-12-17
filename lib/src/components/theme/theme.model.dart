@@ -1,8 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:momentum/momentum.dart';
-
-import 'index.dart';
+part of '../index.dart';
 
 class ThemeModel extends MomentumModel<ThemeController> with EquatableMixin {
   ThemeModel(
@@ -23,12 +19,14 @@ class ThemeModel extends MomentumModel<ThemeController> with EquatableMixin {
     ).updateMomentum();
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'activeTheme': activeTheme,
     };
   }
 
+  @override
   ThemeModel fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
 

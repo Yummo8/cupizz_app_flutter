@@ -3,11 +3,13 @@ part of '../index.dart';
 class SocialButton extends StatelessWidget {
   final String imageName;
   final EdgeInsetsGeometry margin;
+  final SocialProviderType type;
 
   const SocialButton({
     Key key,
     this.imageName,
     this.margin,
+    @required this.type,
   }) : super(key: key);
 
   @override
@@ -18,12 +20,17 @@ class SocialButton extends StatelessWidget {
         color: context.colorScheme.primary.withOpacity(0.1),
         shape: BoxShape.circle,
       ),
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Image.asset(
-          imageName,
-          height: 28,
-          width: 28,
+      child: InkWell(
+        onTap: () {
+          Momentum.controller<AuthController>(context).loginSocial(type);
+        },
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Image.asset(
+            imageName,
+            height: 28,
+            width: 28,
+          ),
         ),
       ),
     );

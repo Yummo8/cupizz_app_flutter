@@ -1,29 +1,39 @@
-import 'package:equatable/equatable.dart';
-import 'package:momentum/momentum.dart';
+part of '../index.dart';
 
-import 'index.dart';
+class AuthModel extends MomentumModel<AuthController> {
+  AuthModel(
+    AuthController controller, {
+    this.otpToken,
+    this.email,
+    this.nickname,
+    this.password,
+    this.isLoading,
+  }) : super(controller);
 
-class AuthModel extends MomentumModel<AuthController> with EquatableMixin {
-  AuthModel(AuthController controller, {this.token}) : super(controller);
+  final String otpToken;
 
-  final String token;
+  final String email;
+  final String nickname;
+  final String password;
 
-  @override
-  void update({String token}) {
-    AuthModel(controller, token: token).updateMomentum();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['token'] = this.token;
-    return data;
-  }
-
-  @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
-    return AuthModel(controller, token: json['token']);
-  }
+  final bool isLoading;
 
   @override
-  List<Object> get props => [token];
+  void update({
+    String otpToken,
+    String registerToken,
+    String email,
+    String nickname,
+    String password,
+    bool isLoading,
+  }) {
+    AuthModel(
+      controller,
+      otpToken: otpToken ?? this.otpToken,
+      email: email ?? this.email,
+      nickname: nickname ?? this.nickname,
+      password: password ?? this.password,
+      isLoading: isLoading ?? this.isLoading,
+    ).updateMomentum();
+  }
 }

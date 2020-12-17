@@ -21,9 +21,9 @@ class AuthHeader extends StatelessWidget {
             width: 200,
             height: 200,
             child: FlareActor(
-              Assets.flares.logo,
+              Assets.i.flares.logo,
               fit: BoxFit.cover,
-              animation: "Cloud",
+              animation: 'Cloud',
               controller: controls,
             ),
           ),
@@ -31,7 +31,7 @@ class AuthHeader extends StatelessWidget {
         Transform.translate(
           offset: Offset(0, -60),
           child: Text(
-            "Cupizz",
+            'Cupizz',
             style: GoogleFonts.pacifico(
               fontSize: 43.0,
               color: context.colorScheme.background,
@@ -45,11 +45,11 @@ class AuthHeader extends StatelessWidget {
             children: [
               RotateAnimatedTextKit(
                 text: [
-                  "giao lưu",
-                  "kết bạn",
-                  "gặp gỡ",
-                  "hẹn hò",
-                  "và hơn thế nữa!"
+                  'giao lưu',
+                  'kết bạn',
+                  'gặp gỡ',
+                  'hẹn hò',
+                  'và hơn thế nữa!'
                 ],
                 textStyle: GoogleFonts.srisakdi(
                   fontSize: 35.0,

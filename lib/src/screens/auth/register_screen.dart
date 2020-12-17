@@ -3,7 +3,7 @@ part of 'index.dart';
 class RegisterScreen extends StatefulWidget {
   @override
   RegisterScreenState createState() {
-    return new RegisterScreenState();
+    return RegisterScreenState();
   }
 }
 
@@ -12,14 +12,15 @@ class RegisterScreenState extends State<RegisterScreen> {
   var bottom = FractionalOffset.bottomCenter;
   double width = 400.0;
   double widthIcon = 200.0;
-  TextEditingController name = new TextEditingController();
-  TextEditingController email = new TextEditingController();
-  TextEditingController password = new TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   final FlareControls controls = FlareControls();
+  final _formKey = GlobalKey<FormState>();
 
-  FocusNode nameFocus = new FocusNode();
-  FocusNode emailFocus = new FocusNode();
-  FocusNode passwordFocus = new FocusNode();
+  FocusNode nameFocus = FocusNode();
+  FocusNode emailFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
 
   var list = [
     Colors.lightGreen,
@@ -36,7 +37,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  _backToLogin() {
+  void _backToLogin() {
     Navigator.pop(
       context,
       // ignore: missing_required_param
@@ -65,14 +66,15 @@ class RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: context.colorScheme.background,
       body: SingleChildScrollView(
-        child: Container(
+        child: Form(
+          key: _formKey,
           child: Stack(
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(),
                 height: size.height,
                 decoration: BoxDecoration(
-                  gradient: new LinearGradient(
+                  gradient: LinearGradient(
                     colors: [
                       context.colorScheme.primaryVariant.withOpacity(0.8),
                       context.colorScheme.primary,
@@ -108,6 +110,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                         obscureText: false,
                         prefixIconData: Icons.account_circle,
                         textEditingController: name,
+                        validator: Validator.name,
+                        onChanged: (v) {
+                          Momentum.controller<AuthController>(context)
+                              .model
+                              .update(nickname: v);
+                        },
                         focusNode: nameFocus,
                       ),
                     ),
@@ -120,7 +128,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                         obscureText: false,
                         prefixIconData: Icons.email,
                         textEditingController: email,
+                        validator: Validator.email,
                         focusNode: emailFocus,
+                        onChanged: (v) {
+                          Momentum.controller<AuthController>(context)
+                              .model
+                              .update(email: v);
+                        },
                       ),
                     ),
                     SizedBox(
@@ -133,6 +147,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                         prefixIconData: Icons.lock,
                         focusNode: passwordFocus,
                         textEditingController: password,
+                        validator: Validator.password,
+                        onChanged: (v) {
+                          Momentum.controller<AuthController>(context)
+                              .model
+                              .update(password: v);
+                        },
                       ),
                     ),
                     Container(
@@ -147,9 +167,17 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: AuthButton(
                         text: Strings.button.register,
                         onPressed: () async {
-                          await Future.delayed(Duration(seconds: 2));
-                          Momentum.controller<ThemeController>(context)
-                              .randomTheme();
+                          if (_formKey.currentState.validate()) {
+                            await Momentum.controller<AuthController>(context)
+                                .registerEmail();
+
+                            await showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return VerificationOtpScreen();
+                              },
+                            );
+                          }
                         },
                       ),
                     ),
@@ -239,12 +267,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       SocialButton(
-                        imageName: Assets.icons.google,
+                        imageName: Assets.i.icons.google,
                         margin: EdgeInsets.only(left: 30.0),
+                        type: SocialProviderType.google,
                       ),
                       SocialButton(
-                        imageName: Assets.icons.facebook,
+                        imageName: Assets.i.icons.facebook,
                         margin: EdgeInsets.only(right: 30.0),
+                        type: SocialProviderType.facebook,
                       ),
                     ],
                   ),

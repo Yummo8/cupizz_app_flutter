@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "131297444871",
+    "firebase_url": "https://cupizz-c0798.firebaseio.com",
+    "project_id": "cupizz-c0798",
+    "storage_bucket": "cupizz-c0798.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131297444871:android:8751da90caac170e9856a2",
+        "android_client_info": {
+          "package_name": "cf.cupizz.cupizz_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131297444871-ii4upvp9a6geugbuojm309odtlt2l3sn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cf.cupizz.cupizz_app",
+            "certificate_hash": "02b65f391e50183ac59104fae300c06afd0a2e22"
+          }
+        },
+        {
+          "client_id": "131297444871-bcfsrulr20kei284u1uq6i5655n56l32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe52kKY5n_MnWw6sHch_iBuV7O8Tyo8XY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131297444871-bcfsrulr20kei284u1uq6i5655n56l32.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -32,7 +32,7 @@ class AuthButton extends StatelessWidget {
             child: Container(
               height: (60.0),
               decoration: BoxDecoration(
-                gradient: new LinearGradient(
+                gradient: LinearGradient(
                   colors: [
                     context.colorScheme.onPrimary,
                     context.colorScheme.onPrimary.withOpacity(0.7),
@@ -75,8 +75,11 @@ class AuthButton extends StatelessWidget {
                 ),
                 onTap: (startLoading, stopLoading, btnState) async {
                   startLoading();
-                  if (onPressed != null) await onPressed();
-                  stopLoading();
+                  try {
+                    if (onPressed != null) await onPressed();
+                  } finally {
+                    stopLoading();
+                  }
                 },
               ),
             ),
