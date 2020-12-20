@@ -10,6 +10,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double elevation;
   final Color shadowColor;
   final Color textColor;
+  final bool showBackButton;
 
   BackAppBar({
     Key key,
@@ -22,6 +23,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation = 4,
     this.shadowColor,
     this.textColor,
+    this.showBackButton = true,
   })  : preferredSize = Size.fromHeight(
             56.0 + (bottom != null ? bottom.preferredSize.height : 0)),
         super(key: key);
@@ -37,23 +39,25 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       bottom: bottom,
       shadowColor: shadowColor ?? context.colorScheme.surface,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: textColor ?? context.colorScheme.onBackground,
-        ),
-        onPressed: () {
-          if (onBackPressed == null) {
-            if (isRouterPop) {
-              Router.pop(context);
-            } else {
-              Navigator.pop(context);
-            }
-          } else {
-            onBackPressed();
-          }
-        },
-      ),
+      leading: !showBackButton
+          ? const SizedBox.shrink()
+          : IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: textColor ?? context.colorScheme.onBackground,
+              ),
+              onPressed: () {
+                if (onBackPressed == null) {
+                  if (isRouterPop) {
+                    Router.pop(context);
+                  } else {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  onBackPressed();
+                }
+              },
+            ),
       title: Text(
         title ?? 'Cupizz',
         style: context.textTheme.headline6

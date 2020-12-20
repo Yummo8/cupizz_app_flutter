@@ -5,19 +5,23 @@ class FriendV2TabData with Mappable {
   bool _isLastPage = false;
   int _currentPage = 1;
   FriendQueryOrderBy _sort = FriendQueryOrderBy.recent;
+  bool _isLoadingMore = false;
 
   List<FriendData> get friends => _friends;
   bool get isLastPage => _isLastPage;
   int get currentPage => _currentPage;
   FriendQueryOrderBy get sort => _sort;
+  bool get isLoadingMore => _isLoadingMore ?? false;
 
   FriendV2TabData({
     List<FriendData> friends,
     bool isLastPage,
     int currentPage,
     FriendQueryOrderBy sort,
+    bool isLoadingMore,
   })  : _friends = friends,
         _isLastPage = isLastPage,
+        _isLoadingMore = isLoadingMore,
         _currentPage = currentPage,
         _sort = sort;
 
@@ -25,6 +29,7 @@ class FriendV2TabData with Mappable {
     _friends.addAll(data.friends);
     _currentPage = data.currentPage;
     _isLastPage = data.isLastPage;
+    _isLoadingMore = data.isLoadingMore;
   }
 
   FriendV2TabData copyWith({
@@ -32,11 +37,13 @@ class FriendV2TabData with Mappable {
     bool isLastPage,
     int currentPage,
     FriendQueryOrderBy sort,
+    bool isLoadingMore,
   }) {
     _friends = friends ?? this.friends;
     _isLastPage = isLastPage ?? this.isLastPage;
     _currentPage = currentPage ?? this.currentPage;
     _sort = sort ?? this.sort;
+    _isLoadingMore = isLoadingMore ?? this.isLoadingMore;
     return this;
   }
 
@@ -50,9 +57,9 @@ class FriendV2TabData with Mappable {
   }
 }
 
-class FriendPageModel extends MomentumModel<FriendPageController> {
-  FriendPageModel(
-    FriendPageController controller, {
+class FriendPageV2Model extends MomentumModel<FriendPageV2Controller> {
+  FriendPageV2Model(
+    FriendPageV2Controller controller, {
     this.allFriends,
     this.receivedFriends,
     this.scrollOffset = 0,
@@ -75,7 +82,7 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
     AnimationController animationController,
     int currentTab,
   }) {
-    FriendPageModel(
+    FriendPageV2Model(
       controller,
       allFriends: allFriends ?? this.allFriends,
       receivedFriends: receivedFriends ?? this.receivedFriends,
@@ -87,12 +94,15 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
 
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
-    return FriendPageModel(
+    return FriendPageV2Model(
       controller,
-      allFriends:
-          Mapper.fromJson(json['allFriends']).toObject<FriendV2TabData>(),
-      receivedFriends:
-          Mapper.fromJson(json['receivedFriends']).toObject<FriendV2TabData>(),
+      allFriends: json['allFriends'] == null
+          ? FriendV2TabData()
+          : Mapper.fromJson(json['allFriends']).toObject<FriendV2TabData>(),
+      receivedFriends: json['receivedFriends'] == null
+          ? FriendV2TabData()
+          : Mapper.fromJson(json['receivedFriends'])
+              .toObject<FriendV2TabData>(),
       scrollOffset: json['scrollOffset'],
       currentTab: json['currentTab'],
     );
@@ -100,8 +110,8 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
 
   @override
   Map<String, dynamic> toJson() => {
-        'allFriends': allFriends.toJson(),
-        'receivedFriends': receivedFriends.toJson(),
+        'allFriends': (allFriends ?? FriendV2TabData())?.toJson(),
+        'receivedFriends': (receivedFriends ?? FriendV2TabData())?.toJson(),
         'scrollOffset': scrollOffset,
         'currentTab': currentTab,
       };

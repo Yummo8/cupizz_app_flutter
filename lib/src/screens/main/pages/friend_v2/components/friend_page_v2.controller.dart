@@ -1,20 +1,21 @@
 part of '../friend_page_v2.dart';
 
-enum FriendPageEventAction {
+enum FriendPageV2EventAction {
   error,
+  changePage,
 }
 
-class FriendPageEvent {
-  final FriendPageEventAction action;
+class FriendPageV2Event {
+  final FriendPageV2EventAction action;
   final String message;
 
-  FriendPageEvent({@required this.action, this.message});
+  FriendPageV2Event({@required this.action, this.message});
 }
 
-class FriendPageController extends MomentumController<FriendPageModel> {
+class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
   @override
-  FriendPageModel init() {
-    return FriendPageModel(this);
+  FriendPageV2Model init() {
+    return FriendPageV2Model(this);
   }
 
   @override
@@ -25,19 +26,83 @@ class FriendPageController extends MomentumController<FriendPageModel> {
     model.animationController?.fling();
   }
 
+  Future loadmore() {
+    if (model.currentTab == 0) {
+      return _loadmoreTab0();
+    }
+    return _loadmoreTab1();
+  }
+
+  Future _loadmoreTab0() async {
+    final clone = model.allFriends.clone<FriendV2TabData>();
+    if (clone.isLastPage || clone.isLoadingMore) return;
+    model.update(allFriends: clone.copyWith(isLoadingMore: true));
+    try {
+      final page = clone.currentPage + 1;
+      final result = await getService<UserService>().getFriendsV2(
+        type: FriendQueryType.friend,
+        orderBy: clone.sort ?? FriendQueryOrderBy.recent,
+        page: page,
+      );
+      clone.addData(clone.copyWith(friends: result.data, currentPage: page));
+
+      model.update(allFriends: clone);
+    } catch (e) {
+      await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
+    } finally {
+      model.update(allFriends: clone.copyWith(isLoadingMore: false));
+    }
+  }
+
+  Future _loadmoreTab1() async {
+    if (model.receivedFriends.isLastPage ||
+        model.receivedFriends.isLoadingMore) {
+      return;
+    }
+    model.update(
+        receivedFriends: model.receivedFriends.copyWith(isLoadingMore: true));
+    try {
+      final page = model.receivedFriends.currentPage + 1;
+      final result = await getService<UserService>().getFriendsV2(
+        type: FriendQueryType.received,
+        orderBy: model.receivedFriends.sort ?? FriendQueryOrderBy.recent,
+        page: page,
+      );
+      model.receivedFriends.addData(model.receivedFriends
+          .copyWith(friends: result.data, currentPage: page));
+
+      model.update(receivedFriends: model.receivedFriends);
+    } catch (e) {
+      await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
+    } finally {
+      model.update(
+          receivedFriends:
+              model.receivedFriends.copyWith(isLoadingMore: false));
+    }
+  }
+
+  void onChangeTab(int index) {
+    if (model.currentTab == index) return;
+
+    model.update(currentTab: index);
+    sendEvent(FriendPageV2Event(action: FriendPageV2EventAction.changePage));
+  }
+
   Future _reloadFriends() async {
     try {
       final service = getService<UserService>();
 
       final result = await Future.wait([
         service.getFriendsV2(
-          type: FriendQueryType.all,
-          orderBy: model.allFriends.sort,
+          type: FriendQueryType.friend,
+          orderBy: model.allFriends.sort ?? FriendQueryOrderBy.recent,
           page: 1,
         ),
         service.getFriendsV2(
           type: FriendQueryType.received,
-          orderBy: model.allFriends.sort,
+          orderBy: model.allFriends.sort ?? FriendQueryOrderBy.recent,
           page: 1,
         ),
       ]);
@@ -49,12 +114,12 @@ class FriendPageController extends MomentumController<FriendPageModel> {
             isLastPage: result[0].isLastPage),
         receivedFriends: model.receivedFriends.copyWith(
             currentPage: 1,
-            friends: result[0].data,
-            isLastPage: result[0].isLastPage),
+            friends: result[1].data,
+            isLastPage: result[1].isLastPage),
       );
     } catch (e) {
-      sendEvent(FriendPageEvent(
-          action: FriendPageEventAction.error, message: e.toString()));
+      await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     }
   }
 }

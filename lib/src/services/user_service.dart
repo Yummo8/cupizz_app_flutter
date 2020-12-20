@@ -119,9 +119,9 @@ class UserService extends MomentumService {
   }
 
   Future<WithIsLastPageOutput<FriendData>> getFriendsV2({
-    FriendQueryType type,
-    FriendQueryOrderBy orderBy,
-    int page,
+    FriendQueryType type = FriendQueryType.all,
+    FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
+    int page = 1,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.friendsV2Query(type, orderBy, page);

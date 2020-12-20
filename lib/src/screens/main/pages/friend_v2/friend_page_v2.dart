@@ -10,6 +10,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 part 'components/friend_page_v2.controller.dart';
 part 'components/friend_page_v2.model.dart';
 
+const _PADDING = 20.0;
+
 class FriendPageV2 extends StatefulWidget {
   @override
   _FriendPageV2State createState() => _FriendPageV2State();
@@ -39,48 +41,21 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
 
-    scrollController.addListener(() {
-      if (scrollController.offset >= 24) {
-        if (topBarOpacity != 1.0) {
-          setState(() {
-            topBarOpacity = 1.0;
-          });
-        }
-      } else if (scrollController.offset <= 24 &&
-          scrollController.offset >= 0) {
-        if (topBarOpacity != scrollController.offset / 24) {
-          setState(() {
-            topBarOpacity = scrollController.offset / 24;
-          });
-        }
-      } else if (scrollController.offset <= 0) {
-        if (topBarOpacity != 0.0) {
-          setState(() {
-            topBarOpacity = 0.0;
-          });
-        }
-      }
-    });
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Momentum.controller<FriendPageController>(context)
-        ..model.update(animationController: animationController)
-        // ..refresh()
-        ..listen<FriendPageEvent>(
-          state: this,
-          invoke: (data) {
-            if (data.action == FriendPageEventAction.error) {
-              debugPrint(data.message);
-              Fluttertoast.showToast(msg: data.message);
-            }
-          },
-        );
+      Momentum.controller<FriendPageV2Controller>(context)
+        ..model.update(animationController: animationController);
+      _pageController.animateToPage(
+          Momentum.controller<FriendPageV2Controller>(context).model.currentTab,
+          duration: Duration(seconds: 1),
+          curve: Curves.ease);
       animationController.fling();
     });
   }
 
   @override
-  void onLoadMore() {}
+  void onLoadMore() {
+    Momentum.controller<FriendPageV2Controller>(context).loadmore();
+  }
 
   @override
   void dispose() {
@@ -91,12 +66,13 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
-        controllers: [FriendPageController],
+        controllers: [FriendPageV2Controller],
         builder: (context, snapshot) {
-          final model = snapshot<FriendPageModel>();
+          final model = snapshot<FriendPageV2Model>();
           return PrimaryScaffold(
-            appBar: BackAppBar(title: 'Yêu thích'),
+            appBar: BackAppBar(title: 'Yêu thích', showBackButton: false),
             body: NestedScrollView(
+              controller: scrollController,
               headerSliverBuilder: (context, _) {
                 return [
                   SliverPersistentHeader(
@@ -111,10 +87,8 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                         ],
                         onChanged: (int index) {
                           if (index != model.currentTab) {
-                            setState(() {
-                              model.update(currentTab: index);
-                            });
-                            _pageController.animateToPage(model.currentTab,
+                            model.update(currentTab: index);
+                            _pageController.animateToPage(index,
                                 duration: Duration(seconds: 1),
                                 curve: Curves.ease);
                           }
@@ -122,7 +96,83 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                   ),
                 ];
               },
-              body: Container(),
+              body: PageView(
+                controller: _pageController,
+                onPageChanged: (i) {
+                  model.update(currentTab: i);
+                },
+                children: [
+                  model.allFriends,
+                  model.receivedFriends,
+                ].map(
+                  (e) {
+                    final friendsList = [
+                      ...e.friends ?? [],
+                      ...!e.isLastPage
+                          ? List.generate(
+                              e.friends.length % 2 == 0 ? 2 : 3, (_) => null)
+                          : []
+                    ];
+                    if (!friendsList.isExistAndNotEmpty) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            child: Text(
+                              'Những người đã được ghép đôi, đã thích bạn hay bạn đã thích sẽ xuất hiện ở đây.',
+                              style: context.textTheme.subtitle1.copyWith(
+                                  color: context.colorScheme.onSurface),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          OptionButton(
+                            title: 'Cập nhật thông tin',
+                            onPressed: () {
+                              Router.goto(context, EditProfileScreen);
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    return GridView(
+                      padding: const EdgeInsets.all(12),
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: friendsList
+                          .asMap()
+                          .map((index, value) {
+                            final count = friendsList.length;
+                            final animation =
+                                Tween<double>(begin: 0.0, end: 1.0).animate(
+                              CurvedAnimation(
+                                parent: animationController,
+                                curve: Interval((1 / count) * index, 1.0,
+                                    curve: Curves.fastOutSlowIn),
+                              ),
+                            );
+                            return MapEntry(
+                              index,
+                              _Item(
+                                animation: animation,
+                                animationController: animationController,
+                                simpleUser: value?.friend,
+                              ),
+                            );
+                          })
+                          .values
+                          .toList(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: multiple ? 2 : 1,
+                        mainAxisSpacing: _PADDING,
+                        crossAxisSpacing: _PADDING,
+                        childAspectRatio: 1,
+                      ),
+                    );
+                  },
+                ).toList(),
+              ),
             ),
           );
         });
@@ -203,8 +253,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              'Chuyến đi bạn tham gia',
-              'Chuyến đi bạn tổ chức',
+              'Đã ghép đôi',
+              'Đã thích bạn',
             ]
                 .asMap()
                 .map(
