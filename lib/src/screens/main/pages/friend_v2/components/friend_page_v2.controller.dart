@@ -19,7 +19,10 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
   }
 
   @override
-  Future<void> bootstrapAsync() => _reloadFriends();
+  Future<void> bootstrapAsync() async {
+    await _reloadFriends();
+    model.animationController?.fling();
+  }
 
   Future refresh() async {
     await _reloadFriends();
@@ -44,7 +47,8 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
         orderBy: clone.sort ?? FriendQueryOrderBy.recent,
         page: page,
       );
-      clone.addData(clone.copyWith(friends: result.data, currentPage: page));
+      clone.addData(result.data,
+          currentPage: page, isLastPage: result.isLastPage);
 
       model.update(allFriends: clone);
     } catch (e) {
@@ -69,8 +73,8 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
         orderBy: model.receivedFriends.sort ?? FriendQueryOrderBy.recent,
         page: page,
       );
-      model.receivedFriends.addData(model.receivedFriends
-          .copyWith(friends: result.data, currentPage: page));
+      model.receivedFriends.addData(result.data,
+          currentPage: page, isLastPage: result.isLastPage);
 
       model.update(receivedFriends: model.receivedFriends);
     } catch (e) {
@@ -97,12 +101,12 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
       final result = await Future.wait([
         service.getFriendsV2(
           type: FriendQueryType.friend,
-          orderBy: model.allFriends.sort ?? FriendQueryOrderBy.recent,
+          orderBy: model.allFriends?.sort ?? FriendQueryOrderBy.recent,
           page: 1,
         ),
         service.getFriendsV2(
           type: FriendQueryType.received,
-          orderBy: model.allFriends.sort ?? FriendQueryOrderBy.recent,
+          orderBy: model.receivedFriends?.sort ?? FriendQueryOrderBy.recent,
           page: 1,
         ),
       ]);

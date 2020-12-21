@@ -25,11 +25,14 @@ class FriendV2TabData with Mappable {
         _currentPage = currentPage,
         _sort = sort;
 
-  void addData(FriendV2TabData data) {
-    _friends.addAll(data.friends);
-    _currentPage = data.currentPage;
-    _isLastPage = data.isLastPage;
-    _isLoadingMore = data.isLoadingMore;
+  void addData(
+    List<FriendData> data, {
+    bool isLastPage,
+    int currentPage,
+  }) {
+    _friends.addAll(data);
+    _currentPage = currentPage ?? this.currentPage;
+    _isLastPage = isLastPage ?? this.isLastPage;
   }
 
   FriendV2TabData copyWith({

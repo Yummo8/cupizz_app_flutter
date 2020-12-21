@@ -46,7 +46,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
         ..model.update(animationController: animationController);
       _pageController.animateToPage(
           Momentum.controller<FriendPageV2Controller>(context).model.currentTab,
-          duration: Duration(seconds: 1),
+          duration: Duration(milliseconds: 10),
           curve: Curves.ease);
       animationController.fling();
     });
@@ -136,38 +136,45 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                         ],
                       );
                     }
-                    return GridView(
-                      padding: const EdgeInsets.all(12),
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      children: friendsList
-                          .asMap()
-                          .map((index, value) {
-                            final count = friendsList.length;
-                            final animation =
-                                Tween<double>(begin: 0.0, end: 1.0).animate(
-                              CurvedAnimation(
-                                parent: animationController,
-                                curve: Interval((1 / count) * index, 1.0,
-                                    curve: Curves.fastOutSlowIn),
-                              ),
-                            );
-                            return MapEntry(
-                              index,
-                              _Item(
-                                animation: animation,
-                                animationController: animationController,
-                                simpleUser: value?.friend,
-                              ),
-                            );
-                          })
-                          .values
-                          .toList(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: multiple ? 2 : 1,
-                        mainAxisSpacing: _PADDING,
-                        crossAxisSpacing: _PADDING,
-                        childAspectRatio: 1,
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await Momentum.controller<FriendPageV2Controller>(
+                                context)
+                            .refresh();
+                      },
+                      child: GridView(
+                        padding: const EdgeInsets.all(12),
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        children: friendsList
+                            .asMap()
+                            .map((index, value) {
+                              final count = friendsList.length;
+                              final animation =
+                                  Tween<double>(begin: 0.0, end: 1.0).animate(
+                                CurvedAnimation(
+                                  parent: animationController,
+                                  curve: Interval((1 / count) * index, 1.0,
+                                      curve: Curves.fastOutSlowIn),
+                                ),
+                              );
+                              return MapEntry(
+                                index,
+                                _Item(
+                                  animation: animation,
+                                  animationController: animationController,
+                                  simpleUser: value?.friend,
+                                ),
+                              );
+                            })
+                            .values
+                            .toList(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: multiple ? 2 : 1,
+                          mainAxisSpacing: _PADDING,
+                          crossAxisSpacing: _PADDING,
+                          childAspectRatio: 1,
+                        ),
                       ),
                     );
                   },
@@ -242,7 +249,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Color(0xffFF3422).withOpacity(0.25),
+                color: context.colorScheme.primary.withOpacity(0.25),
                 blurRadius: 5,
                 offset: Offset(0, 4),
               )
