@@ -7,10 +7,10 @@ class FriendV2TabData with Mappable {
   FriendQueryOrderBy _sort = FriendQueryOrderBy.recent;
   bool _isLoadingMore = false;
 
-  List<FriendData> get friends => _friends;
-  bool get isLastPage => _isLastPage;
-  int get currentPage => _currentPage;
-  FriendQueryOrderBy get sort => _sort;
+  List<FriendData> get friends => _friends ?? [];
+  bool get isLastPage => _isLastPage ?? false;
+  int get currentPage => _currentPage ?? 1;
+  FriendQueryOrderBy get sort => _sort ?? FriendQueryOrderBy.recent;
   bool get isLoadingMore => _isLoadingMore ?? false;
 
   FriendV2TabData({
@@ -52,7 +52,7 @@ class FriendV2TabData with Mappable {
 
   @override
   void mapping(Mapper map) {
-    map<FriendData>('friends', friends, (v) => _friends = v);
+    map<FriendData>('friends', _friends, (v) => _friends = v);
     map('_isLastPage', _isLastPage, (v) => _isLastPage = v);
     map('_currentPage', _currentPage, (v) => _currentPage = v);
     map('_sort', _sort, (v) => _sort = v,
@@ -63,12 +63,14 @@ class FriendV2TabData with Mappable {
 class FriendPageV2Model extends MomentumModel<FriendPageV2Controller> {
   FriendPageV2Model(
     FriendPageV2Controller controller, {
-    this.allFriends,
-    this.receivedFriends,
+    FriendV2TabData allFriends,
+    FriendV2TabData receivedFriends,
     this.scrollOffset = 0,
     this.animationController,
     this.currentTab = 0,
-  }) : super(controller);
+  })  : allFriends = allFriends ?? FriendV2TabData(),
+        receivedFriends = receivedFriends ?? FriendV2TabData(),
+        super(controller);
 
   final FriendV2TabData allFriends;
   final FriendV2TabData receivedFriends;

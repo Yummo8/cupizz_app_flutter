@@ -102,8 +102,8 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                   model.update(currentTab: i);
                 },
                 children: [
-                  model.allFriends,
-                  model.receivedFriends,
+                  model.allFriends ?? FriendV2TabData(),
+                  model.receivedFriends ?? FriendV2TabData(),
                 ].map(
                   (e) {
                     final friendsList = [
