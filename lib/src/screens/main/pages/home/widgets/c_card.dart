@@ -89,6 +89,9 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
 
   final List<SwipInfo> _swipInfoList = [];
 
+  Color likeColor = Colors.green;
+  Color dislikeColor = Colors.grey;
+
   Alignment _frontCardAlignment = CardAlignments.front;
 
   AnimationController _cardChangeController;
@@ -128,12 +131,12 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                     child: Container(
                       decoration: BoxDecoration(
                         color: _frontCardAlignment.x > 0
-                            ? context.colorScheme.primary.withOpacity(math.min(
+                            ? likeColor.withOpacity(math.min(
                                 1.0,
                                 _frontCardAlignment.x.abs() /
                                     (limit + _frontCardAlignment.x.abs()),
                               ))
-                            : Colors.grey.withOpacity(math.min(
+                            : dislikeColor.withOpacity(math.min(
                                 1.0,
                                 _frontCardAlignment.x.abs() /
                                     (limit + _frontCardAlignment.x.abs()),
@@ -401,6 +404,10 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      likeColor = Colors.pink[200];
+      dislikeColor = Colors.grey[400];
+    });
 
     _cards.addAll(widget.cards);
 
@@ -519,8 +526,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                         end: Alignment.topLeft,
                         stops: [0.1, 0.9],
                         colors: [
-                          context.colorScheme.secondaryVariant,
-                          context.colorScheme.secondary,
+                          dislikeColor,
+                          dislikeColor.withGreen(dislikeColor.green - 30),
                         ],
                       ),
                     ),
@@ -543,8 +550,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                             end: Alignment.topLeft,
                             stops: [0.1, 0.9],
                             colors: [
-                              context.colorScheme.primaryVariant,
-                              context.colorScheme.primary,
+                              likeColor.withGreen(likeColor.green - 30),
+                              likeColor,
                             ],
                           ),
                           borderRadius: BorderRadius.only(
