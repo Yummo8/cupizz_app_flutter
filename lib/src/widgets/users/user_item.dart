@@ -43,14 +43,12 @@ class UserItem extends StatelessWidget {
             onTap: () => handlePressed(context),
             child: Stack(
               children: <Widget>[
-                // ignore: can_be_null_after_null_aware
-                if (simpleUser?.avatar?.url.isExistAndNotEmpty)
-                  Positioned.fill(
-                    child: CustomNetworkImage(
-                      simpleUser?.avatar?.url ?? '',
-                      fit: BoxFit.cover,
-                    ),
+                Positioned.fill(
+                  child: CustomNetworkImage(
+                    simpleUser?.avatar?.url ?? '',
+                    fit: BoxFit.cover,
                   ),
+                ),
                 if (simpleUser != null)
                   Positioned.fill(
                     child: Container(

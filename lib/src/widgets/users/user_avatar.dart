@@ -62,8 +62,8 @@ class UserAvatar extends StatelessWidget {
             bottom: size * 0.05,
             right: size * 0.05,
             child: Container(
-              width: 14,
-              height: 14,
+              width: 14 * size / 50,
+              height: 14 * size / 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(

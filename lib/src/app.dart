@@ -4,6 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
+import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/material.dart' hide Router;
@@ -37,6 +38,7 @@ Momentum momentum({bool isTesting = false}) {
       EditAnswerScreenController()..config(lazy: true),
       ForgotController(),
       FriendPageController()..config(lazy: true),
+      FriendPageV2Controller()..config(lazy: true),
       HobbyListController()..config(lazy: true),
       MainScreenController(),
       MessagesScreenController(),

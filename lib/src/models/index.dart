@@ -1,5 +1,6 @@
 library models;
 
+import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../base/base.dart';
@@ -34,6 +35,7 @@ void objectMapping() {
     FileType: (v) => FileType(rawValue: v),
     ForgotPassOutput: () => ForgotPassOutput(),
     FriendData: () => FriendData(),
+    FriendV2TabData: () => FriendV2TabData(),
     FriendType: (v) => FriendType(rawValue: v),
     Gender: (v) => Gender(rawValue: v),
     HaveKids: (v) => HaveKids(rawValue: v),
