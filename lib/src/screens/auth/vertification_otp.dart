@@ -137,7 +137,6 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
                       controller: textEditingController,
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
-                        print(value);
                         setState(() {
                           currentText = value;
                         });

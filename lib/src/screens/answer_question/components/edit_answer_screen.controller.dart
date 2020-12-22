@@ -29,8 +29,8 @@ class EditAnswerScreenController
       model.update(isSending: true);
       await _edit();
     } catch (e) {
-      print(e);
       unawaited(Fluttertoast.showToast(msg: '$e'));
+      rethrow;
     } finally {
       model.update(isSending: false);
     }

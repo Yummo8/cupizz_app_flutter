@@ -44,9 +44,12 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
         _currentPosition = position;
       });
       _getAddressFromLatLng();
-    }).catchError((e) {
-      print(e);
-    });
+    }).catchError((e, stackTrace) {
+      Fluttertoast.showToast(msg: e.toString());
+      AppConfig.instance.sentry.captureException(e, stackTrace: stackTrace);
+    }).whenComplete(() => setState(() {
+              _onLoading = false;
+            }));
   }
 
   void _getAddressFromLatLng() async {
@@ -60,8 +63,9 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
         _currentAddress = address;
         _onLoading = false;
       });
-    } catch (e) {
-      print(e);
+    } catch (e, stackTrace) {
+      await AppConfig.instance.sentry
+          .captureException(e, stackTrace: stackTrace);
     }
   }
 
@@ -106,9 +110,11 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                           SizedBox(
                             width: 8.0,
                           ),
-                          Text(
-                            _currentAddress,
-                            style: context.textTheme.bodyText1,
+                          Flexible(
+                            child: Text(
+                              _currentAddress,
+                              style: context.textTheme.bodyText1,
+                            ),
                           ),
                         ],
                       ),

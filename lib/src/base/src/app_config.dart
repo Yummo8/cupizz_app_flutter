@@ -9,6 +9,7 @@ class AppConfig extends InheritedWidget {
       GlobalKey<NavigatorState>();
   static GlobalKey _globalKey;
   static GlobalKey get globalKey => _globalKey;
+  final SentryClient sentry;
 
   bool get isDev => flavorName == AppFlavor.DEVELOPMENT;
 
@@ -18,8 +19,17 @@ class AppConfig extends InheritedWidget {
     @required this.apiUrl,
     @required this.wss,
     @required Widget child,
-  }) : super(child: Material(child: child)) {
+    String sentryDsn,
+  })  : sentry = SentryClient(SentryOptions(dsn: sentryDsn ?? '')),
+        super(child: Material(child: child)) {
     _globalKey = child.key;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      if (isDev) {
+        FlutterError.dumpErrorToConsole(details);
+      } else {
+        Zone.current.handleUncaughtError(details.exception, details.stack);
+      }
+    };
 
     timeago.setLocaleMessages('vi', ViMessages());
   }

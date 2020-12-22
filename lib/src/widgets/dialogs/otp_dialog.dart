@@ -107,7 +107,6 @@ class OtpDialog {
                             controller: textEditingController,
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
-                              print(value);
                               currentText = value;
                             },
                           )),

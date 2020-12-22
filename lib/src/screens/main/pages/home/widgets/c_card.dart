@@ -476,7 +476,6 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                       _stop();
                     },
                     onPanUpdate: (DragUpdateDetails details) {
-                      print(_frontCardAlignment.x);
                       _updateFrontCardAlignment(details, size);
                       if (_frontCardAlignment.x < 0) {
                         setState(() {
