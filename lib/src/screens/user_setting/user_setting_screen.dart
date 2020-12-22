@@ -60,10 +60,11 @@ class UserSettingScreen extends StatelessWidget {
                       _SettingNotiBottomSheet(context).show();
                     },
                   ),
-                  if (model.currentUser.socialProviders.firstWhere(
-                          (e) => e.type == SocialProviderType.email,
-                          orElse: () => null) !=
-                      null) ...[
+                  if (model.currentUser != null &&
+                      model.currentUser.socialProviders.firstWhere(
+                              (e) => e.type == SocialProviderType.email,
+                              orElse: () => null) !=
+                          null) ...[
                     Divider(),
                     _TextTile(
                       text: 'Đổi mật khẩu',

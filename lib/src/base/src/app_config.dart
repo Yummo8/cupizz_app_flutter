@@ -19,9 +19,8 @@ class AppConfig extends InheritedWidget {
     @required this.apiUrl,
     @required this.wss,
     @required Widget child,
-    String sentryDsn,
-  })  : sentry = SentryClient(SentryOptions(dsn: sentryDsn ?? '')),
-        super(child: Material(child: child)) {
+    this.sentry,
+  }) : super(child: Material(child: child)) {
     _globalKey = child.key;
     FlutterError.onError = (FlutterErrorDetails details) {
       if (isDev) {
@@ -40,6 +39,7 @@ class AppConfig extends InheritedWidget {
     String apiUrl,
     String wss,
     Widget child,
+    SentryClient sentry,
   }) {
     return AppConfig(
       appName: appName ?? this.appName,
@@ -47,6 +47,7 @@ class AppConfig extends InheritedWidget {
       apiUrl: apiUrl ?? this.apiUrl,
       wss: wss ?? this.wss,
       child: child ?? this.child,
+      sentry: sentry,
     );
   }
 
