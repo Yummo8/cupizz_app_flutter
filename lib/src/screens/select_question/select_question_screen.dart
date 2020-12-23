@@ -8,20 +8,25 @@ part 'components/select_question_screen.model.dart';
 class SelectQuestionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PrimaryScaffold(
-      appBar: BackAppBar(
-        title: 'Chọn câu hỏi',
-      ),
-      body: MomentumBuilder(
-          controllers: [SelectQuestionScreenController],
-          builder: (context, snapshot) {
-            final model = snapshot<SelectQuestionScreenModel>();
-            return GridView.builder(
+    return MomentumBuilder(
+        controllers: [
+          SelectQuestionScreenController,
+          AnswerQuestionScreenController
+        ],
+        builder: (context, snapshot) {
+          final model = snapshot<SelectQuestionScreenModel>();
+          final modelAnswer = snapshot<AnswerQuestionScreenModel>();
+          return PrimaryScaffold(
+            appBar: BackAppBar(
+              title: 'Chọn câu hỏi',
+              showBackButton: modelAnswer.question != null,
+            ),
+            body: GridView.builder(
               padding: EdgeInsets.all(10),
               itemCount: model.data.data.length +
                   (model.isLoading
                       ? 10
-                      : model.data.isLastPage
+                      : !model.data.isLastPage
                           ? 2
                           : 0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -71,8 +76,8 @@ class SelectQuestionScreen extends StatelessWidget {
                   ),
                 );
               },
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 }
