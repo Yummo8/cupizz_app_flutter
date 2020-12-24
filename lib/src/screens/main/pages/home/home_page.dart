@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
           var model = snapshot<RecommendableUsersModel>();
-          if (model.isLoading) {
+          if (model.isLoading || model.users == null) {
             return LoadingIndicator();
           } else if (model.error.isExistAndNotEmpty) {
             return ErrorIndicator(
@@ -107,11 +107,7 @@ class _HomePageState extends State<HomePage> {
                     .fetchRecommendableUsers();
               },
             );
-          } else if (model.users == null || model.users.isEmpty) {
-            if (model.users == null) {
-              Momentum.of<RecommendableUsersController>(context)
-                  .fetchRecommendableUsers();
-            }
+          } else if (!model.users.isExistAndNotEmpty) {
             return Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -146,11 +142,11 @@ class _HomePageState extends State<HomePage> {
             },
             onSwipeLeft: () {
               Momentum.controller<RecommendableUsersController>(context)
-                  .onSwipe();
+                  .onSwipe(context);
             },
             onSwipeRight: () {
               Momentum.controller<RecommendableUsersController>(context)
-                  .onSwipe(isSwipeRight: true);
+                  .onSwipe(context, isSwipeRight: true);
             },
             cards: model.users
                 .map((e) => ClipRRect(

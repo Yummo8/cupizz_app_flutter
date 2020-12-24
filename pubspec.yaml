@@ -58,6 +58,7 @@ dependencies:
   badges: ^1.1.6
   giffy_dialog: ^1.8.0
   sentry: ^4.0.1
+  flutter_beautiful_popup: ^1.5.0
 
 dev_dependencies:
   flutter_test:
