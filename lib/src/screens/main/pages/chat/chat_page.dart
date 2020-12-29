@@ -18,7 +18,18 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> with LoadmoreMixin {
+class _ChatPageState extends State<ChatPage>
+    with LoadmoreMixin, KeepScrollOffsetMixin {
+  static double _lastOffset = 0;
+
+  @override
+  double get lastOffset => _lastOffset;
+
+  @override
+  void set lastOffset(double value) {
+    _lastOffset = value;
+  }
+
   final GlobalKey<CustomAnimatedListState> _key =
       GlobalKey<CustomAnimatedListState>();
 
