@@ -33,6 +33,7 @@ class _Common {
   final showOnYourProfile = 'Hiển thị trên hồ sơ của bạn';
   final birthday = 'Ngày sinh';
   final notDisclose = 'Không muốn tiết lộ';
+  final educationLevel = 'Trình độ học vấn';
 }
 
 class _Public {

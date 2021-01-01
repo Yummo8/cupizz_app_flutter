@@ -26,7 +26,7 @@ class _EditEducationLevelScreenState extends State<EditEducationLevelScreen> {
     var sizeHelper = SizeHelper(context);
 
     return PrimaryScaffold(
-      appBar: BackAppBar(title: 'Trình độ học vấn', actions: [
+      appBar: BackAppBar(title: Strings.common.educationLevel, actions: [
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(educationLevel: selectedValue);

@@ -26,7 +26,7 @@ class _ChatPageState extends State<ChatPage>
   double get lastOffset => _lastOffset;
 
   @override
-  void set lastOffset(double value) {
+  set lastOffset(double value) {
     _lastOffset = value;
   }
 

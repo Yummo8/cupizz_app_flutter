@@ -87,7 +87,6 @@ class GraphqlService extends MomentumService {
 
   Stream<FetchResult> _processFetchResult(Stream<FetchResult> stream) async* {
     await for (final result in stream) {
-      // TODO handle realtime exception
       yield result;
     }
   }

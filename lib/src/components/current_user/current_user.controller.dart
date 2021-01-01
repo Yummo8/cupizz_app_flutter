@@ -156,6 +156,9 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     List<Gender> genderPrefer,
     int distancePrefer,
     List<String> mustHaveFields,
+    List<EducationLevel> educationLevelsPrefer,
+    HaveKids theirKids,
+    List<Religious> religiousPrefer,
   }) async {
     final currentUser = model.currentUser.clone<User>();
 
@@ -165,6 +168,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     if (maxHeightPrefer != null) currentUser.maxHeightPrefer = maxHeightPrefer;
     if (genderPrefer != null) currentUser.genderPrefer = genderPrefer;
     if (distancePrefer != null) currentUser.distancePrefer = distancePrefer;
+    if (educationLevelsPrefer != null) {
+      currentUser.educationLevelsPrefer = educationLevelsPrefer;
+    }
+    if (theirKids != null) currentUser.theirKids = theirKids;
+    if (religiousPrefer != null) currentUser.religiousPrefer = religiousPrefer;
 
     model.update(currentUser: currentUser);
 
@@ -177,6 +185,9 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       genderPrefer: genderPrefer,
       distancePrefer: distancePrefer,
       mustHaveFields: mustHaveFields,
+      educationLevelsPrefer: educationLevelsPrefer,
+      theirKids: theirKids,
+      religiousPrefer: religiousPrefer,
     );
     unawaited(
         dependOn<RecommendableUsersController>().fetchRecommendableUsers());

@@ -135,14 +135,15 @@ extension GraphqlMutation on GraphqlService {
     List<Gender> genderPrefer,
     int distancePrefer,
     List<String> mustHaveFields,
+    List<EducationLevel> educationLevelsPrefer,
+    HaveKids theirKids,
+    List<Religious> religiousPrefer,
     bool allowMatching,
     bool isPrivate,
     bool showActive,
     List<NotificationType> pushNotiSetting,
   ]) async {
-    final result = await mutate(
-      MutationOptions(
-        documentNode: gql('''
+    final query = '''
           mutation {
             updateMySetting(
               ${minAgePrefer != null ? 'minAgePrefer: $minAgePrefer' : ''}
@@ -152,12 +153,18 @@ extension GraphqlMutation on GraphqlService {
               ${genderPrefer != null ? 'genderPrefer: ${genderPrefer?.map((e) => e.rawValue)?.toList()}' : ''}
               ${distancePrefer != null ? 'distancePrefer: $distancePrefer' : ''}
               ${mustHaveFields != null ? 'mustHaveFields: $mustHaveFields' : ''}
+              ${educationLevelsPrefer != null ? 'educationLevelsPrefer: ${educationLevelsPrefer.map((e) => e.rawValue).toList()}' : ''}
+              ${theirKids != null ? 'theirKids: ${theirKids.rawValue}' : ''}
+              ${religiousPrefer != null ? 'religiousPrefer: ${religiousPrefer.map((e) => e.rawValue).toList()}' : ''}
               ${allowMatching != null ? 'allowMatching: $allowMatching' : ''}
               ${isPrivate != null ? 'isPrivate: $isPrivate' : ''}
               ${showActive != null ? 'showActive: $showActive' : ''}
               ${pushNotiSetting != null ? 'pushNotiSetting: ${pushNotiSetting.map((e) => e.rawValue).toList()}' : ''}
             ) ${User.graphqlQuery}
-          }'''),
+          }''';
+    final result = await mutate(
+      MutationOptions(
+        documentNode: gql(query),
       ),
     );
 
