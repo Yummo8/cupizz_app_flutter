@@ -3,7 +3,7 @@ library main_screen;
 import 'package:badges/badges.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:extended_tabs/extended_tabs.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../base/base.dart';

@@ -13,6 +13,9 @@ class User extends SimpleUser {
   List<Gender> genderPrefer;
   List<SocialProvider> socialProviders;
   List<NotificationType> pushNotiSetting;
+  List<EducationLevel> educationLevelsPrefer;
+  HaveKids theirKids;
+  List<Religious> religiousPrefer;
 
   @override
   void mapping(Mapper map) {
@@ -25,6 +28,15 @@ class User extends SimpleUser {
     map('data.distancePrefer', distancePrefer, (v) => distancePrefer = v);
     map<Gender>('data.genderPrefer', genderPrefer, (v) => genderPrefer = v,
         EnumTransform<Gender, String>());
+    map<EducationLevel>(
+        'data.educationLevelsPrefer',
+        educationLevelsPrefer,
+        (v) => educationLevelsPrefer = v,
+        EnumTransform<EducationLevel, String>());
+    map('data.theirKids', theirKids, (v) => theirKids = v,
+        EnumTransform<HaveKids, String>());
+    map<Religious>('data.religiousPrefer', religiousPrefer,
+        (v) => religiousPrefer = v, EnumTransform<Religious, String>());
     map('data.settings.allowMatching', allowMatching, (v) => allowMatching = v);
     map('data.settings.isPrivate', isPrivate, (v) => isPrivate = v);
     map('data.settings.showActive', showActive, (v) => showActive = v);
@@ -62,6 +74,9 @@ class User extends SimpleUser {
       maxHeightPrefer
       genderPrefer
       distancePrefer
+      educationLevelsPrefer
+      theirKids
+      religiousPrefer
       friendType { status }
       onlineStatus
       lastOnline

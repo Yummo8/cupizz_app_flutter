@@ -181,15 +181,24 @@ class HaveKids extends Enumerable<String> {
   @override
   final String rawValue;
   final String displayValue;
+  final String theirDisplay;
 
-  HaveKids({@required this.rawValue, String displayValue})
+  HaveKids({@required this.rawValue, String displayValue, String theirDisplay})
       : displayValue = displayValue ??
             getAll().firstWhere((e) => e.rawValue == rawValue).displayValue ??
+            Strings.common.notDisclose,
+        theirDisplay = theirDisplay ??
+            getAll().firstWhere((e) => e.rawValue == rawValue).theirDisplay ??
             Strings.common.notDisclose;
 
-  static final dontHave =
-      HaveKids(rawValue: 'dontHave', displayValue: 'Tôi chưa có con');
-  static final have = HaveKids(rawValue: 'have', displayValue: 'Tôi đã có con');
+  static final dontHave = HaveKids(
+      rawValue: 'dontHave',
+      displayValue: 'Tôi chưa có con',
+      theirDisplay: 'Chưa có con');
+  static final have = HaveKids(
+      rawValue: 'have',
+      displayValue: 'Tôi đã có con',
+      theirDisplay: 'Đã có con');
 
   static List<HaveKids> getAll() => [dontHave, have];
 }

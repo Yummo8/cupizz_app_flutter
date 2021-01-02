@@ -18,7 +18,18 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage>
+    with LoadmoreMixin, KeepScrollOffsetMixin {
+  static double _lastOffset = 0;
+
+  @override
+  double get lastOffset => _lastOffset;
+
+  @override
+  set lastOffset(double value) {
+    _lastOffset = value;
+  }
+
   final GlobalKey<CustomAnimatedListState> _key =
       GlobalKey<CustomAnimatedListState>();
 
@@ -41,60 +52,74 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
+  void onLoadMore() {
+    Momentum.controller<ChatPageController>(context).loadmore();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: context.colorScheme.background,
-      child: MomentumBuilder(
-          controllers: [ChatPageController],
-          builder: (context, snapshot) {
-            final model = snapshot<ChatPageModel>();
-            return Column(
-              children: <Widget>[
-                buildHeadingBar(context),
-                buildButtonBar(context),
-                Expanded(
-                  child: model.isLoading
-                      ? LoadingIndicator()
-                      : model.conversations.isEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Hãy cập nhật thông tin cá nhân \nđể có thể ghép đôi với nhiều người hơn.',
-                                  style: context.textTheme.subtitle1.copyWith(
-                                      color: context.colorScheme.onSurface),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 10),
-                                OptionButton(
-                                  title: 'Cập nhật thông tin',
-                                  onPressed: () {
-                                    Router.goto(context, EditProfileScreen);
-                                  },
-                                ),
-                              ],
-                            )
-                          : ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: model.conversations.length,
-                              itemExtent: null,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ChatItem(
-                                  conversation: model.conversations[index],
-                                  onHided: (_) {
-                                    _key.currentState.removeItem(index);
-                                  },
-                                  onDeleted: (_) {
-                                    _key.currentState.removeItem(index);
-                                  },
-                                );
-                              },
-                            ),
-                ),
-              ],
-            );
-          }),
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Momentum.controller<ChatPageController>(context).refresh();
+      },
+      child: Container(
+        color: context.colorScheme.background,
+        child: MomentumBuilder(
+            controllers: [ChatPageController],
+            builder: (context, snapshot) {
+              final model = snapshot<ChatPageModel>();
+              return Column(
+                children: <Widget>[
+                  buildHeadingBar(context),
+                  buildButtonBar(context),
+                  Expanded(
+                    child: model.isLoading
+                        ? LoadingIndicator()
+                        : model.conversations.isEmpty
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Hãy cập nhật thông tin cá nhân \nđể có thể ghép đôi với nhiều người hơn.',
+                                    style: context.textTheme.subtitle1.copyWith(
+                                        color: context.colorScheme.onSurface),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  OptionButton(
+                                    title: 'Cập nhật thông tin',
+                                    onPressed: () {
+                                      Router.goto(context, EditProfileScreen);
+                                    },
+                                  ),
+                                ],
+                              )
+                            : ListView.builder(
+                                controller: scrollController,
+                                padding: EdgeInsets.zero,
+                                itemCount: model.conversations.length +
+                                    (model.isLastPage ? 0 : 3),
+                                itemExtent: null,
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return ChatItem(
+                                    conversation:
+                                        model.conversations.getAt(index),
+                                    onHided: (_) {
+                                      _key.currentState.removeItem(index);
+                                    },
+                                    onDeleted: (_) {
+                                      _key.currentState.removeItem(index);
+                                    },
+                                  );
+                                },
+                              ),
+                  ),
+                ],
+              );
+            }),
+      ),
     );
   }
 

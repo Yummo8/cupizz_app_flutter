@@ -4,10 +4,12 @@ import 'dart:io' as io;
 import 'dart:math';
 
 import 'package:cupizz_app/src/app.dart';
+import 'package:cupizz_app/src/components/location/location.controller.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/services.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';

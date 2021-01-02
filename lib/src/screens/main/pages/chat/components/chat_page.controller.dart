@@ -37,6 +37,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   @override
   void reset({bool clearHistory}) {
     conversationSupscription?.cancel();
+    debugPrint('Unsubscribed conversation changes');
     super.reset(clearHistory: clearHistory);
   }
 

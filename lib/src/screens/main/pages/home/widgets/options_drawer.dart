@@ -127,6 +127,53 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
                         _buildDistance(model.currentUser),
                         _buildAge(model.currentUser),
                         _buildHeight(model.currentUser),
+                        _buildEnum<EducationLevel>(
+                          title: Strings.common.educationLevel,
+                          itemToString: (i) => i.displayValue,
+                          items: EducationLevel.getAll(),
+                          value: model.currentUser.educationLevelsPrefer,
+                          onPressed: (i) {
+                            if (model.currentUser.educationLevelsPrefer !=
+                                    null &&
+                                model.currentUser.educationLevelsPrefer
+                                    .contains(i)) {
+                              model.currentUser.educationLevelsPrefer.remove(i);
+                            } else {
+                              model.currentUser.educationLevelsPrefer.add(i);
+                            }
+                            model.controller.updateDatingSetting(
+                                educationLevelsPrefer:
+                                    model.currentUser.educationLevelsPrefer);
+                          },
+                        ),
+                        _buildEnum<HaveKids>(
+                          title: 'Con cái',
+                          itemToString: (i) => i.theirDisplay,
+                          items: HaveKids.getAll(),
+                          value: [model.currentUser.theirKids],
+                          onPressed: (i) {
+                            model.currentUser.theirKids = i;
+                            model.controller.updateDatingSetting(
+                                theirKids: model.currentUser.theirKids);
+                          },
+                        ),
+                        _buildEnum<Religious>(
+                          title: 'Tôn giáo',
+                          itemToString: (i) => i.displayValue,
+                          items: Religious.getAll(),
+                          value: model.currentUser.religiousPrefer,
+                          onPressed: (i) {
+                            if (model.currentUser.religiousPrefer != null &&
+                                model.currentUser.religiousPrefer.contains(i)) {
+                              model.currentUser.religiousPrefer.remove(i);
+                            } else {
+                              model.currentUser.religiousPrefer.add(i);
+                            }
+                            model.controller.updateDatingSetting(
+                                religiousPrefer:
+                                    model.currentUser.religiousPrefer);
+                          },
+                        ),
                         const SizedBox(height: 56),
                       ],
                     ),
@@ -354,6 +401,30 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
               },
             ),
           );
+  }
+
+  Widget _buildEnum<T extends Enumerable>({
+    String title,
+    List<T> value,
+    List<T> items = const [],
+    Function(T i) onPressed,
+    String Function(T i) itemToString,
+  }) {
+    return _buildItem(
+      title: title ?? '',
+      body: Wrap(
+        spacing: 10,
+        children: items
+            .map(
+              (e) => OptionButton(
+                title: itemToString?.call(e) ?? e.toString(),
+                isSelected: value?.contains(e) ?? false,
+                onPressed: () => onPressed?.call(e),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 
   Widget _buildItem({
