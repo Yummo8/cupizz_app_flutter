@@ -1,7 +1,9 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:momentum/momentum.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'location.model.dart';
 
@@ -13,24 +15,22 @@ class LocationController extends MomentumController<LocationModel> {
     );
   }
 
-  @override
-  Future bootstrapAsync() async {
-    await Future.delayed(Duration(seconds: 1));
-    await checkPermission(AppConfig.navigatorKey.currentContext);
-  }
-
   Future<bool> checkPermission(BuildContext context,
       {bool showDialog = true}) async {
     final checkPermission = await Geolocator.checkPermission();
     if (checkPermission == LocationPermission.denied ||
         checkPermission == LocationPermission.deniedForever) {
       if (showDialog) {
+        await Future.delayed(Duration(seconds: 1));
         await _showDialog(context);
       }
-      final permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
+      final permission = await Permission.location.request();
+      if (permission == PermissionStatus.restricted ||
+          permission == PermissionStatus.denied) {
         await _showFailDialog(context);
+        return false;
+      } else if (permission == PermissionStatus.permanentlyDenied) {
+        await _showOpenSettingDialog(context);
         return false;
       }
     }
@@ -91,6 +91,29 @@ class LocationController extends MomentumController<LocationModel> {
           label: 'Bỏ qua',
           outline: true,
           onPressed: Navigator.of(context).pop,
+        ),
+      ],
+    );
+  }
+
+  void _showOpenSettingDialog(BuildContext context) async {
+    final popup = BeautifulPopup(
+      context: context,
+      template: TemplateFail,
+    );
+    await popup.show<bool>(
+      title: 'Opp!',
+      content:
+          'Bạn đã chặn Cupizz truy cập vào vị trí của bạn. Cupizz sẽ không thể ghép đôi chính xác được nếu như thiếu vị trí. Hãy vào Cài đặt và sửa đổi quyền để Cupizz có thể giúp bạn tìm được đối tác thích hợp!',
+      barrierDismissible: false,
+      actions: [
+        popup.button(
+          label: 'Cài đặt quyền',
+          onPressed: () async {
+            await AppSettings.openLocationSettings();
+            Navigator.of(context).pop();
+            await checkPermission(context);
+          },
         ),
       ],
     );

@@ -6,6 +6,15 @@ class AuthController extends MomentumController<AuthModel> {
     return AuthModel(this);
   }
 
+  @override
+  Future<void> bootstrapAsync() async {
+    if (await isAuthenticated) {
+      await dependOn<LocationController>()
+          .checkPermission(AppConfig.navigatorKey.currentContext);
+    }
+    return super.bootstrapAsync();
+  }
+
   void navigateToHomeIfAutheticated() async {
     if (await isAuthenticated) {
       await gotoHome();
@@ -116,6 +125,8 @@ class AuthController extends MomentumController<AuthModel> {
   }
 
   Future<void> gotoHome() async {
+    await dependOn<LocationController>()
+        .checkPermission(AppConfig.navigatorKey.currentContext);
     final router = getService<Router>();
     await router.clearHistory();
     await Router.goto(AppConfig.navigatorKey.currentContext, MainScreen);

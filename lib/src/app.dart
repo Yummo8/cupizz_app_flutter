@@ -33,7 +33,7 @@ Momentum momentum({bool isTesting = false}) {
     },
     controllers: [
       AnswerQuestionScreenController()..config(lazy: true),
-      AuthController()..config(strategy: BootstrapStrategy.lazyFirstCall),
+      AuthController(),
       CurrentUserController(),
       ChatPageController()..config(lazy: true),
       EditAnswerScreenController()..config(lazy: true),
@@ -169,7 +169,7 @@ class _MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
-        controllers: [ThemeController, LocationController],
+        controllers: [ThemeController, AuthController],
         builder: (context, snapshot) {
           final theme = snapshot<ThemeModel>().controller.selectedTheme;
           return CustomTheme(
