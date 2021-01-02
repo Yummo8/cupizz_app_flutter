@@ -2,6 +2,7 @@ library app;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cupizz_app/src/components/location/location.controller.dart';
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
@@ -42,6 +43,7 @@ Momentum momentum({bool isTesting = false}) {
       HobbyListController()..config(lazy: true),
       MainScreenController(),
       MessagesScreenController(),
+      LocationController()..config(lazy: true),
       RecommendableUsersController()..config(lazy: true),
       ThemeController(),
       UserScreenController(),
@@ -167,7 +169,7 @@ class _MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
-        controllers: [ThemeController],
+        controllers: [ThemeController, LocationController],
         builder: (context, snapshot) {
           final theme = snapshot<ThemeModel>().controller.selectedTheme;
           return CustomTheme(
