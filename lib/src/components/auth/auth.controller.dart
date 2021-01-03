@@ -82,6 +82,8 @@ class AuthController extends MomentumController<AuthModel> {
     final userId = await getService<StorageService>().getUserId;
     if (userId.isExistAndNotEmpty) {
       await getService<OneSignalService>().subscribe(userId);
+      await dependOn<LocationController>()
+          .checkPermission(AppConfig.navigatorKey.currentContext);
     }
     reset();
   }
@@ -125,8 +127,6 @@ class AuthController extends MomentumController<AuthModel> {
   }
 
   Future<void> gotoHome() async {
-    await dependOn<LocationController>()
-        .checkPermission(AppConfig.navigatorKey.currentContext);
     final router = getService<Router>();
     await router.clearHistory();
     await Router.goto(AppConfig.navigatorKey.currentContext, MainScreen);
