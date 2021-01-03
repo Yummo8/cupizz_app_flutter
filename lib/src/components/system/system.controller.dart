@@ -18,17 +18,20 @@ class SystemController extends MomentumController<SystemModel> {
 
   Future fetchColor() async {
     await trycatch(() async {
-      model.update(
-          colorsOfAnswer:
-              await getService<SystemService>().getColorsOfAnswer());
+      final colors = await getService<SystemService>().getColorsOfAnswer();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        model.update(colorsOfAnswer: colors);
+      });
     });
   }
 
   Future getUnreadMessageCount() async {
     await trycatch(() async {
-      model.update(
-          unreadMessageCount:
-              await getService<SystemService>().getUnreadMessageCount());
+      final unreadMessageCount =
+          await getService<SystemService>().getUnreadMessageCount();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        model.update(unreadMessageCount: unreadMessageCount);
+      });
     });
   }
 }
