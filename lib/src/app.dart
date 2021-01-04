@@ -8,6 +8,8 @@ import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -164,8 +166,10 @@ class AppLoader extends StatelessWidget {
 
 class _MyApp extends StatelessWidget {
   final bool isTesting;
+  final analytics = FirebaseAnalytics();
 
-  const _MyApp({Key key, this.isTesting = false}) : super(key: key);
+  _MyApp({Key key, this.isTesting = false}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
@@ -179,7 +183,9 @@ class _MyApp extends StatelessWidget {
                   AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
               title: 'Cupizz',
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
-              navigatorObservers: [],
+              navigatorObservers: [
+                FirebaseAnalyticsObserver(analytics: analytics),
+              ],
               theme: theme,
               home: Router.getActivePage(context),
             ),

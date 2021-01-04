@@ -37,8 +37,7 @@ class SystemModel extends MomentumModel<SystemController> {
 
   @override
   Map<String, dynamic> toJson() => {
-        'colorsOfAnswer':
-            colorsOfAnswer?.map((e) => e.toJson())?.toList() ?? [],
+        'colorsOfAnswer': colorsOfAnswer?.map((e) => e.toJson())?.toList(),
         'unreadMessageCount': unreadMessageCount ?? 0,
       };
 }
