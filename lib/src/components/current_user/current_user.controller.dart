@@ -39,6 +39,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     await updateDatingSetting(genderPrefer: currentUser.genderPrefer);
   }
 
+  final Debouncer hobbyDebouncer = Debouncer(delay: Duration(seconds: 1));
   Future toggleHobbyButton(Hobby hobby) async {
     final currentUser = model.currentUser.clone<User>();
     if (currentUser.hobbies.contains(hobby)) {
@@ -46,7 +47,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     } else {
       currentUser.hobbies.add(hobby);
     }
-    await updateProfile(hobbies: currentUser.hobbies);
+    model.update(currentUser: currentUser);
+
+    hobbyDebouncer.debounce(() async {
+      await updateProfile(hobbies: currentUser.hobbies);
+    });
   }
 
   Future updateCover(io.File cover) async {
