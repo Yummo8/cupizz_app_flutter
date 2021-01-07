@@ -52,6 +52,7 @@ class AuthController extends MomentumController<AuthModel> {
             dependOn<CurrentUserController>().getCurrentUser);
       } else if (type == SocialProviderType.facebook) {
         final facebookSignIn = FacebookLogin();
+        facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
         final facebookLogin = await facebookSignIn.logIn(['email']);
         if (facebookLogin.status == FacebookLoginStatus.loggedIn) {
           debugPrint('Token facebook: ' + facebookLogin.accessToken.token);
