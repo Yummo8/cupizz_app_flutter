@@ -10,11 +10,9 @@ import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:js' as js;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/base.dart';
 import 'screens/auth/index.dart';
@@ -100,11 +98,11 @@ Momentum momentum({bool isTesting = false}) {
     appLoader: AppLoader(),
     child: _MyApp(),
     persistSave: (context, key, value) async {
-      await FlutterSecureStorage().write(key: key, value: value);
+      await (await SharedPreferences.getInstance()).setString(key, value);
       return true;
     },
     persistGet: (context, key) async {
-      return await FlutterSecureStorage().read(key: key);
+      return await (await SharedPreferences.getInstance()).getString(key);
     },
   );
 }
