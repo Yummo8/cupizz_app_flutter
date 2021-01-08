@@ -11,8 +11,8 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
+import '../../../../packages/wave/wave.dart';
+import '../../../../packages/wave/config.dart';
 
 import '../../../../assets.dart';
 import '../../../../base/base.dart';

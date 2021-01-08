@@ -26,7 +26,6 @@ dependencies:
   graphql_flutter: ^3.1.0
   fluttertoast: ^7.1.1
   flutter_svg: ^0.19.1
-  wave: ^0.1.0
   shrink_sidemenu: ^1.0.0+3
   flutter_xlider: ^3.4.0
   google_nav_bar: ^3.1.0
@@ -62,6 +61,7 @@ dependencies:
   permission_handler: ^5.0.1+1
   app_settings: ^4.0.4
   firebase_analytics: ^6.3.0
+  tutorial_coach_mark: ^0.5.2
 
 dev_dependencies:
   flutter_test:

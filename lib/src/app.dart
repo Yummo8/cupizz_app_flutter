@@ -10,9 +10,11 @@ import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:js' as js;
 
 import 'base/base.dart';
 import 'screens/auth/index.dart';
@@ -166,7 +168,6 @@ class AppLoader extends StatelessWidget {
 
 class _MyApp extends StatelessWidget {
   final bool isTesting;
-  final analytics = FirebaseAnalytics();
 
   _MyApp({Key key, this.isTesting = false}) : super(key: key);
 
@@ -184,7 +185,7 @@ class _MyApp extends StatelessWidget {
               title: 'Cupizz',
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
               navigatorObservers: [
-                FirebaseAnalyticsObserver(analytics: analytics),
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
               ],
               theme: theme,
               home: Router.getActivePage(context),
