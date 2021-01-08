@@ -3,9 +3,9 @@ library base;
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:intl/intl.dart';
 import 'package:sentry/sentry.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 export 'package:object_mapper/object_mapper.dart';
 export 'package:momentum/momentum.dart';

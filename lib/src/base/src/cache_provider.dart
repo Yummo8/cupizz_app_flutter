@@ -7,13 +7,13 @@ class CacheProvider {
 
   factory CacheProvider() => _instance;
 
-  final _storage = storage.FlutterSecureStorage();
-
   Future<void> cache(String url, String data) async {
-    await _storage.write(key: url, value: data);
+    final _storage = await SharedPreferences.getInstance();
+    await _storage.setString(url, data);
   }
 
   Future<String> readCache(String url) async {
-    return _storage.read(key: url);
+    final _storage = await SharedPreferences.getInstance();
+    return _storage.getString(url);
   }
 }

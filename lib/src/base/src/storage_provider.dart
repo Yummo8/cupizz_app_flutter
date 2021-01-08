@@ -1,12 +1,18 @@
 part of base;
 
 class StorageProvider {
-  final _storage = storage.FlutterSecureStorage();
+  Future<void> save(String key, String data) async {
+    final _storage = await SharedPreferences.getInstance();
+    await _storage.setString(key, data);
+  }
 
-  Future<void> save(String key, String data) =>
-      _storage.write(key: key, value: data);
+  Future<String> read(String key) async {
+    final _storage = await SharedPreferences.getInstance();
+    return _storage.getString(key);
+  }
 
-  Future<String> read(String key) => _storage.read(key: key);
-
-  Future<void> delete(String key) => _storage.delete(key: key);
+  Future<void> delete(String key) async {
+    final _storage = await SharedPreferences.getInstance();
+    await _storage.remove(key);
+  }
 }

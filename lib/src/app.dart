@@ -11,8 +11,8 @@ import 'package:cupizz_app/src/screens/select_question/select_question_screen.da
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/base.dart';
 import 'screens/auth/index.dart';
@@ -98,11 +98,11 @@ Momentum momentum({bool isTesting = false}) {
     appLoader: AppLoader(),
     child: _MyApp(),
     persistSave: (context, key, value) async {
-      await FlutterSecureStorage().write(key: key, value: value);
+      await (await SharedPreferences.getInstance()).setString(key, value);
       return true;
     },
     persistGet: (context, key) async {
-      return await FlutterSecureStorage().read(key: key);
+      return await (await SharedPreferences.getInstance()).getString(key);
     },
   );
 }
@@ -166,7 +166,6 @@ class AppLoader extends StatelessWidget {
 
 class _MyApp extends StatelessWidget {
   final bool isTesting;
-  final analytics = FirebaseAnalytics();
 
   _MyApp({Key key, this.isTesting = false}) : super(key: key);
 
@@ -184,7 +183,7 @@ class _MyApp extends StatelessWidget {
               title: 'Cupizz',
               navigatorKey: isTesting ? null : AppConfig.navigatorKey,
               navigatorObservers: [
-                FirebaseAnalyticsObserver(analytics: analytics),
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
               ],
               theme: theme,
               home: Router.getActivePage(context),
