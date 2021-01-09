@@ -42,6 +42,7 @@ class RecommendableUsersController
         await service.removeFriend(model.users[0].id);
       }
       model.users.removeAt(0);
+      model.update(users: model.users);
     }
   }
 
