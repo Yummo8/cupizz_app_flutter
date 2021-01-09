@@ -3,6 +3,7 @@ part of 'index.dart';
 const _THEME_KEY = 'cupizz_theme';
 const _TOKEN_KEY = 'token';
 const _USER_ID_KEY = 'user_id';
+const _EMAIL_KEY = 'email';
 
 class StorageService extends MomentumService {
   final bool isTesting;
@@ -10,6 +11,19 @@ class StorageService extends MomentumService {
 
   Future<SharedPreferences> get storage =>
       isTesting ? _TestingStorage() : SharedPreferences.getInstance();
+}
+
+extension LoginEmailStorage on StorageService {
+  Future<void> saveLoginEmail(String email) async {
+    await (await storage).setString(_EMAIL_KEY, email);
+  }
+
+  Future<void> deleteLoginEmail() async {
+    await (await storage).remove(_EMAIL_KEY);
+  }
+
+  Future<String> get getLoginEmail async =>
+      await (await storage).getString(_EMAIL_KEY);
 }
 
 extension UserIdStorage on StorageService {

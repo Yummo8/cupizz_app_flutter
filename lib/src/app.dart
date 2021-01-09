@@ -34,6 +34,7 @@ Momentum momentum({bool isTesting = false}) {
       runApp(AppConfig.instance.copyWith(child: App()));
     },
     controllers: [
+      LocationController()..config(lazy: true),
       AnswerQuestionScreenController()..config(lazy: true),
       AuthController(),
       CurrentUserController(),
@@ -45,7 +46,6 @@ Momentum momentum({bool isTesting = false}) {
       HobbyListController()..config(lazy: true),
       MainScreenController(),
       MessagesScreenController(),
-      LocationController()..config(lazy: true),
       RecommendableUsersController()..config(lazy: true),
       ThemeController(),
       UserScreenController(),

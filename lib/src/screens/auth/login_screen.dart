@@ -21,6 +21,14 @@ class _LoginScreenState extends State<LoginScreen> {
     if (AppConfig.instance.isDev) {
       email.text = 'test12@gmail.com';
       password.text = '123456789';
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Momentum.getService<StorageService>(context)
+            .getLoginEmail
+            .then((value) => setState(() {
+                  email.text = value;
+                }));
+      });
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Momentum.controller<AuthController>(context)

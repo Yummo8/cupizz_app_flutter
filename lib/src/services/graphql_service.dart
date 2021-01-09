@@ -66,10 +66,8 @@ class GraphqlService extends MomentumService {
             (element) => element.extensions['code'] == 'CLIENT_ERROR',
             orElse: () => null);
         if (unauthenticatedError != null) {
-          await Momentum.controller<AuthController>(
-                  AppConfig.navigatorKey.currentContext)
-              .logout();
-          throw 'UNAUTHENTICATED';
+          await _LogoutHandler.logout();
+          throw 'Vui lòng đăng nhập lại!';
         } else if (clientError != null) {
           throw clientError.message;
         } else {
@@ -88,6 +86,22 @@ class GraphqlService extends MomentumService {
   Stream<FetchResult> _processFetchResult(Stream<FetchResult> stream) async* {
     await for (final result in stream) {
       yield result;
+    }
+  }
+}
+
+class _LogoutHandler {
+  static bool _isLoggingOut = false;
+
+  static Future logout() async {
+    if (!_isLoggingOut) {
+      _isLoggingOut = true;
+      final controller = Momentum.controller<AuthController>(
+          AppConfig.navigatorKey.currentContext);
+      if (await controller.isAuthenticated) {
+        await trycatch(controller.logout);
+      }
+      _isLoggingOut = false;
     }
   }
 }
