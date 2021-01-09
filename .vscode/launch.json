@@ -1,5 +1,6 @@
 {
     "configurations": [
+
         {
             "name": "Prod",
             "type": "dart",
@@ -11,6 +12,12 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main_dev.dart"
+        },
+        {
+            "name": "Local",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_local.dart"
         }
     ]
 }
