@@ -10,8 +10,8 @@ void main() {
   var configuredApp = AppConfig(
     appName: 'Cubiz Development',
     flavorName: AppFlavor.DEVELOPMENT,
-    apiUrl: 'https://cupizz.cf/graphql',
-    wss: 'ws://cupizz.cf/graphql',
+    apiUrl: 'https://dev.cupizz.cf/graphql',
+    wss: 'ws://dev.cupizz.cf/graphql',
     child: App(),
     sentry: SentryClient(SentryOptions(
         dsn:
