@@ -71,8 +71,11 @@ class GraphqlService extends MomentumService {
         } else if (clientError != null) {
           throw clientError.message;
         } else {
-          inspect(result.exception);
-          throw 'Lỗi server: ${result.exception.graphqlErrors[0].message}';
+          unawaited(AppConfig.instance.sentry.captureException(
+            result.exception.graphqlErrors[0].message,
+            stackTrace: result.exception,
+          ));
+          throw 'Xảy ra lỗi!\nVui lòng liên hệ NPH để được hỗ trợ!';
         }
       } else {
         debugPrint(result.exception.toString());

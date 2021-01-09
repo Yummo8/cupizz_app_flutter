@@ -121,7 +121,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   Future<void> logout() async {
     await getService<AuthService>().logout();
-    await getService<OneSignalService>().unSubscribe();
+    unawaited(getService<OneSignalService>().unSubscribe());
     await Router.resetWithContext<LoginScreen>(
         AppConfig.navigatorKey.currentContext);
     Momentum.resetAll(AppConfig.navigatorKey.currentContext);

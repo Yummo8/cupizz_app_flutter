@@ -67,6 +67,6 @@ class OneSignalService extends MomentumService {
     if (!_isInited) {
       await init();
     }
-    await OneSignal.shared.setSubscription(false);
+    await OneSignal.shared.setExternalUserId('logged out');
   }
 }

@@ -79,7 +79,6 @@ class _FriendPageState extends MomentumState<FriendPage>
           state: this,
           invoke: (data) {
             if (data.action == FriendPageEventAction.error) {
-              debugPrint(data.message);
               Fluttertoast.showToast(msg: data.message);
             }
           },

@@ -59,8 +59,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       model.update(isUpdatingCover: true);
       await updateProfile(cover: cover);
     } catch (e) {
-      debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     } finally {
       model.update(isUpdatingCover: false);
     }
@@ -71,8 +71,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       model.update(isUpdatingAvatar: true);
       await updateProfile(avatar: avatar);
     } catch (e) {
-      debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     } finally {
       model.update(isUpdatingAvatar: false);
     }
@@ -268,9 +268,9 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       );
       unawaited(getCurrentUser());
     } catch (e) {
-      debugPrint(e.toString());
       backward();
       await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     } finally {
       model.update(isDeletingImage: false);
     }
@@ -308,8 +308,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       unawaited(getCurrentUser().then((value) => sendEvent(
           CurrentUserEvent(action: CurrentUserEventAction.newUserImage))));
     } catch (e) {
-      debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     }
   }
 
@@ -333,8 +333,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
       model.newOrderList[index] = result;
       model.update(newOrderList: model.newOrderList);
     } catch (e) {
-      debugPrint(e.toString());
       await Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     }
   }
 
