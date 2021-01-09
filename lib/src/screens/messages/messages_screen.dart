@@ -86,12 +86,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            if (model.conversation?.lastOnline != null)
+                            if (model.conversation?.onlineStatus != null &&
+                                    model.conversation.onlineStatus ==
+                                        OnlineStatus.online ||
+                                model.conversation?.lastOnline != null)
                               SkeletonItem(
                                 child: Text(
-                                  Strings.messageScreen.lastOnlineAt(
-                                      TimeAgo.format(
-                                          model.conversation.lastOnline)),
+                                  model.conversation.onlineStatus ==
+                                          OnlineStatus.online
+                                      ? 'Đang online'
+                                      : Strings.messageScreen.lastOnlineAt(
+                                          TimeAgo.format(
+                                              model.conversation.lastOnline)),
                                   style: context.textTheme.caption,
                                 ),
                               ),
