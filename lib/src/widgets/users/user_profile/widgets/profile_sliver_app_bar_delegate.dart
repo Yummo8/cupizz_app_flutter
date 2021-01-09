@@ -70,7 +70,12 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         clipper: BackgroudClipper(),
         child: Stack(
           children: [
-            Positioned.fill(child: CustomNetworkImage(user?.cover?.url ?? '')),
+            Positioned.fill(
+                child: user?.cover?.url != null
+                    ? CustomNetworkImage(user.cover.url)
+                    : Container(
+                        color: context.colorScheme.surface,
+                      )),
             Container(
               width: context.width,
               height: expandedHeight,
