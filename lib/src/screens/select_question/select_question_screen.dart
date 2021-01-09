@@ -6,20 +6,29 @@ part 'components/select_question_screen.controller.dart';
 part 'components/select_question_screen.model.dart';
 
 class SelectQuestionScreen extends StatelessWidget {
+  void selectQuesion(BuildContext context, Question question) {
+    final controller =
+        Momentum.controller<AnswerQuestionScreenController>(context);
+    if (controller.model.question == null) {
+      Router.pop(context);
+      Router.goto(context, AnswerQuestionScreen);
+    } else {
+      Router.pop(context);
+    }
+    controller.model.update(question: question);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
         controllers: [
           SelectQuestionScreenController,
-          AnswerQuestionScreenController
         ],
         builder: (context, snapshot) {
           final model = snapshot<SelectQuestionScreenModel>();
-          final modelAnswer = snapshot<AnswerQuestionScreenModel>();
           return PrimaryScaffold(
             appBar: BackAppBar(
               title: 'Chọn câu hỏi',
-              showBackButton: modelAnswer.question != null,
             ),
             body: GridView.builder(
               padding: EdgeInsets.all(10),
@@ -48,11 +57,7 @@ class SelectQuestionScreen extends StatelessWidget {
                   enabled: item == null,
                   child: InkWell(
                     onTap: () {
-                      Momentum.controller<AnswerQuestionScreenController>(
-                              context)
-                          .model
-                          .update(question: model.data.data[index]);
-                      Router.pop(context);
+                      selectQuesion(context, model.data.data[index]);
                     },
                     child: Container(
                         padding: EdgeInsets.all(10),

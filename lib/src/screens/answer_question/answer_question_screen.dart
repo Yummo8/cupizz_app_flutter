@@ -13,6 +13,20 @@ part 'components/answer_question_screen.controller.dart';
 part 'components/answer_question_screen.model.dart';
 
 class AnswerQuestionScreen extends StatelessWidget {
+  static void answerQuestion(BuildContext context) {
+    final controller =
+        Momentum.controller<AnswerQuestionScreenController>(context);
+    if (controller.model.question == null) {
+      _selectQuestion(context);
+    } else {
+      Router.goto(context, AnswerQuestionScreen);
+    }
+  }
+
+  static void _selectQuestion(BuildContext context) {
+    Router.goto(context, SelectQuestionScreen);
+  }
+
   void _onSubmit(BuildContext context) async {
     final controller =
         Momentum.controller<AnswerQuestionScreenController>(context);
@@ -23,10 +37,6 @@ class AnswerQuestionScreen extends StatelessWidget {
         CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
   }
 
-  void _selectQuestion(BuildContext context) {
-    Router.goto(context, SelectQuestionScreen);
-  }
-
   @override
   Widget build(BuildContext context) {
     final controller =
@@ -34,11 +44,6 @@ class AnswerQuestionScreen extends StatelessWidget {
     final textEditingController =
         TextEditingController(text: controller.model.content);
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (controller.model.question == null) {
-        _selectQuestion(context);
-      }
-    });
     return MomentumBuilder(
         controllers: [AnswerQuestionScreenController],
         builder: (context, snapshot) {

@@ -313,10 +313,8 @@ class UserProfileState extends MomentumState<UserProfile>
                               onPressed: model.isAddingImage
                                   ? null
                                   : () {
-                                      Router.goto(
-                                        context,
-                                        AnswerQuestionScreen,
-                                      );
+                                      AnswerQuestionScreen.answerQuestion(
+                                          context);
                                     },
                               color: _theme.primaryColor.withOpacity(0.2),
                               child: Row(
