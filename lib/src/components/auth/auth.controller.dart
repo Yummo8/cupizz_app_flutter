@@ -25,10 +25,10 @@ class AuthController extends MomentumController<AuthModel> {
       (await getService<StorageService>().getToken) != null;
 
   Future<void> loginEmail(String email, String password) async {
-    await getService<AuthService>().loginEmail(
-        email, password, dependOn<CurrentUserController>().getCurrentUser);
+    await getService<AuthService>().loginEmail(email.trim(), password,
+        dependOn<CurrentUserController>().getCurrentUser);
     await _afterLogin();
-    unawaited(getService<StorageService>().saveLoginEmail(email));
+    unawaited(getService<StorageService>().saveLoginEmail(email.trim()));
   }
 
   Future<void> loginSocial(SocialProviderType type) async {
