@@ -1,4 +1,4 @@
-part of 'index.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 class Conversation extends BaseModel {
   List<FileModel> _images;

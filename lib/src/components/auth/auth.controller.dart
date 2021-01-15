@@ -1,4 +1,8 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../app.dart';
 
 class AuthController extends MomentumController<AuthModel> {
   @override

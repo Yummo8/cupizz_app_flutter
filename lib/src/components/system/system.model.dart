@@ -1,4 +1,4 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 class SystemModel extends MomentumModel<SystemController> {
   SystemModel(

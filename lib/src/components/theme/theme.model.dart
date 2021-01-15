@@ -1,4 +1,5 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:equatable/equatable.dart';
 
 class ThemeModel extends MomentumModel<ThemeController> with EquatableMixin {
   ThemeModel(

@@ -1,4 +1,5 @@
-part of 'index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const _THEME_KEY = 'cupizz_theme';
 const _TOKEN_KEY = 'token';

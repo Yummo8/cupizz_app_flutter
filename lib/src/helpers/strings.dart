@@ -1,5 +1,3 @@
-part of 'index.dart';
-
 class Strings {
   static const APP_TITLE = 'Cupizz';
   static final _Common common = _Common();

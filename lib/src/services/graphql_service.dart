@@ -1,4 +1,6 @@
-part of 'index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:pedantic/pedantic.dart';
 
 class GraphqlService extends MomentumService {
   GraphQLClient _client;

@@ -1,29 +1,28 @@
 library models;
 
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../base/base.dart';
 
-part 'base.dart';
-part 'chat_user.dart';
-part 'colorOfAnswer.dart';
-part 'conversation.dart';
-part 'conversation_key.dart';
-part 'enum.dart';
-part 'file.dart';
-part 'friend_data.dart';
-part 'hobby.dart';
-part 'key_value.dart';
-part 'message.dart';
-part 'question.dart';
-part 'simple_user.dart';
-part 'social_provider.dart';
-part 'user.dart';
-part 'user_answer.dart';
-part 'user_image.dart';
-part 'with_is_past_page_output.dart';
-part 'forgot_pass_output.dart';
+export 'base.dart';
+export 'chat_user.dart';
+export 'colorOfAnswer.dart';
+export 'conversation.dart';
+export 'conversation_key.dart';
+export 'enum.dart';
+export 'file.dart';
+export 'forgot_pass_output.dart';
+export 'friend_data.dart';
+export 'hobby.dart';
+export 'key_value.dart';
+export 'message.dart';
+export 'question.dart';
+export 'simple_user.dart';
+export 'social_provider.dart';
+export 'user.dart';
+export 'user_answer.dart';
+export 'user_image.dart';
+export 'with_is_past_page_output.dart';
 
 void objectMapping() {
   Mappable.factories = {

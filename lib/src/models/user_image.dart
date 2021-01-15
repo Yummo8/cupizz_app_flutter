@@ -1,4 +1,4 @@
-part of 'index.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 class UserImage extends BaseModel {
   FileModel _image;
@@ -14,7 +14,7 @@ class UserImage extends BaseModel {
   Color get color => gradient.isExistAndNotEmpty
       ? null
       : _answer != null
-          ? _answer._color ??
+          ? _answer.color ??
               _answer.question?.color ??
               ColorOfAnswer.defaultColor.color
           : Colors.transparent;

@@ -1,4 +1,7 @@
-part of '../index.dart';
+import 'dart:math';
+
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:flutter/services.dart';
 
 class ThemeController extends MomentumController<ThemeModel> {
   StorageService _storage;

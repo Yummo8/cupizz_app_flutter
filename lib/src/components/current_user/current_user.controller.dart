@@ -1,4 +1,4 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 enum CurrentUserEventAction {
   newUserImage,
@@ -54,7 +54,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     });
   }
 
-  Future updateCover(io.File cover) async {
+  Future updateCover(File cover) async {
     try {
       model.update(isUpdatingCover: true);
       await updateProfile(cover: cover);
@@ -66,7 +66,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     }
   }
 
-  Future updateAvatar(io.File avatar) async {
+  Future updateAvatar(File avatar) async {
     try {
       model.update(isUpdatingAvatar: true);
       await updateProfile(avatar: avatar);
@@ -87,8 +87,8 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     String job,
     int height,
     DateTime birthday,
-    io.File avatar,
-    io.File cover,
+    File avatar,
+    File cover,
     double latitude,
     double longitude,
     EducationLevel educationLevel,
@@ -276,7 +276,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     }
   }
 
-  Future addImage(io.File image) async {
+  Future addImage(File image) async {
     try {
       model.update(isAddingImage: true);
       final service = getService<UserService>();
@@ -317,7 +317,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     UserImage userImage, {
     String content,
     ColorOfAnswer color,
-    io.File image,
+    File image,
   }) async {
     try {
       final result = await getService<UserService>().editAnswer(
@@ -345,7 +345,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
             .updateUserImagesSortOrder(model.newOrderList),
         newOrderList: [],
       );
-    } catch (_) {
+    } catch (e) {
       await Fluttertoast.showToast(msg: '$e');
     }
   }

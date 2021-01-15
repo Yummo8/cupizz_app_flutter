@@ -1,4 +1,6 @@
-part of 'index.dart';
+import 'dart:io';
+
+import 'package:cupizz_app/src/base/base.dart';
 
 class MessageService extends MomentumService {
   Future<WithIsLastPageOutput<Conversation>> getMyConversations(
@@ -29,7 +31,7 @@ class MessageService extends MomentumService {
   }
 
   Future<String> sendMessage(ConversationKey key,
-      {String message, List<io.File> attachments = const []}) async {
+      {String message, List<File> attachments = const []}) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.sendMessage(key, message, attachments);
     final result = data['id'];

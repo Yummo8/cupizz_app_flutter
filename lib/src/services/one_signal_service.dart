@@ -1,4 +1,6 @@
-part of 'index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:pedantic/pedantic.dart';
 
 class OneSignalService extends MomentumService {
   bool _isInited = false;

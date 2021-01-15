@@ -1,4 +1,6 @@
-part of 'index.dart';
+import 'dart:async';
+
+import 'package:cupizz_app/src/base/base.dart';
 
 class Debouncer {
   Duration delay;

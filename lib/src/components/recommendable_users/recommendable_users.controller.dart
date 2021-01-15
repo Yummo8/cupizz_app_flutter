@@ -1,4 +1,6 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:cupizz_app/src/screens/main/pages/friend/friend_page.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 
 class RecommendableUsersController
     extends MomentumController<RecommendableUsersModel> {

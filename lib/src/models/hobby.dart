@@ -1,4 +1,4 @@
-part of 'index.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 class Hobby extends KeyValue {
   Hobby({String id, String value}) : super(id: id, value: value);

@@ -1,4 +1,4 @@
-part of 'index.dart';
+import 'package:timeago/timeago.dart' as time_ago;
 
 class TimeAgo {
   static String format(DateTime date, {DateTime clock, bool allowFromNow}) {

@@ -1,4 +1,6 @@
-part of 'index.dart';
+import 'dart:io';
+
+import 'package:cupizz_app/src/base/base.dart';
 
 class UserService extends MomentumService {
   Future<User> getCurrentUser() async {
@@ -37,8 +39,8 @@ class UserService extends MomentumService {
     String phoneNumber,
     String job,
     int height,
-    io.File avatar,
-    io.File cover,
+    File avatar,
+    File cover,
     DateTime birthday,
     double latitude,
     double longitude,
@@ -142,7 +144,7 @@ class UserService extends MomentumService {
     return result;
   }
 
-  Future<UserImage> addImage(io.File image) async {
+  Future<UserImage> addImage(File image) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.addUserImage(image);
     final result = Mapper.fromJson(data).toObject<UserImage>();
@@ -160,7 +162,7 @@ class UserService extends MomentumService {
     String color,
     String textColor,
     List<String> gradient,
-    io.File backgroundImage,
+    File backgroundImage,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.answerQuestion(
@@ -181,7 +183,7 @@ class UserService extends MomentumService {
     Color color,
     Color textColor,
     List<Color> gradient,
-    io.File backgroundImage,
+    File backgroundImage,
   }) async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.editAnswer(
