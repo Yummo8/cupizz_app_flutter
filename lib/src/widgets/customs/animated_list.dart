@@ -1,4 +1,5 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CustomAnimatedList extends StatefulWidget {
   const CustomAnimatedList(

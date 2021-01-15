@@ -22,7 +22,7 @@ class FriendPageController extends MomentumController<FriendPageModel> {
 
   Future refresh() async {
     await _reloadFriends();
-    model.animationController?.fling();
+    await model.animationController?.fling();
   }
 
   Future updateSettings({
@@ -39,8 +39,8 @@ class FriendPageController extends MomentumController<FriendPageModel> {
       );
       await _reloadFriends();
       model.update(isLoading: false);
-      model.animationController?.reset();
-      model.animationController?.forward();
+      await model.animationController?.reset();
+      await model.animationController?.forward();
     }
   }
 

@@ -1,4 +1,5 @@
-part of '../index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String url;

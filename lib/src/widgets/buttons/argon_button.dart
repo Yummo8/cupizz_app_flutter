@@ -1,4 +1,7 @@
-part of '../index.dart';
+import 'dart:async';
+import 'dart:ui';
+
+import 'package:cupizz_app/src/base/base.dart';
 
 enum ButtonState { Busy, Idle }
 
@@ -386,6 +389,7 @@ class _ArgonTimerButtonState extends State<ArgonTimerButton>
                   widget.borderRadius, widget.height / 2, _animation.value)
               : widget.borderRadius),
         ),
+        // ignore: deprecated_member_use
         child: RaisedButton(
             color: widget.color,
             focusColor: widget.focusColor,

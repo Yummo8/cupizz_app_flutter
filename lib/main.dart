@@ -21,9 +21,9 @@ void main() {
   );
 
   objectMapping();
-  runZoned<Future<void>>(() async {
+  runZonedGuarded<Future<void>>(() async {
     runApp(configuredApp);
-  }, onError: (error, stackTrace) {
+  }, (error, stackTrace) {
     configuredApp.sentry.captureException(
       error,
       stackTrace: stackTrace,

@@ -1,4 +1,7 @@
-part of '../index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class PhotoViewDescription {
   final String title;

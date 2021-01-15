@@ -21,12 +21,12 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
   @override
   Future<void> bootstrapAsync() async {
     await _reloadFriends();
-    model.animationController?.fling();
+    await model.animationController?.fling();
   }
 
   Future refresh() async {
     await _reloadFriends();
-    model.animationController?.fling();
+    await model.animationController?.fling();
   }
 
   Future loadmore() {

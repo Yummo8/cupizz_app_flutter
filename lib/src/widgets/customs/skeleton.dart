@@ -1,4 +1,5 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Skeleton extends StatelessWidget {
   final Widget child;

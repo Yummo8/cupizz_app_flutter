@@ -1,4 +1,8 @@
-part of '../index.dart';
+import 'dart:io';
+
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 void pickImage(
   BuildContext context,

@@ -1,4 +1,5 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingIndicator extends StatelessWidget {
   final double size;

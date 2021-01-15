@@ -1,6 +1,5 @@
 library services;
 
-import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:flutter/material.dart' hide Router;

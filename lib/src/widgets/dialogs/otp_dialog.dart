@@ -1,4 +1,9 @@
-part of '../index.dart';
+import 'dart:async';
+
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/gestures.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpDialog {
   static Future show(BuildContext context,

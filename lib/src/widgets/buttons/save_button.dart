@@ -1,4 +1,4 @@
-part of '../index.dart';
+import 'package:cupizz_app/src/base/base.dart';
 
 class SaveButton extends StatelessWidget {
   final Function onPressed;
