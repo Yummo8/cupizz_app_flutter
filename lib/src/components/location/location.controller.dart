@@ -2,7 +2,6 @@ import 'package:app_settings/app_settings.dart';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:momentum/momentum.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'location.model.dart';

@@ -15,7 +15,7 @@ export 'dart:io';
 export 'package:flutter/cupertino.dart' hide Router, RefreshCallback;
 export 'package:flutter/material.dart' hide Router, ButtonBar;
 export 'package:fluttertoast/fluttertoast.dart';
-export 'package:momentum/momentum.dart';
+export '../packages/momentum/momentum.dart';
 export 'package:object_mapper/object_mapper.dart';
 export 'package:pedantic/pedantic.dart';
 
