@@ -1,5 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../app.dart';
@@ -56,20 +56,28 @@ class AuthController extends MomentumController<AuthModel> {
             dependOn<CurrentUserController>().getCurrentUser);
         unawaited(googleSignIn.signOut());
       } else if (type == SocialProviderType.facebook) {
-        final facebookSignIn = FacebookLogin();
-        facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
-        final facebookLogin = await facebookSignIn.logIn(['email']);
-        if (facebookLogin.status == FacebookLoginStatus.loggedIn) {
-          debugPrint('Token facebook: ' + facebookLogin.accessToken.token);
+        try {
+          var accessToken = await FacebookAuth.instance.login();
+          print(accessToken.toJson());
+          final userData = await FacebookAuth.instance.getUserData();
+          print(userData);
           await getService<AuthService>().loginSocial(
               SocialProviderType.facebook,
-              facebookLogin.accessToken.token,
+              accessToken.token,
               dependOn<CurrentUserController>().getCurrentUser);
-        } else if (facebookLogin.status == FacebookLoginStatus.error) {
-          await Fluttertoast.showToast(msg: facebookLogin.errorMessage);
-          throw facebookLogin.errorMessage;
-        } else {
-          return;
+        } catch (e) {
+          switch (e.errorCode) {
+            case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+              print('Đang đăng nhập');
+              break;
+            case FacebookAuthErrorCode.CANCELLED:
+              print('login facebook cancelled');
+              break;
+            case FacebookAuthErrorCode.FAILED:
+              await Fluttertoast.showToast(msg: e.toString());
+              print('login facebook failed');
+              break;
+          }
         }
       } else {
         return;
