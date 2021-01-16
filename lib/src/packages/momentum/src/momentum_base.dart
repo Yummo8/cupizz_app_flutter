@@ -1527,8 +1527,7 @@ class Momentum extends InheritedWidget {
   }
 
   static Momentum _getMomentumInstance(BuildContext context) {
-    // ignore: deprecated_member_use
-    return (context.inheritFromWidgetOfExactType(Momentum) as Momentum);
+    return context.dependOnInheritedWidgetOfExactType<Momentum>();
   }
 
   static void _resetAll(BuildContext context) {
