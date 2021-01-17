@@ -58,7 +58,7 @@ class _SideBarState extends State<SideBar>
       top: 0,
       curve: Curves.easeInOut,
       bottom: 0,
-      left: isMenuOpen ? 0 : screenWidth - 45,
+      left: isMenuOpen ? 0 : screenWidth - 40,
       right: isMenuOpen ? 0 : -screenWidth,
       child: Row(
         children: <Widget>[
@@ -69,7 +69,7 @@ class _SideBarState extends State<SideBar>
               child: ClipPath(
                 clipper: CustomMenuClipper(),
                 child: Container(
-                  width: 40,
+                  width: 35,
                   height: 110,
                   color: context.colorScheme.primary.withOpacity(0.5),
                   alignment: Alignment.centerRight,
@@ -194,32 +194,16 @@ class _SideBarState extends State<SideBar>
           style:
               context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
         ),
-        Row(
-          children: [
-            InkWell(
-              enableFeedback: true,
-              child: Icon(
-                Icons.color_lens,
-                color: context.colorScheme.primary,
-                size: 20,
-              ),
-              onTap: () {
-                Momentum.of<ThemeController>(context).randomTheme();
-              },
-            ),
-            const SizedBox(width: 10),
-            InkWell(
-              enableFeedback: true,
-              child: Icon(
-                Icons.arrow_right_alt,
-                color: context.colorScheme.onBackground,
-                size: 30,
-              ),
-              onTap: () {
-                controller.closeMenu();
-              },
-            ),
-          ],
+        InkWell(
+          enableFeedback: true,
+          child: Icon(
+            Icons.color_lens,
+            color: context.colorScheme.primary,
+            size: 20,
+          ),
+          onTap: () {
+            Momentum.of<ThemeController>(context).randomTheme();
+          },
         ),
       ],
     );
