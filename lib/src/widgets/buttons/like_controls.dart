@@ -73,10 +73,10 @@ class LikeControls extends StatelessWidget {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: context.colorScheme.background,
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
+                      color: context.colorScheme.onBackground.withOpacity(0.15),
                       blurRadius: 30,
                       offset: Offset(2, 1.5),
                     ),
