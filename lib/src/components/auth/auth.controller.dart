@@ -58,26 +58,31 @@ class AuthController extends MomentumController<AuthModel> {
       } else if (type == SocialProviderType.facebook) {
         try {
           var accessToken = await FacebookAuth.instance.login();
-          print(accessToken.toJson());
-          final userData = await FacebookAuth.instance.getUserData();
-          print(userData);
+          if (accessToken == null || !accessToken.token.isExistAndNotEmpty) {
+            return;
+          }
           await getService<AuthService>().loginSocial(
               SocialProviderType.facebook,
               accessToken.token,
               dependOn<CurrentUserController>().getCurrentUser);
         } catch (e) {
-          switch (e.errorCode) {
-            case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
-              print('Đang đăng nhập');
-              break;
-            case FacebookAuthErrorCode.CANCELLED:
-              print('login facebook cancelled');
-              break;
-            case FacebookAuthErrorCode.FAILED:
-              await Fluttertoast.showToast(msg: e.toString());
-              print('login facebook failed');
-              break;
+          if (e.errorCode != null) {
+            switch (e.errorCode) {
+              case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+                print('Đang đăng nhập');
+                break;
+              case FacebookAuthErrorCode.CANCELLED:
+                print('login facebook cancelled');
+                break;
+              case FacebookAuthErrorCode.FAILED:
+                print('login facebook failed');
+                await Fluttertoast.showToast(msg: e.toString());
+                break;
+            }
+          } else {
+            await Fluttertoast.showToast(msg: e.toString());
           }
+          return;
         }
       } else {
         return;

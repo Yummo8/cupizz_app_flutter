@@ -4,7 +4,9 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cupizz_app/src/helpers/index.dart';
+import 'package:cupizz_app/src/screens/main/pages/home/widgets/side_bar.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
+import 'package:cupizz_app/src/widgets/buttons/like_controls.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
@@ -38,10 +40,17 @@ class _HomePageState extends State<HomePage> {
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
-            AnimatedBackground(),
-            Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
-            Positioned.fill(child: _buildCards()),
-            OptionsDrawer(controller: _drawerController),
+            // AnimatedBackground(),
+            // Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
+            Positioned.fill(
+                child: Column(
+              children: [
+                Expanded(child: _buildCards()),
+                LikeControls(),
+              ],
+            )),
+            SideBar(controller: _drawerController),
+            // OptionsDrawer(controller: _drawerController),
           ],
         ),
       ),
@@ -129,7 +138,7 @@ class _HomePageState extends State<HomePage> {
           }
 
           return CCard(
-            padding: EdgeInsets.only(top: _headerHeight + 50),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             size: Size(
               MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height,
