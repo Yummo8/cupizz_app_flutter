@@ -5,7 +5,6 @@ import 'dart:math' as math;
 
 import 'package:cupizz_app/src/helpers/index.dart';
 import 'package:cupizz_app/src/screens/main/pages/home/widgets/side_bar.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/widgets/buttons/like_controls.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
@@ -13,11 +12,11 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../../../packages/wave/wave.dart';
-import '../../../../packages/wave/config.dart';
 
 import '../../../../assets.dart';
 import '../../../../base/base.dart';
+import '../../../../packages/wave/config.dart';
+import '../../../../packages/wave/wave.dart';
 import '../../../../widgets/index.dart';
 
 part 'widgets/animated_background.dart';
@@ -31,7 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _drawerController = OptionsDrawerController();
-  final _headerHeight = 75.0;
+  final _cardController = CCardController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +41,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // AnimatedBackground(),
             // Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
-            Positioned.fill(
-                child: Column(
-              children: [
-                Expanded(child: _buildCards()),
-                LikeControls(),
-              ],
-            )),
+            _buildCards(), _buildControls(),
             SideBar(controller: _drawerController),
             // OptionsDrawer(controller: _drawerController),
           ],
@@ -57,48 +50,32 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildHeader() {
-    return Builder(builder: (context) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          MomentumBuilder(
-            controllers: [CurrentUserController],
-            builder: (context, snapshot) {
-              final model = snapshot<CurrentUserModel>();
-              return model.currentUser != null
-                  ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(90),
-                        border: Border.all(
-                          color:
-                              context.colorScheme.background.withOpacity(0.2),
-                          width: 4,
-                        ),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Router.goto(context, ProfilePage);
-                        },
-                        child: UserAvatar.fromChatUser(
-                          user: model.currentUser,
-                          size: 38,
-                          showOnline: false,
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink();
-            },
-          ),
-          OpacityIconButton(
-            icon: Icons.tune,
-            onPressed: () {
-              _drawerController.openMenu();
-            },
-          ),
-        ],
-      );
-    });
+  Widget _buildControls() {
+    return MomentumBuilder(
+        controllers: [RecommendableUsersController],
+        builder: (context, snapshot) {
+          var model = snapshot<RecommendableUsersModel>();
+          if (model.users.isExistAndNotEmpty) {
+            return Positioned(
+              bottom: 10,
+              right: 0,
+              left: 0,
+              child: Transform.scale(
+                scale: 0.8,
+                child: LikeControls(onLike: () {
+                  _cardController.forward();
+                  Momentum.controller<RecommendableUsersController>(context)
+                      .onSwipe(context, isSwipeRight: true);
+                }, onDislike: () {
+                  _cardController.forward(direction: SwipDirection.Left);
+                  Momentum.controller<RecommendableUsersController>(context)
+                      .onSwipe(context);
+                }),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        });
   }
 
   Widget _buildCards() {
@@ -107,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           var model = snapshot<RecommendableUsersModel>();
           if (model.isLoading || model.users == null) {
-            return LoadingIndicator();
+            return Center(child: LoadingIndicator());
           } else if (model.error.isExistAndNotEmpty) {
             return ErrorIndicator(
               moreErrorDetail: model.error,
@@ -138,7 +115,11 @@ class _HomePageState extends State<HomePage> {
           }
 
           return CCard(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            controller: _cardController,
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top,
+              bottom: 80,
+            ),
             size: Size(
               MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height,

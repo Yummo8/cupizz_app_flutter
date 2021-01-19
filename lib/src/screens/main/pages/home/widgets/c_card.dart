@@ -179,9 +179,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   Widget _middleCard(BoxConstraints constraints) {
-    final child = _frontCardIndex < _cards.length - 1
-        ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 1])
-        : const SizedBox.shrink();
+    final child = IgnorePointer(
+        child: _frontCardIndex < _cards.length - 1
+            ? Padding(
+                padding: widget.padding, child: _cards[_frontCardIndex + 1])
+            : const SizedBox.shrink());
     final forward = _cardChangeController.status == AnimationStatus.forward;
     final reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -223,9 +225,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   Widget _backCard(BoxConstraints constraints) {
-    final child = _frontCardIndex < _cards.length - 2
-        ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 2])
-        : Container();
+    final child = IgnorePointer(
+      child: _frontCardIndex < _cards.length - 2
+          ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 2])
+          : Container(),
+    );
     final forward = _cardChangeController.status == AnimationStatus.forward;
     final reverse = _cardReverseController.status == AnimationStatus.forward;
 

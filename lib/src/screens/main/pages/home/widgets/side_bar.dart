@@ -1,6 +1,8 @@
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:tinycolor/tinycolor.dart';
 
 import '../home_page.dart';
 
@@ -58,39 +60,45 @@ class _SideBarState extends State<SideBar>
       top: 0,
       curve: Curves.easeInOut,
       bottom: 0,
-      left: isMenuOpen ? 0 : screenWidth - 40,
+      left: isMenuOpen ? 0 : screenWidth - 60,
       right: isMenuOpen ? 0 : -screenWidth,
-      child: Row(
-        children: <Widget>[
-          Align(
-            alignment: Alignment(0, -0.9),
-            child: GestureDetector(
-              onTap: onIconPressed,
-              child: ClipPath(
-                clipper: CustomMenuClipper(),
-                child: Container(
-                  width: 35,
-                  height: 110,
-                  color: context.colorScheme.primary.withOpacity(0.5),
-                  alignment: Alignment.centerRight,
-                  child: AnimatedIcon(
-                    progress: _animationController.view,
-                    icon: AnimatedIcons.menu_close,
-                    color: context.colorScheme.onBackground,
-                    size: 25,
+      child: ClipPath(
+        clipper: HierenMenuClipper(),
+        child: Plasma(
+          particles: 10,
+          foregroundColor: context.colorScheme.primary.withOpacity(0.9),
+          backgroundColor: context.colorScheme.onPrimary.withOpacity(0.9),
+          size: 1.00,
+          speed: 6.00,
+          offset: 0.00,
+          blendMode: BlendMode.dstATop,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: onIconPressed,
+                  child: Container(
+                    width: 55,
+                    height: 100,
+                    margin: EdgeInsets.only(top: 50),
+                    alignment: Alignment.centerRight,
+                    child: AnimatedIcon(
+                      progress: _animationController.view,
+                      icon: AnimatedIcons.menu_close,
+                      color: context.colorScheme.onBackground,
+                      size: 25,
+                    ),
                   ),
                 ),
               ),
-            ),
+              Expanded(
+                child: _buildBody(),
+              ),
+            ],
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              color: context.colorScheme.primary.withOpacity(0.5),
-              child: _buildBody(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -469,6 +477,45 @@ class CustomMenuClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(width, height - 8, width, height);
     path.close();
     return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+
+class HierenMenuClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var paint = Paint();
+    paint.color = Colors.white;
+
+    var path_0 = Path();
+    // path_0.moveTo(size.width * 0.14, 0);
+    // path_0.lineTo(size.width, 0);
+    // path_0.lineTo(size.width, size.height);
+    // path_0.lineTo(size.width * 0.14, size.height);
+    // path_0.lineTo(size.width * 0.14, size.height * 0.24);
+    // path_0.quadraticBezierTo(size.width * 0.14, size.height * 0.20,
+    //     size.width * 0.09, size.height * 0.17);
+    // path_0.cubicTo(size.width * 0.05, size.height * 0.16, size.width * 0.05,
+    //     size.height * 0.13, size.width * 0.09, size.height * 0.11);
+    // path_0.quadraticBezierTo(size.width * 0.14, size.height * 0.09,
+    //     size.width * 0.14, size.height * 0.04);
+    // path_0.lineTo(size.width * 0.14, 0);
+
+    path_0.moveTo(50, 0);
+    path_0.lineTo(size.width, 0);
+    path_0.lineTo(size.width, size.height);
+    path_0.lineTo(50, size.height);
+    path_0.lineTo(50, 170);
+    path_0.quadraticBezierTo(50.55, 141.68, 30, 120);
+    path_0.cubicTo(18.42, 111.81, 19.14, 90.65, 30, 80);
+    path_0.quadraticBezierTo(50.43, 60.1, 50, 30);
+    path_0.lineTo(50, 0);
+    path_0.close();
+    return path_0;
   }
 
   @override

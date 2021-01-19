@@ -781,6 +781,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.3"
+  pigment:
+    dependency: transitive
+    description:
+      name: pigment
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   pin_code_fields:
     dependency: "direct main"
     description:
@@ -1010,6 +1017,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.29"
+  tinycolor:
+    dependency: "direct main"
+    description:
+      name: tinycolor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   transparent_image:
     dependency: transitive
     description:

@@ -35,3 +35,4 @@ export 'users/user_avatar.dart';
 export 'users/user_card.dart';
 export 'users/user_item.dart';
 export 'users/user_profile/user_profile.dart';
+export 'animations/index.dart';
