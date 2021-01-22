@@ -1,9 +1,6 @@
 part of '../home_page.dart';
 
-enum SwipDirection {
-  Left,
-  Right,
-}
+enum SwipDirection { Left, Right, Up }
 
 class SwipInfo {
   final int cardIndex;
@@ -94,6 +91,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
 
   Alignment _frontCardAlignment = CardAlignments.front;
 
+  bool _showSuperLikeOverlay = false;
+
   AnimationController _cardChangeController;
 
   AnimationController _cardReverseController;
@@ -128,22 +127,26 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
               if (widget.cards.isNotEmpty)
                 Positioned.fill(
                   child: IgnorePointer(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _frontCardAlignment.x > 0
-                            ? likeColor.withOpacity(math.min(
-                                1.0,
-                                _frontCardAlignment.x.abs() /
-                                    (limit + _frontCardAlignment.x.abs()),
-                              ))
-                            : dislikeColor.withOpacity(math.min(
-                                1.0,
-                                _frontCardAlignment.x.abs() /
-                                    (limit + _frontCardAlignment.x.abs()),
-                              )),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
+                    child: _showSuperLikeOverlay
+                        ? SuperLikeOverlay(
+                            borderRadius: BorderRadius.circular(15),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: _frontCardAlignment.x > 0
+                                  ? likeColor.withOpacity(math.min(
+                                      1.0,
+                                      _frontCardAlignment.x.abs() /
+                                          (limit + _frontCardAlignment.x.abs()),
+                                    ))
+                                  : dislikeColor.withOpacity(math.min(
+                                      1.0,
+                                      _frontCardAlignment.x.abs() /
+                                          (limit + _frontCardAlignment.x.abs()),
+                                    )),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
                   ),
                 )
             ],
@@ -294,7 +297,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     _return();
   }
 
-  void _runChangeOrderAnimation() {
+  void _runChangeOrderAnimation() async {
     if (_isAnimating()) {
       return;
     }
@@ -303,8 +306,20 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
       return;
     }
 
+    if (_swipInfoList[_frontCardIndex].direction == SwipDirection.Up) {
+      setState(() {
+        _showSuperLikeOverlay = true;
+      });
+    }
+    if (_showSuperLikeOverlay) {
+      await Future.delayed(800.milliseconds);
+    }
+
     _cardChangeController.reset();
-    _cardChangeController.forward();
+    await _cardChangeController.forward();
+    setState(() {
+      _showSuperLikeOverlay = false;
+    });
   }
 
   void _runReverseOrderAnimation() {
@@ -322,6 +337,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   void _forwardCallback() {
+    _showSuperLikeOverlay = false;
     _frontCardIndex++;
     _return();
     if (widget.onForward != null && widget.onForward is Function) {
@@ -473,7 +489,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
               _backCard(constraints),
               _middleCard(constraints),
               _frontCard(constraints),
-              if (_cardChangeController.status != AnimationStatus.forward)
+              if (_cardChangeController.status != AnimationStatus.forward &&
+                  !_showSuperLikeOverlay)
                 SizedBox.expand(
                   child: GestureDetector(
                     onPanDown: (DragDownDetails details) {
@@ -603,8 +620,10 @@ class CardAnimations {
       end: Alignment(
         info.direction == SwipDirection.Left
             ? beginAlignment.x - 30.0
-            : beginAlignment.x + 30.0,
-        0.0,
+            : info.direction == SwipDirection.Right
+                ? beginAlignment.x + 30.0
+                : 0,
+        info.direction == SwipDirection.Up ? beginAlignment.y - 50 : 0.0,
       ),
     ).animate(
       CurvedAnimation(
@@ -780,6 +799,81 @@ class CardReverseAnimations {
         parent: parent,
         curve: Interval(0.4, 0.7, curve: Curves.easeIn),
       ),
+    );
+  }
+}
+
+enum SuperLikeAniProps { opacity, scale }
+
+class SuperLikeOverlay extends StatelessWidget {
+  final BorderRadius borderRadius;
+
+  const SuperLikeOverlay({Key key, this.borderRadius}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _tween = MultiTween<SuperLikeAniProps>()
+      ..add(SuperLikeAniProps.opacity, 0.0.tweenTo(1.0), 200.milliseconds)
+      ..add(SuperLikeAniProps.scale, 1.5.tweenTo(1.0), 500.milliseconds,
+          Curves.easeOutCirc);
+
+    return PlayAnimation<MultiTweenValues<SuperLikeAniProps>>(
+      tween: _tween,
+      duration: _tween.duration,
+      builder: (context, child, value) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.yellow
+                .withOpacity(value.get(SuperLikeAniProps.opacity) * 0.5),
+          ),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              margin: EdgeInsets.only(top: 50, left: 30),
+              child: Transform.scale(
+                scale: value.get(SuperLikeAniProps.scale),
+                child: Opacity(
+                  opacity: value.get(SuperLikeAniProps.opacity),
+                  child: Transform.rotate(
+                    angle: -math.pi / 6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: Colors.yellow,
+                            width: 5,
+                            style: BorderStyle.solid),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            Assets.i.icons.star,
+                            height: 50,
+                            width: 50,
+                          ),
+                          const Text(
+                            'Super Like',
+                            style: TextStyle(
+                                color: Colors.yellow,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

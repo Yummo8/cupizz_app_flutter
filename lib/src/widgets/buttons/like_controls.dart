@@ -1,4 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
+import 'package:cupizz_app/src/screens/main/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 

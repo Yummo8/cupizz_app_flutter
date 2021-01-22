@@ -12,6 +12,7 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 import '../../../../assets.dart';
 import '../../../../base/base.dart';
@@ -62,15 +63,21 @@ class _HomePageState extends State<HomePage> {
               left: 0,
               child: Transform.scale(
                 scale: 0.8,
-                child: LikeControls(onLike: () {
-                  _cardController.forward();
-                  Momentum.controller<RecommendableUsersController>(context)
-                      .onSwipe(context, isSwipeRight: true);
-                }, onDislike: () {
-                  _cardController.forward(direction: SwipDirection.Left);
-                  Momentum.controller<RecommendableUsersController>(context)
-                      .onSwipe(context);
-                }),
+                child: LikeControls(
+                  onLike: () {
+                    _cardController.forward();
+                    Momentum.controller<RecommendableUsersController>(context)
+                        .onSwipe(context, isSwipeRight: true);
+                  },
+                  onDislike: () {
+                    _cardController.forward(direction: SwipDirection.Left);
+                    Momentum.controller<RecommendableUsersController>(context)
+                        .onSwipe(context);
+                  },
+                  onSuperLike: () {
+                    _cardController.forward(direction: SwipDirection.Up);
+                  },
+                ),
               ),
             );
           }

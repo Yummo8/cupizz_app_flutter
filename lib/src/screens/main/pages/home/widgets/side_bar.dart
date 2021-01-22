@@ -2,7 +2,6 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'package:tinycolor/tinycolor.dart';
 
 import '../home_page.dart';
 
@@ -21,6 +20,7 @@ class _SideBarState extends State<SideBar>
   AnimationController _animationController;
   final _animationDuration = const Duration(milliseconds: 500);
   bool isMenuOpen = false;
+  double screenWidth = 0;
 
   @override
   void initState() {
