@@ -31,11 +31,18 @@ class RecommendableUsersController
     debugPrint('Fetched ${users.length} recommend users');
   }
 
-  Future onSwipe(BuildContext context, {bool isSwipeRight = false}) async {
+  Future onSwipe(
+    BuildContext context, {
+    bool isSwipeRight = false,
+    bool isSuperLike = false,
+  }) async {
     if (model.users.isNotEmpty) {
       final service = getService<UserService>();
       if (isSwipeRight) {
-        final friendType = await service.addFriend(model.users[0].id);
+        final friendType = await service.addFriend(
+          model.users[0].id,
+          isSuperLike: isSuperLike,
+        );
         unawaited(dependOn<FriendPageController>().refresh());
         if (friendType == FriendType.friend) {
           _onMatched(context, model.users[0]);

@@ -12,7 +12,8 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:simple_animations/simple_animations.dart';
+
+import 'widgets/super_like_anim_overlay.dart';
 
 import '../../../../assets.dart';
 import '../../../../base/base.dart';
@@ -76,6 +77,9 @@ class _HomePageState extends State<HomePage> {
                   },
                   onSuperLike: () {
                     _cardController.forward(direction: SwipDirection.Up);
+                    Momentum.controller<RecommendableUsersController>(context)
+                        .onSwipe(context,
+                            isSuperLike: true, isSwipeRight: true);
                   },
                 ),
               ),
