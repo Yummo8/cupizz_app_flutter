@@ -1,5 +1,6 @@
 library user_screen;
 
+import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../base/base.dart';

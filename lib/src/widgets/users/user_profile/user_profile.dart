@@ -48,7 +48,7 @@ class UserProfileState extends MomentumState<UserProfile>
   @override
   void initState() {
     super.initState();
-    if (widget.user.isCurrentUser) {
+    if (widget.user != null && widget.user.isCurrentUser) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Momentum.controller<CurrentUserController>(context)
             .listen<CurrentUserEvent>(

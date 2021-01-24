@@ -152,4 +152,26 @@ extension GraphqlQuery on GraphqlService {
     );
     return result.data['unreadMessageCount'] ?? 0;
   }
+
+  Future<int> unreadReceiveFriendCountQuery() async {
+    final queryString = '''{ unreadReceiveFriendCount(justSuperLike: true) }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['unreadReceiveFriendCount'] ?? 0;
+  }
+
+  Future<int> unreadAcceptedFriendCountQuery() async {
+    final queryString = '''{ unreadAcceptedFriendCount }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['unreadAcceptedFriendCount'] ?? 0;
+  }
 }

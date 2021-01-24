@@ -384,4 +384,11 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['changePassword'];
   }
+
+  Future readFriendRequestMutation(String userId) async {
+    final query = '''mutation { readFriendRequest(userId: "$userId") }''';
+    await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+  }
 }

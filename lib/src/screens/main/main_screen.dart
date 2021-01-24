@@ -104,6 +104,8 @@ class _MainScreenState extends MomentumState<MainScreen>
                         _BottomNavButtonData(
                           'Yêu thích',
                           context.colorScheme.secondary,
+                          number: systemModel.unreadAcceptedFriendCount +
+                              systemModel.unreadReceiveFriendCount,
                           icon: Icons.favorite_outline_sharp,
                         ),
                         _BottomNavButtonData(

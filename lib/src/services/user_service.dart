@@ -35,6 +35,11 @@ class UserService extends MomentumService {
     await graphql.removeFriendMutation(id: userId);
   }
 
+  Future<void> readFriendRequest(String userId) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.readFriendRequestMutation(userId);
+  }
+
   Future<User> updateProfile({
     String nickName,
     String introduction,

@@ -6,6 +6,8 @@ class FriendData with Mappable {
   DateTime _acceptedAt;
   DateTime _updatedAt;
   bool _isSuperLike;
+  bool readSent;
+  bool readAccepted;
 
   SimpleUser get friend => _friend;
   DateTime get sentAt => _sentAt;
@@ -19,6 +21,8 @@ class FriendData with Mappable {
     DateTime acceptedAt,
     DateTime updatedAt,
     bool isSuperLike,
+    this.readSent,
+    this.readAccepted,
   })  : _friend = friend,
         _sentAt = sentAt,
         _acceptedAt = acceptedAt,
@@ -32,8 +36,10 @@ class FriendData with Mappable {
     map('acceptedAt', _acceptedAt, (v) => _acceptedAt = v, DateTransform());
     map('updatedAt', _updatedAt, (v) => _updatedAt = v, DateTransform());
     map('isSuperLike', _isSuperLike, (v) => _isSuperLike = v);
+    map('readSent', readSent, (v) => readSent = v);
+    map('readAccepted', readAccepted, (v) => readAccepted = v);
   }
 
   static String get graphqlQuery =>
-      '{friend ${SimpleUser.graphqlQuery} sentAt acceptedAt updatedAt isSuperLike}';
+      '{friend ${SimpleUser.graphqlQuery} sentAt acceptedAt updatedAt isSuperLike readSent readAccepted}';
 }

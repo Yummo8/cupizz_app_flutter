@@ -2,6 +2,7 @@ library base;
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:intl/intl.dart';
 import 'package:sentry/sentry.dart';

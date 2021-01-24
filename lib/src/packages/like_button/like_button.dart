@@ -448,6 +448,19 @@ class LikeButtonState extends State<LikeButton> with TickerProviderStateMixin {
           }
         });
       }
+    } else if (isLiked == null) {
+      if (mounted) {
+        setState(() {
+          if (_isLiked) {
+            _controller.reset();
+            _controller.forward();
+          }
+          if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+            _likeCountController.reset();
+            _likeCountController.forward();
+          }
+        });
+      }
     }
   }
 

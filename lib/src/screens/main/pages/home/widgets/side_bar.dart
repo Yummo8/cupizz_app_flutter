@@ -505,15 +505,15 @@ class HierenMenuClipper extends CustomClipper<Path> {
     //     size.width * 0.14, size.height * 0.04);
     // path_0.lineTo(size.width * 0.14, 0);
 
-    path_0.moveTo(50, 0);
+    path_0.moveTo(60, 0);
     path_0.lineTo(size.width, 0);
     path_0.lineTo(size.width, size.height);
-    path_0.lineTo(50, size.height);
-    path_0.lineTo(50, 170);
-    path_0.quadraticBezierTo(50.55, 141.68, 30, 120);
+    path_0.lineTo(60, size.height);
+    path_0.lineTo(60, 170);
+    path_0.quadraticBezierTo(60.55, 141.68, 30, 120);
     path_0.cubicTo(18.42, 111.81, 19.14, 90.65, 30, 80);
-    path_0.quadraticBezierTo(50.43, 60.1, 50, 30);
-    path_0.lineTo(50, 0);
+    path_0.quadraticBezierTo(60.43, 60.1, 60, 30);
+    path_0.lineTo(60, 0);
     path_0.close();
     return path_0;
   }

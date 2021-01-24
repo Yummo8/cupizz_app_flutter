@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:simple_animations/simple_animations.dart';
+import 'package:vibration/vibration.dart';
 
 class LikeControls extends StatelessWidget {
   final Function onLike;
@@ -49,8 +53,10 @@ class LikeControls extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0),
-                        child: GestureDetector(
-                          onTap: onDislike,
+                        child: CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          minSize: 0,
+                          onPressed: onDislike,
                           child: Icon(
                             Icons.close,
                             color: Colors.grey,
@@ -60,13 +66,11 @@ class LikeControls extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 16.0),
-                        child: GestureDetector(
-                          onTap: onSuperLike,
-                          child: Icon(
-                            Icons.star,
-                            color: context.colorScheme.primary,
-                            size: 30,
-                          ),
+                        child: SuperLikeButton(
+                          onPressed: () {
+                            onSuperLike?.call();
+                            Vibration.vibrate(amplitude: 255, duration: 30);
+                          },
                         ),
                       ),
                     ],
@@ -96,6 +100,7 @@ class LikeControls extends StatelessWidget {
                   size: 60,
                   onTap: (isLiked) async {
                     onLike?.call();
+                    await Vibration.vibrate(amplitude: 255, duration: 10);
                     return null;
                   },
                   isLiked: true,
