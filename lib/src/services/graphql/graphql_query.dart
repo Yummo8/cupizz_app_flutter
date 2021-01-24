@@ -40,11 +40,13 @@ extension GraphqlQuery on GraphqlService {
     FriendQueryType type = FriendQueryType.all,
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
+    bool isSuperLike,
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(
-          '{ friendsV2(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${WithIsLastPageOutput.graphqlQuery(FriendData.graphqlQuery)} }'),
+          '''{ friendsV2(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page ${isSuperLike != null ? 'isSuperLike: $isSuperLike' : ''}) 
+          ${WithIsLastPageOutput.graphqlQuery(FriendData.graphqlQuery)} }'''),
     ));
     return result.data['friendsV2'];
   }

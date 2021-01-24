@@ -90,6 +90,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
         type: FriendQueryType.received,
         orderBy: model.receivedFriends.sort ?? FriendQueryOrderBy.recent,
         page: page,
+        isSuperLike: true,
       );
       model.receivedFriends.addData(result.data,
           currentPage: page, isLastPage: result.isLastPage);
@@ -126,6 +127,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
           type: FriendQueryType.received,
           orderBy: model.receivedFriends?.sort ?? FriendQueryOrderBy.recent,
           page: 1,
+          isSuperLike: true,
         ),
       ]);
 

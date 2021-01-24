@@ -139,9 +139,10 @@ class UserService extends MomentumService {
     FriendQueryType type = FriendQueryType.all,
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
+    bool isSuperLike,
   }) async {
     final graphql = getService<GraphqlService>();
-    final data = await graphql.friendsV2Query(type, orderBy, page);
+    final data = await graphql.friendsV2Query(type, orderBy, page, isSuperLike);
     final result = WithIsLastPageOutput<FriendData>.fromJson(data);
     return result;
   }
