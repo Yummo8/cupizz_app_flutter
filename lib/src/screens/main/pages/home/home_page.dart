@@ -65,23 +65,23 @@ class _HomePageState extends State<HomePage> {
               child: Transform.scale(
                 scale: 0.8,
                 child: LikeControls(
-                  onLike: () {
-                    _cardController.forward();
-                    Momentum.controller<RecommendableUsersController>(context)
-                        .onSwipe(context, isSwipeRight: true);
-                  },
-                  onDislike: () {
-                    _cardController.forward(direction: SwipDirection.Left);
-                    Momentum.controller<RecommendableUsersController>(context)
-                        .onSwipe(context);
-                  },
-                  onSuperLike: () {
-                    _cardController.forward(direction: SwipDirection.Up);
-                    Momentum.controller<RecommendableUsersController>(context)
-                        .onSwipe(context,
-                            isSuperLike: true, isSwipeRight: true);
-                  },
-                ),
+                    // onLike: () {
+                    //   _cardController.forward();
+                    //   Momentum.controller<RecommendableUsersController>(context)
+                    //       .onSwipe(context, isSwipeRight: true);
+                    // },
+                    // onDislike: () {
+                    //   _cardController.forward(direction: SwipDirection.Left);
+                    //   Momentum.controller<RecommendableUsersController>(context)
+                    //       .onSwipe(context);
+                    // },
+                    // onSuperLike: () {
+                    //   _cardController.forward(direction: SwipDirection.Up);
+                    //   Momentum.controller<RecommendableUsersController>(context)
+                    //       .onSwipe(context,
+                    //           isSuperLike: true, isSwipeRight: true);
+                    // },
+                    ),
               ),
             );
           }

@@ -1,5 +1,4 @@
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/screens/main/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
@@ -78,24 +77,29 @@ class LikeControls extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.center,
-            child: GestureDetector(
-              onTap: onLike,
-              child: Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: context.colorScheme.background,
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: context.colorScheme.onBackground.withOpacity(0.15),
-                      blurRadius: 30,
-                      offset: Offset(2, 1.5),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Icon(
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.colorScheme.background,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: context.colorScheme.onBackground.withOpacity(0.15),
+                    blurRadius: 30,
+                    offset: Offset(2, 1.5),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: LikeButton(
+                  size: 60,
+                  onTap: (isLiked) async {
+                    onLike?.call();
+                    return null;
+                  },
+                  isLiked: true,
+                  likeBuilder: (isLiked) => Icon(
                     Icons.favorite,
                     size: 40,
                     color: context.colorScheme.primary,
