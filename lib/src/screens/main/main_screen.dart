@@ -12,6 +12,7 @@ import 'components/main_screen.controller.dart';
 import 'pages/chat/chat_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/profile/profile_page.dart';
+import 'pages/post/post_page.dart';
 
 export 'pages/profile/edit_profile_screen.dart';
 
@@ -26,7 +27,8 @@ class _MainScreenState extends MomentumState<MainScreen>
     HomePage(),
     FriendPageV2(),
     ChatPage(),
-    ProfilePage(),
+    // ProfilePage(),
+    PostPage()
   ];
 
   TabController _tabController;
