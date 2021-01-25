@@ -1,10 +1,10 @@
 ///
 ///  create by zmtzawqlp on 2019/5/27
 ///
-
 import 'package:flutter/material.dart';
-import 'painter/circle_painter.dart';
+
 import 'painter/bubbles_painter.dart';
+import 'painter/circle_painter.dart';
 import 'utils/like_button_model.dart';
 import 'utils/like_button_typedef.dart';
 import 'utils/like_button_util.dart';

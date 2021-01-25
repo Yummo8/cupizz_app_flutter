@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:simple_animations/simple_animations.dart';
 import 'package:vibration/vibration.dart';
 
 class LikeControls extends StatelessWidget {

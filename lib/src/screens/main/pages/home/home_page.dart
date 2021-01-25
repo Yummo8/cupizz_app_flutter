@@ -37,18 +37,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            // AnimatedBackground(),
-            // Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
-            _buildCards(), _buildControls(),
-            SideBar(controller: _drawerController),
-            // OptionsDrawer(controller: _drawerController),
-          ],
-        ),
-      ),
+      body: LayoutBuilder(builder: (context, constraints) {
+        return SizedBox(
+          height: constraints.maxHeight,
+          width: constraints.maxWidth,
+          child: Stack(
+            children: [
+              // AnimatedBackground(),
+              // Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
+              _buildCards(), _buildControls(),
+              SideBar(
+                controller: _drawerController,
+                sideBarSize: constraints.maxWidth,
+              ),
+              // OptionsDrawer(controller: _drawerController),
+            ],
+          ),
+        );
+      }),
     );
   }
 

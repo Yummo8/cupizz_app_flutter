@@ -7,8 +7,9 @@ import '../home_page.dart';
 
 class SideBar extends StatefulWidget {
   final OptionsDrawerController controller;
+  final double sideBarSize;
 
-  const SideBar({Key key, this.controller}) : super(key: key);
+  const SideBar({Key key, this.controller, this.sideBarSize}) : super(key: key);
 
   @override
   _SideBarState createState() => _SideBarState();
@@ -54,7 +55,8 @@ class _SideBarState extends State<SideBar>
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = widget.sideBarSize ?? MediaQuery.of(context).size.width;
+    print('screenWidth: ${context.width}');
     return AnimatedPositioned(
       duration: _animationDuration,
       top: 0,
