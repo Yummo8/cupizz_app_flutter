@@ -318,9 +318,6 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
 
     _cardChangeController.reset();
     await _cardChangeController.forward();
-    setState(() {
-      _showSuperLikeOverlay = false;
-    });
   }
 
   void _runReverseOrderAnimation() {

@@ -56,7 +56,6 @@ class _SideBarState extends State<SideBar>
   @override
   Widget build(BuildContext context) {
     final screenWidth = widget.sideBarSize ?? MediaQuery.of(context).size.width;
-    print('screenWidth: ${context.width}');
     return AnimatedPositioned(
       duration: _animationDuration,
       top: 0,
