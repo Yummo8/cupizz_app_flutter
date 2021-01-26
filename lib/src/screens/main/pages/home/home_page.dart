@@ -111,24 +111,28 @@ class _HomePageState extends State<HomePage> {
               },
             );
           } else if (!model.users.isExistAndNotEmpty) {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Hiện tại chúng tôi không còn gợi ý ghép đôi dành cho bạn.\nHãy thử thay đổi mẫu người mà bạn tìm kiếm.',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                OptionButton(
-                  title: 'Đổi cài đặt',
-                  isSelected: true,
-                  onPressed: () {
-                    _drawerController.openMenu();
-                  },
-                ),
-              ],
-            ));
+            Momentum.of<RecommendableUsersController>(context)
+                .fetchRecommendableUsers();
+            return FadeIn(
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Hiện tại chúng tôi không còn gợi ý ghép đôi dành cho bạn.\nHãy thử thay đổi mẫu người mà bạn tìm kiếm.',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  OptionButton(
+                    title: 'Đổi cài đặt',
+                    isSelected: true,
+                    onPressed: () {
+                      _drawerController.openMenu();
+                    },
+                  ),
+                ],
+              )),
+            );
           }
 
           return CCard(

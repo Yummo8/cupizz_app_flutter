@@ -105,8 +105,8 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                 children: [
                   model.allFriends ?? FriendV2TabData(),
                   model.receivedFriends ?? FriendV2TabData(),
-                ].map(
-                  (e) {
+                ].mapIndexed(
+                  (e, i) {
                     final friendsList = <FriendData>[
                       ...e.friends ?? [],
                       ...!e.isLastPage
@@ -121,7 +121,9 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 50),
                             child: Text(
-                              'Những người đã được ghép đôi, đã thích bạn hay bạn đã thích sẽ xuất hiện ở đây.',
+                              i == 0
+                                  ? 'Những người đã ghép đôi với bạn sẽ xuất hiện ở đây.'
+                                  : 'Những người đã siêu thích bạn sẽ xuất hiện ở đây.',
                               style: context.textTheme.subtitle1.copyWith(
                                   color: context.colorScheme.onSurface),
                               textAlign: TextAlign.center,
