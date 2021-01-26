@@ -17,7 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
         var model = snapshot<CurrentUserModel>();
         return UserProfile(
           user: model.currentUser,
-          showBackButton: true,
+          showBackButton: false,
         );
       },
     );

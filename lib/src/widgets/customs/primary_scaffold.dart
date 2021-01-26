@@ -1,4 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
+import 'package:flutter/foundation.dart';
 
 class PrimaryScaffold extends StatelessWidget {
   final Widget body;
@@ -24,17 +25,26 @@ class PrimaryScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold(
+      appBar: appBar,
+      backgroundColor: context.colorScheme.background,
+      drawer: drawer,
+      body: body,
+      bottomNavigationBar: bottomNavigationBar,
+    );
     return RouterPage(
       onWillPop: onBack,
       child: Stack(
         children: [
-          Scaffold(
-            appBar: appBar,
-            backgroundColor: context.colorScheme.background,
-            drawer: drawer,
-            body: body,
-            bottomNavigationBar: bottomNavigationBar,
-          ),
+          if (context.height > context.width && kIsWeb)
+            Center(
+              child: SizedBox(
+                width: context.height * 9 / 19.5,
+                child: scaffold,
+              ),
+            )
+          else
+            scaffold,
           if (isLoading)
             Positioned.fill(
               child: Container(

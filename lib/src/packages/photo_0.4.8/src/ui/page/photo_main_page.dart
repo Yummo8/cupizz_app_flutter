@@ -273,7 +273,7 @@ class _PhotoMainPageState extends State<PhotoMainPage>
     }
 
     if (assetProvider.count < 1) {
-      return const Center(child: Text('画像無し'));
+      return const Center(child: Text('Không có ảnh. Hãy chụp ảnh!'));
     }
 
     return Container(

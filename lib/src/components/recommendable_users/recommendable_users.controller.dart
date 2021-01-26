@@ -27,15 +27,23 @@ class RecommendableUsersController
 
   Future _reload() async {
     final users = await getService<UserService>().getRecommendableUsers();
-    model.update(users: users);
+    model.update(users: users, isLastPage: !users.isExistAndNotEmpty);
     debugPrint('Fetched ${users.length} recommend users');
   }
 
-  Future onSwipe(BuildContext context, {bool isSwipeRight = false}) async {
+  Future onSwipe(
+    BuildContext context, {
+    bool isSwipeRight = false,
+    bool isSuperLike = false,
+    Future waitForUpdateUi,
+  }) async {
     if (model.users.isNotEmpty) {
       final service = getService<UserService>();
       if (isSwipeRight) {
-        final friendType = await service.addFriend(model.users[0].id);
+        final friendType = await service.addFriend(
+          model.users[0].id,
+          isSuperLike: isSuperLike,
+        );
         unawaited(dependOn<FriendPageController>().refresh());
         if (friendType == FriendType.friend) {
           _onMatched(context, model.users[0]);
@@ -44,6 +52,9 @@ class RecommendableUsersController
         await service.removeFriend(model.users[0].id);
       }
       model.users.removeAt(0);
+      if (waitForUpdateUi != null) {
+        await waitForUpdateUi;
+      }
       model.update(users: model.users);
     }
   }

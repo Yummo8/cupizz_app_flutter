@@ -48,7 +48,7 @@ class UserProfileState extends MomentumState<UserProfile>
   @override
   void initState() {
     super.initState();
-    if (widget.user.isCurrentUser) {
+    if (widget.user != null && widget.user.isCurrentUser) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Momentum.controller<CurrentUserController>(context)
             .listen<CurrentUserEvent>(
@@ -240,9 +240,13 @@ class UserProfileState extends MomentumState<UserProfile>
                 if (user.userImages.isExistAndNotEmpty)
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => CartImage(
-                      userImage: user.userImages[index],
-                      readOnly: !widget.user.isCurrentUser,
+                    itemBuilder: (context, index) => FadeInTranslate(
+                      delay: (index + 1).toDouble(),
+                      enabled: !widget.user.isCurrentUser,
+                      child: CartImage(
+                        userImage: user.userImages[index],
+                        readOnly: !widget.user.isCurrentUser,
+                      ),
                     ),
                     shrinkWrap: true,
                     itemCount: user?.userImages?.length ?? 0,

@@ -23,7 +23,7 @@ class AppConfig extends InheritedWidget {
   }) : super(child: Material(child: child)) {
     _globalKey = child.key;
     FlutterError.onError = (FlutterErrorDetails details) {
-      if (isDev) {
+      if (isDev || kIsWeb) {
         FlutterError.dumpErrorToConsole(details);
       } else {
         Zone.current.handleUncaughtError(details.exception, details.stack);

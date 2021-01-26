@@ -73,7 +73,7 @@ class GraphqlService extends MomentumService {
         } else if (clientError != null) {
           throw clientError.message;
         } else {
-          unawaited(AppConfig.instance.sentry.captureException(
+          unawaited(AppConfig.instance.sentry?.captureException(
             result.exception.graphqlErrors[0].message,
             stackTrace: result.exception,
           ));

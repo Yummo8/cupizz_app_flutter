@@ -36,6 +36,24 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
     return _loadmoreTab1();
   }
 
+  void updateReadFriendRequest(String userId) {
+    final indexAll =
+        model.allFriends.friends.indexWhere((e) => e.friend.id == userId);
+    final indexReceive =
+        model.receivedFriends.friends.indexWhere((e) => e.friend.id == userId);
+    if (indexAll >= 0) {
+      model.allFriends.friends[indexAll].readAccepted = true;
+    }
+    if (indexReceive >= 0) {
+      model.receivedFriends.friends[indexReceive].readSent = true;
+    }
+
+    model.update(
+      allFriends: model.allFriends,
+      receivedFriends: model.receivedFriends,
+    );
+  }
+
   Future _loadmoreTab0() async {
     final clone = model.allFriends.clone<FriendV2TabData>();
     if (clone.isLastPage || clone.isLoadingMore) return;
@@ -72,6 +90,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
         type: FriendQueryType.received,
         orderBy: model.receivedFriends.sort ?? FriendQueryOrderBy.recent,
         page: page,
+        isSuperLike: true,
       );
       model.receivedFriends.addData(result.data,
           currentPage: page, isLastPage: result.isLastPage);
@@ -108,6 +127,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
           type: FriendQueryType.received,
           orderBy: model.receivedFriends?.sort ?? FriendQueryOrderBy.recent,
           page: 1,
+          isSuperLike: true,
         ),
       ]);
 

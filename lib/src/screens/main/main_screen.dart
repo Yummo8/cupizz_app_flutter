@@ -4,13 +4,14 @@ import 'package:badges/badges.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../../packages/google_nav_bar/google_nav_bar.dart';
 import '../../base/base.dart';
 import '../../widgets/index.dart';
 import 'components/main_screen.controller.dart';
 import 'pages/chat/chat_page.dart';
 import 'pages/home/home_page.dart';
+import 'pages/profile/profile_page.dart';
 
 export 'pages/profile/edit_profile_screen.dart';
 
@@ -25,7 +26,7 @@ class _MainScreenState extends MomentumState<MainScreen>
     HomePage(),
     FriendPageV2(),
     ChatPage(),
-    // ProfilePage(),
+    ProfilePage(),
   ];
 
   TabController _tabController;
@@ -53,6 +54,8 @@ class _MainScreenState extends MomentumState<MainScreen>
 
   @override
   Widget build(BuildContext context) {
+    final currentUser =
+        Momentum.controller<CurrentUserController>(context).model.currentUser;
     return PrimaryScaffold(
       body: _tabController == null
           ? const SizedBox.shrink()
@@ -93,45 +96,66 @@ class _MainScreenState extends MomentumState<MainScreen>
                       duration: Duration(milliseconds: 500),
                       tabBackgroundColor: context.colorScheme.background,
                       tabs: <_BottomNavButtonData>[
-                        _BottomNavButtonData(Icons.home_outlined, 'Trang chủ',
-                            context.colorScheme.primary),
-                        _BottomNavButtonData(Icons.favorite_outline_sharp,
-                            'Yêu thích', context.colorScheme.secondary),
                         _BottomNavButtonData(
-                          Icons.chat_bubble_outline_rounded,
+                          'Trang chủ',
+                          context.colorScheme.primary,
+                          icon: Icons.home_outlined,
+                        ),
+                        _BottomNavButtonData(
+                          'Yêu thích',
+                          context.colorScheme.secondary,
+                          number: systemModel.unreadAcceptedFriendCount +
+                              systemModel.unreadReceiveFriendCount,
+                          icon: Icons.favorite_outline_sharp,
+                        ),
+                        _BottomNavButtonData(
                           'Tin nhắn',
                           context.colorScheme.primaryVariant,
                           number: systemModel.unreadMessageCount,
+                          icon: Icons.chat_bubble_outline_rounded,
                         ),
-                        // _BottomNavButtonData(Icons.person_outline_rounded,
-                        //     'Cá nhân', context.colorScheme.secondaryVariant),
-                      ]
-                          .mapIndexed((e, i) => GButton(
-                                icon: e.icon,
-                                text: e.text,
-                                backgroundColor: e.color.withOpacity(0.2),
-                                iconActiveColor: e.color,
-                                textColor: e.color,
-                                leading: e.number != null && e.number > 0
-                                    ? Badge(
-                                        badgeColor: Colors.red.shade100,
-                                        elevation: 0,
-                                        position: BadgePosition.topEnd(
-                                            top: -12, end: -12),
-                                        badgeContent: Text(
-                                          e.number.toString(),
-                                          style: TextStyle(
-                                              color: Colors.red.shade900),
-                                        ),
-                                        child: Icon(
-                                          e.icon,
-                                          color: model.currentTabIndex == i
-                                              ? e.color
-                                              : context.colorScheme.onSurface,
-                                        ))
-                                    : null,
-                              ))
-                          .toList(),
+                        _BottomNavButtonData(
+                          currentUser?.displayName?.split(' ')?.first ??
+                              'Cá nhân',
+                          context.colorScheme.secondaryVariant,
+                          number: systemModel.unreadMessageCount,
+                          icon: Icons.person_outline_rounded,
+                          iconWidget: currentUser == null
+                              ? null
+                              : UserAvatar.fromChatUser(
+                                  user: currentUser,
+                                  size: 25,
+                                  showOnline: false,
+                                ),
+                        ),
+                      ].mapIndexed((e, i) {
+                        final icon = e.iconWidget ??
+                            Icon(
+                              e.icon,
+                              color: model.currentTabIndex == i
+                                  ? e.color
+                                  : context.colorScheme.onSurface,
+                            );
+                        return GButton(
+                          text: e.text,
+                          backgroundColor: e.color.withOpacity(0.2),
+                          iconActiveColor: e.color,
+                          textColor: e.color,
+                          leading: e.number != null && e.number > 0
+                              ? Badge(
+                                  badgeColor: Colors.red.shade100,
+                                  elevation: 0,
+                                  position:
+                                      BadgePosition.topEnd(top: -12, end: -12),
+                                  badgeContent: Text(
+                                    e.number.toString(),
+                                    style:
+                                        TextStyle(color: Colors.red.shade900),
+                                  ),
+                                  child: icon)
+                              : icon,
+                        );
+                      }).toList(),
                       selectedIndex: model.currentTabIndex,
                       onTabChange: (index) {
                         _tabController.animateTo(index);
@@ -146,9 +170,11 @@ class _MainScreenState extends MomentumState<MainScreen>
 
 class _BottomNavButtonData {
   final IconData icon;
+  final Widget iconWidget;
   final String text;
   final Color color;
   final int number;
 
-  _BottomNavButtonData(this.icon, this.text, this.color, {this.number});
+  _BottomNavButtonData(this.text, this.color,
+      {this.icon, this.iconWidget, this.number});
 }

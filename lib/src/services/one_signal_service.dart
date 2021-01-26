@@ -19,6 +19,7 @@ class OneSignalService extends MomentumService {
 
     OneSignal.shared.setNotificationReceivedHandler((notification) {
       debugPrint('New notification: ${notification.payload.additionalData}');
+      SystemController().fetchUnreadNoti();
     });
 
     _handleOpenWhenClick();

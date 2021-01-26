@@ -19,9 +19,13 @@ class UserService extends MomentumService {
     return users;
   }
 
-  Future<FriendType> addFriend(String userId) async {
+  Future<FriendType> addFriend(String userId,
+      {bool isSuperLike = false}) async {
     final graphql = getService<GraphqlService>();
-    final data = await graphql.addFriendMutation(id: userId);
+    final data = await graphql.addFriendMutation(
+      id: userId,
+      isSuperLike: isSuperLike,
+    );
     final result = FriendType(rawValue: data['status']);
     return result;
   }
@@ -29,6 +33,11 @@ class UserService extends MomentumService {
   Future<void> removeFriend(String userId) async {
     final graphql = getService<GraphqlService>();
     await graphql.removeFriendMutation(id: userId);
+  }
+
+  Future<void> readFriendRequest(String userId) async {
+    final graphql = getService<GraphqlService>();
+    await graphql.readFriendRequestMutation(userId);
   }
 
   Future<User> updateProfile({
@@ -130,9 +139,10 @@ class UserService extends MomentumService {
     FriendQueryType type = FriendQueryType.all,
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
+    bool isSuperLike,
   }) async {
     final graphql = getService<GraphqlService>();
-    final data = await graphql.friendsV2Query(type, orderBy, page);
+    final data = await graphql.friendsV2Query(type, orderBy, page, isSuperLike);
     final result = WithIsLastPageOutput<FriendData>.fromJson(data);
     return result;
   }

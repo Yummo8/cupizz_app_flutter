@@ -63,8 +63,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: context.colorScheme.background,
+    return PrimaryScaffold(
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

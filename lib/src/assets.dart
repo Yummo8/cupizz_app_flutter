@@ -24,6 +24,7 @@ class _Icon {
   final String google = _ICON_PATH + 'google.png';
   final String likeUser = _ICON_PATH + 'like_user.svg';
   final String dislikeUser = _ICON_PATH + 'dislike_user.svg';
+  final String star = _ICON_PATH + 'star.svg';
 }
 
 class _Image {

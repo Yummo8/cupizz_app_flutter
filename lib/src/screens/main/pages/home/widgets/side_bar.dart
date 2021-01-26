@@ -1,94 +1,102 @@
-part of '../home_page.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:simple_animations/simple_animations.dart';
 
-class OptionsDrawerController extends ChangeNotifier {
-  bool _isMenuOpen = false;
-  bool get isMenuOpen => _isMenuOpen;
+import '../home_page.dart';
 
-  void openMenu() {
-    if (!_isMenuOpen) {
-      _isMenuOpen = true;
-      notifyListeners();
-    }
-  }
-
-  void closeMenu() {
-    if (_isMenuOpen) {
-      _isMenuOpen = false;
-      notifyListeners();
-    }
-  }
-}
-
-class OptionsDrawer extends StatefulWidget {
-  final double sidebarSize;
+class SideBar extends StatefulWidget {
   final OptionsDrawerController controller;
+  final double sideBarSize;
 
-  const OptionsDrawer({
-    Key key,
-    this.sidebarSize = 300,
-    this.controller,
-  }) : super(key: key);
+  const SideBar({Key key, this.controller, this.sideBarSize}) : super(key: key);
 
   @override
-  _OptionsDrawerState createState() => _OptionsDrawerState();
+  _SideBarState createState() => _SideBarState();
 }
 
-class _OptionsDrawerState extends State<OptionsDrawer> {
+class _SideBarState extends State<SideBar>
+    with SingleTickerProviderStateMixin<SideBar> {
   OptionsDrawerController controller;
+  AnimationController _animationController;
+  final _animationDuration = const Duration(milliseconds: 500);
   bool isMenuOpen = false;
-  Offset _offset = Offset(0, 0);
+  double screenWidth = 0;
 
   @override
   void initState() {
     super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: _animationDuration);
     controller = widget.controller ?? OptionsDrawerController();
 
     controller.addListener(() {
       setState(() {
-        isMenuOpen = controller._isMenuOpen;
+        isMenuOpen = controller.isMenuOpen;
       });
     });
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void onIconPressed() {
+    if (isMenuOpen) {
+      controller.closeMenu();
+      _animationController.reverse();
+    } else {
+      controller.openMenu();
+      _animationController.forward();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
+    final screenWidth = widget.sideBarSize ?? MediaQuery.of(context).size.width;
     return AnimatedPositioned(
-      duration: Duration(milliseconds: 1500),
-      right: isMenuOpen ? 0 : -widget.sidebarSize,
+      duration: _animationDuration,
       top: 0,
-      curve: Curves.elasticOut,
-      child: SizedBox(
-        width: widget.sidebarSize,
-        child: GestureDetector(
-          onPanUpdate: (details) {
-            if (details.localPosition.dx <= widget.sidebarSize) {
-              setState(() {
-                _offset = details.localPosition;
-              });
-            }
-
-            if (details.localPosition.dx > widget.sidebarSize - 20 &&
-                details.delta.distanceSquared > 2) {
-              setState(() {
-                isMenuOpen = true;
-              });
-            }
-          },
-          onPanEnd: (details) {
-            setState(() {
-              _offset = Offset(0, 0);
-            });
-          },
-          child: Stack(
+      curve: Curves.easeInOut,
+      bottom: 0,
+      left: isMenuOpen ? 0 : screenWidth - 60,
+      right: isMenuOpen ? 0 : -screenWidth,
+      child: ClipPath(
+        clipper: HierenMenuClipper(),
+        child: Plasma(
+          particles: 10,
+          foregroundColor: context.colorScheme.primary.withOpacity(0.9),
+          backgroundColor: context.colorScheme.onPrimary.withOpacity(0.9),
+          size: 1.00,
+          speed: 6.00,
+          offset: 0.00,
+          blendMode: BlendMode.dstATop,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              CustomPaint(
-                size: Size(widget.sidebarSize, size.height),
-                painter: _DrawerPainter(
-                    offset: _offset, color: context.colorScheme.background),
+              Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: onIconPressed,
+                  child: Container(
+                    width: 55,
+                    height: 100,
+                    margin: EdgeInsets.only(top: 50),
+                    alignment: Alignment.centerRight,
+                    child: AnimatedIcon(
+                      progress: _animationController.view,
+                      icon: AnimatedIcons.menu_close,
+                      color: context.colorScheme.onBackground,
+                      size: 25,
+                    ),
+                  ),
+                ),
               ),
-              Positioned.fill(child: _buildBody())
+              Expanded(
+                child: _buildBody(),
+              ),
             ],
           ),
         ),
@@ -195,32 +203,16 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
           style:
               context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
         ),
-        Row(
-          children: [
-            InkWell(
-              enableFeedback: true,
-              child: Icon(
-                Icons.color_lens,
-                color: context.colorScheme.primary,
-                size: 20,
-              ),
-              onTap: () {
-                Momentum.of<ThemeController>(context).randomTheme();
-              },
-            ),
-            const SizedBox(width: 10),
-            InkWell(
-              enableFeedback: true,
-              child: Icon(
-                Icons.arrow_right_alt,
-                color: context.colorScheme.onBackground,
-                size: 30,
-              ),
-              onTap: () {
-                controller.closeMenu();
-              },
-            ),
-          ],
+        InkWell(
+          enableFeedback: true,
+          child: Icon(
+            Icons.color_lens,
+            color: context.colorScheme.primary,
+            size: 20,
+          ),
+          onTap: () {
+            Momentum.of<ThemeController>(context).randomTheme();
+          },
         ),
       ],
     );
@@ -469,70 +461,66 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
       });
 }
 
-class _DrawerPainter extends CustomPainter {
-  final Offset offset;
-  final Color color;
-
-  _DrawerPainter({this.offset, this.color = Colors.white});
-
-  double getControlPointX(double width) {
-    if (offset.dx == 0) {
-      return 0;
-    } else {
-      return offset.dx > width ? -offset.dx : -75;
-    }
-  }
-
+class CustomMenuClipper extends CustomClipper<Path> {
   @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 2.0);
+  Path getClip(Size size) {
+    var paint = Paint();
+    paint.color = Colors.white;
+
+    final width = size.width;
+    final height = size.height;
+
     var path = Path();
-    path.moveTo(size.width * 2, 0);
-    path.lineTo(0, -50);
-    path.quadraticBezierTo(
-        getControlPointX(size.width), offset.dy, 0, size.height);
-    path.lineTo(size.width * 2, size.height + 50);
+    path.moveTo(width, 0);
+    path.quadraticBezierTo(width, 8, width - 10, 16);
+    path.quadraticBezierTo(1, height / 2 - 20, 0, height / 2);
+    path.quadraticBezierTo(-1, height / 2 + 20, width - 10, height - 16);
+    path.quadraticBezierTo(width, height - 8, width, height);
     path.close();
-
-    canvas.drawShadow(path, Colors.grey[900], 2.0, false);
-    canvas.drawPath(path, paint);
+    return path;
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
     return true;
   }
 }
 
-class HeartSliderHandler extends FlutterSliderHandler {
-  HeartSliderHandler(BuildContext context, {double iconSize})
-      : super(
-          child: Icon(
-            Icons.favorite,
-            color: context.colorScheme.primary,
-            size: iconSize,
-          ),
-          decoration: BoxDecoration(
-            color: context.colorScheme.background,
-            border: Border.all(color: context.colorScheme.primary),
-            shape: BoxShape.circle,
-          ),
-        );
-}
+class HierenMenuClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var paint = Paint();
+    paint.color = Colors.white;
 
-class CustomSliderTooltip extends FlutterSliderTooltip {
-  CustomSliderTooltip(BuildContext context, {String unit = ''})
-      : super(
-          boxStyle: FlutterSliderTooltipBox(
-            decoration: BoxDecoration(
-              color: context.colorScheme.primary.withOpacity(.8),
-            ),
-          ),
-          textStyle: context.textTheme.caption
-              .copyWith(color: context.colorScheme.onPrimary),
-          format: (v) => '${double.tryParse(v)?.round() ?? v} $unit',
-        );
+    var path_0 = Path();
+    // path_0.moveTo(size.width * 0.14, 0);
+    // path_0.lineTo(size.width, 0);
+    // path_0.lineTo(size.width, size.height);
+    // path_0.lineTo(size.width * 0.14, size.height);
+    // path_0.lineTo(size.width * 0.14, size.height * 0.24);
+    // path_0.quadraticBezierTo(size.width * 0.14, size.height * 0.20,
+    //     size.width * 0.09, size.height * 0.17);
+    // path_0.cubicTo(size.width * 0.05, size.height * 0.16, size.width * 0.05,
+    //     size.height * 0.13, size.width * 0.09, size.height * 0.11);
+    // path_0.quadraticBezierTo(size.width * 0.14, size.height * 0.09,
+    //     size.width * 0.14, size.height * 0.04);
+    // path_0.lineTo(size.width * 0.14, 0);
+
+    path_0.moveTo(60, 0);
+    path_0.lineTo(size.width, 0);
+    path_0.lineTo(size.width, size.height);
+    path_0.lineTo(60, size.height);
+    path_0.lineTo(60, 170);
+    path_0.quadraticBezierTo(60.55, 141.68, 30, 120);
+    path_0.cubicTo(18.42, 111.81, 19.14, 90.65, 30, 80);
+    path_0.quadraticBezierTo(60.43, 60.1, 60, 30);
+    path_0.lineTo(60, 0);
+    path_0.close();
+    return path_0;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
 }

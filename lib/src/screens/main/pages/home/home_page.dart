@@ -4,18 +4,21 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cupizz_app/src/helpers/index.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
+import 'package:cupizz_app/src/screens/main/pages/home/widgets/side_bar.dart';
+import 'package:cupizz_app/src/widgets/buttons/like_controls.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../../../packages/wave/wave.dart';
-import '../../../../packages/wave/config.dart';
+
+import 'widgets/super_like_anim_overlay.dart';
 
 import '../../../../assets.dart';
 import '../../../../base/base.dart';
+import '../../../../packages/wave/config.dart';
+import '../../../../packages/wave/wave.dart';
 import '../../../../widgets/index.dart';
 
 part 'widgets/animated_background.dart';
@@ -29,67 +32,83 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _drawerController = OptionsDrawerController();
-  final _headerHeight = 75.0;
+  final _cardController = CCardController();
 
   @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            AnimatedBackground(),
-            Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
-            Positioned.fill(child: _buildCards()),
-            OptionsDrawer(controller: _drawerController),
-          ],
-        ),
-      ),
+      body: LayoutBuilder(builder: (context, constraints) {
+        return SizedBox(
+          height: constraints.maxHeight,
+          width: constraints.maxWidth,
+          child: Stack(
+            children: [
+              // AnimatedBackground(),
+              // Positioned(right: 0, left: 15, top: 30, child: _buildHeader()),
+              _buildCards(), _buildControls(),
+              SideBar(
+                controller: _drawerController,
+                sideBarSize: constraints.maxWidth,
+              ),
+              // OptionsDrawer(controller: _drawerController),
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  Widget _buildHeader() {
-    return Builder(builder: (context) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          MomentumBuilder(
-            controllers: [CurrentUserController],
-            builder: (context, snapshot) {
-              final model = snapshot<CurrentUserModel>();
-              return model.currentUser != null
-                  ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(90),
-                        border: Border.all(
-                          color:
-                              context.colorScheme.background.withOpacity(0.2),
-                          width: 4,
-                        ),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Router.goto(context, ProfilePage);
-                        },
-                        child: UserAvatar.fromChatUser(
-                          user: model.currentUser,
-                          size: 38,
-                          showOnline: false,
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink();
-            },
-          ),
-          OpacityIconButton(
-            icon: Icons.tune,
-            onPressed: () {
-              _drawerController.openMenu();
-            },
-          ),
-        ],
-      );
-    });
+  Widget _buildControls() {
+    return MomentumBuilder(
+        controllers: [RecommendableUsersController],
+        builder: (context, snapshot) {
+          var model = snapshot<RecommendableUsersModel>();
+          if (model.users.isExistAndNotEmpty) {
+            return Positioned(
+              bottom: 10,
+              right: 0,
+              left: 0,
+              child: Transform.scale(
+                scale: 0.8,
+                child: LikeControls(
+                  onLike: () {
+                    if (!_cardController.isAnimating) {
+                      Momentum.controller<RecommendableUsersController>(context)
+                          .onSwipe(
+                        context,
+                        isSwipeRight: true,
+                        waitForUpdateUi: _cardController.forward(),
+                      );
+                    }
+                  },
+                  onDislike: () {
+                    if (!_cardController.isAnimating) {
+                      Momentum.controller<RecommendableUsersController>(context)
+                          .onSwipe(
+                        context,
+                        waitForUpdateUi: _cardController.forward(
+                            direction: SwipDirection.Left),
+                      );
+                    }
+                  },
+                  onSuperLike: () {
+                    if (!_cardController.isAnimating) {
+                      Momentum.controller<RecommendableUsersController>(context)
+                          .onSwipe(
+                        context,
+                        isSuperLike: true,
+                        isSwipeRight: true,
+                        waitForUpdateUi: _cardController.forward(
+                            direction: SwipDirection.Up),
+                      );
+                    }
+                  },
+                ),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        });
   }
 
   Widget _buildCards() {
@@ -97,8 +116,13 @@ class _HomePageState extends State<HomePage> {
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
           var model = snapshot<RecommendableUsersModel>();
-          if (model.isLoading || model.users == null) {
-            return LoadingIndicator();
+          if (model.isLoading ||
+              !model.users.isExistAndNotEmpty && !model.isLastPage) {
+            if (!model.users.isExistAndNotEmpty && !model.isLastPage) {
+              Momentum.of<RecommendableUsersController>(context)
+                  .fetchRecommendableUsers();
+            }
+            return Center(child: LoadingIndicator());
           } else if (model.error.isExistAndNotEmpty) {
             return ErrorIndicator(
               moreErrorDetail: model.error,
@@ -107,29 +131,35 @@ class _HomePageState extends State<HomePage> {
                     .fetchRecommendableUsers();
               },
             );
-          } else if (!model.users.isExistAndNotEmpty) {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Hiện tại chúng tôi không còn gợi ý ghép đôi dành cho bạn.\nHãy thử thay đổi mẫu người mà bạn tìm kiếm.',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                OptionButton(
-                  title: 'Đổi cài đặt',
-                  isSelected: true,
-                  onPressed: () {
-                    _drawerController.openMenu();
-                  },
-                ),
-              ],
-            ));
+          } else if (!model.users.isExistAndNotEmpty && model.isLastPage) {
+            return FadeIn(
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Hiện tại chúng tôi không còn gợi ý ghép đôi dành cho bạn.\nHãy thử thay đổi mẫu người mà bạn tìm kiếm.',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  OptionButton(
+                    title: 'Đổi cài đặt',
+                    isSelected: true,
+                    onPressed: () {
+                      _drawerController.openMenu();
+                    },
+                  ),
+                ],
+              )),
+            );
           }
 
           return CCard(
-            padding: EdgeInsets.only(top: _headerHeight + 50),
+            controller: _cardController,
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top,
+              bottom: 80,
+            ),
             size: Size(
               MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height,

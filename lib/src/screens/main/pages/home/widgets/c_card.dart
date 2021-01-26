@@ -1,9 +1,6 @@
 part of '../home_page.dart';
 
-enum SwipDirection {
-  Left,
-  Right,
-}
+enum SwipDirection { Left, Right, Up }
 
 class SwipInfo {
   final int cardIndex;
@@ -22,6 +19,8 @@ typedef EndCallback = Function();
 
 class CCardController {
   _CCardState _state;
+  bool _isAnimating = false;
+  bool get isAnimating => _isAnimating;
 
   void _bindState(_CCardState state) {
     _state = state;
@@ -29,14 +28,28 @@ class CCardController {
 
   int get index => _state?._frontCardIndex ?? 0;
 
-  void forward({SwipDirection direction = SwipDirection.Right}) {
-    final swipInfo = SwipInfo(_state._frontCardIndex, direction);
-    _state._swipInfoList.add(swipInfo);
-    _state._runChangeOrderAnimation();
+  Future forward({SwipDirection direction = SwipDirection.Right}) async {
+    if (!_isAnimating) {
+      try {
+        _isAnimating = true;
+        final swipInfo = SwipInfo(_state._frontCardIndex, direction);
+        _state._swipInfoList.add(swipInfo);
+        await _state._runChangeOrderAnimation();
+      } finally {
+        _isAnimating = false;
+      }
+    }
   }
 
-  void back() {
-    _state._runReverseOrderAnimation();
+  Future back() async {
+    if (!_isAnimating) {
+      try {
+        _isAnimating = true;
+        await _state._runReverseOrderAnimation();
+      } finally {
+        _isAnimating = false;
+      }
+    }
   }
 
   void reset() {
@@ -94,6 +107,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
 
   Alignment _frontCardAlignment = CardAlignments.front;
 
+  bool _showSuperLikeOverlay = false;
+
   AnimationController _cardChangeController;
 
   AnimationController _cardReverseController;
@@ -128,22 +143,26 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
               if (widget.cards.isNotEmpty)
                 Positioned.fill(
                   child: IgnorePointer(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _frontCardAlignment.x > 0
-                            ? likeColor.withOpacity(math.min(
-                                1.0,
-                                _frontCardAlignment.x.abs() /
-                                    (limit + _frontCardAlignment.x.abs()),
-                              ))
-                            : dislikeColor.withOpacity(math.min(
-                                1.0,
-                                _frontCardAlignment.x.abs() /
-                                    (limit + _frontCardAlignment.x.abs()),
-                              )),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
+                    child: _showSuperLikeOverlay
+                        ? SuperLikeOverlay(
+                            borderRadius: BorderRadius.circular(15),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: _frontCardAlignment.x > 0
+                                  ? likeColor.withOpacity(math.min(
+                                      1.0,
+                                      _frontCardAlignment.x.abs() /
+                                          (limit + _frontCardAlignment.x.abs()),
+                                    ))
+                                  : dislikeColor.withOpacity(math.min(
+                                      1.0,
+                                      _frontCardAlignment.x.abs() /
+                                          (limit + _frontCardAlignment.x.abs()),
+                                    )),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
                   ),
                 )
             ],
@@ -179,9 +198,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   Widget _middleCard(BoxConstraints constraints) {
-    final child = _frontCardIndex < _cards.length - 1
-        ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 1])
-        : const SizedBox.shrink();
+    final child = IgnorePointer(
+        child: _frontCardIndex < _cards.length - 1
+            ? Padding(
+                padding: widget.padding, child: _cards[_frontCardIndex + 1])
+            : const SizedBox.shrink());
     final forward = _cardChangeController.status == AnimationStatus.forward;
     final reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -223,9 +244,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   }
 
   Widget _backCard(BoxConstraints constraints) {
-    final child = _frontCardIndex < _cards.length - 2
-        ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 2])
-        : Container();
+    final child = IgnorePointer(
+      child: _frontCardIndex < _cards.length - 2
+          ? Padding(padding: widget.padding, child: _cards[_frontCardIndex + 2])
+          : Container(),
+    );
     final forward = _cardChangeController.status == AnimationStatus.forward;
     final reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -268,7 +291,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
 
   bool _isAnimating() {
     return _cardChangeController.status == AnimationStatus.forward ||
-        _cardReverseController.status == AnimationStatus.forward;
+        _cardReverseController.status == AnimationStatus.forward ||
+        _showSuperLikeOverlay;
   }
 
   void _runReboundAnimation(Offset pixelsPerSecond, Size size) {
@@ -290,7 +314,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     _return();
   }
 
-  void _runChangeOrderAnimation() {
+  Future _runChangeOrderAnimation() async {
     if (_isAnimating()) {
       return;
     }
@@ -299,11 +323,20 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
       return;
     }
 
+    if (_swipInfoList[_frontCardIndex].direction == SwipDirection.Up) {
+      setState(() {
+        _showSuperLikeOverlay = true;
+      });
+    }
+    if (_showSuperLikeOverlay) {
+      await Future.delayed(800.milliseconds);
+    }
+
     _cardChangeController.reset();
-    _cardChangeController.forward();
+    await _cardChangeController.forward();
   }
 
-  void _runReverseOrderAnimation() {
+  Future _runReverseOrderAnimation() async {
     if (_isAnimating()) {
       return;
     }
@@ -314,10 +347,11 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     }
 
     _cardReverseController.reset();
-    _cardReverseController.forward();
+    await _cardReverseController.forward();
   }
 
   void _forwardCallback() {
+    _showSuperLikeOverlay = false;
     _frontCardIndex++;
     _return();
     if (widget.onForward != null && widget.onForward is Function) {
@@ -388,7 +422,6 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     });
 
     if (isSwipLeft || isSwipRight) {
-      _runChangeOrderAnimation();
       if (isSwipLeft) {
         _swipInfoList.add(SwipInfo(_frontCardIndex, SwipDirection.Left));
         widget.onSwipeLeft?.call();
@@ -396,6 +429,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
         _swipInfoList.add(SwipInfo(_frontCardIndex, SwipDirection.Right));
         widget.onSwipeRight?.call();
       }
+      _runChangeOrderAnimation();
     } else {
       _runReboundAnimation(details.velocity.pixelsPerSecond, size);
     }
@@ -469,7 +503,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
               _backCard(constraints),
               _middleCard(constraints),
               _frontCard(constraints),
-              if (_cardChangeController.status != AnimationStatus.forward)
+              if (_cardChangeController.status != AnimationStatus.forward &&
+                  !_showSuperLikeOverlay)
                 SizedBox.expand(
                   child: GestureDetector(
                     onPanDown: (DragDownDetails details) {
@@ -599,8 +634,10 @@ class CardAnimations {
       end: Alignment(
         info.direction == SwipDirection.Left
             ? beginAlignment.x - 30.0
-            : beginAlignment.x + 30.0,
-        0.0,
+            : info.direction == SwipDirection.Right
+                ? beginAlignment.x + 30.0
+                : 0,
+        info.direction == SwipDirection.Up ? beginAlignment.y - 50 : 0.0,
       ),
     ).animate(
       CurvedAnimation(

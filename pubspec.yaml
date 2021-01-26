@@ -25,7 +25,7 @@ dependencies:
   auto_size_text: ^2.1.0
   graphql_flutter: ^3.1.0
   fluttertoast: ^7.1.1
-  flutter_svg: ^0.19.1
+  flutter_svg: ^0.19.2+1
   shrink_sidemenu: ^1.0.0+3
   flutter_xlider: ^3.4.0
   google_nav_bar: ^3.1.0
@@ -61,6 +61,10 @@ dependencies:
   app_settings: ^4.0.4
   firebase_analytics: ^6.3.0
   tutorial_coach_mark: ^0.5.2
+  simple_animations: ^2.4.2
+  supercharged: ^1.12.0
+  tinycolor: ^1.0.3
+  vibration: ^1.7.3
 
 dev_dependencies:
   flutter_test:

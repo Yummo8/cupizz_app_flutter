@@ -2,6 +2,7 @@ library friend_page;
 
 import 'dart:math';
 
+import 'package:badges/badges.dart';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/rendering.dart';
@@ -104,9 +105,9 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                 children: [
                   model.allFriends ?? FriendV2TabData(),
                   model.receivedFriends ?? FriendV2TabData(),
-                ].map(
-                  (e) {
-                    final friendsList = [
+                ].mapIndexed(
+                  (e, i) {
+                    final friendsList = <FriendData>[
                       ...e.friends ?? [],
                       ...!e.isLastPage
                           ? List.generate(
@@ -120,7 +121,9 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 50),
                             child: Text(
-                              'Những người đã được ghép đôi, đã thích bạn hay bạn đã thích sẽ xuất hiện ở đây.',
+                              i == 0
+                                  ? 'Những người đã ghép đôi với bạn sẽ xuất hiện ở đây.'
+                                  : 'Những người đã siêu thích bạn sẽ xuất hiện ở đây.',
                               style: context.textTheme.subtitle1.copyWith(
                                   color: context.colorScheme.onSurface),
                               textAlign: TextAlign.center,
@@ -163,7 +166,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                                 _Item(
                                   animation: animation,
                                   animationController: animationController,
-                                  simpleUser: value?.friend,
+                                  friendData: value,
                                 ),
                               );
                             })
@@ -189,12 +192,12 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
 class _Item extends StatelessWidget {
   const _Item({
     Key key,
-    this.simpleUser,
+    this.friendData,
     this.animationController,
     this.animation,
   }) : super(key: key);
 
-  final SimpleUser simpleUser;
+  final FriendData friendData;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -208,7 +211,11 @@ class _Item extends StatelessWidget {
           child: Transform(
             transform: Matrix4.translationValues(
                 0.0, 50 * (1.0 - animation.value), 0.0),
-            child: UserItem(simpleUser: simpleUser),
+            child: UserItem(
+              simpleUser: friendData?.friend,
+              isHighlight: friendData != null &&
+                  !(friendData.readSent || friendData.readAccepted),
+            ),
           ),
         );
       },
@@ -281,17 +288,42 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                                 ? context.colorScheme.primary
                                 : context.colorScheme.onPrimary,
                           ),
-                          child: Center(
-                            child: Text(
-                              e,
-                              style: context.textTheme.bodyText2.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: selecteds[i]
-                                    ? context.colorScheme.onPrimary
-                                    : context.colorScheme.primary,
-                              ),
-                            ),
-                          ),
+                          child: MomentumBuilder(
+                              controllers: [SystemController],
+                              builder: (context, snapshot) {
+                                final model = snapshot<SystemModel>();
+                                final badgeCount = i == 0
+                                    ? model.unreadAcceptedFriendCount
+                                    : model.unreadReceiveFriendCount;
+                                return Center(
+                                  child: Badge(
+                                      badgeColor: selecteds[i]
+                                          ? context.colorScheme.onPrimary
+                                          : context.colorScheme.primary,
+                                      elevation: 0,
+                                      showBadge: badgeCount > 0,
+                                      position: BadgePosition.topEnd(
+                                          top: -12, end: -12),
+                                      badgeContent: Text(
+                                        badgeCount.toString(),
+                                        style: TextStyle(
+                                            fontSize: selecteds[i] ? 12 : 10,
+                                            color: !selecteds[i]
+                                                ? context.colorScheme.onPrimary
+                                                : context.colorScheme.primary),
+                                      ),
+                                      child: Text(
+                                        e,
+                                        style: context.textTheme.bodyText2
+                                            .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: selecteds[i]
+                                              ? context.colorScheme.onPrimary
+                                              : context.colorScheme.primary,
+                                        ),
+                                      )),
+                                );
+                              }),
                         ),
                       ),
                     ),
