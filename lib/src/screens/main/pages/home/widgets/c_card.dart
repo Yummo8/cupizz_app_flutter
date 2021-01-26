@@ -19,6 +19,8 @@ typedef EndCallback = Function();
 
 class CCardController {
   _CCardState _state;
+  bool _isAnimating = false;
+  bool get isAnimating => _isAnimating;
 
   void _bindState(_CCardState state) {
     _state = state;
@@ -26,14 +28,28 @@ class CCardController {
 
   int get index => _state?._frontCardIndex ?? 0;
 
-  void forward({SwipDirection direction = SwipDirection.Right}) {
-    final swipInfo = SwipInfo(_state._frontCardIndex, direction);
-    _state._swipInfoList.add(swipInfo);
-    _state._runChangeOrderAnimation();
+  Future forward({SwipDirection direction = SwipDirection.Right}) async {
+    if (!_isAnimating) {
+      try {
+        _isAnimating = true;
+        final swipInfo = SwipInfo(_state._frontCardIndex, direction);
+        _state._swipInfoList.add(swipInfo);
+        await _state._runChangeOrderAnimation();
+      } finally {
+        _isAnimating = false;
+      }
+    }
   }
 
-  void back() {
-    _state._runReverseOrderAnimation();
+  Future back() async {
+    if (!_isAnimating) {
+      try {
+        _isAnimating = true;
+        await _state._runReverseOrderAnimation();
+      } finally {
+        _isAnimating = false;
+      }
+    }
   }
 
   void reset() {
@@ -298,7 +314,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     _return();
   }
 
-  void _runChangeOrderAnimation() async {
+  Future _runChangeOrderAnimation() async {
     if (_isAnimating()) {
       return;
     }
@@ -320,7 +336,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     await _cardChangeController.forward();
   }
 
-  void _runReverseOrderAnimation() {
+  Future _runReverseOrderAnimation() async {
     if (_isAnimating()) {
       return;
     }
@@ -331,7 +347,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     }
 
     _cardReverseController.reset();
-    _cardReverseController.forward();
+    await _cardReverseController.forward();
   }
 
   void _forwardCallback() {

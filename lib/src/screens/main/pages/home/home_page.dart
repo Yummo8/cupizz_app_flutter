@@ -72,20 +72,36 @@ class _HomePageState extends State<HomePage> {
                 scale: 0.8,
                 child: LikeControls(
                   onLike: () {
-                    _cardController.forward();
-                    Momentum.controller<RecommendableUsersController>(context)
-                        .onSwipe(context, isSwipeRight: true);
+                    if (!_cardController.isAnimating) {
+                      Momentum.controller<RecommendableUsersController>(context)
+                          .onSwipe(
+                        context,
+                        isSwipeRight: true,
+                        waitForUpdateUi: _cardController.forward(),
+                      );
+                    }
                   },
                   onDislike: () {
-                    _cardController.forward(direction: SwipDirection.Left);
-                    Momentum.controller<RecommendableUsersController>(context)
-                        .onSwipe(context);
+                    if (!_cardController.isAnimating) {
+                      Momentum.controller<RecommendableUsersController>(context)
+                          .onSwipe(
+                        context,
+                        waitForUpdateUi: _cardController.forward(
+                            direction: SwipDirection.Left),
+                      );
+                    }
                   },
                   onSuperLike: () {
-                    _cardController.forward(direction: SwipDirection.Up);
-                    Momentum.controller<RecommendableUsersController>(context)
-                        .onSwipe(context,
-                            isSuperLike: true, isSwipeRight: true);
+                    if (!_cardController.isAnimating) {
+                      Momentum.controller<RecommendableUsersController>(context)
+                          .onSwipe(
+                        context,
+                        isSuperLike: true,
+                        isSwipeRight: true,
+                        waitForUpdateUi: _cardController.forward(
+                            direction: SwipDirection.Up),
+                      );
+                    }
                   },
                 ),
               ),
@@ -100,7 +116,12 @@ class _HomePageState extends State<HomePage> {
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
           var model = snapshot<RecommendableUsersModel>();
-          if (model.isLoading || model.users == null) {
+          if (model.isLoading ||
+              !model.users.isExistAndNotEmpty && !model.isLastPage) {
+            if (!model.users.isExistAndNotEmpty && !model.isLastPage) {
+              Momentum.of<RecommendableUsersController>(context)
+                  .fetchRecommendableUsers();
+            }
             return Center(child: LoadingIndicator());
           } else if (model.error.isExistAndNotEmpty) {
             return ErrorIndicator(
@@ -110,9 +131,7 @@ class _HomePageState extends State<HomePage> {
                     .fetchRecommendableUsers();
               },
             );
-          } else if (!model.users.isExistAndNotEmpty) {
-            Momentum.of<RecommendableUsersController>(context)
-                .fetchRecommendableUsers();
+          } else if (!model.users.isExistAndNotEmpty && model.isLastPage) {
             return FadeIn(
               child: Center(
                   child: Column(

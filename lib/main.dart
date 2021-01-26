@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:cupizz_app/src/models/index.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sentry/sentry.dart' hide App;
 
