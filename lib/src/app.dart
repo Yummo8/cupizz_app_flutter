@@ -56,19 +56,6 @@ Momentum momentum({bool isTesting = false}) {
       CreatePostController()..config(lazy: true),
     ],
     services: [
-      AuthService(),
-      GraphqlService(
-        //192.168.1.10:2020
-        apiUrl:
-            !isTesting ? AppConfig.instance.apiUrl : 'http://cupizz.cf/graphql',
-        wss: !isTesting ? AppConfig.instance.wss : 'ws://cupizz.cf/graphql',
-      ),
-      MessageService(),
-      PostService(),
-      if (!isTesting) OneSignalService()..init(),
-      StorageService(isTesting: isTesting),
-      SystemService(),
-      UserService(),
       Router([
         LoginScreen(),
         MainScreen(),
@@ -115,6 +102,7 @@ Momentum momentum({bool isTesting = false}) {
 class App extends AppBase {
   @override
   Widget build(BuildContext context) {
+    initServices();
     return momentum();
   }
 }

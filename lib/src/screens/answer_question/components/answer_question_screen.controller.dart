@@ -14,7 +14,7 @@ class AnswerQuestionScreenController
 
   Future _getColors() async {
     try {
-      final colors = await getService<SystemService>().getColorsOfAnswer();
+      final colors = await Get.find<SystemService>().getColorsOfAnswer();
       model.update(colors: colors);
     } catch (e) {
       debugPrint(e.toString());
@@ -36,7 +36,7 @@ class AnswerQuestionScreenController
   }
 
   Future _addNew() async {
-    final userImage = await getService<UserService>().answerQuestion(
+    final userImage = await Get.find<UserService>().answerQuestion(
       model.question?.id,
       model.content,
       backgroundImage: model.backgroundImage,

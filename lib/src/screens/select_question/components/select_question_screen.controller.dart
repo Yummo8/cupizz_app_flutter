@@ -17,14 +17,14 @@ class SelectQuestionScreenController
   }
 
   Future loadMore() async {
-    final result = await getService<SystemService>()
+    final result = await Get.find<SystemService>()
         .getQuestions(page: model.currentPage + 1);
     model.update(
         data: model.data..add(result), currentPage: model.currentPage + 1);
   }
 
   Future _reload() async {
-    final result = await getService<SystemService>().getQuestions(page: 1);
+    final result = await Get.find<SystemService>().getQuestions(page: 1);
     model.update(data: result);
   }
 }

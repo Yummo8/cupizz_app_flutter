@@ -66,6 +66,7 @@ dependencies:
   tinycolor: ^1.0.3
   vibration: ^1.7.3
   flutter_feather_icons: ^1.0.3
+  get:
 
 dev_dependencies:
   flutter_test:

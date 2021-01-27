@@ -19,6 +19,7 @@ export 'package:fluttertoast/fluttertoast.dart';
 export 'package:object_mapper/object_mapper.dart';
 export 'package:pedantic/pedantic.dart';
 export 'package:supercharged/supercharged.dart';
+export 'package:get/get.dart' hide HeaderValue;
 
 export '../assets.dart';
 export '../components/index.dart';

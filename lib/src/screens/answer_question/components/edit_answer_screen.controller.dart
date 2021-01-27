@@ -14,7 +14,7 @@ class EditAnswerScreenController
 
   Future _getColors() async {
     try {
-      final colors = await getService<SystemService>().getColorsOfAnswer();
+      final colors = await Get.find<SystemService>().getColorsOfAnswer();
       model.update(colors: colors);
     } catch (e) {
       debugPrint(e.toString());
@@ -37,7 +37,7 @@ class EditAnswerScreenController
   }
 
   Future _edit() async {
-    await getService<UserService>().editAnswer(
+    await Get.find<UserService>().editAnswer(
       model.userImage.answer.id,
       content: model.content,
       backgroundImage: model.backgroundImage,

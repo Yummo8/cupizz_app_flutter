@@ -54,7 +54,7 @@ class PostPageController extends MomentumController<PostPageModel> {
   Future commentPost(Post post, String content) async {
     final index = model.posts.indexWhere((e) => e.id == post.id);
     await trycatch(() async {
-      final comment = await getService<PostService>()
+      final comment = await Get.find<PostService>()
           .commentPost(post.id, content, isIncognito: model.isIncognitoComment);
       model.posts[index].comments.insert(0, comment);
       model.posts[index].commentCount++;
@@ -67,7 +67,7 @@ class PostPageController extends MomentumController<PostPageModel> {
     final index = model.posts.indexWhere((e) => e.id == post.id);
     await trycatch(() async {
       final lastComment = post.comments.last;
-      final comments = await getService<PostService>()
+      final comments = await Get.find<PostService>()
           .getComments(post.id, commentCursorId: lastComment.id);
       model.posts[index].comments.addAll(comments);
       model.update(posts: model.posts);
@@ -86,7 +86,7 @@ class PostPageController extends MomentumController<PostPageModel> {
     _likeDebouncer.debounce(() async {
       try {
         // final data =
-        await getService<PostService>().likePost(post.id, type: type);
+        await Get.find<PostService>().likePost(post.id, type: type);
         // model.posts[index] = data;
         // model.update(posts: model.posts);
       } catch (e) {
@@ -113,7 +113,7 @@ class PostPageController extends MomentumController<PostPageModel> {
     _likeDebouncer.debounce(() async {
       try {
         // final data =
-        await getService<PostService>().unlikePost(post.id);
+        await Get.find<PostService>().unlikePost(post.id);
         // model.posts[index] = data;
         // model.update(posts: model.posts);
       } catch (e) {
@@ -142,7 +142,7 @@ class PostPageController extends MomentumController<PostPageModel> {
 
   Future _reload([int page = 1]) async {
     await trycatch(() async {
-      final posts = await getService<PostService>().getPosts(
+      final posts = await Get.find<PostService>().getPosts(
         page: page,
         categoryId: model.selectedCategory?.id,
         keyword: model.keyword,

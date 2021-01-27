@@ -41,7 +41,7 @@ class LocationController extends MomentumController<LocationModel> {
     await trycatch(() async {
       final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       await service.updateProfile(
         latitude: position.latitude,
         longitude: position.longitude,

@@ -60,7 +60,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
     model.update(allFriends: clone.copyWith(isLoadingMore: true));
     try {
       final page = clone.currentPage + 1;
-      final result = await getService<UserService>().getFriendsV2(
+      final result = await Get.find<UserService>().getFriendsV2(
         type: FriendQueryType.friend,
         orderBy: clone.sort ?? FriendQueryOrderBy.recent,
         page: page,
@@ -86,7 +86,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
         receivedFriends: model.receivedFriends.copyWith(isLoadingMore: true));
     try {
       final page = model.receivedFriends.currentPage + 1;
-      final result = await getService<UserService>().getFriendsV2(
+      final result = await Get.find<UserService>().getFriendsV2(
         type: FriendQueryType.received,
         orderBy: model.receivedFriends.sort ?? FriendQueryOrderBy.recent,
         page: page,
@@ -115,7 +115,7 @@ class FriendPageV2Controller extends MomentumController<FriendPageV2Model> {
 
   Future _reloadFriends() async {
     try {
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
 
       final result = await Future.wait([
         service.getFriendsV2(

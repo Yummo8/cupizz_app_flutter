@@ -26,13 +26,13 @@ class AuthController extends MomentumController<AuthModel> {
   }
 
   Future<bool> get isAuthenticated async =>
-      (await getService<StorageService>().getToken) != null;
+      (await Get.find<StorageService>().getToken) != null;
 
   Future<void> loginEmail(String email, String password) async {
-    await getService<AuthService>().loginEmail(email.trim(), password,
+    await Get.find<AuthService>().loginEmail(email.trim(), password,
         dependOn<CurrentUserController>().getCurrentUser);
     await _afterLogin();
-    unawaited(getService<StorageService>().saveLoginEmail(email.trim()));
+    unawaited(Get.find<StorageService>().saveLoginEmail(email.trim()));
   }
 
   Future<void> loginSocial(SocialProviderType type) async {
@@ -52,7 +52,7 @@ class AuthController extends MomentumController<AuthModel> {
         auth = await googleSignIn.currentUser.authentication;
         final tokenGoogle = auth.accessToken;
         debugPrint('Token Google: $tokenGoogle');
-        await getService<AuthService>().loginSocial(type, tokenGoogle,
+        await Get.find<AuthService>().loginSocial(type, tokenGoogle,
             dependOn<CurrentUserController>().getCurrentUser);
         unawaited(googleSignIn.signOut());
       } else if (type == SocialProviderType.facebook) {
@@ -61,7 +61,7 @@ class AuthController extends MomentumController<AuthModel> {
           if (accessToken == null || !accessToken.token.isExistAndNotEmpty) {
             return;
           }
-          await getService<AuthService>().loginSocial(
+          await Get.find<AuthService>().loginSocial(
               SocialProviderType.facebook,
               accessToken.token,
               dependOn<CurrentUserController>().getCurrentUser);
@@ -98,9 +98,9 @@ class AuthController extends MomentumController<AuthModel> {
 
   Future _afterLogin() async {
     await gotoHome();
-    final userId = await getService<StorageService>().getUserId;
+    final userId = await Get.find<StorageService>().getUserId;
     if (userId.isExistAndNotEmpty) {
-      await getService<OneSignalService>().subscribe(userId);
+      await Get.find<OneSignalService>().subscribe(userId);
       await dependOn<LocationController>()
           .checkPermission(AppConfig.navigatorKey.currentContext);
     }
@@ -109,7 +109,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   Future<void> _register(String registerToken) async {
     await trycatch(() async {
-      await getService<AuthService>().register(
+      await Get.find<AuthService>().register(
         registerToken,
         model.nickname,
         model.password,
@@ -121,8 +121,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   Future<void> registerEmail() async {
     await trycatch(() async {
-      final otpToken =
-          await getService<AuthService>().registerEmail(model.email);
+      final otpToken = await Get.find<AuthService>().registerEmail(model.email);
       model.update(otpToken: otpToken);
     }, throwError: true);
   }
@@ -131,14 +130,14 @@ class AuthController extends MomentumController<AuthModel> {
     if (!model.otpToken.isExistAndNotEmpty) return;
     await trycatch(() async {
       final registerToken =
-          await getService<AuthService>().verifyOtpEmail(model.otpToken, otp);
+          await Get.find<AuthService>().verifyOtpEmail(model.otpToken, otp);
       await _register(registerToken);
     });
   }
 
   Future<void> logout() async {
-    await getService<AuthService>().logout();
-    unawaited(getService<OneSignalService>().unSubscribe());
+    await Get.find<AuthService>().logout();
+    unawaited(Get.find<OneSignalService>().unSubscribe());
     await Router.resetWithContext<LoginScreen>(
         AppConfig.navigatorKey.currentContext);
     Momentum.resetAll(AppConfig.navigatorKey.currentContext);

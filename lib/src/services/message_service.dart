@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:cupizz_app/src/base/base.dart';
 
-class MessageService extends MomentumService {
+class MessageService extends GetxService {
   Future<WithIsLastPageOutput<Conversation>> getMyConversations(
       {int page}) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.myConversationsQuery(page);
     final result = WithIsLastPageOutput<Conversation>.fromJson(data);
     return result;
@@ -15,7 +15,7 @@ class MessageService extends MomentumService {
     @required ConversationKey key,
     int page,
   }) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.messagesQuery(key, page);
     final result = WithIsLastPageOutput<Message>.fromJson(data);
     return result;
@@ -24,7 +24,7 @@ class MessageService extends MomentumService {
   Future<Conversation> getConversation({
     @required ConversationKey key,
   }) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.conversationQuery(key);
     final result = Mapper.fromJson(data).toObject<Conversation>();
     return result;
@@ -32,15 +32,15 @@ class MessageService extends MomentumService {
 
   Future<String> sendMessage(ConversationKey key,
       {String message, List<File> attachments = const []}) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.sendMessage(key, message, attachments);
     final result = data['id'];
     return result;
   }
 
   Stream<Message> onNewMessage(ConversationKey key) =>
-      getService<GraphqlService>().newMessageSubscription(key);
+      Get.find<GraphqlService>().newMessageSubscription(key);
 
   Stream<Conversation> onConversationChange() =>
-      getService<GraphqlService>().conversationChangeSubscription();
+      Get.find<GraphqlService>().conversationChangeSubscription();
 }

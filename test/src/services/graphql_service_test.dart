@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:cupizz_app/src/app.dart';
 import 'package:cupizz_app/src/assets.dart';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   objectMapping();
+  await initServices();
 
-  final tester = MomentumTester(momentum(isTesting: true));
-  await tester.init();
-
-  final graphql = tester.service<GraphqlService>();
-  final storage = tester.service<StorageService>();
+  final graphql = Get.find<GraphqlService>();
+  final storage = Get.find<StorageService>();
   final loginEmail = 'test111@gmail.com';
   final loginPassword = '123456789';
 

@@ -1,8 +1,8 @@
 import 'package:cupizz_app/src/base/base.dart';
 
-class SystemService extends MomentumService {
+class SystemService extends GetxService {
   Future<List<Hobby>> getAllHobbies() async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.hobbiesQuery();
     final hobies = (data as List)
         .map((e) => Mapper.fromJson(e).toObject<Hobby>())
@@ -12,13 +12,13 @@ class SystemService extends MomentumService {
 
   Future<String> getAddress(
       {@required String latitude, @required String longitude}) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final address = await graphql.getAddressQuery(latitude, longitude);
     return address;
   }
 
   Future<List<ColorOfAnswer>> getColorsOfAnswer() async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final json = await graphql.colorsOfAnswerQuery();
     final result = (json as List)
         .map((e) => Mapper.fromJson(e).toObject<ColorOfAnswer>())
@@ -27,19 +27,19 @@ class SystemService extends MomentumService {
   }
 
   Future<int> getUnreadMessageCount() async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.unreadMessageCountQuery();
     return data;
   }
 
   Future<int> getUnreadReceiveFriendCount() async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.unreadReceiveFriendCountQuery();
     return data;
   }
 
   Future<int> getUnreadAcceptedFriendCount() async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.unreadAcceptedFriendCountQuery();
     return data;
   }
@@ -48,7 +48,7 @@ class SystemService extends MomentumService {
     String keyword,
     int page,
   }) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final data = await graphql.questionsQuery(keyword, page);
     final result = WithIsLastPageOutput<Question>.fromJson(data);
     return result;
