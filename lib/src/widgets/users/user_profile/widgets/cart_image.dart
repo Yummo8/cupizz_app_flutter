@@ -122,10 +122,9 @@ class CartImage extends StatelessWidget {
                       color: _theme.primaryColor,
                     ),
                     onPressed: () {
-                      Router.goto(
-                        context,
-                        EditUserImagesScreen,
-                        params: EditUserImagesScreenParams(userImage),
+                      Get.toNamed(
+                        Routes.editImages,
+                        arguments: EditUserImagesScreenParams(userImage),
                       );
                     },
                   ),

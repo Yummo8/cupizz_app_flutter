@@ -22,7 +22,7 @@ class EditAnswerScreen extends StatelessWidget {
   void _onSubmit(BuildContext context) async {
     final controller = Momentum.controller<EditAnswerScreenController>(context);
     await controller.sendToServer();
-    Router.pop(context);
+    Get.back();
 
     controller.sendEvent(
         CurrentUserEvent(action: CurrentUserEventAction.newUserImage));
@@ -33,10 +33,10 @@ class EditAnswerScreen extends StatelessWidget {
     final controller = Momentum.controller<EditAnswerScreenController>(context);
     final textEditingController =
         TextEditingController(text: controller.model.content);
-    final params = Router.getParam<EditAnswerScreenParams>(context);
+    final EditAnswerScreenParams params = Get.arguments;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (params?.userImage == null && controller.model.userImage == null) {
-        Router.pop(context);
+        Get.back();
         Fluttertoast.showToast(msg: 'Đã xảy ra lỗi, vui lòng thử lại.');
       } else if (params?.userImage != null) {
         if (params.userImage != controller.model.userImage) {

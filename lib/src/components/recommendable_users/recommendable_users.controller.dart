@@ -88,8 +88,8 @@ class RecommendableUsersController
         popup.button(
             label: 'Nhắn tin',
             onPressed: () {
-              Router.goto(context, MessagesScreen,
-                  params: MessagesScreenParams(
+              Get.toNamed(Routes.messages,
+                  arguments: MessagesScreenParams(
                       ConversationKey(targetUserId: user.id)));
             }),
       ],

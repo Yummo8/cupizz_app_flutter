@@ -31,7 +31,7 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(height: selectedHeight.round());
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

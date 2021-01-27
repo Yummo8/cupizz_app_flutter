@@ -89,7 +89,7 @@ class _ChatPageState extends State<ChatPage>
                                   OptionButton(
                                     title: 'Cập nhật thông tin',
                                     onPressed: () {
-                                      Router.goto(context, EditProfileScreen);
+                                      Get.toNamed(Routes.editProfile);
                                     },
                                   ),
                                 ],

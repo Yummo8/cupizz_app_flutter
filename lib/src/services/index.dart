@@ -19,7 +19,9 @@ Future initServices([bool isTesting = false]) async {
   ));
   Get.put(AuthService());
   Get.put(MessageService());
-  Get.put(OneSignalService());
+  if (!isTesting) {
+    await Get.putAsync<OneSignalService>(() => OneSignalService().init());
+  }
   Get.put(SystemService());
   Get.put(UserService());
   Get.put(PostService());

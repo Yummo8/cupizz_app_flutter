@@ -63,9 +63,10 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
             }),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: HeroKeys.createPost,
         backgroundColor: context.colorScheme.primary,
         onPressed: () {
-          Router.goto(context, CreatePostScreen);
+          Get.toNamed(Routes.createPost);
         },
         child: Icon(
           Icons.add,

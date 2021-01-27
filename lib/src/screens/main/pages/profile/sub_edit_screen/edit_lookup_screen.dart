@@ -28,7 +28,7 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(lookingFors: selectedValues);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

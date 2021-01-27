@@ -10,10 +10,10 @@ class SelectQuestionScreen extends StatelessWidget {
     final controller =
         Momentum.controller<AnswerQuestionScreenController>(context);
     if (controller.model.question == null) {
-      Router.pop(context);
-      Router.goto(context, AnswerQuestionScreen);
+      Get.back();
+      Get.toNamed(Routes.answer);
     } else {
-      Router.pop(context);
+      Get.back();
     }
     controller.model.update(question: question);
   }

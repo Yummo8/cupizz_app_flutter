@@ -1,6 +1,7 @@
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 
 import '../../app.dart';
 
@@ -15,6 +16,9 @@ class AuthController extends MomentumController<AuthModel> {
     if (await isAuthenticated) {
       await dependOn<LocationController>()
           .checkPermission(AppConfig.navigatorKey.currentContext);
+      unawaited(gotoHome());
+    } else {
+      unawaited(gotoAuth());
     }
     return super.bootstrapAsync();
   }
@@ -138,21 +142,18 @@ class AuthController extends MomentumController<AuthModel> {
   Future<void> logout() async {
     await Get.find<AuthService>().logout();
     unawaited(Get.find<OneSignalService>().unSubscribe());
-    await Router.resetWithContext<LoginScreen>(
-        AppConfig.navigatorKey.currentContext);
+    Get.reset();
+    await initServices();
     Momentum.resetAll(AppConfig.navigatorKey.currentContext);
     Momentum.restart(AppConfig.navigatorKey.currentContext, momentum());
+    unawaited(Get.offAndToNamed(Routes.login));
   }
 
   Future<void> gotoHome() async {
-    final router = getService<Router>();
-    await router.clearHistory();
-    await Router.goto(AppConfig.navigatorKey.currentContext, MainScreen);
+    await Get.offAllNamed(Routes.home);
   }
 
   Future<void> gotoAuth() async {
-    final router = getService<Router>();
-    await router.clearHistory();
-    await Router.goto(AppConfig.navigatorKey.currentContext, LoginScreen);
+    await Get.offAllNamed(Routes.login);
   }
 }

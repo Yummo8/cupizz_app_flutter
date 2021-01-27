@@ -5,7 +5,7 @@ import 'package:pedantic/pedantic.dart';
 class OneSignalService extends GetxService {
   bool _isInited = false;
 
-  Future init() async {
+  Future<OneSignalService> init() async {
     await OneSignal.shared.init('3adf348e-2781-4d56-8003-f0813dee3bfe',
         iOSSettings: {
           OSiOSSettings.autoPrompt: false,
@@ -25,6 +25,7 @@ class OneSignalService extends GetxService {
     _handleOpenWhenClick();
     _isInited = true;
     debugPrint('OneSignal: Finished setting up.');
+    return this;
   }
 
   void _handleOpenWhenClick() {
@@ -39,14 +40,13 @@ class OneSignalService extends GetxService {
 
         if (type == NotificationType.like ||
             type == NotificationType.matching) {
-          Router.goto(
-            AppConfig.navigatorKey.currentContext,
-            UserScreen,
-            params: UserScreenParams(userId: refUserId),
+          Get.toNamed(
+            Routes.user,
+            arguments: UserScreenParams(userId: refUserId),
           );
         } else if (type == NotificationType.newMessage) {
-          Router.goto(AppConfig.navigatorKey.currentContext, MessagesScreen,
-              params: MessagesScreenParams(
+          Get.toNamed(Routes.messages,
+              arguments: MessagesScreenParams(
                   ConversationKey(conversationId: refConversationId)));
         } else {}
 

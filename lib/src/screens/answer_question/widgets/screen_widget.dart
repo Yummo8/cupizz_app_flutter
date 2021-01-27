@@ -86,7 +86,7 @@ class AnswerScreenWidget extends StatelessWidget {
                   onBackPressed: () {
                     onBack?.call();
 
-                    Router.pop(context);
+                    Get.back();
                   },
                   actions: [
                     SaveButton(

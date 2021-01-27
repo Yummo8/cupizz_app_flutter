@@ -6,52 +6,55 @@ import 'widgets/create_post_widgets.dart';
 class CreatePostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PrimaryScaffold(
-      appBar: BackAppBar(
-        titleWidget: _CategoriesDropDown(),
-        actions: [_SubmitButton()],
-        elevation: 0,
-        centerTitle: false,
-        backIcon: Icons.close,
-      ),
-      body: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  _CreatePostBody(textFieldPlaceholder: 'Nhập nội dung'),
-                  const SizedBox(height: 20),
-                  Flexible(
-                    child: MomentumBuilder(
-                        controllers: [CreatePostController],
-                        builder: (context, snapshot) {
-                          final model = snapshot<CreatePostModel>();
-                          return CreatePostImageList(
-                            images: model.images,
-                            onRemovedImage: (image) {
-                              model.controller.deleteImage(image);
-                            },
-                          );
-                        }),
-                  ),
-                ],
+    return Hero(
+      tag: HeroKeys.createPost,
+      child: PrimaryScaffold(
+        appBar: BackAppBar(
+          titleWidget: _CategoriesDropDown(),
+          actions: [_SubmitButton()],
+          elevation: 0,
+          centerTitle: false,
+          backIcon: Icons.close,
+        ),
+        body: Stack(
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    _CreatePostBody(textFieldPlaceholder: 'Nhập nội dung'),
+                    const SizedBox(height: 20),
+                    Flexible(
+                      child: MomentumBuilder(
+                          controllers: [CreatePostController],
+                          builder: (context, snapshot) {
+                            final model = snapshot<CreatePostModel>();
+                            return CreatePostImageList(
+                              images: model.images,
+                              onRemovedImage: (image) {
+                                model.controller.deleteImage(image);
+                              },
+                            );
+                          }),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ComposeBottomIconWidget(
-              onImageIconSelected: (images) {
-                Momentum.controller<CreatePostController>(context)
-                    .pickImages(images);
-              },
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ComposeBottomIconWidget(
+                onImageIconSelected: (images) {
+                  Momentum.controller<CreatePostController>(context)
+                      .pickImages(images);
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -74,7 +77,7 @@ class _SubmitButton extends StatelessWidget {
                 startLoading();
                 try {
                   await model.controller.createPost();
-                  Router.pop(context);
+                  Get.back();
                 } finally {
                   stopLoading();
                 }

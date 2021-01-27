@@ -7,7 +7,6 @@ import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.da
 import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
-import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -16,13 +15,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/base.dart';
-import 'screens/auth/index.dart';
-import 'screens/edit_user_images/edit_user_images_screen.dart';
 import 'screens/main/components/main_screen.controller.dart';
-import 'screens/main/main_screen.dart';
 import 'screens/main/pages/chat/chat_page.dart';
 import 'screens/main/pages/friend/friend_page.dart';
-import 'screens/main/pages/profile/edit_profile_screen.dart';
 import 'screens/messages/messages_screen.dart';
 import 'services/index.dart';
 import 'widgets/index.dart';
@@ -54,38 +49,6 @@ Momentum momentum({bool isTesting = false}) {
       SystemController(),
       PostPageController()..config(lazy: true),
       CreatePostController()..config(lazy: true),
-    ],
-    services: [
-      Router([
-        LoginScreen(),
-        MainScreen(),
-        EditProfileScreen(),
-        MessagesScreen(),
-        RegisterScreen(),
-        UserScreen(),
-        UserSettingScreen(),
-        AnswerQuestionScreen(),
-        EditAnswerScreen(),
-        SelectQuestionScreen(),
-        ProfilePage(),
-        CreatePostScreen(),
-        ...[
-          EditAgeScreen(),
-          EditDrinkScreen(),
-          EditGenderScreen(),
-          EditHeightScreen(),
-          EditHobbiesScreen(),
-          EditLocationScreen(),
-          EditLookupScreen(),
-          EditMarriageScreen(),
-          EditUserImagesScreen(),
-          EditReligionScreen(),
-          EditSmokeScreen(),
-          EditSmokeScreen(),
-          EditTextScreen(),
-          EditEducationLevelScreen(),
-        ]
-      ]),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),
@@ -170,7 +133,7 @@ class _MyApp extends StatelessWidget {
           final theme = snapshot<ThemeModel>().controller.selectedTheme;
           return CustomTheme(
             theme: theme,
-            child: MaterialApp(
+            child: GetMaterialApp(
               debugShowCheckedModeBanner:
                   AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
               title: 'Cupizz',
@@ -179,7 +142,8 @@ class _MyApp extends StatelessWidget {
                 FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
               ],
               theme: theme,
-              home: Router.getActivePage(context),
+              home: SplashScreen(),
+              getPages: getPages,
             ),
           );
         });

@@ -40,7 +40,7 @@ class CreatePostController extends MomentumController<CreatePostModel> {
       return;
     }
     await trycatch(() async {
-      final post = await getService<PostService>()
+      final post = await Get.find<PostService>()
           .createPost(model.selected.id, model.content, model.images);
       dependOn<PostPageController>().insertPost(post);
       reset();

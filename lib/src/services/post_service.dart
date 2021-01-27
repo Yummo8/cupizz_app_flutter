@@ -58,7 +58,7 @@ class PostService extends GetxService {
 
   Future<Post> createPost(String categoryId, String content,
       [List<File> images = const []]) async {
-    final graphql = getService<GraphqlService>();
+    final graphql = Get.find<GraphqlService>();
     final json = await graphql.createPostMutation(categoryId, content, images);
     return Mapper.fromJson(json).toObject<Post>();
   }
