@@ -369,4 +369,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
         msg: 'Đổi mật khẩu thành công.\nVui lòng đăng nhập lại.');
     unawaited(dependOn<AuthController>().logout());
   }
+
+  Future reloadRemainingSuperLike() async {
+    final remainingSuperLike =
+        await getService<UserService>().remainingSuperLikeQuery();
+    model.currentUser.remainingSuperLike = remainingSuperLike;
+    model.update(currentUser: model.currentUser);
+  }
 }

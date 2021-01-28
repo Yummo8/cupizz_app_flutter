@@ -40,10 +40,24 @@ class RecommendableUsersController
     if (model.users.isNotEmpty) {
       final service = getService<UserService>();
       if (isSwipeRight) {
+        if (isSuperLike &&
+            dependOn<CurrentUserController>()
+                    .model
+                    .currentUser
+                    .remainingSuperLike <=
+                0) {
+          await Fluttertoast.showToast(
+            msg: Strings.error.outOfSuperLike,
+          );
+          return;
+        }
         final friendType = await service.addFriend(
           model.users[0].id,
           isSuperLike: isSuperLike,
         );
+        if (isSuperLike) {
+          await dependOn<CurrentUserController>().reloadRemainingSuperLike();
+        }
         unawaited(dependOn<FriendPageController>().refresh());
         if (friendType == FriendType.friend) {
           _onMatched(context, model.users[0]);

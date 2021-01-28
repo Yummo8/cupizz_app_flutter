@@ -10,6 +10,12 @@ class UserService extends MomentumService {
     return user;
   }
 
+  Future<int> remainingSuperLikeQuery() async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.remainingSuperLikeQuery();
+    return data;
+  }
+
   Future<List<SimpleUser>> getRecommendableUsers() async {
     final graphql = getService<GraphqlService>();
     final data = await graphql.recommendableUsersQuery();

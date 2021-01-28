@@ -47,6 +47,8 @@ class _Error {
   final invalidUserAnswer = 'Câu trả lời phải nhiều hơn 10 ký tự';
   final errorClick = 'Đã xảy ra lỗi. Click để xem chi tiết.';
   final error = 'Đã xảy ra lỗi.';
+  final outOfSuperLike =
+      'Bạn đã hết lượt siêu thích hôm nay. Hãy thử lại vào ngày mai.';
 }
 
 class _Button {

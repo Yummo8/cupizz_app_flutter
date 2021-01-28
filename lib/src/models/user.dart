@@ -16,6 +16,9 @@ class User extends SimpleUser {
   List<EducationLevel> educationLevelsPrefer;
   HaveKids theirKids;
   List<Religious> religiousPrefer;
+  int remainingSuperLike;
+
+  int get getRemainingSuperLike => this?.remainingSuperLike ?? 0;
 
   @override
   void mapping(Mapper map) {
@@ -44,6 +47,8 @@ class User extends SimpleUser {
         (v) => pushNotiSetting = v, EnumTransform<NotificationType, String>());
     map<SocialProvider>(
         'data.socialProviders', socialProviders, (v) => socialProviders = v);
+    map('data.remainingSuperLike', remainingSuperLike,
+        (v) => remainingSuperLike = v);
   }
 
   static String get graphqlQuery => '''
@@ -88,6 +93,7 @@ class User extends SimpleUser {
       }
       socialProviders ${SocialProvider.graphqlQuery}
       userImages ${UserImage.graphqlQuery}
+      remainingSuperLike
     }
   }
 ''';

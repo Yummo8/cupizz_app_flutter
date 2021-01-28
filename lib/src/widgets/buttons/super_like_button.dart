@@ -1,7 +1,7 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:simple_animations/simple_animations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SuperLikeButton extends StatefulWidget {
   final Function onPressed;
@@ -9,58 +9,94 @@ class SuperLikeButton extends StatefulWidget {
   const SuperLikeButton({Key key, this.onPressed}) : super(key: key);
 
   @override
-  _SuperLikeButtonState createState() => _SuperLikeButtonState();
+  SuperLikeButtonState createState() => SuperLikeButtonState();
 }
 
-class _SuperLikeButtonState extends State<SuperLikeButton> {
-  CustomAnimationControl control = CustomAnimationControl.STOP;
+class SuperLikeButtonState extends State<SuperLikeButton> {
+  bool _showingRemain = false;
+  Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    resetTimer();
+  }
+
+  void resetTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(5.seconds, (timer) {
+      showRemain();
+    });
+  }
+
+  Future showRemain() async {
+    _showingRemain = true;
+    setState(() {});
+    _timer?.cancel();
+    await 2.seconds.delay;
+    _showingRemain = false;
+    setState(() {});
+    resetTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final tween = MultiTween<DefaultAnimationProperties>()
-      ..add(DefaultAnimationProperties.rotation, 0.0.tweenTo(pi / 6),
-          200.milliseconds)
-      ..add(
-          DefaultAnimationProperties.scale, 1.0.tweenTo(1.5), 200.milliseconds);
-    return CustomAnimation<MultiTweenValues<DefaultAnimationProperties>>(
-      control: control,
-      tween: tween,
-      duration: tween.duration,
-      builder: (context, child, value) {
-        return GestureDetector(
-          onTap: () async {
-            if (control != CustomAnimationControl.STOP) return;
-            control = CustomAnimationControl.PLAY_FROM_START;
-            setState(() {});
-            widget.onPressed?.call();
-            await Future.delayed(
-                (tween.duration.inMilliseconds + 200).milliseconds);
-            control = CustomAnimationControl.PLAY_REVERSE_FROM_END;
-            setState(() {});
-            await Future.delayed(tween.duration);
-            control = CustomAnimationControl.STOP;
-            setState(() {});
-          },
-          child: Transform.rotate(
-            angle: value.get(DefaultAnimationProperties.rotation),
-            child: Transform.scale(
-              scale: value.get(DefaultAnimationProperties.scale),
-              child: AnimatedSwitcher(
-                duration: 500.milliseconds,
-                transitionBuilder: (child, animation) => ScaleTransition(
-                  scale: animation,
-                  child: FadeTransition(opacity: animation, child: child),
-                ),
-                child: Icon(
-                  Icons.star,
-                  color: context.colorScheme.primary,
-                  size: 30,
-                ),
+    return MomentumBuilder(
+        controllers: [CurrentUserController],
+        builder: (context, snapshot) {
+          final model = snapshot<CurrentUserModel>();
+          return GestureDetector(
+            onTap: model.currentUser.getRemainingSuperLike > 0
+                ? widget.onPressed
+                : () {
+                    Fluttertoast.showToast(
+                      msg: Strings.error.outOfSuperLike,
+                    );
+                  },
+            child: AnimatedSwitcher(
+              duration: 500.milliseconds,
+              transitionBuilder: (child, animation) => ScaleTransition(
+                scale: animation,
+                child: FadeTransition(opacity: animation, child: child),
+              ),
+              child: Container(
+                key: ValueKey<bool>(_showingRemain &&
+                    model.currentUser.getRemainingSuperLike > 0),
+                child: _showingRemain &&
+                        model.currentUser.getRemainingSuperLike > 0
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          model.currentUser.getRemainingSuperLike.toString(),
+                          style: GoogleFonts.carterOne(
+                            fontSize: 26,
+                            color: Colors.yellow[800],
+                            shadows: [
+                              Shadow(
+                                blurRadius: 1.0,
+                                color: Colors.black,
+                                offset: Offset(1.0, 1.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Icon(
+                        Icons.star,
+                        color: model.currentUser.getRemainingSuperLike > 0
+                            ? context.colorScheme.primary
+                            : context.colorScheme.onSurface,
+                        size: 30,
+                      ),
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        });
   }
 }
