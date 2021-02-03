@@ -269,3 +269,16 @@ class Religious extends Enumerable<String> {
         other,
       ];
 }
+
+class LikeType extends Enumerable<String> {
+  @override
+  final String rawValue;
+  const LikeType({@required this.rawValue});
+
+  static const like = FileType(rawValue: 'like');
+  static const love = FileType(rawValue: 'love');
+  static const wow = FileType(rawValue: 'wow');
+  static const haha = FileType(rawValue: 'haha');
+  static const angry = FileType(rawValue: 'angry');
+  static const sad = FileType(rawValue: 'sad');
+}

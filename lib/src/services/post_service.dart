@@ -1,0 +1,12 @@
+import 'package:cupizz_app/src/base/base.dart';
+
+class PostService extends MomentumService {
+  Future<List<Post>> getPosts({int page}) async {
+    final graphql = getService<GraphqlService>();
+    final data = await graphql.postsQuery(page: page);
+    final result = (data as List ?? [])
+        .map((e) => Mapper.fromJson(e).toObject<Post>())
+        .toList();
+    return result;
+  }
+}

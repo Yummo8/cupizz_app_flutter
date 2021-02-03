@@ -184,4 +184,15 @@ extension GraphqlQuery on GraphqlService {
     );
     return result.data['unreadAcceptedFriendCount'] ?? 0;
   }
+
+  Future postsQuery({int page = 1}) async {
+    final queryString = '''{ posts(page: $page) ${Post.graphqlQuery} }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['posts'] ?? 0;
+  }
 }

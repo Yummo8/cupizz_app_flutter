@@ -23,11 +23,13 @@ export 'user.dart';
 export 'user_answer.dart';
 export 'user_image.dart';
 export 'with_is_past_page_output.dart';
+export 'post.dart';
 
 void objectMapping() {
   Mappable.factories = {
     ChatUser: () => ChatUser(),
     ColorOfAnswer: () => ColorOfAnswer(),
+    Comment: () => Comment(),
     Conversation: () => Conversation(),
     EducationLevel: (v) => EducationLevel(rawValue: v),
     FileModel: () => FileModel(),
@@ -44,6 +46,8 @@ void objectMapping() {
     Message: () => Message(),
     NotificationType: (v) => NotificationType(rawValue: v),
     OnlineStatus: (v) => OnlineStatus(rawValue: v),
+    Post: (v) => Post(),
+    PostCategory: (v) => PostCategory(),
     Question: () => Question(),
     Religious: (v) => Religious(rawValue: v),
     SimpleUser: () => SimpleUser(),

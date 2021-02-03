@@ -61,6 +61,7 @@ Momentum momentum({bool isTesting = false}) {
         wss: !isTesting ? AppConfig.instance.wss : 'ws://cupizz.cf/graphql',
       ),
       MessageService(),
+      PostService(),
       if (!isTesting) OneSignalService()..init(),
       Router([
         LoginScreen(),

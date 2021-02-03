@@ -8,3 +8,4 @@ export 'one_signal_service.dart';
 export 'storage_service.dart';
 export 'system_service.dart';
 export 'user_service.dart';
+export 'post_service.dart';
