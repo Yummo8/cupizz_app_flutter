@@ -64,9 +64,9 @@ class _PostContent extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 20.0),
@@ -141,7 +141,9 @@ class _User extends StatelessWidget {
             ),
             Text(
               postTimeStamp,
-              style: TextStyle(color: AppColors.indigo100,),
+              style: TextStyle(
+                color: AppColors.indigo100,
+              ),
             ),
           ],
         ),
@@ -188,7 +190,12 @@ class _PostLocation extends StatelessWidget {
           SizedBox(
             width: 2.0,
           ),
-          Text(farAway, style: TextStyle(color: AppColors.indigo100,),),
+          Text(
+            farAway,
+            style: TextStyle(
+              color: AppColors.indigo100,
+            ),
+          ),
         ],
       ),
     );
@@ -198,8 +205,8 @@ class _PostLocation extends StatelessWidget {
 class _PostAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    TextStyle iconTextStyle = theme.textTheme.subtitle1.copyWith(
+    var theme = Theme.of(context);
+    var iconTextStyle = theme.textTheme.subtitle1.copyWith(
       color: AppColors.white,
     );
     return Container(
@@ -208,7 +215,7 @@ class _PostAction extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ActionIcon(
-            onTap: ()=>{},
+            onTap: () => {},
             title: StringConst.NUMBER_OF_LIKES,
             iconData: FeatherIcons.heart,
             isHorizontal: true,
@@ -217,9 +224,7 @@ class _PostAction extends StatelessWidget {
           ),
           SpaceW16(),
           ActionIcon(
-            onTap: ()=>{
-
-            },
+            onTap: () => {},
             title: StringConst.NUMBER_OF_COMMENTS,
             iconData: FeatherIcons.messageSquare,
             isHorizontal: true,
@@ -227,10 +232,9 @@ class _PostAction extends StatelessWidget {
             titleStyle: iconTextStyle,
           ),
           Spacer(),
-          IconButton(icon: Icon(FeatherIcons.share2, color: AppColors.white),
-    onPressed: ()=>{
-
-    })
+          IconButton(
+              icon: Icon(FeatherIcons.share2, color: AppColors.white),
+              onPressed: () => {})
         ],
       ),
     );

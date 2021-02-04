@@ -148,8 +148,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
           actions: <Widget>[
             StreamBuilder(
               stream: pageStream,
-              builder: (ctx, s) => FlatButton(
-                splashColor: Colors.transparent,
+              builder: (ctx, s) => TextButton(
                 onPressed: selectedList.isEmpty ? null : sure,
                 child: Text(
                   config.provider.getSureText(options, selectedList.length),

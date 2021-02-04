@@ -254,12 +254,14 @@ class _SideBarState extends State<SideBar>
                 )
                 .toList(),
           ),
-          OutlineButton(
+          OutlinedButton(
             onPressed: () {
               HobbiesBottomSheet().show(context);
             },
-            borderSide: BorderSide(width: 1, color: Colors.grey[500]),
-            highlightColor: context.colorScheme.primary.withOpacity(0.5),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(width: 1, color: Colors.grey[500]),
+              primary: context.colorScheme.primary.withOpacity(0.5),
+            ),
             child: Text(Strings.drawer.chooseOtherHoddies),
           )
         ],

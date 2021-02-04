@@ -59,7 +59,7 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () => _selectDate(context),
                 child: Center(
                   child: Text(

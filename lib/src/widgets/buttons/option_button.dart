@@ -20,17 +20,23 @@ class OptionButton extends StatelessWidget {
                 ? Colors.grey[500]
                 : context.colorScheme.onPrimary));
     return isSelected
-        ? RaisedButton(
+        ? ElevatedButton(
             onPressed: () => onPressed?.call(),
-            color: isSelected
-                ? context.colorScheme.primary
-                : context.colorScheme.onPrimary,
+            style: ElevatedButton.styleFrom(
+              primary: isSelected
+                  ? context.colorScheme.primary
+                  : context.colorScheme.onPrimary,
+            ),
             child: child,
           )
-        : OutlineButton(
+        : OutlinedButton(
             onPressed: () => onPressed?.call(),
-            borderSide: BorderSide(width: 1, color: Colors.grey[500]),
-            highlightColor: context.colorScheme.primary.withOpacity(0.5),
+            style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  width: 1,
+                  color: Colors.grey[500],
+                ),
+                backgroundColor: context.colorScheme.primary.withOpacity(0.5)),
             child: child,
           );
   }

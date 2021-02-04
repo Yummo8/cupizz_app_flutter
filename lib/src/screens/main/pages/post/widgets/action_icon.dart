@@ -24,7 +24,7 @@ class ActionIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    var theme = Theme.of(context);
     return Container(
       child: !isHorizontal
           ? Column(
@@ -53,7 +53,7 @@ class ActionIcon extends StatelessWidget {
           : Row(
               children: [
                 IconButton(
-                  padding:  EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
                   icon: Icon(
                     iconData,
                     size: size,

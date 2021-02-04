@@ -75,36 +75,40 @@ class _EditTextScreenState extends State<EditTextScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        minWidth: sizeHelper.rW(35),
-                        color: context.colorScheme.onBackground,
+                        style: TextButton.styleFrom(
+                          backgroundColor: context.colorScheme.onBackground,
+                          minimumSize: Size.fromWidth(sizeHelper.rW(35)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                        ),
                         child: Text(
                           'Bỏ',
                           style: context.textTheme.button
                               .copyWith(color: context.colorScheme.background),
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           params?.onSave(_textController.text);
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        minWidth: sizeHelper.rW(35),
-                        color: _theme.primaryColor,
+                        style: TextButton.styleFrom(
+                          backgroundColor: _theme.primaryColor,
+                          minimumSize: Size.fromWidth(sizeHelper.rW(35)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                        ),
                         child: Text(
                           'Lưu',
                           style: context.textTheme.button
                               .copyWith(color: _theme.colorScheme.onPrimary),
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
                       )
                     ],
                   )

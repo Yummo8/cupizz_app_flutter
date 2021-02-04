@@ -33,7 +33,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       height: expandedHeight,
       child: Stack(
         fit: StackFit.expand,
-        overflow: Overflow.visible,
+        clipBehavior: Clip.none,
         children: [
           _buildCover(context, scrollRate),
           ClipPath(
@@ -223,9 +223,11 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       bottom: 10 - 30 * scrollRate,
       child: Transform.scale(
         scale: 1,
-        child: FlatButton(
-          color: context.colorScheme.background,
-          shape: CircleBorder(),
+        child: TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: context.colorScheme.background,
+            shape: CircleBorder(),
+          ),
           child: Icon(icon, size: 18),
           onPressed: onPressed,
         ),

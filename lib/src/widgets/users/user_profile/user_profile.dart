@@ -282,7 +282,7 @@ class UserProfileState extends MomentumState<UserProfile>
                         if (model.isAddingImage) return LoadingIndicator();
                         return Column(
                           children: [
-                            FlatButton(
+                            TextButton(
                               onPressed: model.isAddingImage
                                   ? null
                                   : () {
@@ -292,7 +292,10 @@ class UserProfileState extends MomentumState<UserProfile>
                                         }
                                       }, maxSelected: 1);
                                     },
-                              color: _theme.primaryColor.withOpacity(0.2),
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    _theme.primaryColor.withOpacity(0.2),
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -313,14 +316,17 @@ class UserProfileState extends MomentumState<UserProfile>
                                 ],
                               ),
                             ),
-                            FlatButton(
+                            TextButton(
                               onPressed: model.isAddingImage
                                   ? null
                                   : () {
                                       AnswerQuestionScreen.answerQuestion(
                                           context);
                                     },
-                              color: _theme.primaryColor.withOpacity(0.2),
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    _theme.primaryColor.withOpacity(0.2),
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
