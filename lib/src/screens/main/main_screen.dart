@@ -27,8 +27,8 @@ class _MainScreenState extends MomentumState<MainScreen>
     HomePage(),
     FriendPageV2(),
     ChatPage(),
-    ProfilePage(),
-    // PostPage()
+    // ProfilePage(),
+    PostPage()
   ];
 
   TabController _tabController;

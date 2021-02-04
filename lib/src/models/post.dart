@@ -67,8 +67,16 @@ class PostCategory extends BaseModel {
   String _value;
   Color _color;
 
-  String get value => _value;
-  Color get color => _color;
+  String get value => _value ?? '';
+  Color get color => _color ?? Colors.white;
+
+  PostCategory({
+    String id,
+    String value,
+    Color color,
+  })  : _value = value,
+        _color = color,
+        super(id: id);
 
   @override
   void mapping(Mapper map) {

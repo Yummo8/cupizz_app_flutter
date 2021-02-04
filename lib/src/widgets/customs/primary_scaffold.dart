@@ -9,6 +9,7 @@ class PrimaryScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
   final PreferredSizeWidget appBar;
   final Widget drawer;
+  final Widget floatingActionButton;
   final Function onBack;
 
   PrimaryScaffold({
@@ -21,6 +22,7 @@ class PrimaryScaffold extends StatelessWidget {
     this.appBar,
     this.drawer,
     this.onBack,
+    this.floatingActionButton,
   }) : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class PrimaryScaffold extends StatelessWidget {
       drawer: drawer,
       body: body,
       bottomNavigationBar: bottomNavigationBar,
+      floatingActionButton: floatingActionButton,
     );
     return RouterPage(
       onWillPop: onBack,
