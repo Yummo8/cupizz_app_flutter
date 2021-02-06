@@ -85,7 +85,7 @@ class PostCategory extends BaseModel {
     map('color', color, (v) => _color = v, ColorTransform());
   }
 
-  static String get graphqlQuery => '{ id value }';
+  static String get graphqlQuery => '{ id value color }';
 }
 
 class Comment extends BaseModel {

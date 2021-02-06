@@ -87,22 +87,23 @@ class ListCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: Center(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          physics: BouncingScrollPhysics(),
-          child: Row(
-            children: List.generate(
-              6,
-              (index) => _buildItem(
-                  context,
-                  PostCategory(id: index.toString(), value: 'Category $index'),
-                  index),
-            ),
-          ),
-        ),
-      ),
+      child: MomentumBuilder(
+          controllers: [SystemController],
+          builder: (context, snapshot) {
+            final model = snapshot<SystemModel>();
+            model.controller.getPostCategories();
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              physics: BouncingScrollPhysics(),
+              child: Row(
+                children: [
+                  PostCategory(value: 'Tất cả'),
+                  ...(model.postCategories ?? [])
+                ]?.mapIndexed((e, i) => _buildItem(context, e, i))?.toList(),
+              ),
+            );
+          }),
     );
   }
 
@@ -116,7 +117,7 @@ class ListCategories extends StatelessWidget {
             margin: EdgeInsets.only(left: index != 0 ? 10 : 0),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(90),
-                border: Border.all(color: context.colorScheme.onBackground),
+                border: Border.all(color: color),
                 color: color.withOpacity(isSelected ? 0.5 : 0.1)),
             child: InkWell(
               child: Padding(

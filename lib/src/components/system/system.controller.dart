@@ -64,4 +64,14 @@ class SystemController extends MomentumController<SystemModel> {
       });
     });
   }
+
+  Future getPostCategories() async {
+    await trycatch(() async {
+      final postCategories =
+          await getService<PostService>().getPostCategories();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        model.update(postCategories: postCategories);
+      });
+    });
+  }
 }

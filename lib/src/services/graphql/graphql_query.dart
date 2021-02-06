@@ -193,6 +193,17 @@ extension GraphqlQuery on GraphqlService {
         documentNode: gql(queryString),
       ),
     );
-    return result.data['posts'] ?? 0;
+    return result.data['posts'];
+  }
+
+  Future postCategoriesQuery() async {
+    final queryString = '''{ postCategories ${PostCategory.graphqlQuery} }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['postCategories'];
   }
 }
