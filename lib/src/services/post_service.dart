@@ -10,11 +10,11 @@ class PostService extends MomentumService {
     return result;
   }
 
-  Future<List<Post>> getPosts({int page}) async {
+  Future<List<Post>> getPosts({int page, String categoryId}) async {
     final graphql = getService<GraphqlService>();
-    final data = await graphql.postsQuery(page: page);
-    final result = (data as List ?? [])
-        .map((e) => Mapper.fromJson(e).toObject<Post>())
+    final data = await graphql.postsQuery(page: page, categoryId: categoryId);
+    final result = ((data as List) ?? [])
+        .map<Post>((e) => Mapper.fromJson(e).toObject<Post>())
         .toList();
     return result;
   }

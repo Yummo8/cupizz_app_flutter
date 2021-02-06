@@ -30,6 +30,7 @@ class ActionIcon extends StatelessWidget {
           ? Column(
               children: [
                 IconButton(
+                    padding: EdgeInsets.zero,
                     icon: Icon(
                       iconData,
                       size: size,

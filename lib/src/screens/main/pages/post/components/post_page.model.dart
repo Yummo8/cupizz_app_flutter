@@ -7,24 +7,33 @@ class PostPageModel extends MomentumModel<PostPageController> {
     PostPageController controller, {
     this.posts,
     this.isLastPage,
-    this.selectedCategories,
+    this.selectedCategory,
+    this.currentPage,
+    this.isLoading = false,
   }) : super(controller);
 
   final List<Post> posts;
   final bool isLastPage;
-  final PostCategory selectedCategories;
+  final PostCategory selectedCategory;
+  final int currentPage;
+
+  final bool isLoading;
 
   @override
   void update({
     List<Post> posts,
     bool isLastPage,
-    PostCategory selectedCategories,
+    PostCategory selectedCategory,
+    int currentPage,
+    bool isLoading,
   }) {
     PostPageModel(
       controller,
       posts: posts ?? this.posts,
       isLastPage: isLastPage ?? this.isLastPage,
-      selectedCategories: selectedCategories ?? this.selectedCategories,
+      selectedCategory: selectedCategory ?? this.selectedCategory,
+      currentPage: currentPage ?? this.currentPage,
+      isLoading: isLoading ?? this.isLoading ?? false,
     ).updateMomentum();
   }
 
@@ -37,12 +46,18 @@ class PostPageModel extends MomentumModel<PostPageController> {
               ?.map((e) => Mapper.fromJson(e).toObject<Post>())
               ?.toList() ??
           [],
-      selectedCategories: json['selectedCategories'] != null
-          ? Mapper.fromJson(json['selectedCategories']).toObject<PostCategory>()
+      selectedCategory: json['selectedCategory'] != null
+          ? Mapper.fromJson(json['selectedCategory']).toObject<PostCategory>()
           : null,
+      currentPage: json['currentPage'],
     );
   }
 
   @override
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => {
+        'posts': posts?.map((e) => e.toJson())?.toList() ?? [],
+        'isLastPage': isLastPage,
+        'selectedCategory': selectedCategory?.toJson(),
+        'currentPage': currentPage ?? 1,
+      };
 }

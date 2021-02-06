@@ -77,6 +77,7 @@ class GraphqlService extends MomentumService {
             result.exception.graphqlErrors[0].message,
             stackTrace: result.exception,
           ));
+          debugPrint(result.exception.graphqlErrors[0].message.toString());
           throw 'Xảy ra lỗi!\nVui lòng liên hệ NPH để được hỗ trợ!';
         }
       } else {

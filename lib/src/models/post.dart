@@ -1,6 +1,6 @@
 import 'package:cupizz_app/src/base/base.dart';
 
-class Post {
+class Post with Mappable {
   int _id;
   String _content;
   PostCategory _category;
@@ -19,21 +19,25 @@ class Post {
   String get content => _content;
   PostCategory get category => _category;
   DateTime get createdAt => _createdAt;
-  int get commentCount => _commentCount;
-  int get likeCount => _likeCount;
-  int get loveCount => _loveCount;
-  int get wowCount => _wowCount;
-  int get hahaCount => _hahaCount;
-  int get angryCount => _angryCount;
-  int get sadCount => _sadCount;
+  int get commentCount => _commentCount ?? 0;
+  int get likeCount => _likeCount ?? 0;
+  int get loveCount => _loveCount ?? 0;
+  int get wowCount => _wowCount ?? 0;
+  int get hahaCount => _hahaCount ?? 0;
+  int get angryCount => _angryCount ?? 0;
+  int get sadCount => _sadCount ?? 0;
   LikeType get myLikedPostType => _myLikedPostType;
   List<Comment> get comments => _comments;
 
+  int get totalReaction =>
+      likeCount + loveCount + wowCount + hahaCount + angryCount + sadCount;
+
+  @override
   void mapping(Mapper map) {
     map('id', id, (v) => _id = v);
     map('content', content, (v) => _content = v);
-    map('category', category, (v) => _category = v);
-    map('createdAt', createdAt, (v) => _createdAt = v);
+    map<PostCategory>('category', category, (v) => _category = v);
+    map('createdAt', createdAt, (v) => _createdAt = v, DateStringTransform());
     map('commentCount', commentCount, (v) => _commentCount = v);
     map('likeCount', likeCount, (v) => _likeCount = v);
     map('loveCount', loveCount, (v) => _loveCount = v);
@@ -42,7 +46,7 @@ class Post {
     map('angryCount', angryCount, (v) => _angryCount = v);
     map('sadCount', sadCount, (v) => _sadCount = v);
     map('myLikedPostType', myLikedPostType, (v) => _myLikedPostType = v);
-    map('comments', comments, (v) => _comments = v);
+    map<Comment>('comments', comments, (v) => _comments = v);
   }
 
   static String get graphqlQuery => '''

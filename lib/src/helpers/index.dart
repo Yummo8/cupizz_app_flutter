@@ -21,6 +21,10 @@ Future trycatch(Function func, {bool throwError = false}) async {
     await func();
   } catch (e) {
     unawaited(Fluttertoast.showToast(msg: e.toString()));
-    if (throwError) rethrow;
+    if (throwError) {
+      rethrow;
+    } else {
+      debugPrint(e.toString());
+    }
   }
 }

@@ -7,7 +7,6 @@ import 'package:cupizz_app/src/screens/main/pages/post/widgets/action_icon.dart'
 import 'package:cupizz_app/src/screens/main/pages/post/widgets/spaces.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'components/post_page.model.dart';
 
@@ -24,25 +23,45 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     return PrimaryScaffold(
-      body: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverAppBar(
-            title: _SearchBox(),
-            floating: true,
-            backgroundColor: context.colorScheme.background,
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: ListCategories(),
-            ),
-          ),
-          SliverList(
-              delegate: SliverChildBuilderDelegate(
-            (context, index) => PostCard(),
-            childCount: 6,
-          ))
-        ],
-      ),
+      body: MomentumBuilder(
+          controllers: [PostPageController],
+          builder: (context, snapshot) {
+            final model = snapshot<PostPageModel>();
+            return RefreshIndicator(
+              onRefresh: model.controller.refresh,
+              child: CustomScrollView(
+                controller: scrollController,
+                slivers: [
+                  SliverAppBar(
+                    title: _SearchBox(),
+                    floating: true,
+                    backgroundColor: context.colorScheme.background,
+                    bottom: PreferredSize(
+                      preferredSize: Size.fromHeight(50),
+                      child: ListCategories(),
+                    ),
+                  ),
+                  if (model.isLoading)
+                    SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                      (context, index) => PostCard(),
+                      childCount: 3,
+                    ))
+                  else
+                    SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                      (context, index) => FadeIn(
+                        delay: (100 * (index + 1)).milliseconds,
+                        child: PostCard(
+                          post: model.posts.getAt(index),
+                        ),
+                      ),
+                      childCount: model.posts?.length ?? 0,
+                    ))
+                ],
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.pink50,
         onPressed: () {},
@@ -61,6 +80,7 @@ class _SearchBox extends StatelessWidget {
     return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         elevation: 5,
+        shadowColor: context.colorScheme.onBackground,
         color: context.colorScheme.background,
         child: InkWell(
           onTap: () {},
@@ -74,7 +94,7 @@ class _SearchBox extends StatelessWidget {
               Text(
                 'Tìm kiếm bài viết',
                 style: TextStyle(
-                  color: Colors.grey[600],
+                  color: context.colorScheme.onSurface,
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.start,
@@ -108,7 +128,7 @@ class ListCategories extends StatelessWidget {
                   ...(systemModel.postCategories ?? [])
                 ]
                     ?.mapIndexed((e, i) => _buildItem(
-                        context, e, i, model.selectedCategories?.id == e?.id))
+                        context, e, i, model.selectedCategory?.id == e?.id))
                     ?.toList(),
               ),
             );
