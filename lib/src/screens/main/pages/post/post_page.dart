@@ -1,7 +1,6 @@
 library post_page;
 
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:cupizz_app/src/constants/values.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
 import 'package:flutter/material.dart' hide Router;
 
@@ -64,11 +63,11 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
             }),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.pink50,
+        backgroundColor: context.colorScheme.primary,
         onPressed: () {},
         child: Icon(
           Icons.add,
-          color: AppColors.white,
+          color: context.colorScheme.onPrimary,
         ),
       ),
     );
