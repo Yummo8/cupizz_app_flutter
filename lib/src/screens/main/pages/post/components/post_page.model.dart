@@ -7,23 +7,40 @@ class PostPageModel extends MomentumModel<PostPageController> {
     PostPageController controller, {
     this.posts,
     this.isLastPage,
-    this.categories,
+    this.selectedCategories,
   }) : super(controller);
 
   final List<Post> posts;
   final bool isLastPage;
-  final List<PostCategory> categories;
+  final PostCategory selectedCategories;
 
   @override
-  void update() {
+  void update({
+    List<Post> posts,
+    bool isLastPage,
+    PostCategory selectedCategories,
+  }) {
     PostPageModel(
       controller,
+      posts: posts ?? this.posts,
+      isLastPage: isLastPage ?? this.isLastPage,
+      selectedCategories: selectedCategories ?? this.selectedCategories,
     ).updateMomentum();
   }
 
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
-    return PostPageModel(controller);
+    return PostPageModel(
+      controller,
+      isLastPage: json['isLastPage'] ?? false,
+      posts: (json['posts'] as List)
+              ?.map((e) => Mapper.fromJson(e).toObject<Post>())
+              ?.toList() ??
+          [],
+      selectedCategories: json['selectedCategories'] != null
+          ? Mapper.fromJson(json['selectedCategories']).toObject<PostCategory>()
+          : null,
+    );
   }
 
   @override

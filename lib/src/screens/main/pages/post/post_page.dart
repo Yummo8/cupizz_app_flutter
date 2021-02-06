@@ -2,11 +2,14 @@ library post_page;
 
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:cupizz_app/src/constants/values.dart';
+import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/widgets/action_icon.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/widgets/spaces.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'components/post_page.model.dart';
 
 part 'widgets/post_cart.dart';
 
@@ -88,10 +91,13 @@ class ListCategories extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: MomentumBuilder(
-          controllers: [SystemController],
+          controllers: [SystemController, PostPageController],
           builder: (context, snapshot) {
-            final model = snapshot<SystemModel>();
-            model.controller.getPostCategories();
+            final systemModel = snapshot<SystemModel>();
+            final model = snapshot<PostPageModel>();
+            if (!systemModel.postCategories.isExistAndNotEmpty) {
+              systemModel.controller.getPostCategories();
+            }
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -99,8 +105,11 @@ class ListCategories extends StatelessWidget {
               child: Row(
                 children: [
                   PostCategory(value: 'Tất cả'),
-                  ...(model.postCategories ?? [])
-                ]?.mapIndexed((e, i) => _buildItem(context, e, i))?.toList(),
+                  ...(systemModel.postCategories ?? [])
+                ]
+                    ?.mapIndexed((e, i) => _buildItem(
+                        context, e, i, model.selectedCategories?.id == e?.id))
+                    ?.toList(),
               ),
             );
           }),
@@ -118,12 +127,17 @@ class ListCategories extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(90),
                 border: Border.all(color: color),
-                color: color.withOpacity(isSelected ? 0.5 : 0.1)),
+                color: color.withOpacity(isSelected ? 0.2 : 0.0)),
             child: InkWell(
+              onTap: () {
+                Momentum.controller<PostPageController>(context)
+                    .selectCategory(data);
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Text(
                   data.value,
+                  style: context.textTheme.bodyText1.copyWith(color: color),
                 ),
               ),
             ),

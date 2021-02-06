@@ -9,4 +9,10 @@ class PostPageController extends MomentumController<PostPageModel> {
       this,
     );
   }
+
+  Future selectCategory(PostCategory category) async {
+    if (category?.id == model.selectedCategories?.id) return;
+    model.update(selectedCategories: category);
+    // TODO: reload posts
+  }
 }
