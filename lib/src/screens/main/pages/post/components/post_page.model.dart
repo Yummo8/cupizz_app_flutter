@@ -9,13 +9,17 @@ class PostPageModel extends MomentumModel<PostPageController> {
     this.isLastPage,
     this.selectedCategory,
     this.currentPage,
+    this.isMyPost = false,
     this.isLoading = false,
+    this.keyword,
   }) : super(controller);
 
   final List<Post> posts;
   final bool isLastPage;
   final PostCategory selectedCategory;
   final int currentPage;
+  final String keyword;
+  final bool isMyPost;
 
   final bool isLoading;
 
@@ -25,7 +29,9 @@ class PostPageModel extends MomentumModel<PostPageController> {
     bool isLastPage,
     PostCategory selectedCategory,
     int currentPage,
+    bool isMyPost,
     bool isLoading,
+    String keyword,
   }) {
     PostPageModel(
       controller,
@@ -33,7 +39,9 @@ class PostPageModel extends MomentumModel<PostPageController> {
       isLastPage: isLastPage ?? this.isLastPage,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       currentPage: currentPage ?? this.currentPage,
+      isMyPost: isMyPost ?? this.isMyPost ?? false,
       isLoading: isLoading ?? this.isLoading ?? false,
+      keyword: keyword ?? this.keyword,
     ).updateMomentum();
   }
 
@@ -50,6 +58,8 @@ class PostPageModel extends MomentumModel<PostPageController> {
           ? Mapper.fromJson(json['selectedCategory']).toObject<PostCategory>()
           : null,
       currentPage: json['currentPage'],
+      isMyPost: json['isMyPost'],
+      keyword: json['keyword'],
     );
   }
 
@@ -59,5 +69,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
         'isLastPage': isLastPage,
         'selectedCategory': selectedCategory?.toJson(),
         'currentPage': currentPage ?? 1,
+        'isMyPost': isMyPost,
+        'keyword': keyword,
       };
 }

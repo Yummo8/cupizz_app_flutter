@@ -1,4 +1,6 @@
-part of '../post_page.dart';
+import 'package:cupizz_app/src/base/base.dart';
+import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
+import 'package:flutter/gestures.dart';
 
 class PostCard extends StatelessWidget {
   final Post post;
@@ -88,11 +90,23 @@ class _PostName extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SkeletonItem(
-            child: Text(
-              post == null
-                  ? 'Loading'
-                  : '#${post.id} • ${post.category?.value}',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(text: post == null ? 'Loading' : '#${post.id} • '),
+                  TextSpan(
+                      text:
+                          post == null ? 'Loading' : '${post.category?.value}',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = post?.category == null
+                            ? null
+                            : () {
+                                Momentum.controller<PostPageController>(context)
+                                    .selectCategory(post.category);
+                              }),
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -102,7 +116,7 @@ class _PostName extends StatelessWidget {
             child: Text(
               post != null ? TimeAgo.format(post.createdAt) : 'Loading',
               style: TextStyle(
-                color: AppColors.indigo100,
+                color: context.colorScheme.onSurface,
               ),
             ),
           ),
@@ -120,41 +134,117 @@ class _PostAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var iconTextStyle = theme.textTheme.subtitle1.copyWith(
-      color: AppColors.white,
-    );
+    final color = context.colorScheme.onPrimary;
+    var iconTextStyle = theme.textTheme.subtitle1.copyWith(color: color);
     return IntrinsicHeight(
       child: Row(
         children: [
           ActionIcon(
             onTap: () => {},
             title: post.totalReaction.toString(),
-            iconData: FeatherIcons.heart,
+            iconData: Icons.favorite_border_sharp,
             isHorizontal: true,
             titleStyle: iconTextStyle,
-            color: AppColors.white,
+            color: color,
             hasTitle: post.totalReaction > 0,
           ),
-          SpaceW16(),
+          const SizedBox(width: 16),
           ActionIcon(
             onTap: () => {},
             title: post.commentCount.toString(),
-            iconData: FeatherIcons.messageSquare,
+            iconData: CupertinoIcons.chat_bubble_2,
             isHorizontal: true,
-            color: AppColors.white,
+            color: color,
             titleStyle: iconTextStyle,
             hasTitle: post.commentCount > 0,
           ),
           Spacer(),
           IconButton(
               padding: EdgeInsets.zero,
-              icon: Icon(FeatherIcons.share2,
+              icon: Icon(Icons.share,
                   color: post.category.color ?? context.colorScheme.background),
               onPressed: () {
                 Fluttertoast.showToast(msg: 'Tính năng đang phát triển mà 😞');
               })
         ],
       ),
+    );
+  }
+}
+
+class ActionIcon extends StatelessWidget {
+  ActionIcon({
+    this.iconData,
+    this.color = Colors.grey,
+    this.title,
+    this.size,
+    this.hasTitle = true,
+    this.isHorizontal = false,
+    this.titleStyle,
+    this.onTap,
+  }) : assert(hasTitle == false || title != null);
+
+  final IconData iconData;
+  final double size;
+  final Color color;
+  final String title;
+  final TextStyle titleStyle;
+  final bool hasTitle;
+  final bool isHorizontal;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Container(
+      child: !isHorizontal
+          ? Column(
+              children: [
+                IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Icon(
+                      iconData,
+                      size: size,
+                      color: color,
+                    ),
+                    onPressed: onTap),
+                hasTitle
+                    ? InkWell(
+                        onTap: onTap,
+                        child: Text(
+                          title,
+                          style: titleStyle ??
+                              theme.textTheme.bodyText1
+                                  .copyWith(color: Colors.grey, fontSize: 14),
+                        ),
+                      )
+                    : Container()
+              ],
+            )
+          : Row(
+              children: [
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    iconData,
+                    size: size,
+                    color: color,
+                  ),
+                  onPressed: onTap,
+                ),
+                hasTitle
+                    ? InkWell(
+                        onTap: onTap,
+                        child: Text(
+                          title,
+                          style: titleStyle ??
+                              theme.textTheme.bodyText1
+                                  .copyWith(color: Colors.grey, fontSize: 14),
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
     );
   }
 }

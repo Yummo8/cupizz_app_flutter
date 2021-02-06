@@ -4,6 +4,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final PreferredSizeWidget bottom;
   final String title;
+  final Widget titleWidget;
   final Function onBackPressed;
   final bool isRouterPop;
   final Color backgroundColor;
@@ -24,6 +25,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.shadowColor,
     this.textColor,
     this.showBackButton = true,
+    this.titleWidget,
   })  : preferredSize = Size.fromHeight(
             56.0 + (bottom != null ? bottom.preferredSize.height : 0)),
         super(key: key);
@@ -58,11 +60,12 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
                 }
               },
             ),
-      title: Text(
-        title ?? 'Cupizz',
-        style: context.textTheme.headline6
-            .copyWith(color: textColor ?? context.colorScheme.onBackground),
-      ),
+      title: titleWidget ??
+          Text(
+            title ?? 'Cupizz',
+            style: context.textTheme.headline6
+                .copyWith(color: textColor ?? context.colorScheme.onBackground),
+          ),
       actions: actions,
     );
   }

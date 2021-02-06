@@ -185,14 +185,26 @@ extension GraphqlQuery on GraphqlService {
     return result.data['unreadAcceptedFriendCount'] ?? 0;
   }
 
-  Future postsQuery({int page = 1, String categoryId}) async {
+  Future postsQuery({
+    int page = 1,
+    String categoryId,
+    String keyword,
+    bool isMyPost = false,
+  }) async {
     final queryString = '''{ 
       posts(
         page: $page 
         orderBy: { createdAt: desc }
-        where: {categoryId: ${categoryId.isExistAndNotEmpty ? '{ equals: "$categoryId" }' : 'null'}}
-      )
-      ${Post.graphqlQuery} }
+        where: {
+          content: {contains: "${keyword ?? ''}"}
+          isMyPost: $isMyPost
+          categoryId: ${categoryId.isExistAndNotEmpty ? '{ equals: "$categoryId" }' : 'null'}
+        }
+      ) {
+        data ${Post.graphqlQuery} 
+        isLastPage
+      }
+    }
     ''';
     final result = await query(
       QueryOptions(

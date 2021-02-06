@@ -65,6 +65,9 @@ Momentum momentum({bool isTesting = false}) {
       MessageService(),
       PostService(),
       if (!isTesting) OneSignalService()..init(),
+      StorageService(isTesting: isTesting),
+      SystemService(),
+      UserService(),
       Router([
         LoginScreen(),
         MainScreen(),
@@ -94,9 +97,6 @@ Momentum momentum({bool isTesting = false}) {
           EditEducationLevelScreen(),
         ]
       ]),
-      StorageService(isTesting: isTesting),
-      SystemService(),
-      UserService(),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),
