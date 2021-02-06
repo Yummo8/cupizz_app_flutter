@@ -28,3 +28,8 @@ Future trycatch(Function func, {bool throwError = false}) async {
     }
   }
 }
+
+Color getTextColorFromColor(Color backgroundColor) {
+  final computeLuminance = backgroundColor.computeLuminance();
+  return computeLuminance > 0.95 ? Colors.black : Colors.white;
+}

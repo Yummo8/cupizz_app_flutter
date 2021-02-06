@@ -30,8 +30,12 @@ class _PostBody extends StatelessWidget {
   const _PostBody({Key key, @required this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final textColor = getTextColorFromColor(
+        post?.category?.color ?? context.colorScheme.background);
     return SkeletonItem(
       child: Card(
+        elevation: 4,
+        shadowColor: context.colorScheme.onSurface,
         color: post?.category?.color ?? context.colorScheme.background,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -50,7 +54,7 @@ class _PostBody extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(post?.content ?? '',
                           style: context.textTheme.bodyText1
-                              .copyWith(color: context.colorScheme.onPrimary)),
+                              .copyWith(color: textColor)),
                     ),
                     const SizedBox(height: 20.0),
                     _PostAction(post: post)
@@ -92,7 +96,10 @@ class _PostName extends StatelessWidget {
           SkeletonItem(
             child: RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.onBackground),
                 children: [
                   TextSpan(text: post == null ? 'Loading' : '#${post.id} • '),
                   TextSpan(
@@ -134,7 +141,8 @@ class _PostAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final color = context.colorScheme.onPrimary;
+    final color = getTextColorFromColor(
+        post?.category?.color ?? context.colorScheme.background);
     var iconTextStyle = theme.textTheme.subtitle1.copyWith(color: color);
     return IntrinsicHeight(
       child: Row(
