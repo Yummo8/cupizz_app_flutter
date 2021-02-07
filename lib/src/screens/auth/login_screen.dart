@@ -245,12 +245,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             SocialButton(
-                              imageName: Assets.i.icons.google,
+                              imageName: Assets.icons.google,
                               margin: EdgeInsets.only(left: 30.0),
                               type: SocialProviderType.google,
                             ),
                             SocialButton(
-                              imageName: Assets.i.icons.facebook,
+                              imageName: Assets.icons.facebook,
                               margin: EdgeInsets.only(right: 30.0),
                               type: SocialProviderType.facebook,
                             ),

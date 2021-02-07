@@ -259,7 +259,7 @@ class UserProfileState extends MomentumState<UserProfile>
                         height: 150,
                         margin: const EdgeInsets.all(10),
                         child: FlareActor(
-                          Assets.i.flares.brokenHeart,
+                          Assets.flares.brokenHeart,
                           fit: BoxFit.cover,
                           sizeFromArtboard: false,
                           color: context.colorScheme.primary,

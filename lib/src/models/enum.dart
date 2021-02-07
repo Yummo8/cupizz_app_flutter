@@ -273,12 +273,25 @@ class Religious extends Enumerable<String> {
 class LikeType extends Enumerable<String> {
   @override
   final String rawValue;
-  const LikeType({@required this.rawValue});
+  final String gifPath;
+  final String iconPath;
 
-  static const like = FileType(rawValue: 'like');
-  static const love = FileType(rawValue: 'love');
-  static const wow = FileType(rawValue: 'wow');
-  static const haha = FileType(rawValue: 'haha');
-  static const angry = FileType(rawValue: 'angry');
-  static const sad = FileType(rawValue: 'sad');
+  factory LikeType({@required String rawValue}) {
+    return rawValue.isExistAndNotEmpty
+        ? LikeType.getAll().where((e) => e.rawValue == rawValue).first ??
+            LikeType.love
+        : null;
+  }
+
+  const LikeType._(this.rawValue, this.gifPath, this.iconPath);
+
+  static final like = LikeType._('like', Assets.gifs.like, Assets.icons.like);
+  static final love = LikeType._('love', Assets.gifs.love, Assets.icons.love);
+  static final wow = LikeType._('wow', Assets.gifs.wow, Assets.icons.wow);
+  static final haha = LikeType._('haha', Assets.gifs.haha, Assets.icons.haha);
+  static final angry =
+      LikeType._('angry', Assets.gifs.angry, Assets.icons.angry);
+  static final sad = LikeType._('sad', Assets.gifs.sad, Assets.icons.sad);
+
+  static List<LikeType> getAll() => [like, love, wow, haha, angry, sad];
 }

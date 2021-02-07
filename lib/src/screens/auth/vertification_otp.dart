@@ -57,7 +57,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
               Container(
                 height: MediaQuery.of(context).size.height / 3,
                 child: FlareActor(
-                  Assets.i.flares.otp,
+                  Assets.flares.otp,
                   animation: 'otp',
                   fit: BoxFit.fitHeight,
                   alignment: Alignment.center,

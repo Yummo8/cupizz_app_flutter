@@ -148,9 +148,18 @@ class _PostAction extends StatelessWidget {
       child: Row(
         children: [
           ActionIcon(
-            onTap: () => {},
+            onTap: () {
+              final _c = Momentum.controller<PostPageController>(context);
+              if (post.myLikedPostType == null) {
+                _c.likePost(post);
+              } else {
+                _c.unlikePost(post);
+              }
+            },
             title: post.totalReaction.toString(),
-            iconData: Icons.favorite_border_sharp,
+            iconData: post.myLikedPostType != null
+                ? Icons.favorite
+                : Icons.favorite_border_sharp,
             isHorizontal: true,
             titleStyle: iconTextStyle,
             color: color,

@@ -43,6 +43,7 @@ void objectMapping() {
     Hobby: () => Hobby(),
     KeyValue: () => KeyValue(),
     LookingFor: (v) => LookingFor(rawValue: v),
+    LikeType: (v) => LikeType(rawValue: v),
     Message: () => Message(),
     NotificationType: (v) => NotificationType(rawValue: v),
     OnlineStatus: (v) => OnlineStatus(rawValue: v),

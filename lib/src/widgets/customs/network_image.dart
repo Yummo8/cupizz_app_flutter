@@ -26,7 +26,7 @@ class CustomNetworkImage extends StatelessWidget {
         fit: fit,
         errorWidget: (context, url, error) {
           if (isAvatar) {
-            return Image.asset(Assets.i.images.defaultAvatar, fit: fit);
+            return Image.asset(Assets.images.defaultAvatar, fit: fit);
           }
           return Container(
             color: context.colorScheme.surface,

@@ -26,4 +26,16 @@ class PostService extends MomentumService {
     final result = WithIsLastPageOutput<Post>.fromJson(data);
     return result;
   }
+
+  Future<Post> likePost(int postId, {LikeType type}) async {
+    final graphql = getService<GraphqlService>();
+    final json = await graphql.likePostMutation(postId, type: type);
+    return Mapper.fromJson(json).toObject<Post>();
+  }
+
+  Future<Post> unlikePost(int postId) async {
+    final graphql = getService<GraphqlService>();
+    final json = await graphql.unlikePostMutation(postId);
+    return Mapper.fromJson(json).toObject<Post>();
+  }
 }

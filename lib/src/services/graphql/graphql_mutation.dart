@@ -391,4 +391,27 @@ extension GraphqlMutation on GraphqlService {
       documentNode: gql(query),
     ));
   }
+
+  Future likePostMutation(int postId, {LikeType type}) async {
+    final query = '''
+      mutation { 
+        likePost(postId: $postId ${type?.rawValue != null ? 'type: ${type.rawValue}' : ''})
+        ${Post.graphqlQuery}
+      }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['likePost'];
+  }
+
+  Future unlikePostMutation(int postId) async {
+    final query =
+        '''mutation { unlikePost(postId: $postId) ${Post.graphqlQuery} }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['unlikePost'];
+  }
 }

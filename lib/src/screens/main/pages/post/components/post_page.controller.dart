@@ -6,6 +6,7 @@ const kIsMyPost = 'MY_POST';
 
 class PostPageController extends MomentumController<PostPageModel> {
   final Debouncer _searchDebouncer = Debouncer(delay: 1.seconds);
+  final Debouncer _likeDebouncer = Debouncer(delay: 1.seconds);
 
   @override
   PostPageModel init() {
@@ -45,6 +46,59 @@ class PostPageController extends MomentumController<PostPageModel> {
   }
 
   Future clearSearch() => _search('');
+
+  Future likePost(Post post, [LikeType type]) async {
+    final index = model.posts.indexWhere((e) => e.id == post.id);
+    final oldLikeType = post.myLikedPostType;
+    if (index >= 0) {
+      model.posts[index].myLikedPostType = type ?? LikeType.love;
+      model.posts[index].likeCount++;
+    }
+    model.update(posts: model.posts);
+
+    _likeDebouncer.debounce(() async {
+      try {
+        final data =
+            await getService<PostService>().likePost(post.id, type: type);
+        model.posts[index] = data;
+        model.update(posts: model.posts);
+      } catch (e) {
+        if (index >= 0) {
+          model.posts[index].myLikedPostType = oldLikeType;
+          model.posts[index].likeCount--;
+        }
+        model.update(posts: model.posts);
+        await Fluttertoast.showToast(msg: e.toString());
+        rethrow;
+      }
+    });
+  }
+
+  Future unlikePost(Post post) async {
+    final index = model.posts.indexWhere((e) => e.id == post.id);
+    final oldLikeType = post.myLikedPostType;
+    if (index >= 0) {
+      model.posts[index].myLikedPostType = null;
+      model.posts[index].likeCount--;
+    }
+    model.update(posts: model.posts);
+
+    _likeDebouncer.debounce(() async {
+      try {
+        final data = await getService<PostService>().unlikePost(post.id);
+        model.posts[index] = data;
+        model.update(posts: model.posts);
+      } catch (e) {
+        if (index >= 0) {
+          model.posts[index].myLikedPostType = oldLikeType;
+          model.posts[index].likeCount++;
+        }
+        model.update(posts: model.posts);
+        await Fluttertoast.showToast(msg: e.toString());
+        rethrow;
+      }
+    });
+  }
 
   Future _search(String keyword) async {
     model.update(keyword: keyword);

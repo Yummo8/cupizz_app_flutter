@@ -6,13 +6,13 @@ class Post with Mappable {
   PostCategory _category;
   DateTime _createdAt;
   int _commentCount;
-  int _likeCount;
+  int likeCount;
   int _loveCount;
   int _wowCount;
   int _hahaCount;
   int _angryCount;
   int _sadCount;
-  LikeType _myLikedPostType;
+  LikeType myLikedPostType;
   List<Comment> _comments;
 
   int get id => _id;
@@ -20,13 +20,11 @@ class Post with Mappable {
   PostCategory get category => _category;
   DateTime get createdAt => _createdAt;
   int get commentCount => _commentCount ?? 0;
-  int get likeCount => _likeCount ?? 0;
   int get loveCount => _loveCount ?? 0;
   int get wowCount => _wowCount ?? 0;
   int get hahaCount => _hahaCount ?? 0;
   int get angryCount => _angryCount ?? 0;
   int get sadCount => _sadCount ?? 0;
-  LikeType get myLikedPostType => _myLikedPostType;
   List<Comment> get comments => _comments;
 
   int get totalReaction =>
@@ -39,13 +37,14 @@ class Post with Mappable {
     map<PostCategory>('category', category, (v) => _category = v);
     map('createdAt', createdAt, (v) => _createdAt = v, DateStringTransform());
     map('commentCount', commentCount, (v) => _commentCount = v);
-    map('likeCount', likeCount, (v) => _likeCount = v);
+    map('likeCount', likeCount, (v) => likeCount = v);
     map('loveCount', loveCount, (v) => _loveCount = v);
     map('wowCount', wowCount, (v) => _wowCount = v);
     map('hahaCount', hahaCount, (v) => _hahaCount = v);
     map('angryCount', angryCount, (v) => _angryCount = v);
     map('sadCount', sadCount, (v) => _sadCount = v);
-    map('myLikedPostType', myLikedPostType, (v) => _myLikedPostType = v);
+    map('myLikedPostType', myLikedPostType, (v) => myLikedPostType = v,
+        EnumTransform<LikeType, String>());
     map<Comment>('comments', comments, (v) => _comments = v);
   }
 

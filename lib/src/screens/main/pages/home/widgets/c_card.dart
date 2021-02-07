@@ -547,7 +547,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    child: SvgPicture.asset(Assets.i.icons.dislikeUser,
+                    child: SvgPicture.asset(Assets.icons.dislikeUser,
                         color: Colors.black54),
                     width: 100,
                     height: 100,
@@ -576,7 +576,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                   alignment: Alignment.centerLeft,
                   child: Container(
                       padding: EdgeInsets.all(10),
-                      child: SvgPicture.asset(Assets.i.icons.likeUser,
+                      child: SvgPicture.asset(Assets.icons.likeUser,
                           color: Colors.white.withOpacity(0.3)),
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
