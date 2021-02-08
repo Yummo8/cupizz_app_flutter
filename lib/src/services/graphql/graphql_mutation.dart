@@ -415,9 +415,10 @@ extension GraphqlMutation on GraphqlService {
     return result.data['unlikePost'];
   }
 
-  Future commentPostMutation(int postId, String content) async {
+  Future commentPostMutation(int postId, String content,
+      [bool isIncognito = true]) async {
     final query =
-        '''mutation { commentPost(postId: $postId, content: "$content") ${Comment.graphqlQuery} }''';
+        '''mutation { commentPost(postId: $postId, content: "$content" isIncognito: $isIncognito) ${Comment.graphqlQuery} }''';
     final result = await mutate(MutationOptions(
       documentNode: gql(query),
     ));

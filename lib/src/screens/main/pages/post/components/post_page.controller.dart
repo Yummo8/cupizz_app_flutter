@@ -47,11 +47,15 @@ class PostPageController extends MomentumController<PostPageModel> {
 
   Future clearSearch() => _search('');
 
+  void changeIsIncognitoComment() {
+    model.update(isIncognitoComment: !model.isIncognitoComment);
+  }
+
   Future commentPost(Post post, String content) async {
     final index = model.posts.indexWhere((e) => e.id == post.id);
     await trycatch(() async {
-      final comment =
-          await getService<PostService>().commentPost(post.id, content);
+      final comment = await getService<PostService>()
+          .commentPost(post.id, content, isIncognito: model.isIncognitoComment);
       model.posts[index].comments.insert(0, comment);
       model.posts[index].commentCount++;
       model.update(posts: model.posts);

@@ -10,6 +10,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
     this.selectedCategory,
     this.currentPage,
     this.isMyPost = false,
+    this.isIncognitoComment = true,
     this.isLoading = false,
     this.keyword,
   }) : super(controller);
@@ -20,6 +21,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
   final int currentPage;
   final String keyword;
   final bool isMyPost;
+  final bool isIncognitoComment;
 
   final bool isLoading;
 
@@ -32,6 +34,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
     bool isMyPost,
     bool isLoading,
     String keyword,
+    bool isIncognitoComment,
   }) {
     PostPageModel(
       controller,
@@ -42,6 +45,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
       isMyPost: isMyPost ?? this.isMyPost ?? false,
       isLoading: isLoading ?? this.isLoading ?? false,
       keyword: keyword ?? this.keyword,
+      isIncognitoComment: isIncognitoComment ?? this.isIncognitoComment ?? true,
     ).updateMomentum();
   }
 
@@ -60,6 +64,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
       currentPage: json['currentPage'],
       isMyPost: json['isMyPost'],
       keyword: json['keyword'],
+      isIncognitoComment: json['isIncognitoComment'],
     );
   }
 
@@ -71,5 +76,6 @@ class PostPageModel extends MomentumModel<PostPageController> {
         'currentPage': currentPage ?? 1,
         'isMyPost': isMyPost,
         'keyword': keyword,
+        'isIncognitoComment': isIncognitoComment,
       };
 }

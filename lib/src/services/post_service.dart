@@ -39,9 +39,11 @@ class PostService extends MomentumService {
     return Mapper.fromJson(json).toObject<Post>();
   }
 
-  Future<Comment> commentPost(int postId, String content) async {
+  Future<Comment> commentPost(int postId, String content,
+      {bool isIncognito = true}) async {
     final graphql = getService<GraphqlService>();
-    final json = await graphql.commentPostMutation(postId, content);
+    final json =
+        await graphql.commentPostMutation(postId, content, isIncognito);
     return Mapper.fromJson(json).toObject<Comment>();
   }
 

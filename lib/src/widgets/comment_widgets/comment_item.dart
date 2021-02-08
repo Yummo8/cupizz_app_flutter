@@ -23,20 +23,7 @@ class CommentItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(90)),
-                  child: Container(
-                    width: 50.0,
-                    height: 50.0,
-                    color: context.colorScheme.background,
-                    child: ClipOval(
-                      child: Image.asset(
-                        Assets.images.defaultAvatar,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
+                UserAvatar.fromChatUser(user: comment.createdBy),
                 SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -55,6 +42,14 @@ class CommentItem extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              if (comment.createdBy != null)
+                                TextSpan(
+                                  text: comment.createdBy.displayName + ' • ',
+                                  style: context.textTheme.subtitle1.copyWith(
+                                    color: context.colorScheme.onSurface,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               TextSpan(
                                 text: TimeAgo.format(
                                     comment?.createdAt ?? DateTime.now()),

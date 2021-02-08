@@ -94,10 +94,12 @@ class Comment extends BaseModel {
   int _index;
   String _content;
   DateTime _createdAt;
+  ChatUser _createdBy;
 
   int get index => _index;
   String get content => _content;
   DateTime get createdAt => _createdAt;
+  ChatUser get createdBy => _createdBy;
 
   @override
   void mapping(Mapper map) {
@@ -105,9 +107,11 @@ class Comment extends BaseModel {
     map('index', index, (v) => _index = v);
     map('content', content, (v) => _content = v);
     map('createdAt', createdAt, (v) => _createdAt = v, DateStringTransform());
+    map<ChatUser>('createdBy', createdBy, (v) => _createdBy = v);
   }
 
-  static String get graphqlQuery => '{ id index content createdAt }';
+  static String get graphqlQuery =>
+      '{ id index content createdAt createdBy ${ChatUser.graphqlQuery} }';
   static String listFilter({String cursorId}) => '''(
         take: ${PageSizeConst.comment} 
         ${cursorId.isExistAndNotEmpty ? 'cursor: { id: "$cursorId" } ' : ''}
