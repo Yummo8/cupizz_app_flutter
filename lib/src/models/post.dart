@@ -5,7 +5,7 @@ class Post with Mappable {
   String _content;
   PostCategory _category;
   DateTime _createdAt;
-  int _commentCount;
+  int commentCount;
   int likeCount;
   int _loveCount;
   int _wowCount;
@@ -19,7 +19,6 @@ class Post with Mappable {
   String get content => _content;
   PostCategory get category => _category;
   DateTime get createdAt => _createdAt;
-  int get commentCount => _commentCount ?? 0;
   int get loveCount => _loveCount ?? 0;
   int get wowCount => _wowCount ?? 0;
   int get hahaCount => _hahaCount ?? 0;
@@ -36,8 +35,8 @@ class Post with Mappable {
     map('content', content, (v) => _content = v);
     map<PostCategory>('category', category, (v) => _category = v);
     map('createdAt', createdAt, (v) => _createdAt = v, DateStringTransform());
-    map('commentCount', commentCount, (v) => _commentCount = v);
-    map('likeCount', likeCount, (v) => likeCount = v);
+    map('commentCount', commentCount, (v) => commentCount = v ?? 0);
+    map('likeCount', likeCount, (v) => likeCount = v ?? 0);
     map('loveCount', loveCount, (v) => _loveCount = v);
     map('wowCount', wowCount, (v) => _wowCount = v);
     map('hahaCount', hahaCount, (v) => _hahaCount = v);
@@ -62,7 +61,7 @@ class Post with Mappable {
     angryCount: likeCount(type: angry)
     sadCount: likeCount(type: sad)
     myLikedPostType
-    comments(take: 10) ${Comment.graphqlQuery}
+    comments${Comment.listFilter()} ${Comment.graphqlQuery}
   }''';
 }
 
@@ -109,4 +108,10 @@ class Comment extends BaseModel {
   }
 
   static String get graphqlQuery => '{ id index content createdAt }';
+  static String listFilter({String cursorId}) => '''(
+        take: ${PageSizeConst.comment} 
+        ${cursorId.isExistAndNotEmpty ? 'cursor: { id: "$cursorId" } ' : ''}
+        orderBy: {updatedAt: desc}
+        skip: ${cursorId.isExistAndNotEmpty ? 1 : 0}
+      )''';
 }

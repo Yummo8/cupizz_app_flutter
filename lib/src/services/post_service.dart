@@ -38,4 +38,19 @@ class PostService extends MomentumService {
     final json = await graphql.unlikePostMutation(postId);
     return Mapper.fromJson(json).toObject<Post>();
   }
+
+  Future<Comment> commentPost(int postId, String content) async {
+    final graphql = getService<GraphqlService>();
+    final json = await graphql.commentPostMutation(postId, content);
+    return Mapper.fromJson(json).toObject<Comment>();
+  }
+
+  Future<List<Comment>> getComments(int postId,
+      {String commentCursorId}) async {
+    final graphql = getService<GraphqlService>();
+    final json = await graphql.postCommentsQuery(postId, commentCursorId);
+    return (json as List ?? [])
+        .map((e) => Mapper.fromJson(e).toObject<Comment>())
+        .toList();
+  }
 }

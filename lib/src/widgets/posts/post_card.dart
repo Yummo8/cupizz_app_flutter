@@ -1,4 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
+import 'package:cupizz_app/src/packages/like_button/utils/like_button_typedef.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
 import 'package:flutter/gestures.dart';
 
@@ -147,27 +148,44 @@ class _PostAction extends StatelessWidget {
     return IntrinsicHeight(
       child: Row(
         children: [
-          ActionIcon(
-            onTap: () {
+          LikeButton(
+            onTap: (v) async {
               final _c = Momentum.controller<PostPageController>(context);
-              if (post.myLikedPostType == null) {
-                _c.likePost(post);
+              if (!v) {
+                await _c.likePost(post);
               } else {
-                _c.unlikePost(post);
+                await _c.unlikePost(post);
               }
+              return true;
             },
-            title: post.totalReaction.toString(),
-            iconData: post.myLikedPostType != null
-                ? Icons.favorite
-                : Icons.favorite_border_sharp,
-            isHorizontal: true,
-            titleStyle: iconTextStyle,
-            color: color,
-            hasTitle: post.totalReaction > 0,
+            isLiked: post.myLikedPostType != null,
+            likeCount: post.totalReaction,
+            likeBuilder: (isLiked) {
+              return Icon(
+                  isLiked ? Icons.favorite : Icons.favorite_border_sharp,
+                  color: color);
+            },
+            likeCountAnimationType: LikeCountAnimationType.all,
+            likeCountPadding: EdgeInsets.only(left: 10),
+            countBuilder: (likeCount, isLiked, text) {
+              return likeCount <= 0
+                  ? const SizedBox.shrink()
+                  : Text(
+                      text,
+                      style: context.textTheme.subtitle1.copyWith(color: color),
+                    );
+            },
           ),
           const SizedBox(width: 16),
           ActionIcon(
-            onTap: () => {},
+            onTap: () {
+              CommentBottomSheet(
+                context,
+                post: post,
+                totalLike: post.totalReaction,
+                autoFocusInput: false,
+              ).show();
+            },
             title: post.commentCount.toString(),
             iconData: CupertinoIcons.chat_bubble_2,
             isHorizontal: true,

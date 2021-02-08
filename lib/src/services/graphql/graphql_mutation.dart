@@ -414,4 +414,14 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['unlikePost'];
   }
+
+  Future commentPostMutation(int postId, String content) async {
+    final query =
+        '''mutation { commentPost(postId: $postId, content: "$content") ${Comment.graphqlQuery} }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['commentPost'];
+  }
 }

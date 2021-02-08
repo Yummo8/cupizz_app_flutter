@@ -5,10 +5,17 @@ enum _AniProps { opacity, translateX }
 
 class FadeInTranslate extends StatelessWidget {
   final double delay;
+  final int delayDuration;
   final Widget child;
   final bool enabled;
 
-  FadeInTranslate({this.delay = 0, @required this.child, this.enabled});
+  FadeInTranslate({
+    Key key,
+    this.delay = 0,
+    @required this.child,
+    this.enabled = true,
+    this.delayDuration = 300,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,7 @@ class FadeInTranslate extends StatelessWidget {
       ..add(_AniProps.translateX, 130.0.tweenTo(0.0), 500.milliseconds);
 
     return PlayAnimation<MultiTweenValues<_AniProps>>(
-      delay: Duration(milliseconds: (300 * delay).round()),
+      delay: Duration(milliseconds: (delayDuration * delay).round()),
       duration: tween.duration,
       tween: tween,
       child: child,

@@ -225,4 +225,20 @@ extension GraphqlQuery on GraphqlService {
     );
     return result.data['postCategories'];
   }
+
+  Future postCommentsQuery(int postId, [String commentCursorId]) async {
+    final queryString = '''{
+      post(where: {id: $postId}) {
+        comments${Comment.listFilter(cursorId: commentCursorId)} ${Comment.graphqlQuery}
+      }
+    }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    final post = result.data['post'];
+    return post == null ? null : post['comments'];
+  }
 }

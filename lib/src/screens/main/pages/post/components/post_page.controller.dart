@@ -47,6 +47,29 @@ class PostPageController extends MomentumController<PostPageModel> {
 
   Future clearSearch() => _search('');
 
+  Future commentPost(Post post, String content) async {
+    final index = model.posts.indexWhere((e) => e.id == post.id);
+    await trycatch(() async {
+      final comment =
+          await getService<PostService>().commentPost(post.id, content);
+      model.posts[index].comments.insert(0, comment);
+      model.posts[index].commentCount++;
+      model.update(posts: model.posts);
+    });
+  }
+
+  Future loadmoreComments(Post post) async {
+    if (post.commentCount <= post.comments?.length) return;
+    final index = model.posts.indexWhere((e) => e.id == post.id);
+    await trycatch(() async {
+      final lastComment = post.comments.last;
+      final comments = await getService<PostService>()
+          .getComments(post.id, commentCursorId: lastComment.id);
+      model.posts[index].comments.addAll(comments);
+      model.update(posts: model.posts);
+    });
+  }
+
   Future likePost(Post post, [LikeType type]) async {
     final index = model.posts.indexWhere((e) => e.id == post.id);
     final oldLikeType = post.myLikedPostType;
@@ -58,10 +81,10 @@ class PostPageController extends MomentumController<PostPageModel> {
 
     _likeDebouncer.debounce(() async {
       try {
-        final data =
-            await getService<PostService>().likePost(post.id, type: type);
-        model.posts[index] = data;
-        model.update(posts: model.posts);
+        // final data =
+        await getService<PostService>().likePost(post.id, type: type);
+        // model.posts[index] = data;
+        // model.update(posts: model.posts);
       } catch (e) {
         if (index >= 0) {
           model.posts[index].myLikedPostType = oldLikeType;
@@ -85,9 +108,10 @@ class PostPageController extends MomentumController<PostPageModel> {
 
     _likeDebouncer.debounce(() async {
       try {
-        final data = await getService<PostService>().unlikePost(post.id);
-        model.posts[index] = data;
-        model.update(posts: model.posts);
+        // final data =
+        await getService<PostService>().unlikePost(post.id);
+        // model.posts[index] = data;
+        // model.update(posts: model.posts);
       } catch (e) {
         if (index >= 0) {
           model.posts[index].myLikedPostType = oldLikeType;
