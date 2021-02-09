@@ -6,6 +6,7 @@ import 'package:cupizz_app/src/components/location/location.controller.dart';
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
+import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -51,6 +52,8 @@ Momentum momentum({bool isTesting = false}) {
       UserScreenController(),
       SelectQuestionScreenController(),
       SystemController(),
+      PostPageController()..config(lazy: true),
+      CreatePostController()..config(lazy: true),
     ],
     services: [
       AuthService(),
@@ -61,7 +64,11 @@ Momentum momentum({bool isTesting = false}) {
         wss: !isTesting ? AppConfig.instance.wss : 'ws://cupizz.cf/graphql',
       ),
       MessageService(),
+      PostService(),
       if (!isTesting) OneSignalService()..init(),
+      StorageService(isTesting: isTesting),
+      SystemService(),
+      UserService(),
       Router([
         LoginScreen(),
         MainScreen(),
@@ -74,6 +81,7 @@ Momentum momentum({bool isTesting = false}) {
         EditAnswerScreen(),
         SelectQuestionScreen(),
         ProfilePage(),
+        CreatePostScreen(),
         ...[
           EditAgeScreen(),
           EditDrinkScreen(),
@@ -91,9 +99,6 @@ Momentum momentum({bool isTesting = false}) {
           EditEducationLevelScreen(),
         ]
       ]),
-      StorageService(isTesting: isTesting),
-      SystemService(),
-      UserService(),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),

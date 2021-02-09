@@ -184,4 +184,61 @@ extension GraphqlQuery on GraphqlService {
     );
     return result.data['unreadAcceptedFriendCount'] ?? 0;
   }
+
+  Future postsQuery({
+    int page = 1,
+    String categoryId,
+    String keyword,
+    bool isMyPost = false,
+  }) async {
+    final queryString = '''{ 
+      posts(
+        page: $page 
+        orderBy: { createdAt: desc }
+        where: {
+          content: {contains: "${keyword ?? ''}"}
+          isMyPost: $isMyPost
+          categoryId: ${categoryId.isExistAndNotEmpty ? '{ equals: "$categoryId" }' : 'null'}
+        }
+      ) {
+        data ${Post.graphqlQuery} 
+        isLastPage
+      }
+    }
+    ''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['posts'];
+  }
+
+  Future postCategoriesQuery() async {
+    final queryString = '''{ postCategories ${PostCategory.graphqlQuery} }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['postCategories'];
+  }
+
+  Future postCommentsQuery(int postId, [String commentCursorId]) async {
+    final queryString = '''{
+      post(where: {id: $postId}) {
+        comments${Comment.listFilter(cursorId: commentCursorId)} ${Comment.graphqlQuery}
+      }
+    }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    final post = result.data['post'];
+    return post == null ? null : post['comments'];
+  }
 }

@@ -1,32 +1,49 @@
-const String _FLARE_PATH = 'assets/flares/';
-const String _IMAGE_PATH = 'assets/images/';
-const String _ICON_PATH = 'assets/icons/';
+const _FLARE_PATH = 'assets/flares/';
+const _IMAGE_PATH = 'assets/images/';
+const _ICON_PATH = 'assets/icons/';
+const _GIF_PATH = 'assets/gifs/';
 
 class Assets {
-  static Assets i = Assets._();
-  factory Assets() => i;
-  Assets._();
-
-  _Flares flares = _Flares();
-  _Icon icons = _Icon();
-  _Image images = _Image();
+  static const flares = _Flares();
+  static const icons = _Icon();
+  static const images = _Image();
+  static const gifs = _Gif();
 }
 
 class _Flares {
-  final String splashScreen = _FLARE_PATH + 'splash_screen.flr';
-  final String logo = _FLARE_PATH + 'logo.flr';
-  final String brokenHeart = _FLARE_PATH + 'broken_heart.flr';
-  final String otp = _FLARE_PATH + 'otp.flr';
+  const _Flares();
+  final splashScreen = _FLARE_PATH + 'splash_screen.flr';
+  final logo = _FLARE_PATH + 'logo.flr';
+  final brokenHeart = _FLARE_PATH + 'broken_heart.flr';
+  final otp = _FLARE_PATH + 'otp.flr';
 }
 
 class _Icon {
-  final String facebook = _ICON_PATH + 'facebook.png';
-  final String google = _ICON_PATH + 'google.png';
-  final String likeUser = _ICON_PATH + 'like_user.svg';
-  final String dislikeUser = _ICON_PATH + 'dislike_user.svg';
-  final String star = _ICON_PATH + 'star.svg';
+  const _Icon();
+  final facebook = _ICON_PATH + 'facebook.png';
+  final google = _ICON_PATH + 'google.png';
+  final likeUser = _ICON_PATH + 'like_user.svg';
+  final dislikeUser = _ICON_PATH + 'dislike_user.svg';
+  final star = _ICON_PATH + 'star.svg';
+  final like = _ICON_PATH + 'like.svg';
+  final love = _ICON_PATH + 'love.svg';
+  final wow = _ICON_PATH + 'wow.svg';
+  final haha = _ICON_PATH + 'haha.svg';
+  final angry = _ICON_PATH + 'angry.svg';
+  final sad = _ICON_PATH + 'sad.svg';
+}
+
+class _Gif {
+  const _Gif();
+  final like = _GIF_PATH + 'like.gif';
+  final love = _GIF_PATH + 'love.gif';
+  final wow = _GIF_PATH + 'wow.gif';
+  final haha = _GIF_PATH + 'haha.gif';
+  final angry = _GIF_PATH + 'angry.gif';
+  final sad = _GIF_PATH + 'sad.gif';
 }
 
 class _Image {
-  final String defaultAvatar = _IMAGE_PATH + 'default_avatar.png';
+  const _Image();
+  final defaultAvatar = _IMAGE_PATH + 'default_avatar.png';
 }

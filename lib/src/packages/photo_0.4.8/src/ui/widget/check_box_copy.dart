@@ -232,6 +232,7 @@ class _RenderCheckbox extends RenderToggleable {
           inactiveColor: inactiveColor,
           onChanged: onChanged,
           additionalConstraints: additionalConstraints,
+          splashRadius: 0,
           vsync: vsync,
         );
 

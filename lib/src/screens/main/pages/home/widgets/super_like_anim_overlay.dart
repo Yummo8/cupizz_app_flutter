@@ -54,7 +54,7 @@ class SuperLikeOverlay extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
-                            Assets.i.icons.star,
+                            Assets.icons.star,
                             height: 50,
                             width: 50,
                           ),

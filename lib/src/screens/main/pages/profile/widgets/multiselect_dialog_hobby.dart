@@ -81,11 +81,11 @@ class _MultiSelectDialogHobbyState<V> extends State<MultiSelectDialogHobby<V>> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(widget.cancelButtonLabel),
           onPressed: _onCancelTap,
         ),
-        FlatButton(
+        TextButton(
           child: Text(widget.okButtonLabel),
           onPressed: _onSubmitTap,
         )

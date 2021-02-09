@@ -30,17 +30,24 @@ class HobbyItem extends StatelessWidget {
     return hobby == null
         ? const SizedBox.shrink()
         : isSelected
-            ? RaisedButton(
+            ? ElevatedButton(
                 onPressed: () => handlePressed(context),
-                color: isSelected
-                    ? context.colorScheme.primary
-                    : context.colorScheme.onPrimary,
+                style: ElevatedButton.styleFrom(
+                  primary: isSelected
+                      ? context.colorScheme.primary
+                      : context.colorScheme.onPrimary,
+                ),
                 child: child,
               )
-            : OutlineButton(
+            : OutlinedButton(
                 onPressed: () => handlePressed(context),
-                borderSide: BorderSide(width: 1, color: Colors.grey[500]),
-                highlightColor: context.colorScheme.primary.withOpacity(0.5),
+                style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                      width: 1,
+                      color: Colors.grey[500],
+                    ),
+                    backgroundColor:
+                        context.colorScheme.primary.withOpacity(0.5)),
                 child: child,
               );
   }

@@ -21,7 +21,7 @@ class AuthHeader extends StatelessWidget {
             width: 200,
             height: 200,
             child: FlareActor(
-              Assets.i.flares.logo,
+              Assets.flares.logo,
               fit: BoxFit.cover,
               animation: 'Cloud',
               controller: controls,

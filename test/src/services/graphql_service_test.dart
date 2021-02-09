@@ -139,8 +139,8 @@ void main() async {
       final phoneNumber = '097196370${Random().nextInt(9)}';
       final job = 'Job ${Random().nextInt(100)}';
       final height = Random().nextInt(190 - 160) + 160;
-      final avatar = File(Assets.i.images.defaultAvatar);
-      final cover = File(Assets.i.images.defaultAvatar);
+      final avatar = File(Assets.images.defaultAvatar);
+      final cover = File(Assets.images.defaultAvatar);
       final birthday =
           DateTime(2000, Random().nextInt(12), Random().nextInt(28));
       final latitude = Random().nextDouble() * 10 + 10;
@@ -299,7 +299,7 @@ void main() async {
 
     test('Send images message', () async {
       final messageId = (await graphql.sendMessage(
-          conversationKey, null, [File(Assets.i.images.defaultAvatar)]))['id'];
+          conversationKey, null, [File(Assets.images.defaultAvatar)]))['id'];
 
       final newestMessages = WithIsLastPageOutput<Message>.fromJson(
           await graphql.messagesQuery(conversationKey));
@@ -368,7 +368,7 @@ void main() async {
   group('Test user image', () {
     test('addUserImage & removeUserImage', () async {
       final json =
-          await graphql.addUserImage(File(Assets.i.images.defaultAvatar));
+          await graphql.addUserImage(File(Assets.images.defaultAvatar));
 
       final userImage = Mapper.fromJson(json).toObject<UserImage>();
 
@@ -403,7 +403,7 @@ void main() async {
       final userImageWithImage = Mapper.fromJson(await graphql.answerQuestion(
         allQuestions[0].id,
         'Testing',
-        backgroundImage: File(Assets.i.images.defaultAvatar),
+        backgroundImage: File(Assets.images.defaultAvatar),
       ))
           .toObject<UserImage>();
       expect(userImageWithImage?.answer != null, true);
@@ -460,7 +460,7 @@ void main() async {
         color,
         textColor,
         gradient,
-        File(Assets.i.images.defaultAvatar),
+        File(Assets.images.defaultAvatar),
       );
 
       final afterEdit = Mapper.fromJson(json).toObject<UserImage>();

@@ -269,3 +269,29 @@ class Religious extends Enumerable<String> {
         other,
       ];
 }
+
+class LikeType extends Enumerable<String> {
+  @override
+  final String rawValue;
+  final String gifPath;
+  final String iconPath;
+
+  factory LikeType({@required String rawValue}) {
+    return rawValue.isExistAndNotEmpty
+        ? LikeType.getAll().where((e) => e.rawValue == rawValue).first ??
+            LikeType.love
+        : null;
+  }
+
+  const LikeType._(this.rawValue, this.gifPath, this.iconPath);
+
+  static final like = LikeType._('like', Assets.gifs.like, Assets.icons.like);
+  static final love = LikeType._('love', Assets.gifs.love, Assets.icons.love);
+  static final wow = LikeType._('wow', Assets.gifs.wow, Assets.icons.wow);
+  static final haha = LikeType._('haha', Assets.gifs.haha, Assets.icons.haha);
+  static final angry =
+      LikeType._('angry', Assets.gifs.angry, Assets.icons.angry);
+  static final sad = LikeType._('sad', Assets.gifs.sad, Assets.icons.sad);
+
+  static List<LikeType> getAll() => [like, love, wow, haha, angry, sad];
+}

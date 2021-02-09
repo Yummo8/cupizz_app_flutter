@@ -4,6 +4,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final PreferredSizeWidget bottom;
   final String title;
+  final Widget titleWidget;
   final Function onBackPressed;
   final bool isRouterPop;
   final Color backgroundColor;
@@ -11,6 +12,8 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color shadowColor;
   final Color textColor;
   final bool showBackButton;
+  final bool centerTitle;
+  final IconData backIcon;
 
   BackAppBar({
     Key key,
@@ -24,6 +27,9 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.shadowColor,
     this.textColor,
     this.showBackButton = true,
+    this.titleWidget,
+    this.centerTitle = true,
+    this.backIcon = Icons.arrow_back_ios,
   })  : preferredSize = Size.fromHeight(
             56.0 + (bottom != null ? bottom.preferredSize.height : 0)),
         super(key: key);
@@ -36,14 +42,14 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: backgroundColor ?? context.colorScheme.background,
       elevation: elevation,
-      centerTitle: true,
+      centerTitle: centerTitle,
       bottom: bottom,
       shadowColor: shadowColor ?? context.colorScheme.surface,
       leading: !showBackButton
           ? const SizedBox.shrink()
           : IconButton(
               icon: Icon(
-                Icons.arrow_back_ios,
+                backIcon,
                 color: textColor ?? context.colorScheme.onBackground,
               ),
               onPressed: () {
@@ -58,11 +64,12 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
                 }
               },
             ),
-      title: Text(
-        title ?? 'Cupizz',
-        style: context.textTheme.headline6
-            .copyWith(color: textColor ?? context.colorScheme.onBackground),
-      ),
+      title: titleWidget ??
+          Text(
+            title ?? 'Cupizz',
+            style: context.textTheme.headline6
+                .copyWith(color: textColor ?? context.colorScheme.onBackground),
+          ),
       actions: actions,
     );
   }

@@ -391,4 +391,53 @@ extension GraphqlMutation on GraphqlService {
       documentNode: gql(query),
     ));
   }
+
+  Future likePostMutation(int postId, {LikeType type}) async {
+    final query = '''
+      mutation { 
+        likePost(postId: $postId ${type?.rawValue != null ? 'type: ${type.rawValue}' : ''})
+        ${Post.graphqlQuery}
+      }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['likePost'];
+  }
+
+  Future unlikePostMutation(int postId) async {
+    final query =
+        '''mutation { unlikePost(postId: $postId) ${Post.graphqlQuery} }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['unlikePost'];
+  }
+
+  Future commentPostMutation(int postId, String content,
+      [bool isIncognito = true]) async {
+    final query =
+        '''mutation { commentPost(postId: $postId, content: "$content" isIncognito: $isIncognito) ${Comment.graphqlQuery} }''';
+    final result = await mutate(MutationOptions(
+      documentNode: gql(query),
+    ));
+
+    return result.data['commentPost'];
+  }
+
+  Future createPostMutation(String categoryId, String content,
+      [List<File> images = const []]) async {
+    final query =
+        '''mutation createPost(\$images: [Upload], \$content: String!){
+      createPost(categoryId: "$categoryId" content: \$content images: \$images) ${Post.graphqlQuery}
+    }''';
+    final result =
+        await mutate(MutationOptions(documentNode: gql(query), variables: {
+      'images': await Future.wait((images ?? []).map((e) => multiPartFile(e))),
+      'content': content,
+    }));
+
+    return result.data['createPost'];
+  }
 }

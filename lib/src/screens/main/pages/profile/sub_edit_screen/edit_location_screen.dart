@@ -119,11 +119,12 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                         ],
                       ),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   _getCurrentLocation();
                 },
-                color: _theme.primaryColor.withOpacity(0.2),
+                style: TextButton.styleFrom(
+                    backgroundColor: _theme.primaryColor.withOpacity(0.2)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -1,16 +1,16 @@
 library main_screen;
 
 import 'package:badges/badges.dart';
-import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart' hide Router;
 
-import '../../packages/google_nav_bar/google_nav_bar.dart';
 import '../../base/base.dart';
+import '../../packages/google_nav_bar/google_nav_bar.dart';
 import '../../widgets/index.dart';
 import 'components/main_screen.controller.dart';
 import 'pages/chat/chat_page.dart';
 import 'pages/home/home_page.dart';
+import 'pages/post/post_page.dart';
 import 'pages/profile/profile_page.dart';
 
 export 'pages/profile/edit_profile_screen.dart';
@@ -24,7 +24,8 @@ class _MainScreenState extends MomentumState<MainScreen>
     with SingleTickerProviderStateMixin {
   static final List<Widget> _tabs = <Widget>[
     HomePage(),
-    FriendPageV2(),
+    // FriendPageV2(),
+    PostPage(),
     ChatPage(),
     ProfilePage(),
   ];

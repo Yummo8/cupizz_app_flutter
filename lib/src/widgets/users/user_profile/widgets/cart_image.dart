@@ -111,11 +111,12 @@ class CartImage extends StatelessWidget {
                 Positioned(
                   right: 0,
                   bottom: 10,
-                  child: RaisedButton(
-                    elevation: 2.0,
-                    color: context.colorScheme.background,
-                    padding: EdgeInsets.all(10.0),
-                    shape: CircleBorder(),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: context.colorScheme.background,
+                        elevation: 2.0,
+                        padding: const EdgeInsets.all(10),
+                        shape: CircleBorder()),
                     child: Icon(
                       Icons.edit,
                       color: _theme.primaryColor,

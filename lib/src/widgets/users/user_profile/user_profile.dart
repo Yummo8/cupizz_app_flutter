@@ -259,7 +259,7 @@ class UserProfileState extends MomentumState<UserProfile>
                         height: 150,
                         margin: const EdgeInsets.all(10),
                         child: FlareActor(
-                          Assets.i.flares.brokenHeart,
+                          Assets.flares.brokenHeart,
                           fit: BoxFit.cover,
                           sizeFromArtboard: false,
                           color: context.colorScheme.primary,
@@ -282,7 +282,7 @@ class UserProfileState extends MomentumState<UserProfile>
                         if (model.isAddingImage) return LoadingIndicator();
                         return Column(
                           children: [
-                            FlatButton(
+                            TextButton(
                               onPressed: model.isAddingImage
                                   ? null
                                   : () {
@@ -292,14 +292,17 @@ class UserProfileState extends MomentumState<UserProfile>
                                         }
                                       }, maxSelected: 1);
                                     },
-                              color: _theme.primaryColor.withOpacity(0.2),
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    _theme.primaryColor.withOpacity(0.2),
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   model.isAddingImage
                                       ? LoadingIndicator(size: 20)
                                       : Icon(
-                                          Icons.image,
+                                          CupertinoIcons.photo_on_rectangle,
                                           color: _theme.primaryColor,
                                         ),
                                   const SizedBox(width: 5),
@@ -313,14 +316,17 @@ class UserProfileState extends MomentumState<UserProfile>
                                 ],
                               ),
                             ),
-                            FlatButton(
+                            TextButton(
                               onPressed: model.isAddingImage
                                   ? null
                                   : () {
                                       AnswerQuestionScreen.answerQuestion(
                                           context);
                                     },
-                              color: _theme.primaryColor.withOpacity(0.2),
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    _theme.primaryColor.withOpacity(0.2),
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

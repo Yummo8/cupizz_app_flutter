@@ -43,12 +43,14 @@ class _CustomItemChoiceState extends State<CustomItemChoice> {
     var textColor = widget.isSelected
         ? (widget.selectedTextColor ?? _theme.primaryColor)
         : (widget.notSelectedTextColor ?? context.colorScheme.onSurface);
-    return FlatButton(
+    return TextButton(
       onPressed: () {
         _onTap();
       },
-      shape: StadiumBorder(),
-      color: backgroundColor,
+      style: TextButton.styleFrom(
+        backgroundColor: backgroundColor,
+        shape: StadiumBorder(),
+      ),
       child: Text(
         widget.label,
         textAlign: TextAlign.center,
