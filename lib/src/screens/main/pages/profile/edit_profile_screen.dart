@@ -193,8 +193,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Tên',
       value: user?.nickName,
       onClick: () {
-        Router.goto(context, EditTextScreen,
-            params: EditTextScreenParams(
+        Get.toNamed(Routes.editText,
+            arguments: EditTextScreenParams(
               title: 'Tên',
               value: user.nickName,
               onSave: (value) {
@@ -209,7 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         title: 'Độ tuổi',
         value: user?.age?.toString(),
         onClick: () {
-          Router.goto(context, EditAgeScreen);
+          Get.toNamed(Routes.editAge);
         }));
 
     listWidgetItems.add(RowEditInfo(
@@ -217,7 +217,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Vị trí hẹn hò',
       value: user?.address != null ? 'Đang ở ${user.address}' : null,
       onClick: () {
-        Router.goto(context, EditLocationScreen);
+        Get.toNamed(Routes.editLocation);
       },
     ));
 
@@ -226,7 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Giới tính',
       value: user?.gender?.displayValue,
       onClick: () {
-        Router.goto(context, EditGenderScreen);
+        Get.toNamed(Routes.editGender);
       },
     ));
 
@@ -235,7 +235,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Đang tìm kiếm',
       value: user?.lookingFors?.map((e) => e.displayValue)?.join(', '),
       onClick: () {
-        Router.goto(context, EditLookupScreen);
+        Get.toNamed(Routes.editLookup);
       },
     ));
 
@@ -244,7 +244,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Chiều cao',
       value: user?.height != null ? '${user?.height}cm' : null,
       onClick: () {
-        Router.goto(context, EditHeightScreen);
+        Get.toNamed(Routes.editHeight);
       },
     ));
 
@@ -318,7 +318,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Trình độ học vấn',
       value: user?.educationLevel?.displayValue,
       onClick: () {
-        Router.goto(context, EditEducationLevelScreen);
+        Get.toNamed(Routes.editEduLevel);
       },
     ));
     return buildWrapperRowEditInfo(
@@ -332,7 +332,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Con bạn',
       value: user?.yourKids?.displayValue,
       onClick: () {
-        Router.goto(context, EditMarriageScreen);
+        Get.toNamed(Routes.editMarriage);
       },
     ));
 
@@ -341,7 +341,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Hút thuốc',
       value: user?.smoking?.displayValue,
       onClick: () {
-        Router.goto(context, EditSmokeScreen);
+        Get.toNamed(Routes.editSmoke);
       },
     ));
 
@@ -350,7 +350,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Uống rượu',
       value: user?.drinking?.displayValue,
       onClick: () {
-        Router.goto(context, EditDrinkScreen);
+        Get.toNamed(Routes.editDrink);
       },
     ));
     return buildWrapperRowEditInfo(
@@ -364,7 +364,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       title: 'Quan điểm tôn giáo',
       value: user?.religious?.displayValue,
       onClick: () {
-        Router.goto(context, EditReligionScreen);
+        Get.toNamed(Routes.editReligion);
       },
     ));
 
@@ -377,7 +377,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     listWidgetItems.add(CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
-        Router.goto(context, EditHobbiesScreen);
+        Get.toNamed(Routes.editHobbies);
       },
       child: Container(
         decoration: BoxDecoration(

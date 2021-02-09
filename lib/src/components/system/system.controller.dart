@@ -22,7 +22,7 @@ class SystemController extends MomentumController<SystemModel> {
 
   Future fetchColor() async {
     await trycatch(() async {
-      final colors = await getService<SystemService>().getColorsOfAnswer();
+      final colors = await Get.find<SystemService>().getColorsOfAnswer();
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         model.update(colorsOfAnswer: colors);
       });
@@ -38,7 +38,7 @@ class SystemController extends MomentumController<SystemModel> {
   Future getUnreadMessageCount() async {
     await trycatch(() async {
       final unreadMessageCount =
-          await getService<SystemService>().getUnreadMessageCount();
+          await Get.find<SystemService>().getUnreadMessageCount();
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         model.update(unreadMessageCount: unreadMessageCount);
       });
@@ -48,7 +48,7 @@ class SystemController extends MomentumController<SystemModel> {
   Future getUnreadReceiveFriendCount() async {
     await trycatch(() async {
       final unreadReceiveFriendCount =
-          await getService<SystemService>().getUnreadReceiveFriendCount();
+          await Get.find<SystemService>().getUnreadReceiveFriendCount();
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         model.update(unreadReceiveFriendCount: unreadReceiveFriendCount);
       });
@@ -58,7 +58,7 @@ class SystemController extends MomentumController<SystemModel> {
   Future getUnreadAcceptedFriendCount() async {
     await trycatch(() async {
       final unreadAcceptedFriendCount =
-          await getService<SystemService>().getUnreadAcceptedFriendCount();
+          await Get.find<SystemService>().getUnreadAcceptedFriendCount();
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         model.update(unreadAcceptedFriendCount: unreadAcceptedFriendCount);
       });
@@ -67,8 +67,7 @@ class SystemController extends MomentumController<SystemModel> {
 
   Future getPostCategories() async {
     await trycatch(() async {
-      final postCategories =
-          await getService<PostService>().getPostCategories();
+      final postCategories = await Get.find<PostService>().getPostCategories();
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         model.update(postCategories: postCategories);
       });

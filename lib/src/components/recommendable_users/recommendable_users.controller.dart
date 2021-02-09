@@ -26,7 +26,7 @@ class RecommendableUsersController
   }
 
   Future _reload() async {
-    final users = await getService<UserService>().getRecommendableUsers();
+    final users = await Get.find<UserService>().getRecommendableUsers();
     model.update(users: users, isLastPage: !users.isExistAndNotEmpty);
     debugPrint('Fetched ${users.length} recommend users');
   }
@@ -38,7 +38,7 @@ class RecommendableUsersController
     Future waitForUpdateUi,
   }) async {
     if (model.users.isNotEmpty) {
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       if (isSwipeRight) {
         if (isSuperLike &&
             dependOn<CurrentUserController>()
@@ -88,8 +88,8 @@ class RecommendableUsersController
         popup.button(
             label: 'Nhắn tin',
             onPressed: () {
-              Router.goto(context, MessagesScreen,
-                  params: MessagesScreenParams(
+              Get.toNamed(Routes.messages,
+                  arguments: MessagesScreenParams(
                       ConversationKey(targetUserId: user.id)));
             }),
       ],

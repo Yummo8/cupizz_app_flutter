@@ -29,7 +29,7 @@ class _EditMarriageScreenState extends State<EditMarriageScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(yourKids: selectedValue);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cupizz_app/src/base/base.dart';
 
 enum CurrentUserEventAction {
@@ -24,7 +26,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future bootstrapAsync() => getCurrentUser();
 
   Future<void> getCurrentUser() async {
-    final service = getService<UserService>();
+    final service = Get.find<UserService>();
     final result = await service.getCurrentUser();
     model.update(currentUser: result);
   }
@@ -120,7 +122,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     model.update(currentUser: currentUser);
 
     try {
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       final result = await service.updateProfile(
         nickName: nickName,
         introduction: introduction,
@@ -181,7 +183,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
 
     model.update(currentUser: currentUser);
 
-    final service = getService<UserService>();
+    final service = Get.find<UserService>();
     await service.updateSetting(
       minAgePrefer: minAgePrefer,
       maxAgePrefer: maxAgePrefer,
@@ -212,7 +214,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
 
       model.update(currentUser: currentUser, isUpdatingSetting: true);
 
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       model.update(
           currentUser: await service.updateSetting(
         allowMatching: allowMatching,
@@ -242,7 +244,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     model.update(currentUser: currentUser);
     updatePushNotiDebouncer.debounce(() async {
       try {
-        final service = getService<UserService>();
+        final service = Get.find<UserService>();
         model.update(
             currentUser: await service.updateSetting(
           pushNotiSetting: currentUser.pushNotiSetting,
@@ -258,7 +260,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future removeUserImage(UserImage image) async {
     try {
       model.update(isDeletingImage: true);
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       await service.removeUserImage(image.id);
       model.currentUser.userImages.remove(image);
       model.newOrderList.remove(image);
@@ -279,7 +281,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future addImage(File image) async {
     try {
       model.update(isAddingImage: true);
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       final userImage = await service.addImage(image);
       model.currentUser.userImages.add(userImage);
       model.newOrderList.add(userImage);
@@ -320,7 +322,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     File image,
   }) async {
     try {
-      final result = await getService<UserService>().editAnswer(
+      final result = await Get.find<UserService>().editAnswer(
         userImage.id,
         content: content,
         color: color.color,
@@ -341,7 +343,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future updateUserImagesOrder() async {
     try {
       model.update(
-        currentUser: await getService<UserService>()
+        currentUser: await Get.find<UserService>()
             .updateUserImagesSortOrder(model.newOrderList),
         newOrderList: [],
       );
@@ -363,7 +365,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future changePassword(String oldPassword, String newPassword) async {
     if (oldPassword == newPassword) return;
     await trycatch(() async {
-      await getService<UserService>().changePassword(oldPassword, newPassword);
+      await Get.find<UserService>().changePassword(oldPassword, newPassword);
     }, throwError: true);
     await Fluttertoast.showToast(
         msg: 'Đổi mật khẩu thành công.\nVui lòng đăng nhập lại.');
@@ -372,7 +374,7 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
 
   Future reloadRemainingSuperLike() async {
     final remainingSuperLike =
-        await getService<UserService>().remainingSuperLikeQuery();
+        await Get.find<UserService>().remainingSuperLikeQuery();
     model.currentUser.remainingSuperLike = remainingSuperLike;
     model.update(currentUser: model.currentUser);
   }

@@ -8,7 +8,7 @@ class ThemeController extends MomentumController<ThemeModel> {
 
   @override
   ThemeModel init() {
-    _storage = getService<StorageService>();
+    _storage = Get.find<StorageService>();
     _storage.getTheme.then((value) {
       model.update(activeTheme: value ?? 0);
     });

@@ -51,7 +51,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   void sendMessage({String message, List<File> attachments}) async {
     try {
       model.update(isSendingMessage: true);
-      await getService<MessageService>().sendMessage(
+      await Get.find<MessageService>().sendMessage(
         ConversationKey(conversationId: model.conversation.id),
         message: message,
         attachments: attachments,
@@ -66,7 +66,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   Future loadmore() async {
     if (model.isLastPage) return;
     try {
-      final data = await getService<MessageService>().getMessages(
+      final data = await Get.find<MessageService>().getMessages(
         key: ConversationKey(conversationId: model.conversation?.id),
         page: model.currentPage + 1,
       );
@@ -89,7 +89,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
       if (key == null && model.conversation == null) {
         throw 'Missing screen params';
       }
-      final messageService = getService<MessageService>();
+      final messageService = Get.find<MessageService>();
 
       final futureRes = await Future.wait([
         messageService.getMessages(
@@ -116,7 +116,7 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   void subscribe(ConversationKey key) {
     if (messageSupscription == null && key != null) {
       messageSupscription =
-          getService<MessageService>().onNewMessage(key).listen(onNewMessage);
+          Get.find<MessageService>().onNewMessage(key).listen(onNewMessage);
       debugPrint('Subscribed conversation: $key');
     }
   }

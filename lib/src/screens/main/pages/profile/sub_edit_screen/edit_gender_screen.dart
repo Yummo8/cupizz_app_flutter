@@ -29,7 +29,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(gender: selectedValue);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

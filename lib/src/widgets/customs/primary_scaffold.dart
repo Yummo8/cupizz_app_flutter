@@ -36,7 +36,11 @@ class PrimaryScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
     );
     return RouterPage(
-      onWillPop: onBack,
+      onWillPop: onBack ??
+          () async {
+            Get.back(canPop: true);
+            return true;
+          },
       child: Stack(
         children: [
           if (context.height > context.width && kIsWeb)

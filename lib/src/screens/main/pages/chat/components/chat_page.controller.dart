@@ -42,7 +42,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   }
 
   void _connectSubsciption() {
-    conversationSupscription = getService<MessageService>()
+    conversationSupscription = Get.find<MessageService>()
         .onConversationChange()
         .listen(onConversationChange);
     debugPrint('Subscribed conversation changes');
@@ -71,7 +71,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   Future loadmore() async {
     if (model.isLastPage) return;
     try {
-      final data = await getService<MessageService>().getMyConversations(
+      final data = await Get.find<MessageService>().getMyConversations(
         page: model.currentPage + 1,
       );
       final conversations = data.data;
@@ -90,7 +90,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
 
   Future _reload() async {
     try {
-      final data = await getService<MessageService>().getMyConversations(
+      final data = await Get.find<MessageService>().getMyConversations(
         page: 1,
       );
       model.update(

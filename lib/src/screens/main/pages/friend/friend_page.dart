@@ -132,7 +132,7 @@ class _FriendPageState extends MomentumState<FriendPage>
                       OptionButton(
                         title: 'Cập nhật thông tin',
                         onPressed: () {
-                          Router.goto(context, EditProfileScreen);
+                          Get.toNamed(Routes.editProfile);
                         },
                       ),
                     ],

@@ -183,8 +183,8 @@ class _HomePageState extends State<HomePage> {
                       child: UserCard(
                         simpleUser: e,
                         onPressed: () {
-                          Router.goto(context, UserScreen,
-                              params: UserScreenParams(user: e));
+                          Get.toNamed(Routes.user,
+                              arguments: UserScreenParams(user: e));
                         },
                       ),
                       borderRadius: BorderRadius.circular(15),

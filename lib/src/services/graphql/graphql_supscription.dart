@@ -6,7 +6,7 @@ class MessageSubscription extends MomentumService {
 
   void init(ConversationKey key) {
     _streamSubscription?.cancel();
-    _streamSubscription = getService<GraphqlService>()
+    _streamSubscription = Get.find<GraphqlService>()
         .subscribe(Operation(documentNode: gql('''subscription {
           newMessage (
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}

@@ -32,7 +32,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final params = Router.getParam<EditUserImagesScreenParams>(context);
+      final EditUserImagesScreenParams params = Get.arguments;
       if (params?.focusItem != null) {
         setState(() {
           forcusItem = params.focusItem;
@@ -64,7 +64,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
                       SaveButtonAsync(
                         onPressed: () async {
                           await model.controller.updateUserImagesOrder();
-                          Router.pop(context);
+                          Get.back();
                         },
                       )
                     ]
@@ -116,8 +116,8 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    Router.goto(context, EditAnswerScreen,
-                        params: EditAnswerScreenParams(userImage));
+                    Get.toNamed(Routes.editAnswer,
+                        arguments: EditAnswerScreenParams(userImage));
                   },
                 ),
               IconButton(

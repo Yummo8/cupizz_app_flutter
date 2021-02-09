@@ -6,7 +6,7 @@ const _TOKEN_KEY = 'token';
 const _USER_ID_KEY = 'user_id';
 const _EMAIL_KEY = 'email';
 
-class StorageService extends MomentumService {
+class StorageService extends GetxService {
   final bool isTesting;
   StorageService({this.isTesting = false});
 
@@ -30,12 +30,12 @@ extension LoginEmailStorage on StorageService {
 extension UserIdStorage on StorageService {
   Future<void> saveUserId(String token) async {
     await (await storage).setString(_USER_ID_KEY, token);
-    getService<GraphqlService>().reset();
+    Get.find<GraphqlService>().reset();
   }
 
   Future<void> deleteUserId() async {
     await (await storage).remove(_USER_ID_KEY);
-    getService<GraphqlService>().reset();
+    Get.find<GraphqlService>().reset();
   }
 
   Future<String> get getUserId async =>
@@ -45,12 +45,12 @@ extension UserIdStorage on StorageService {
 extension TokenStorage on StorageService {
   Future<void> saveToken(String token) async {
     await (await storage).setString(_TOKEN_KEY, token);
-    getService<GraphqlService>().reset();
+    Get.find<GraphqlService>().reset();
   }
 
   Future<void> deleteToken() async {
     await (await storage).remove(_TOKEN_KEY);
-    getService<GraphqlService>().reset();
+    Get.find<GraphqlService>().reset();
   }
 
   Future<String> get getToken async =>

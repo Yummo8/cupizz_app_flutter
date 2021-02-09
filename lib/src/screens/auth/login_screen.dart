@@ -23,11 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
       password.text = '123456789';
     } else {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Momentum.getService<StorageService>(context)
-            .getLoginEmail
-            .then((value) => setState(() {
-                  email.text = value;
-                }));
+        Get.find<StorageService>().getLoginEmail.then((value) => setState(() {
+              email.text = value;
+            }));
       });
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -88,24 +86,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onGoToRegister() {
     _getDisposeController();
-    Navigator.push(
-      context,
-      PageTransition(
-        type: PageTransitionType.rightToLeft,
-        duration: Duration(milliseconds: 800),
-        child: RegisterScreen(),
-      ),
-    )
-        // Router.goto(
-        //   context,
-        //   RegisterScreen,
-        //   transition: (ctx, widget) => PageTransition(
-        //     type: PageTransitionType.rightToLeft,
-        //     duration: Duration(milliseconds: 800),
-        //     child: widget,
-        //   ),
-        // )
-        .then((_) {
+    Get.to(
+      RegisterScreen(),
+      transition: Transition.rightToLeft,
+      duration: Duration(milliseconds: 800),
+    ).then((_) {
       Future.delayed(Duration(milliseconds: 300), () {
         setState(() {
           width = 190;

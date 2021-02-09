@@ -29,7 +29,7 @@ class _EditSmokeScreenState extends State<EditSmokeScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(smoking: selectedValue);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

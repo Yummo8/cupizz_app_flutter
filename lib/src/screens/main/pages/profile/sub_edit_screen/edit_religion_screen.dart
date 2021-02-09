@@ -29,7 +29,7 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(religious: selectedValue);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

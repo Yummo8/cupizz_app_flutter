@@ -54,8 +54,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
 
   void _getAddressFromLatLng() async {
     try {
-      final address =
-          await Momentum.getService<SystemService>(context).getAddress(
+      final address = await Get.find<SystemService>().getAddress(
         latitude: _currentPosition.latitude.toString(),
         longitude: _currentPosition.longitude.toString(),
       );
@@ -84,7 +83,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                 latitude: _currentPosition.latitude,
                 longitude: _currentPosition.longitude,
               );
-              Router.pop(context);
+              Get.back();
             },
           )
         ],

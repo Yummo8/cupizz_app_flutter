@@ -33,7 +33,7 @@ class SuperLikeButtonState extends State<SuperLikeButton> {
     _showingRemain = true;
     setState(() {});
     _timer?.cancel();
-    await 2.seconds.delay;
+    await 2.delay();
     _showingRemain = false;
     setState(() {});
     resetTimer();

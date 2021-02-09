@@ -30,7 +30,7 @@ class _EditEducationLevelScreenState extends State<EditEducationLevelScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(educationLevel: selectedValue);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

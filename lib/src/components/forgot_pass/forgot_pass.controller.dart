@@ -10,7 +10,7 @@ class ForgotController extends MomentumController<ForgotPassModel> {
 
   Future sendOtp(String email) async {
     try {
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       model.update(email: email, isSendingOtp: true);
       final token = await service.forgotPassword(email);
       model.update(token: token);
@@ -24,7 +24,7 @@ class ForgotController extends MomentumController<ForgotPassModel> {
 
   Future verifyOtp(String otp) async {
     try {
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       model.update(isVerifingOtp: true);
       final data = await service.validateForgotPasswordToken(model.token, otp);
       model.update(data: data);
@@ -38,7 +38,7 @@ class ForgotController extends MomentumController<ForgotPassModel> {
 
   Future changePass(String newPass) async {
     try {
-      final service = getService<UserService>();
+      final service = Get.find<UserService>();
       model.update(isChangingPass: true);
       await service.changePasswordByForgotPasswordToken(
           model.data?.token, newPass);

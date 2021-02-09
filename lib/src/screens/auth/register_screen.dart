@@ -38,22 +38,14 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _backToLogin() {
-    Navigator.pop(
-      context,
-      // ignore: missing_required_param
-      PageTransition(
+    Get.back(
+      result:
+          // ignore: missing_required_param
+          PageTransition(
         type: PageTransitionType.leftToRight,
         duration: Duration(milliseconds: 800),
       ),
     );
-    // Router.pop(
-    //   context,
-    //   transition: (ctx, widget) => PageTransition(
-    //     type: PageTransitionType.leftToRight,
-    //     duration: Duration(milliseconds: 800),
-    //     child: Container(),
-    //   ),
-    // );
     setState(() {
       width = 500;
       widthIcon = 0;

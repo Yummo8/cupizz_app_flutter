@@ -24,7 +24,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      params = Router.getParam<EditTextScreenParams>(context);
+      params = Get.arguments;
       _textController.text = params?.value != null ? params.value : '';
       _textController.addListener(_textChange);
       isEdit = false;
@@ -130,14 +130,14 @@ class _EditTextScreenState extends State<EditTextScreen> {
           if (isEdit) {
             _settingModalBottomSheet(context);
           } else {
-            Router.pop(context);
+            Get.back();
           }
         },
         actions: [
           SaveButton(
             onPressed: () {
               params.onSave?.call(_textController.text);
-              Router.pop(context);
+              Get.back();
             },
           )
         ],

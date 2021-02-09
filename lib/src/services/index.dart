@@ -1,4 +1,4 @@
-library services;
+import 'package:cupizz_app/src/base/base.dart';
 
 export 'auth_service.dart';
 export 'graphql/index.dart';
@@ -9,3 +9,20 @@ export 'storage_service.dart';
 export 'system_service.dart';
 export 'user_service.dart';
 export 'post_service.dart';
+
+Future initServices([bool isTesting = false]) async {
+  Get.put(StorageService());
+  Get.put(GraphqlService(
+    //192.168.1.10:2020
+    apiUrl: !isTesting ? AppConfig.instance.apiUrl : 'http://cupizz.cf/graphql',
+    wss: !isTesting ? AppConfig.instance.wss : 'ws://cupizz.cf/graphql',
+  ));
+  Get.put(AuthService());
+  Get.put(MessageService());
+  if (!isTesting) {
+    await Get.putAsync<OneSignalService>(() => OneSignalService().init());
+  }
+  Get.put(SystemService());
+  Get.put(UserService());
+  Get.put(PostService());
+}

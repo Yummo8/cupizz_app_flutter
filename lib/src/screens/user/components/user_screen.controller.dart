@@ -11,7 +11,7 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
   Future refresh() async {
     if (model.user == null) return;
 
-    final user = await getService<UserService>().getUser(id: model.user.id);
+    final user = await Get.find<UserService>().getUser(id: model.user.id);
     model.update(user: user);
   }
 
@@ -23,12 +23,11 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
     }
     if (chatUser is! SimpleUser && chatUser is! User) {
       final user =
-          await getService<UserService>().getUser(id: chatUser?.id ?? userId);
+          await Get.find<UserService>().getUser(id: chatUser?.id ?? userId);
       model.update(user: user);
     }
-    unawaited(getService<UserService>()
-        .readFriendRequest(model.user.id)
-        .then((value) {
+    unawaited(
+        Get.find<UserService>().readFriendRequest(model.user.id).then((value) {
       dependOn<FriendPageV2Controller>().updateReadFriendRequest(model.user.id);
       dependOn<SystemController>().fetchUnreadNoti();
     }));
@@ -39,7 +38,7 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
     model.update(isLoading: true);
     try {
       if (model.user.friendType == FriendType.received) {
-        await getService<UserService>().addFriend(model.user.id);
+        await Get.find<UserService>().addFriend(model.user.id);
         await refresh();
       }
     } catch (e) {

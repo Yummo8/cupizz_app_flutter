@@ -29,7 +29,7 @@ class _EditDrinkScreenState extends State<EditDrinkScreen> {
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
               .updateProfile(drinking: selectedValue);
-          Router.pop(context);
+          Get.back();
         })
       ]),
       body: Container(

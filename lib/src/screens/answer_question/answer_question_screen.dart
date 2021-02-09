@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:cupizz_app/src/models/index.dart';
 import 'package:cupizz_app/src/screens/answer_question/widgets/screen_widget.dart';
-import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,19 +18,19 @@ class AnswerQuestionScreen extends StatelessWidget {
     if (controller.model.question == null) {
       _selectQuestion(context);
     } else {
-      Router.goto(context, AnswerQuestionScreen);
+      Get.toNamed(Routes.answer);
     }
   }
 
   static void _selectQuestion(BuildContext context) {
-    Router.goto(context, SelectQuestionScreen);
+    Get.toNamed(Routes.selectQuestion);
   }
 
   void _onSubmit(BuildContext context) async {
     final controller =
         Momentum.controller<AnswerQuestionScreenController>(context);
     await controller.sendToServer();
-    Router.pop(context);
+    Get.back();
 
     controller.sendEvent(
         CurrentUserEvent(action: CurrentUserEventAction.newUserImage));

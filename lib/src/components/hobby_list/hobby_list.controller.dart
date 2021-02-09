@@ -14,7 +14,7 @@ class HobbyListController extends MomentumController<HobbyListModel> {
   Future loadHobbies() async {
     try {
       model.update(isLoading: true);
-      final hobbies = await getService<SystemService>().getAllHobbies();
+      final hobbies = await Get.find<SystemService>().getAllHobbies();
       model.update(hobbies: hobbies);
     } catch (e) {
       model.update(error: e.toString());

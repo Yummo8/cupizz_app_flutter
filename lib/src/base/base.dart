@@ -11,11 +11,12 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../helpers/index.dart';
 
-export 'dart:io';
+export 'dart:io' hide HeaderValue;
 
 export 'package:flutter/cupertino.dart' hide Router, RefreshCallback;
 export 'package:flutter/material.dart' hide Router, ButtonBar;
 export 'package:fluttertoast/fluttertoast.dart';
+export 'package:get/get.dart';
 export 'package:object_mapper/object_mapper.dart';
 export 'package:pedantic/pedantic.dart';
 export 'package:supercharged/supercharged.dart';
@@ -28,6 +29,7 @@ export '../helpers/index.dart';
 export '../models/index.dart';
 export '../packages/index.dart';
 export '../packages/momentum/momentum.dart';
+export '../routes.dart';
 export '../screens/index.dart';
 export '../services/index.dart';
 export '../widgets/index.dart';

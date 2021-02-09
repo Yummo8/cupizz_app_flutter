@@ -2,7 +2,7 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pedantic/pedantic.dart';
 
-class GraphqlService extends MomentumService {
+class GraphqlService extends GetxService {
   GraphQLClient _client;
   GraphQLClient get client => _client;
   WebSocketLink _socketLink;
@@ -21,7 +21,7 @@ class GraphqlService extends MomentumService {
     );
 
     final authLink = AuthLink(
-      getToken: () async => await getService<StorageService>().getToken,
+      getToken: () async => await Get.find<StorageService>().getToken,
     );
 
     _socketLink = WebSocketLink(
@@ -30,7 +30,7 @@ class GraphqlService extends MomentumService {
         autoReconnect: true,
         initPayload: () async {
           return {
-            'Authorization': await getService<StorageService>().getToken,
+            'Authorization': await Get.find<StorageService>().getToken,
           };
         },
       ),

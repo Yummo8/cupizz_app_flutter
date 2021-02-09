@@ -123,7 +123,7 @@ class UserProfileState extends MomentumState<UserProfile>
                           size: 16,
                         ),
                         onPressed: () {
-                          Router.goto(context, EditProfileScreen);
+                          Get.toNamed(Routes.editProfile);
                         },
                       ),
                   ],

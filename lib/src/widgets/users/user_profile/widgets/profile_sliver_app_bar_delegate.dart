@@ -200,15 +200,15 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     if (user.friendType == FriendType.me) {
       icon = Icons.settings;
       onPressed = () {
-        Router.goto(context, UserSettingScreen);
+        Get.toNamed(Routes.setting);
       };
     } else if (user.friendType == FriendType.friend) {
       icon = Icons.message_outlined;
       onPressed = () {
-        Router.goto(
-          context,
-          MessagesScreen,
-          params: MessagesScreenParams(ConversationKey(targetUserId: user.id)),
+        Get.toNamed(
+          Routes.messages,
+          arguments:
+              MessagesScreenParams(ConversationKey(targetUserId: user.id)),
         );
       };
     } else if (user.friendType == FriendType.received) {
@@ -248,7 +248,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             size: 40,
           ),
           onTap: () {
-            Router.pop(context);
+            Get.back();
           },
         ),
       ),

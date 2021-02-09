@@ -55,7 +55,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () {
                 if (onBackPressed == null) {
                   if (isRouterPop) {
-                    Router.pop(context);
+                    Get.back();
                   } else {
                     Navigator.pop(context);
                   }

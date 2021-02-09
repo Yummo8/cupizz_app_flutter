@@ -16,8 +16,7 @@ class UserItem extends StatelessWidget {
     if (onPressed != null) {
       onPressed(simpleUser);
     } else {
-      Router.goto(context, UserScreen,
-          params: UserScreenParams(user: simpleUser));
+      Get.toNamed(Routes.user, arguments: UserScreenParams(user: simpleUser));
     }
   }
 
