@@ -64,7 +64,9 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: context.colorScheme.primary,
-        onPressed: () {},
+        onPressed: () {
+          Router.goto(context, CreatePostScreen);
+        },
         child: Icon(
           Icons.add,
           color: context.colorScheme.onPrimary,

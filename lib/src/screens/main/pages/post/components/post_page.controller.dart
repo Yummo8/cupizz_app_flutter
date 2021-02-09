@@ -128,6 +128,13 @@ class PostPageController extends MomentumController<PostPageModel> {
     });
   }
 
+  void insertPost(Post post) {
+    final index = model.posts.indexWhere((e) => e.id == post.id);
+    if (index > 0) return;
+    model.posts.insert(0, post);
+    model.update(posts: model.posts);
+  }
+
   Future _search(String keyword) async {
     model.update(keyword: keyword);
     await _loading(_reload);

@@ -25,7 +25,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
           IconButton(
             onPressed: () => _pickImage(context),
             icon: Icon(
-              Icons.image,
+              CupertinoIcons.photo_on_rectangle,
               color: context.colorScheme.primary,
             ),
           ),

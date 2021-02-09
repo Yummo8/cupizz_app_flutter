@@ -53,6 +53,7 @@ Momentum momentum({bool isTesting = false}) {
       SelectQuestionScreenController(),
       SystemController(),
       PostPageController()..config(lazy: true),
+      CreatePostController()..config(lazy: true),
     ],
     services: [
       AuthService(),
@@ -80,6 +81,7 @@ Momentum momentum({bool isTesting = false}) {
         EditAnswerScreen(),
         SelectQuestionScreen(),
         ProfilePage(),
+        CreatePostScreen(),
         ...[
           EditAgeScreen(),
           EditDrinkScreen(),

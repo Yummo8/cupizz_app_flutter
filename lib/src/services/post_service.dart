@@ -55,4 +55,11 @@ class PostService extends MomentumService {
         .map((e) => Mapper.fromJson(e).toObject<Comment>())
         .toList();
   }
+
+  Future<Post> createPost(String categoryId, String content,
+      [List<File> images = const []]) async {
+    final graphql = getService<GraphqlService>();
+    final json = await graphql.createPostMutation(categoryId, content, images);
+    return Mapper.fromJson(json).toObject<Post>();
+  }
 }

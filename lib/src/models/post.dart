@@ -14,6 +14,7 @@ class Post with Mappable {
   int _sadCount;
   LikeType myLikedPostType;
   List<Comment> _comments;
+  List<FileModel> _images;
 
   int get id => _id;
   String get content => _content;
@@ -25,6 +26,7 @@ class Post with Mappable {
   int get angryCount => _angryCount ?? 0;
   int get sadCount => _sadCount ?? 0;
   List<Comment> get comments => _comments;
+  List<FileModel> get images => _images;
 
   int get totalReaction =>
       likeCount + loveCount + wowCount + hahaCount + angryCount + sadCount;
@@ -45,6 +47,7 @@ class Post with Mappable {
     map('myLikedPostType', myLikedPostType, (v) => myLikedPostType = v,
         EnumTransform<LikeType, String>());
     map<Comment>('comments', comments, (v) => _comments = v);
+    map<FileModel>('images', images, (v) => _images = v);
   }
 
   static String get graphqlQuery => '''
@@ -62,6 +65,7 @@ class Post with Mappable {
     sadCount: likeCount(type: sad)
     myLikedPostType
     comments${Comment.listFilter()} ${Comment.graphqlQuery}
+    images ${FileModel.graphqlQuery}
   }''';
 }
 

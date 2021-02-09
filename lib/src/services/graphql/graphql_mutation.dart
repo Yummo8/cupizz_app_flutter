@@ -425,4 +425,19 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['commentPost'];
   }
+
+  Future createPostMutation(String categoryId, String content,
+      [List<File> images = const []]) async {
+    final query =
+        '''mutation createPost(\$images: [Upload], \$content: String!){
+      createPost(categoryId: "$categoryId" content: \$content images: \$images) ${Post.graphqlQuery}
+    }''';
+    final result =
+        await mutate(MutationOptions(documentNode: gql(query), variables: {
+      'images': await Future.wait((images ?? []).map((e) => multiPartFile(e))),
+      'content': content,
+    }));
+
+    return result.data['createPost'];
+  }
 }

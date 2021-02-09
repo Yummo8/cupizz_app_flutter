@@ -57,7 +57,13 @@ class _PostBody extends StatelessWidget {
                           style: context.textTheme.bodyText1
                               .copyWith(color: textColor)),
                     ),
-                    const SizedBox(height: 20.0),
+                    if (post.images.isExistAndNotEmpty) ...[
+                      const SizedBox(height: 10.0),
+                      GroupImage(
+                          images: post.images,
+                          borderRadius: BorderRadius.circular(10)),
+                    ],
+                    const SizedBox(height: 10.0),
                     _PostAction(post: post)
                   ],
                 ),

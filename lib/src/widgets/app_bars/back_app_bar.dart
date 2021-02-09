@@ -12,6 +12,8 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color shadowColor;
   final Color textColor;
   final bool showBackButton;
+  final bool centerTitle;
+  final IconData backIcon;
 
   BackAppBar({
     Key key,
@@ -26,6 +28,8 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.textColor,
     this.showBackButton = true,
     this.titleWidget,
+    this.centerTitle = true,
+    this.backIcon = Icons.arrow_back_ios,
   })  : preferredSize = Size.fromHeight(
             56.0 + (bottom != null ? bottom.preferredSize.height : 0)),
         super(key: key);
@@ -38,14 +42,14 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: backgroundColor ?? context.colorScheme.background,
       elevation: elevation,
-      centerTitle: true,
+      centerTitle: centerTitle,
       bottom: bottom,
       shadowColor: shadowColor ?? context.colorScheme.surface,
       leading: !showBackButton
           ? const SizedBox.shrink()
           : IconButton(
               icon: Icon(
-                Icons.arrow_back_ios,
+                backIcon,
                 color: textColor ?? context.colorScheme.onBackground,
               ),
               onPressed: () {

@@ -302,7 +302,7 @@ class UserProfileState extends MomentumState<UserProfile>
                                   model.isAddingImage
                                       ? LoadingIndicator(size: 20)
                                       : Icon(
-                                          Icons.image,
+                                          CupertinoIcons.photo_on_rectangle,
                                           color: _theme.primaryColor,
                                         ),
                                   const SizedBox(width: 5),
