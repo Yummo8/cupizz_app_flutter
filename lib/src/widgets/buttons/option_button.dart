@@ -32,11 +32,12 @@ class OptionButton extends StatelessWidget {
         : OutlinedButton(
             onPressed: () => onPressed?.call(),
             style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  width: 1,
-                  color: Colors.grey[500],
-                ),
-                backgroundColor: context.colorScheme.primary.withOpacity(0.5)),
+              side: BorderSide(
+                width: 1,
+                color: Colors.grey[500],
+              ),
+              primary: context.colorScheme.primary.withOpacity(0.5),
+            ),
             child: child,
           );
   }

@@ -100,27 +100,26 @@ class _MainScreenState extends MomentumState<MainScreen>
                         _BottomNavButtonData(
                           'Trang chủ',
                           context.colorScheme.primary,
-                          icon: Icons.home_outlined,
+                          icon: CupertinoIcons.house,
                         ),
                         _BottomNavButtonData(
-                          'Yêu thích',
+                          'Confession',
                           context.colorScheme.secondary,
-                          number: systemModel.unreadAcceptedFriendCount +
-                              systemModel.unreadReceiveFriendCount,
-                          icon: Icons.favorite_outline_sharp,
+                          icon: CupertinoIcons.square_favorites_alt,
                         ),
                         _BottomNavButtonData(
                           'Tin nhắn',
                           context.colorScheme.primaryVariant,
                           number: systemModel.unreadMessageCount,
-                          icon: Icons.chat_bubble_outline_rounded,
+                          icon: CupertinoIcons.bubble_left_bubble_right,
                         ),
                         _BottomNavButtonData(
                           currentUser?.displayName?.split(' ')?.first ??
                               'Cá nhân',
                           context.colorScheme.secondaryVariant,
-                          number: systemModel.unreadMessageCount,
-                          icon: Icons.person_outline_rounded,
+                          number: systemModel.unreadAcceptedFriendCount +
+                              systemModel.unreadReceiveFriendCount,
+                          icon: CupertinoIcons.person,
                           iconWidget: currentUser == null
                               ? null
                               : UserAvatar.fromChatUser(

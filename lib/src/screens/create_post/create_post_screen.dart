@@ -136,8 +136,13 @@ class _CategoriesDropDown extends StatelessWidget {
                 value: value,
                 child: Text(
                   value.value,
-                  style:
-                      context.textTheme.bodyText1.copyWith(color: value.color),
+                  style: context.textTheme.bodyText1
+                      .copyWith(color: value.color, shadows: [
+                    Shadow(
+                      blurRadius: 2,
+                      color: Colors.black,
+                    ),
+                  ]),
                 ),
               );
             }).toList(),

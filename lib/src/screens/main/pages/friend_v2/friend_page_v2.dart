@@ -71,7 +71,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
         builder: (context, snapshot) {
           final model = snapshot<FriendPageV2Model>();
           return PrimaryScaffold(
-            appBar: BackAppBar(title: 'Yêu thích', showBackButton: false),
+            appBar: BackAppBar(title: 'Yêu thích'),
             body: NestedScrollView(
               controller: scrollController,
               headerSliverBuilder: (context, _) {

@@ -1,5 +1,6 @@
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
+import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
 
@@ -19,6 +20,7 @@ class Routes {
   static const editAnswer = '/answer/edit';
   static const selectQuestion = '/question/select';
   static const createPost = '/post/create';
+  static const friends = '/likes';
 
   static const editAge = '/profile/edit/age';
   static const editDrink = '/profile/edit/drink';
@@ -49,6 +51,7 @@ final List<GetPage> getPages = [
   GetPage(name: Routes.editAnswer, page: () => EditAnswerScreen()),
   GetPage(name: Routes.selectQuestion, page: () => SelectQuestionScreen()),
   GetPage(name: Routes.createPost, page: () => CreatePostScreen()),
+  GetPage(name: Routes.friends, page: () => FriendPageV2()),
   // Edit-screens
   GetPage(name: Routes.editAge, page: () => EditAgeScreen()),
   GetPage(name: Routes.editDrink, page: () => EditDrinkScreen()),

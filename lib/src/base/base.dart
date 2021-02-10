@@ -16,7 +16,7 @@ export 'dart:io' hide HeaderValue;
 export 'package:flutter/cupertino.dart' hide Router, RefreshCallback;
 export 'package:flutter/material.dart' hide Router, ButtonBar;
 export 'package:fluttertoast/fluttertoast.dart';
-export 'package:get/get.dart';
+export 'package:get/get.dart' hide MultipartFile;
 export 'package:object_mapper/object_mapper.dart';
 export 'package:pedantic/pedantic.dart';
 export 'package:supercharged/supercharged.dart';

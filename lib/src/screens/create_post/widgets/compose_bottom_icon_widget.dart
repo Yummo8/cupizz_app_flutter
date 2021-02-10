@@ -45,7 +45,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
                     child: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: Text(
-                    'Bài viết này sẽ được đảm bảo không để lộ danh tính',
+                    'Mọi confession đều sẽ được ẩn danh',
                     textAlign: TextAlign.right,
                     style: context.textTheme.caption
                         .copyWith(fontStyle: FontStyle.italic),

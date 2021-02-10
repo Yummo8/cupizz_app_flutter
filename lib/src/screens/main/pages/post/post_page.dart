@@ -90,7 +90,7 @@ class _SearchBox extends StatelessWidget {
         initialValue: controller.model.keyword ?? '',
         onChanged: controller.search,
         decoration: InputDecoration(
-          hintText: 'Tìm kiếm bài viết',
+          hintText: 'Tìm kiếm confession',
           prefixIcon: Icon(Icons.search, color: context.colorScheme.onSurface),
           hintStyle: TextStyle(
             color: context.colorScheme.onSurface,

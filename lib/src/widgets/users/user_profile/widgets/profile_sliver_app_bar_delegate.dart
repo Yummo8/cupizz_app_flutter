@@ -36,25 +36,29 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         clipBehavior: Clip.none,
         children: [
           _buildCover(context, scrollRate),
-          ClipPath(
-            clipper: PinkOneClipper(),
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.colorScheme.primary.withOpacity(opacity),
+          IgnorePointer(
+            child: ClipPath(
+              clipper: PinkOneClipper(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.colorScheme.primary.withOpacity(opacity),
+                ),
               ),
             ),
           ),
-          ClipPath(
-            clipper: PinkTwoClipper(),
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.colorScheme.primary.withOpacity(opacity),
+          IgnorePointer(
+            child: ClipPath(
+              clipper: PinkTwoClipper(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.colorScheme.primary.withOpacity(opacity),
+                ),
               ),
             ),
           ),
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
-          _buildUpdateCoverButton(context, scrollRate),
+          if (user.isCurrentUser) _buildFriendsButton(context, scrollRate),
           _buildSettingOrMessageButton(context, scrollRate),
         ],
       ),
@@ -68,22 +72,44 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       bottom: 0 - 30 * scrollRate,
       child: ClipPath(
         clipper: BackgroudClipper(),
-        child: Stack(
-          children: [
-            Positioned.fill(
-                child: user?.cover?.url != null
-                    ? CustomNetworkImage(user.cover.url)
-                    : Container(
-                        color: context.colorScheme.surface,
-                      )),
-            Container(
-              width: context.width,
-              height: expandedHeight,
-              color:
-                  context.colorScheme.primary.withOpacity(0 + 0.3 * scrollRate),
-            )
-          ],
-        ),
+        child: MomentumBuilder(
+            controllers: [CurrentUserController],
+            builder: (context, snapshot) {
+              final model = snapshot<CurrentUserModel>();
+              return CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  Menu(
+                    [
+                      ViewImageMenuItem(context, [user.cover]),
+                      if (!model.isUpdatingAvatar && isCurrentUser)
+                        ...getPickImagesMenuItem(context, (images) {
+                          if (images.isExistAndNotEmpty) {
+                            model.controller.updateCover(images[0]);
+                          }
+                        },
+                            maxSelected: 1,
+                            cropAspectRatio:
+                                CropAspectRatio(ratioX: 3, ratioY: 5))
+                    ],
+                    showCancel: true,
+                  ).show(context);
+                },
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                        child: CustomNetworkImage(
+                            model.isUpdatingCover ? null : user.cover.url)),
+                    Container(
+                      width: context.width,
+                      height: expandedHeight,
+                      color: context.colorScheme.primary
+                          .withOpacity(0 + 0.3 * scrollRate),
+                    )
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }
@@ -152,7 +178,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _buildUpdateCoverButton(BuildContext context, double scrollRate) {
+  Widget _buildFriendsButton(BuildContext context, double scrollRate) {
     final topPosition = 10 + MediaQuery.of(context).padding.top;
     return Positioned(
       right: 10,
@@ -160,33 +186,16 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: Transform.scale(
         scale: 1 - scrollRate,
         child: MomentumBuilder(
-            controllers: [CurrentUserController],
+            controllers: [SystemController],
             builder: (context, snapshot) {
-              final model = snapshot<CurrentUserModel>();
+              final model = snapshot<SystemModel>();
+              final number = model.unreadAcceptedFriendCount +
+                  model.unreadReceiveFriendCount;
               return OpacityIconButton(
-                icon: !model.isUpdatingCover ? Icons.camera : null,
-                iconWidget: model.isUpdatingCover
-                    ? LoadingIndicator(
-                        color: context.colorScheme.onPrimary,
-                        size: 22,
-                      )
-                    : null,
+                icon: Icons.favorite,
+                badgeNumber: number,
                 onPressed: () {
-                  Menu(
-                    [
-                      ViewImageMenuItem(context, [user.cover]),
-                      if (!model.isUpdatingAvatar && isCurrentUser)
-                        ...getPickImagesMenuItem(context, (images) {
-                          if (images.isExistAndNotEmpty) {
-                            model.controller.updateCover(images[0]);
-                          }
-                        },
-                            maxSelected: 1,
-                            cropAspectRatio:
-                                CropAspectRatio(ratioX: 3, ratioY: 5))
-                    ],
-                    showCancel: true,
-                  ).show(context);
+                  Get.toNamed(Routes.friends);
                 },
               );
             }),
@@ -216,6 +225,8 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       onPressed = () {
         Momentum.controller<UserScreenController>(context).addFriend();
       };
+    } else {
+      return const SizedBox.shrink();
     }
 
     return Positioned(
