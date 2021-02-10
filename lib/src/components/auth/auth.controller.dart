@@ -14,9 +14,9 @@ class AuthController extends MomentumController<AuthModel> {
   @override
   Future<void> bootstrapAsync() async {
     if (await isAuthenticated) {
+      unawaited(gotoHome());
       await dependOn<LocationController>()
           .checkPermission(AppConfig.navigatorKey.currentContext);
-      unawaited(gotoHome());
     } else {
       unawaited(gotoAuth());
     }

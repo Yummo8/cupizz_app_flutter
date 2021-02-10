@@ -12,6 +12,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/base.dart';
@@ -53,11 +54,13 @@ Momentum momentum({bool isTesting = false}) {
     appLoader: AppLoader(),
     child: _MyApp(),
     persistSave: (context, key, value) async {
-      await (await SharedPreferences.getInstance()).setString(key, value);
+      final box = await Hive.openBox('cupizz');
+      await box.put(key, value);
       return true;
     },
     persistGet: (context, key) async {
-      return await (await SharedPreferences.getInstance()).getString(key);
+      final box = await Hive.openBox('cupizz');
+      return box.get(key);
     },
   );
 }
