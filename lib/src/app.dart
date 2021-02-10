@@ -130,21 +130,25 @@ class _MyApp extends StatelessWidget {
     return MomentumBuilder(
         controllers: [ThemeController, AuthController],
         builder: (context, snapshot) {
-          final theme = snapshot<ThemeModel>().controller.selectedTheme;
-          return CustomTheme(
+          final theme =
+              snapshot<ThemeModel>().controller.selectedTheme.copyWith(
+                      pageTransitionsTheme: PageTransitionsTheme(builders: {
+                    TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                  }));
+          return GetMaterialApp(
+            debugShowCheckedModeBanner:
+                AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
+            title: 'Cupizz',
+            navigatorKey: isTesting ? null : AppConfig.navigatorKey,
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
+            ],
             theme: theme,
-            child: GetMaterialApp(
-              debugShowCheckedModeBanner:
-                  AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
-              title: 'Cupizz',
-              navigatorKey: isTesting ? null : AppConfig.navigatorKey,
-              navigatorObservers: [
-                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
-              ],
-              theme: theme,
-              home: SplashScreen(),
-              getPages: getPages,
-            ),
+            defaultTransition: Transition.cupertino,
+            popGesture: true,
+            home: SplashScreen(),
+            getPages: getPages,
           );
         });
   }

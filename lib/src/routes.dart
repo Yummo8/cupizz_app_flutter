@@ -66,9 +66,4 @@ final List<GetPage> getPages = [
   GetPage(name: Routes.editSmoke, page: () => EditSmokeScreen()),
   GetPage(name: Routes.editText, page: () => EditTextScreen()),
   GetPage(name: Routes.editEduLevel, page: () => EditEducationLevelScreen()),
-]
-    .map((e) => e.copyWith(
-          transition: Transition.rightToLeft,
-          popGesture: true,
-        ))
-    .toList();
+];
