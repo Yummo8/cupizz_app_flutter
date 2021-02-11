@@ -99,7 +99,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                   children: [
                     Positioned.fill(
                         child: CustomNetworkImage(
-                            model.isUpdatingCover ? null : user.cover.url)),
+                            model.isUpdatingCover ? null : user.cover?.url)),
                     Container(
                       width: context.width,
                       height: expandedHeight,

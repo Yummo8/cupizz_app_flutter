@@ -148,8 +148,6 @@ class _MyApp extends StatelessWidget {
               FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
             ],
             theme: theme,
-            defaultTransition: Transition.cupertino,
-            popGesture: true,
             home: SplashScreen(),
             getPages: getPages,
           );
