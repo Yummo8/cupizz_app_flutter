@@ -15,7 +15,9 @@ mixin KeepScrollOffsetMixin<T extends StatefulWidget> on State<T> {
       lastOffset = scrollController.offset;
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      scrollController.jumpTo(lastOffset);
+      if (scrollController.hasClients) {
+        scrollController.jumpTo(lastOffset);
+      }
     });
   }
 }

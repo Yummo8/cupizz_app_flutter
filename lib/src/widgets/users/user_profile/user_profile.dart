@@ -115,7 +115,7 @@ class UserProfileState extends MomentumState<UserProfile>
                         '${user?.age} tuổi',
                         style: context.textTheme.subtitle1,
                       ),
-                    if (widget.user.isCurrentUser)
+                    if (widget.user != null && widget.user.isCurrentUser)
                       IconButton(
                         icon: Icon(
                           Icons.edit,
@@ -237,7 +237,7 @@ class UserProfileState extends MomentumState<UserProfile>
                   indent: 20,
                   endIndent: 20,
                 ),
-                if (user.userImages.isExistAndNotEmpty)
+                if (user != null && user.userImages.isExistAndNotEmpty)
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => FadeInTranslate(
@@ -251,7 +251,7 @@ class UserProfileState extends MomentumState<UserProfile>
                     shrinkWrap: true,
                     itemCount: user?.userImages?.length ?? 0,
                   )
-                else if (user.isCurrentUser)
+                else if (user != null && user.isCurrentUser)
                   Column(
                     children: [
                       Container(
@@ -274,7 +274,7 @@ class UserProfileState extends MomentumState<UserProfile>
                       const SizedBox(height: 30),
                     ],
                   ),
-                if (widget.user.isCurrentUser)
+                if (user != null && user.isCurrentUser)
                   MomentumBuilder(
                       controllers: [CurrentUserController],
                       builder: (context, snapshot) {

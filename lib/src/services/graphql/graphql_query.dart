@@ -2,8 +2,9 @@ part of 'index.dart';
 
 extension GraphqlQuery on GraphqlService {
   Future meQuery() async {
+    final queryString = '{ me ${User.graphqlQuery} }';
     final result = await query(QueryOptions(
-      documentNode: gql('{ me ${User.graphqlQuery} }'),
+      documentNode: gql(queryString),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     ));
     return result.data['me'];

@@ -6,3 +6,4 @@ export 'messages/messages_screen.dart';
 export 'splash/splash_screen.dart';
 export 'user/user_screen.dart';
 export 'user_setting/user_setting_screen.dart';
+export 'anonymous_chat/anonymous_chat_screen.dart';

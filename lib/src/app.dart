@@ -13,7 +13,6 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base/base.dart';
 import 'screens/main/components/main_screen.controller.dart';
@@ -50,6 +49,7 @@ Momentum momentum({bool isTesting = false}) {
       SystemController(),
       PostPageController()..config(lazy: true),
       CreatePostController()..config(lazy: true),
+      AnonymousChatController()..config(lazy: false),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),
@@ -114,7 +114,6 @@ class AppLoader extends StatelessWidget {
                 Colors.red,
               ],
               textAlign: TextAlign.center,
-              alignment: AlignmentDirectional.topStart,
             ),
           )
         ],

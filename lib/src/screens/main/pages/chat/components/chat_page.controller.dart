@@ -42,6 +42,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   }
 
   void _connectSubsciption() {
+    conversationSupscription?.cancel();
     conversationSupscription = Get.find<MessageService>()
         .onConversationChange()
         .listen(onConversationChange);

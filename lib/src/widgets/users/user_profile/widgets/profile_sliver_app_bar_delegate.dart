@@ -58,8 +58,9 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
-          if (user.isCurrentUser) _buildFriendsButton(context, scrollRate),
-          _buildSettingOrMessageButton(context, scrollRate),
+          if (user != null && user.isCurrentUser)
+            _buildFriendsButton(context, scrollRate),
+          if (user != null) _buildSettingOrMessageButton(context, scrollRate),
         ],
       ),
     );
@@ -99,7 +100,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                   children: [
                     Positioned.fill(
                         child: CustomNetworkImage(
-                            model.isUpdatingCover ? null : user.cover?.url)),
+                            model.isUpdatingCover ? null : user?.cover?.url)),
                     Container(
                       width: context.width,
                       height: expandedHeight,

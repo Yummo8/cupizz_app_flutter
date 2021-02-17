@@ -10,8 +10,8 @@ void main() async {
   var configuredApp = AppConfig(
     appName: 'Cubiz Development',
     flavorName: AppFlavor.DEVELOPMENT,
-    apiUrl: 'http://192.168.1.242:2020/graphql',
-    wss: 'ws://192.168.1.242:2020/graphql',
+    apiUrl: 'http://192.168.1.4:1998/graphql',
+    wss: 'ws://192.168.1.4:1998/graphql',
     child: App(),
   );
 

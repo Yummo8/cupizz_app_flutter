@@ -84,4 +84,32 @@ extension GraphqlSupscription on GraphqlService {
 
     return controller.stream;
   }
+
+  Stream<Conversation> findAnonymousChatSubscription() {
+    StreamSubscription<FetchResult> _streamSubscription;
+    // ignore: close_sinks
+    final controller = StreamController<Conversation>.broadcast(
+      onCancel: () {
+        _streamSubscription?.cancel();
+      },
+    );
+    _streamSubscription = subscribe(
+      Operation(documentNode: gql('''subscription {
+          findAnonymousChat ${Conversation.graphqlQuery}
+        }''')),
+    ).listen(
+      (event) {
+        if (event.errors != null && event.errors.isNotEmpty) {
+          controller.addError(event.errors[0].toString());
+        }
+        if (event.data != null) {
+          controller.add(Mapper.fromJson(event.data['findAnonymousChat'])
+              .toObject<Conversation>());
+        }
+      },
+    );
+
+    debugPrint('Subscribed findAnonymousChat');
+    return controller.stream;
+  }
 }

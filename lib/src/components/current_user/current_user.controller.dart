@@ -26,9 +26,11 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
   Future bootstrapAsync() => getCurrentUser();
 
   Future<void> getCurrentUser() async {
-    final service = Get.find<UserService>();
-    final result = await service.getCurrentUser();
-    model.update(currentUser: result);
+    await trycatch(() async {
+      final service = Get.find<UserService>();
+      final result = await service.getCurrentUser();
+      model.update(currentUser: result);
+    }, throwError: true);
   }
 
   Future toggleGenderButton(Gender gender) async {

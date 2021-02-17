@@ -66,7 +66,6 @@ class User extends SimpleUser {
       phoneNumber
       job
       height
-      address
       educationLevel
       smoking
       drinking

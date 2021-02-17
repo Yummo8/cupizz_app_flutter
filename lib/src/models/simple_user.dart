@@ -94,7 +94,6 @@ class SimpleUser extends ChatUser {
       friendType {status}
       onlineStatus
       lastOnline
-      address
       educationLevel
       smoking
       drinking

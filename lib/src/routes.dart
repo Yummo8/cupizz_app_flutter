@@ -21,6 +21,7 @@ class Routes {
   static const selectQuestion = '/question/select';
   static const createPost = '/post/create';
   static const friends = '/likes';
+  static const anonymousChat = '/anonymous-chat';
 
   static const editAge = '/profile/edit/age';
   static const editDrink = '/profile/edit/drink';
@@ -52,6 +53,7 @@ final List<GetPage> getPages = [
   GetPage(name: Routes.selectQuestion, page: () => SelectQuestionScreen()),
   GetPage(name: Routes.createPost, page: () => CreatePostScreen()),
   GetPage(name: Routes.friends, page: () => FriendPageV2()),
+  GetPage(name: Routes.anonymousChat, page: () => AnonymousChatScreen()),
   // Edit-screens
   GetPage(name: Routes.editAge, page: () => EditAgeScreen()),
   GetPage(name: Routes.editDrink, page: () => EditDrinkScreen()),

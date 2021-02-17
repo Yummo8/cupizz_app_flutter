@@ -41,7 +41,6 @@ class SplashScreen extends StatelessWidget {
                   Colors.red,
                 ],
                 textAlign: TextAlign.center,
-                alignment: AlignmentDirectional.topStart,
               ),
             )
           ],

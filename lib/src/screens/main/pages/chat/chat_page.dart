@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:cupizz_app/src/screens/messages/messages_screen.dart';
 import 'package:cupizz_app/src/widgets/index.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../base/base.dart';
 
@@ -202,7 +201,7 @@ class _ChatPageState extends State<ChatPage>
           SizedBox(width: 12.0),
           InkWell(
             onTap: () {
-              Fluttertoast.showToast(msg: Strings.common.inDeveloping);
+              Get.toNamed(Routes.anonymousChat);
             },
             child: Text(
               'Ẩn danh',

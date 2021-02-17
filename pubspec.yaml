@@ -19,7 +19,7 @@ dependencies:
   flare_flutter: ^2.0.6
   page_transition: ^1.1.7+2
   flutter_spinkit: ^4.1.2
-  animated_text_kit: ^2.4.1
+  animated_text_kit: ^3.1.0
   avatar_glow: ^1.2.0
   google_fonts: ^1.1.1
   auto_size_text: ^2.1.0

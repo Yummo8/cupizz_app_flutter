@@ -1,5 +1,7 @@
 library components;
 
+export 'anonymous_chat/anonymous_chat.controller.dart';
+export 'anonymous_chat/anonymous_chat.model.dart';
 export 'auth/auth.controller.dart';
 export 'auth/auth.model.dart';
 export 'create_post/create_post.controller.dart';
