@@ -440,4 +440,9 @@ extension GraphqlMutation on GraphqlService {
 
     return result.data['createPost'];
   }
+
+  Future deleteAnonymousChatMutation() async {
+    await mutate(
+        MutationOptions(documentNode: gql('mutation { deleteAnonymousChat }')));
+  }
 }

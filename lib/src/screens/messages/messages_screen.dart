@@ -38,132 +38,144 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Widget build(BuildContext context) {
     controller ??= Momentum.controller<MessagesScreenController>(context);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final params = Get.arguments as MessagesScreenParams;
-      if (params != null) {
-        controller.loadData(params);
+      final args = Get.arguments as MessagesScreenParams;
+      if (args != null) {
+        controller.loadData(args);
       }
     });
-    return PrimaryScaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: context.colorScheme.background,
-        shadowColor: context.colorScheme.onBackground,
-        elevation: 1,
-        leading: IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.chevron_left,
-              color: context.colorScheme.onBackground,
-              size: 40,
-            ),
-            onPressed: () {
-              Get.back();
-            }),
-        title: MomentumBuilder(
-            controllers: [MessagesScreenController],
-            builder: (context, snapshot) {
-              final model = snapshot<MessagesScreenModel>();
-              return Skeleton(
-                enabled: model.isLoading,
-                child: IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Align(
-                        child: UserAvatar.fromConversation(
-                          size: 30,
-                          conversation: model.conversation,
+    return MomentumBuilder(
+        controllers: [MessagesScreenController],
+        builder: (context, snapshot) {
+          final model = snapshot<MessagesScreenModel>();
+          return PrimaryScaffold(
+            appBar: model.conversation.isAnonymousChat
+                ? null
+                : AppBar(
+                    automaticallyImplyLeading: true,
+                    backgroundColor: context.colorScheme.background,
+                    shadowColor: context.colorScheme.onBackground,
+                    elevation: 1,
+                    leading: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: context.colorScheme.onBackground,
+                          size: 40,
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        onPressed: () {
+                          Get.back();
+                        }),
+                    title: Skeleton(
+                      enabled: model.isLoading,
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            SkeletonItem(
-                              child: Text(
-                                model.conversation?.name ?? 'Loading',
-                                style: context.textTheme.bodyText1
-                                    .copyWith(fontWeight: FontWeight.bold),
+                            Align(
+                              child: UserAvatar.fromConversation(
+                                size: 30,
+                                conversation: model.conversation,
                               ),
                             ),
-                            if (model.conversation?.onlineStatus != null &&
-                                    model.conversation.onlineStatus ==
-                                        OnlineStatus.online ||
-                                model.conversation?.lastOnline != null)
-                              SkeletonItem(
-                                child: Text(
-                                  model.conversation.onlineStatus ==
-                                          OnlineStatus.online
-                                      ? 'Đang online'
-                                      : Strings.messageScreen.lastOnlineAt(
-                                          TimeAgo.format(
-                                              model.conversation.lastOnline)),
-                                  style: context.textTheme.caption,
-                                ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SkeletonItem(
+                                    child: Text(
+                                      model.conversation?.name ?? 'Loading',
+                                      style: context.textTheme.bodyText1
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  if (model.conversation?.onlineStatus !=
+                                              null &&
+                                          model.conversation.onlineStatus ==
+                                              OnlineStatus.online ||
+                                      model.conversation?.lastOnline != null)
+                                    SkeletonItem(
+                                      child: Text(
+                                        model.conversation.onlineStatus ==
+                                                OnlineStatus.online
+                                            ? 'Đang online'
+                                            : Strings.messageScreen
+                                                .lastOnlineAt(TimeAgo.format(
+                                                    model.conversation
+                                                        .lastOnline)),
+                                        style: context.textTheme.caption,
+                                      ),
+                                    ),
+                                ],
                               ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            }),
+            body: MessagesScreenWidget(model: model),
+          );
+        });
+  }
+}
+
+class MessagesScreenWidget extends StatelessWidget {
+  const MessagesScreenWidget({
+    Key key,
+    @required this.model,
+  }) : super(key: key);
+
+  final MessagesScreenModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    return DashChat(
+      onLoadEarlier: () {
+        model.controller.loadmore();
+      },
+      inverted: true,
+      dateFormat: DateFormat('dd/MM/yyyy'),
+      timeFormat: DateFormat('HH:mm'),
+      user:
+          Momentum.controller<CurrentUserController>(context).model.currentUser,
+      messages: <Message>[
+        ...model.isLoading ? [] : model.conversation?.messages?.data ?? [],
+        ...!(model.conversation?.messages?.isLastPage ?? false) ||
+                model.isLoading
+            ? List.generate(model.isLoading ? 10 : 2, (_) => null)
+            : [],
+      ].toList(),
+      onSend: (Message message) {
+        model.controller.sendMessage(message: message.message);
+      },
+      inputContainerStyle: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: context.colorScheme.onSurface),
+        ),
       ),
-      body: MomentumBuilder(
-          controllers: [MessagesScreenController],
-          builder: (context, snapshot) {
-            final model = snapshot<MessagesScreenModel>();
-            return DashChat(
-              onLoadEarlier: () {
-                model.controller.loadmore();
-              },
-              inverted: true,
-              dateFormat: DateFormat('dd/MM/yyyy'),
-              timeFormat: DateFormat('HH:mm'),
-              user: Momentum.controller<CurrentUserController>(context)
-                  .model
-                  .currentUser,
-              messages: <Message>[
-                ...model.isLoading
-                    ? []
-                    : model.conversation?.messages?.data ?? [],
-                ...!(model.conversation?.messages?.isLastPage ?? false) ||
-                        model.isLoading
-                    ? List.generate(model.isLoading ? 10 : 2, (_) => null)
-                    : [],
-              ].toList(),
-              onSend: (Message message) {
-                controller?.sendMessage(message: message.message);
-              },
-              inputContainerStyle: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: context.colorScheme.onSurface),
-                ),
-              ),
-              inputDecoration: InputDecoration(
-                hintText: Strings.messageScreen.hint,
-              ),
-              trailing: [
-                IconButton(
-                    icon: Icon(Icons.camera_alt_outlined),
-                    onPressed: model.isSendingMessage
-                        ? null
-                        : () => pickImage(context, (images) {
-                              controller?.sendMessage(attachments: images);
-                            }))
-              ],
-              sendButtonBuilder: (onSend) {
-                return IconButton(
-                    icon: model.isSendingMessage
-                        ? LoadingIndicator(size: 20)
-                        : Icon(Icons.send),
-                    onPressed: model.isSendingMessage ? null : onSend);
-              },
-            );
-          }),
+      inputDecoration: InputDecoration(
+        hintText: Strings.messageScreen.hint,
+      ),
+      trailing: [
+        IconButton(
+            icon: Icon(Icons.camera_alt_outlined),
+            onPressed: model.isSendingMessage
+                ? null
+                : () => pickImage(context, (images) {
+                      model.controller.sendMessage(attachments: images);
+                    }))
+      ],
+      sendButtonBuilder: (onSend) {
+        return IconButton(
+            icon: model.isSendingMessage
+                ? LoadingIndicator(size: 20)
+                : Icon(Icons.send),
+            onPressed: model.isSendingMessage ? null : onSend);
+      },
     );
   }
 }

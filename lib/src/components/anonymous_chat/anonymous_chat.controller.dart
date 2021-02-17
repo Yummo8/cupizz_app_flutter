@@ -35,10 +35,11 @@ class AnonymousChatController extends MomentumController<AnonymousChatModel> {
     });
   }
 
-  Future loadMoreMessage() async {
-    if (model.conversation == null) return;
-    await Get.find<MessageService>().getMessages(
-        key: ConversationKey(conversationId: model.conversation.id));
+  Future deleteAnonymousChat() async {
+    await trycatch(() async {
+      await Get.find<MessageService>().deleteAnonymousChat();
+      model.deleteConversation();
+    });
   }
 
   Future _getMyAnonymousChat() async {

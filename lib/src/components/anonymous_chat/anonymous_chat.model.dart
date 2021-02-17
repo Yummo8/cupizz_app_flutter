@@ -24,6 +24,14 @@ class AnonymousChatModel extends MomentumModel<AnonymousChatController> {
     ).updateMomentum();
   }
 
+  void deleteConversation() {
+    AnonymousChatModel(
+      controller,
+      conversation: null,
+      isFinding: isFinding,
+    ).updateMomentum();
+  }
+
   @override
   MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
     return AnonymousChatModel(

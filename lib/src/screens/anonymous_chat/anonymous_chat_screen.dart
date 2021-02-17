@@ -16,13 +16,36 @@ class AnonymousChatScreen extends StatelessWidget {
                       CupertinoIcons.ellipsis,
                       color: context.colorScheme.onBackground,
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      Menu([
+                        MenuItem(
+                          title: 'Ngưng trò chuyện',
+                          onPressed: () {
+                            model.controller.deleteAnonymousChat();
+                            Navigator.pop(context);
+                          },
+                        )
+                      ]).show(context);
+                    }),
               ],
             ),
             body: model.isFinding
                 ? _Loading()
                 : model.conversation != null
-                    ? _Chat()
+                    ? MomentumBuilder(
+                        controllers: [MessagesScreenController],
+                        builder: (context, snapshot) {
+                          final messagesModel = snapshot<MessagesScreenModel>();
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            final args = MessagesScreenParams(
+                                conversation: model.conversation);
+                            if (args != null) {
+                              messagesModel.controller.loadData(args);
+                            }
+                          });
+                          return MessagesScreenWidget(model: messagesModel);
+                        })
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

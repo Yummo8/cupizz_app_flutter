@@ -104,11 +104,11 @@ class _MessageListViewState extends State<MessageListView> {
       return true;
     }
     if (!widget.inverted && index + 1 < widget.messages.length) {
-      return widget.messages[index + 1].sender.id !=
-          widget.messages[index].sender.id;
+      return widget.messages[index + 1].sender?.id !=
+          widget.messages[index].sender?.id;
     } else if (widget.inverted && index - 1 >= 0) {
-      return widget.messages[index - 1].sender.id !=
-          widget.messages[index].sender.id;
+      return widget.messages[index - 1].sender?.id !=
+          widget.messages[index].sender?.id;
     }
     return true;
   }
@@ -139,7 +139,7 @@ class _MessageListViewState extends State<MessageListView> {
                     var first = false;
                     var last = false;
                     final isUser = widget.messages[i] != null
-                        ? widget.messages[i].sender.id == widget.user.id
+                        ? widget.messages[i].sender?.id == widget.user.id
                         : Random().nextInt(2) == 1;
                     final showAvatar = widget.messages[i] != null
                         ? shouldShowAvatar(i)
@@ -186,7 +186,7 @@ class _MessageListViewState extends State<MessageListView> {
                                     opacity: (widget.showAvatarForEverMessage ||
                                                 showAvatar) &&
                                             (widget.messages[i] == null ||
-                                                widget.messages[i].sender.id !=
+                                                widget.messages[i].sender?.id !=
                                                     widget.user.id)
                                         ? 1
                                         : 0,
