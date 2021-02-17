@@ -4,19 +4,13 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
   MessagesScreenModel(
     MessagesScreenController controller, {
     this.conversation,
-    this.messages = const [],
     this.scrollOffset = 0,
-    this.currentPage = 1,
-    this.isLastPage = false,
     this.isLoading = false,
     this.isSendingMessage = false,
   }) : super(controller);
 
   final Conversation conversation;
-  final List<Message> messages;
   final double scrollOffset;
-  final int currentPage;
-  final bool isLastPage;
 
   final bool isLoading;
   final bool isSendingMessage;
@@ -24,21 +18,14 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
   @override
   void update({
     Conversation conversation,
-    List<Message> messages,
     double scrollOffset,
-    int currentPage,
-    int unreadMessageCount,
-    bool isLastPage,
     bool isLoading,
     bool isSendingMessage,
   }) {
     MessagesScreenModel(
       controller,
       conversation: conversation ?? this.conversation,
-      messages: messages ?? this.messages,
       scrollOffset: scrollOffset ?? this.scrollOffset,
-      currentPage: currentPage ?? this.currentPage,
-      isLastPage: isLastPage ?? this.isLastPage,
       isLoading: isLoading ?? this.isLoading,
       isSendingMessage: isSendingMessage ?? this.isSendingMessage,
     ).updateMomentum();
@@ -51,21 +38,13 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
       conversation: json['conversation'] != null
           ? Mapper.fromJson(json['conversation']).toObject<Conversation>()
           : null,
-      messages: ((json['messages'] ?? []) as List)
-          .map((e) => Mapper.fromJson(e).toObject<Message>())
-          .toList(),
       scrollOffset: json['scrollOffset'],
-      currentPage: json['currentPage'],
-      isLastPage: json['isLastPage'],
     );
   }
 
   @override
   Map<String, dynamic> toJson() => {
         'conversation': conversation?.toJson(),
-        'messages': messages.map((e) => e.toJson()).toList(),
         'scrollOffset': scrollOffset,
-        'currentPage': currentPage,
-        'isLastPage': isLastPage,
       };
 }

@@ -90,19 +90,20 @@ extension GraphqlQuery on GraphqlService {
 
   Future messagesV2Query(
     ConversationKey key, [
-    int page = 1,
+    String cursor,
   ]) async {
     final queryString = '''{ 
-        messages(
+        messagesV2(
           ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
-          page: $page
+          cursor: "$cursor"
+          ${cursor.isExistAndNotEmpty ? 'skip: 1' : ''}
         ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       documentNode: gql(queryString),
     ));
-    return result.data['messages'];
+    return result.data['messagesV2'];
   }
 
   Future conversationQuery(ConversationKey key) async {

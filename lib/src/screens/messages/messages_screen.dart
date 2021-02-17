@@ -14,8 +14,10 @@ part 'components/messages_screen.model.dart';
 
 class MessagesScreenParams extends RouterParam {
   final ConversationKey conversationKey;
+  final Conversation conversation;
 
-  MessagesScreenParams(this.conversationKey);
+  MessagesScreenParams({this.conversationKey, this.conversation})
+      : assert(conversation != null || conversationKey != null);
 }
 
 class MessagesScreen extends StatefulWidget {
@@ -38,7 +40,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final params = Get.arguments as MessagesScreenParams;
       if (params != null) {
-        controller.loadData(params?.conversationKey);
+        controller.loadData(params);
       }
     });
     return PrimaryScaffold(
@@ -125,8 +127,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                   .model
                   .currentUser,
               messages: <Message>[
-                ...model.isLoading ? [] : model.messages,
-                ...!model.isLastPage || model.isLoading
+                ...model.isLoading
+                    ? []
+                    : model.conversation?.messages?.data ?? [],
+                ...!(model.conversation?.messages?.isLastPage ?? false) ||
+                        model.isLoading
                     ? List.generate(model.isLoading ? 10 : 2, (_) => null)
                     : [],
               ].toList(),

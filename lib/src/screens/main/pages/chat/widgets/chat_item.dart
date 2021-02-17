@@ -32,8 +32,8 @@ class _ChatItemState extends State<ChatItem> {
                   widget.onPressed?.call();
                 } else {
                   Get.toNamed(Routes.messages,
-                      arguments: MessagesScreenParams(ConversationKey(
-                          conversationId: widget.conversation.id)));
+                      arguments: MessagesScreenParams(
+                          conversation: widget.conversation));
                 }
               },
         child: Container(

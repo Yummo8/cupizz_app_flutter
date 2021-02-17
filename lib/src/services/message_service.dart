@@ -23,10 +23,10 @@ class MessageService extends GetxService {
 
   Future<WithIsLastPageOutput<Message>> getMessagesV2({
     @required ConversationKey key,
-    int page,
+    String cursor,
   }) async {
     final graphql = Get.find<GraphqlService>();
-    final data = await graphql.messagesQuery(key, page);
+    final data = await graphql.messagesV2Query(key, cursor);
     final result = WithIsLastPageOutput<Message>.fromJson(data);
     return result;
   }

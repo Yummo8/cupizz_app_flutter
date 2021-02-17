@@ -90,7 +90,7 @@ class RecommendableUsersController
             onPressed: () {
               Get.toNamed(Routes.messages,
                   arguments: MessagesScreenParams(
-                      ConversationKey(targetUserId: user.id)));
+                      conversationKey: ConversationKey(targetUserId: user.id)));
             }),
       ],
       close: popup.close,

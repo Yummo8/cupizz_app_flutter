@@ -217,8 +217,8 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       onPressed = () {
         Get.toNamed(
           Routes.messages,
-          arguments:
-              MessagesScreenParams(ConversationKey(targetUserId: user.id)),
+          arguments: MessagesScreenParams(
+              conversationKey: ConversationKey(targetUserId: user.id)),
         );
       };
     } else if (user.friendType == FriendType.received) {

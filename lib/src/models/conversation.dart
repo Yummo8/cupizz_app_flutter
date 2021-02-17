@@ -7,7 +7,7 @@ class Conversation extends BaseModel {
   OnlineStatus _onlineStatus;
   DateTime _lastOnline;
   int _unreadMessages;
-  List<Message> _messages;
+  WithIsLastPageOutput<Message> _messages;
 
   List<FileModel> get images => _images;
   String get name => _name;
@@ -15,7 +15,7 @@ class Conversation extends BaseModel {
   OnlineStatus get onlineStatus => _onlineStatus;
   DateTime get lastOnline => _lastOnline;
   int get unreadMessageCount => _unreadMessages;
-  List<Message> get messages => _messages;
+  WithIsLastPageOutput<Message> get messages => _messages;
 
   Conversation({
     String id,
@@ -24,7 +24,7 @@ class Conversation extends BaseModel {
     Message newestMessage,
     OnlineStatus onlineStatus,
     int unreadMessageCount,
-    List<Message> messages,
+    WithIsLastPageOutput<Message> messages,
   }) : super(id: id);
 
   @override
@@ -40,7 +40,8 @@ class Conversation extends BaseModel {
         DateTransform());
     map('personalData.unreadMessageCount', _unreadMessages,
         (v) => _unreadMessages = v);
-    map<Message>('messages', messages, (v) => _messages = v);
+    map('messages', messages,
+        (v) => _messages = WithIsLastPageOutput.fromJson(v));
   }
 
   static String get graphqlQuery => '''{ 
@@ -54,6 +55,10 @@ class Conversation extends BaseModel {
     }
     personalData {
       unreadMessageCount
+    }
+    messages {
+      data ${Message.graphqlQuery(includeConversation: false)}
+      isLastPage
     }
   }''';
 }

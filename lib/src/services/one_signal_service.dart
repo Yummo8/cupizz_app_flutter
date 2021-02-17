@@ -47,7 +47,8 @@ class OneSignalService extends GetxService {
         } else if (type == NotificationType.newMessage) {
           Get.toNamed(Routes.messages,
               arguments: MessagesScreenParams(
-                  ConversationKey(conversationId: refConversationId)));
+                  conversationKey:
+                      ConversationKey(conversationId: refConversationId)));
         } else {}
 
         debugPrint(

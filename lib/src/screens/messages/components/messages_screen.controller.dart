@@ -19,17 +19,15 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
     return MessagesScreenModel(this);
   }
 
-  @override
-  Future bootstrapAsync() async {
-    if (model.conversation?.id != null) {
-      await loadData(ConversationKey(conversationId: model.conversation?.id));
-    }
-  }
-
-  Future loadData(ConversationKey key) async {
+  Future loadData(MessagesScreenParams params) async {
     model.update(isLoading: true);
-    await _reload(key: key);
-    subscribe(key);
+
+    if (params.conversation != null) {
+      model.update(conversation: params.conversation);
+    } else {
+      await _reload(key: params.conversationKey);
+    }
+    subscribe(ConversationKey(conversationId: model.conversation.id));
     model.update(isLoading: false);
   }
 
@@ -44,8 +42,8 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   Future refresh() => _reload();
 
   void onNewMessage(Message message) {
-    model.messages.insert(0, message);
-    model.update(messages: model.messages);
+    model.conversation.messages.data.insert(0, message);
+    model.update(conversation: model.conversation);
   }
 
   void sendMessage({String message, List<File> attachments}) async {
@@ -64,20 +62,15 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   }
 
   Future loadmore() async {
-    if (model.isLastPage) return;
+    if (model.conversation.messages.isLastPage) return;
     try {
-      final data = await Get.find<MessageService>().getMessages(
+      final data = await Get.find<MessageService>().getMessagesV2(
         key: ConversationKey(conversationId: model.conversation?.id),
-        page: model.currentPage + 1,
+        cursor: model.conversation.messages.last?.id,
       );
-      final messages = data.data;
-      model.messages.addAll(messages);
+      model.conversation.messages.add(data);
 
-      model.update(
-        messages: model.messages,
-        currentPage: model.currentPage + 1,
-        isLastPage: data.isLastPage,
-      );
+      model.update(conversation: model.conversation);
     } catch (e) {
       sendEvent(ChatPageEvent(
           action: ChatPageEventAction.error, message: e.toString()));
@@ -91,22 +84,9 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
       }
       final messageService = Get.find<MessageService>();
 
-      final futureRes = await Future.wait([
-        messageService.getMessages(
-          key: key ?? ConversationKey(conversationId: model.conversation?.id),
-          page: 1,
-        ),
-        ...key != null ? [messageService.getConversation(key: key)] : []
-      ]);
+      final conversation = await messageService.getConversation(key: key);
 
-      final messagesData = futureRes[0];
-
-      model.update(
-        conversation: futureRes.length > 1 ? futureRes[1] : null,
-        messages: messagesData.data,
-        currentPage: 1,
-        isLastPage: messagesData.isLastPage,
-      );
+      model.update(conversation: conversation);
     } catch (e) {
       sendEvent(ChatPageEvent(
           action: ChatPageEventAction.error, message: e.toString()));
