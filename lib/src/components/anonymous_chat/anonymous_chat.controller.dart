@@ -12,6 +12,12 @@ class AnonymousChatController extends MomentumController<AnonymousChatModel> {
     return AnonymousChatModel(this);
   }
 
+  @override
+  Future<void> bootstrapAsync() async {
+    await _getMyAnonymousChat();
+    return super.bootstrapAsync();
+  }
+
   void findAnonymousChat() {
     if (model.conversation != null) {
       Fluttertoast.showToast(
@@ -29,16 +35,14 @@ class AnonymousChatController extends MomentumController<AnonymousChatModel> {
     });
   }
 
-  Future loadMessage() async {
+  Future loadMoreMessage() async {
     if (model.conversation == null) return;
     await Get.find<MessageService>().getMessages(
         key: ConversationKey(conversationId: model.conversation.id));
   }
 
-  Future _loadMessage(String cursorId) async {
-    await trycatch(() async {
-      await Get.find<MessageService>().getMessages(
-          key: ConversationKey(conversationId: model.conversation.id));
-    });
+  Future _getMyAnonymousChat() async {
+    final conversation = await Get.find<MessageService>().getMyAnonymousChat();
+    model.update(conversation: conversation);
   }
 }

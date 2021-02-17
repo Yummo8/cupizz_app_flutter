@@ -21,11 +21,28 @@ class MessageService extends GetxService {
     return result;
   }
 
+  Future<WithIsLastPageOutput<Message>> getMessagesV2({
+    @required ConversationKey key,
+    int page,
+  }) async {
+    final graphql = Get.find<GraphqlService>();
+    final data = await graphql.messagesQuery(key, page);
+    final result = WithIsLastPageOutput<Message>.fromJson(data);
+    return result;
+  }
+
   Future<Conversation> getConversation({
     @required ConversationKey key,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.conversationQuery(key);
+    final result = Mapper.fromJson(data).toObject<Conversation>();
+    return result;
+  }
+
+  Future<Conversation> getMyAnonymousChat() async {
+    final graphql = Get.find<GraphqlService>();
+    final data = await graphql.myAnonymousChatQuery();
     final result = Mapper.fromJson(data).toObject<Conversation>();
     return result;
   }

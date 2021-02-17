@@ -88,6 +88,23 @@ extension GraphqlQuery on GraphqlService {
     return result.data['messages'];
   }
 
+  Future messagesV2Query(
+    ConversationKey key, [
+    int page = 1,
+  ]) async {
+    final queryString = '''{ 
+        messages(
+          ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
+          page: $page
+        ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
+      }''';
+    final result = await query(QueryOptions(
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
+      documentNode: gql(queryString),
+    ));
+    return result.data['messages'];
+  }
+
   Future conversationQuery(ConversationKey key) async {
     final queryString = '''{ 
         conversation(
@@ -241,5 +258,16 @@ extension GraphqlQuery on GraphqlService {
     );
     final post = result.data['post'];
     return post == null ? null : post['comments'];
+  }
+
+  Future myAnonymousChatQuery() async {
+    final queryString = '''{ myAnonymousChat ${Conversation.graphqlQuery} }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['myAnonymousChat'];
   }
 }
