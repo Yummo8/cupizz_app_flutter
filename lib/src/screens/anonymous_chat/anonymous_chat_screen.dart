@@ -11,22 +11,33 @@ class AnonymousChatScreen extends StatelessWidget {
             appBar: BackAppBar(
               title: 'Trò chuyện ẩn danh',
               actions: [
-                IconButton(
-                    icon: Icon(
-                      CupertinoIcons.ellipsis,
-                      color: context.colorScheme.onBackground,
-                    ),
-                    onPressed: () {
-                      Menu([
-                        MenuItem(
-                          title: 'Ngưng trò chuyện',
-                          onPressed: () {
-                            model.controller.deleteAnonymousChat();
-                            Navigator.pop(context);
-                          },
-                        )
-                      ]).show(context);
-                    }),
+                if (model.conversation != null || model.isFinding)
+                  IconButton(
+                      icon: Icon(
+                        CupertinoIcons.ellipsis,
+                        color: context.colorScheme.onBackground,
+                      ),
+                      onPressed: () {
+                        Menu([
+                          if (model.conversation != null) ...[
+                            MenuItem(
+                              title: 'Xin info',
+                              onPressed: () {
+                                Fluttertoast.showToast(
+                                    msg: Strings.common.inDeveloping);
+                              },
+                            ),
+                            MenuItem(
+                              title: 'Ngưng trò chuyện',
+                              isDestructiveAction: true,
+                              onPressed: () {
+                                model.controller.deleteAnonymousChat();
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ]).show(context);
+                      }),
               ],
             ),
             body: model.isFinding
@@ -82,17 +93,6 @@ class AnonymousChatScreen extends StatelessWidget {
                       ),
           );
         });
-  }
-}
-
-class _Chat extends StatelessWidget {
-  const _Chat({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 

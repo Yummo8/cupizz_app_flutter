@@ -16,6 +16,7 @@ class WithIsLastPageOutput<T extends Mappable> {
         _isLastPage = isLastPage;
 
   factory WithIsLastPageOutput.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return WithIsLastPageOutput(
       data: (json['data'] as List)
           .map((e) => Mapper.fromJson(e).toObject<T>())

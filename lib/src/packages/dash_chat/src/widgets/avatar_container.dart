@@ -29,7 +29,9 @@ class AvatarContainer extends StatelessWidget {
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
         child: avatarBuilder != null && user != null
             ? avatarBuilder(user)
-            : UserAvatar.fromChatUser(user: user),
+            : user != null
+                ? UserAvatar.fromChatUser(user: user)
+                : UserAvatar(showOnline: false),
       ),
     );
   }

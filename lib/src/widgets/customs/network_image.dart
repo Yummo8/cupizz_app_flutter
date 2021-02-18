@@ -21,24 +21,26 @@ class CustomNetworkImage extends StatelessWidget {
       borderRadius: isAvatar && borderRadius == null
           ? BorderRadius.circular(90)
           : borderRadius ?? BorderRadius.circular(0),
-      child: CachedNetworkImage(
-        imageUrl: url ?? '',
-        fit: fit,
-        errorWidget: (context, url, error) {
-          if (isAvatar) {
-            return Image.asset(Assets.images.defaultAvatar, fit: fit);
-          }
-          return Container(
-            color: context.colorScheme.surface,
-          );
-        },
-        progressIndicatorBuilder: (ctx, url, process) {
-          return Skeleton(
-              child: Container(
-            color: context.colorScheme.background,
-          ));
-        },
-      ),
+      child: url == ''
+          ? Image.asset(Assets.images.defaultAvatar, fit: fit)
+          : CachedNetworkImage(
+              imageUrl: url ?? '',
+              fit: fit,
+              errorWidget: (context, url, error) {
+                if (isAvatar) {
+                  return Image.asset(Assets.images.defaultAvatar, fit: fit);
+                }
+                return Container(
+                  color: context.colorScheme.surface,
+                );
+              },
+              progressIndicatorBuilder: (ctx, url, process) {
+                return Skeleton(
+                    child: Container(
+                  color: context.colorScheme.background,
+                ));
+              },
+            ),
     );
   }
 }

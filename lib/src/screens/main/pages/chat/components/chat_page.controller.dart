@@ -53,14 +53,17 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     final oldConversationIndex =
         model.conversations.indexWhere((e) => e.id == newConversation.id);
 
-    if (model.conversations[oldConversationIndex].newestMessage?.id ==
-        newConversation?.newestMessage?.id) {
-      model.conversations[oldConversationIndex] = newConversation;
-      model.update(conversations: model.conversations);
+    if (oldConversationIndex >= 0) {
+      if (model.conversations[oldConversationIndex].newestMessage?.id ==
+          newConversation?.newestMessage?.id) {
+        model.conversations[oldConversationIndex] = newConversation;
+      } else {
+        model.conversations
+          ..removeAt(oldConversationIndex)
+          ..insert(0, newConversation);
+      }
     } else {
-      model.conversations
-        ..removeAt(oldConversationIndex)
-        ..insert(0, newConversation);
+      model.conversations.insert(0, newConversation);
     }
 
     model.update(conversations: model.conversations);

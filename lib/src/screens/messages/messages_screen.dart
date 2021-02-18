@@ -48,7 +48,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
         builder: (context, snapshot) {
           final model = snapshot<MessagesScreenModel>();
           return PrimaryScaffold(
-            appBar: model.conversation.isAnonymousChat
+            appBar: model.conversation == null ||
+                    model.conversation.isAnonymousChat
                 ? null
                 : AppBar(
                     automaticallyImplyLeading: true,
@@ -134,9 +135,6 @@ class MessagesScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashChat(
-      onLoadEarlier: () {
-        model.controller.loadmore();
-      },
       inverted: true,
       dateFormat: DateFormat('dd/MM/yyyy'),
       timeFormat: DateFormat('HH:mm'),
@@ -149,12 +147,9 @@ class MessagesScreenWidget extends StatelessWidget {
             ? List.generate(model.isLoading ? 10 : 2, (_) => null)
             : [],
       ].toList(),
-      onSend: (Message message) {
-        model.controller.sendMessage(message: message.message);
-      },
       inputContainerStyle: BoxDecoration(
         border: Border(
-          top: BorderSide(color: context.colorScheme.onSurface),
+          top: BorderSide(color: context.colorScheme.surface),
         ),
       ),
       inputDecoration: InputDecoration(
@@ -162,7 +157,7 @@ class MessagesScreenWidget extends StatelessWidget {
       ),
       trailing: [
         IconButton(
-            icon: Icon(Icons.camera_alt_outlined),
+            icon: Icon(CupertinoIcons.camera),
             onPressed: model.isSendingMessage
                 ? null
                 : () => pickImage(context, (images) {
@@ -173,8 +168,19 @@ class MessagesScreenWidget extends StatelessWidget {
         return IconButton(
             icon: model.isSendingMessage
                 ? LoadingIndicator(size: 20)
-                : Icon(Icons.send),
+                : Icon(CupertinoIcons.paperplane),
             onPressed: model.isSendingMessage ? null : onSend);
+      },
+      onSend: (Message message) {
+        model.controller.sendMessage(message: message.message);
+      },
+      onLoadEarlier: () {
+        model.controller.loadmore();
+      },
+      onPressAvatar: (user) {
+        if (user != null) {
+          Get.toNamed(Routes.user, arguments: UserScreenParams(user: user));
+        }
       },
     );
   }
