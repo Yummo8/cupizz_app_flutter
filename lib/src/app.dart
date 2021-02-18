@@ -49,7 +49,7 @@ Momentum momentum({bool isTesting = false}) {
       SystemController(),
       PostPageController()..config(lazy: true),
       CreatePostController()..config(lazy: true),
-      AnonymousChatController()..config(lazy: false),
+      AnonymousChatController()..config(lazy: true),
     ],
     appLoader: AppLoader(),
     child: _MyApp(),

@@ -38,7 +38,7 @@ class LoadEarlierWidget extends StatelessWidget {
               )
             ]),
         child: Text(
-          'Load Earlier Messages',
+          'Xem thêm tin nhắn',
           style: TextStyle(
             color: Theme.of(context).primaryColor,
           ),

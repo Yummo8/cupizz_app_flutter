@@ -102,10 +102,12 @@ class _LogoutHandler {
   static Future logout() async {
     if (!_isLoggingOut) {
       _isLoggingOut = true;
-      final controller = Momentum.controller<AuthController>(
-          AppConfig.navigatorKey.currentContext);
-      if (await controller.isAuthenticated) {
-        await trycatch(controller.logout);
+      if (AppConfig.navigatorKey.currentContext != null) {
+        final controller = Momentum.controller<AuthController>(
+            AppConfig.navigatorKey.currentContext);
+        if (await controller.isAuthenticated) {
+          await trycatch(controller.logout);
+        }
       }
       _isLoggingOut = false;
     }

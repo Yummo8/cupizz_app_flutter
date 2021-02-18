@@ -2,9 +2,9 @@ part of dash_chat;
 
 class AvatarContainer extends StatelessWidget {
   final ChatUser user;
-  final Function(SimpleUser user) onPress;
-  final Function(SimpleUser user) onLongPress;
-  final Widget Function(SimpleUser user) avatarBuilder;
+  final void Function(ChatUser user) onPress;
+  final void Function(ChatUser user) onLongPress;
+  final Widget Function(ChatUser user) avatarBuilder;
   final Size size;
   final double avatarMaxSize;
 
@@ -25,7 +25,18 @@ class AvatarContainer extends StatelessWidget {
     return SizedBox.fromSize(
       size: size,
       child: GestureDetector(
-        onTap: () => onPress != null ? onPress(user) : null,
+        onTap: () {
+          if (onPress != null) {
+            onPress(user);
+          } else {
+            if (user != null && !user.isCurrentUser) {
+              Get.toNamed(
+                Routes.user,
+                arguments: UserScreenParams(user: user),
+              );
+            }
+          }
+        },
         onLongPress: () => onLongPress != null ? onLongPress(user) : null,
         child: avatarBuilder != null && user != null
             ? avatarBuilder(user)

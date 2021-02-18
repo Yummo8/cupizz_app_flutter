@@ -19,6 +19,15 @@ class AnonymousChatScreen extends StatelessWidget {
                       ),
                       onPressed: () {
                         Menu([
+                          if (model.isFinding) ...[
+                            MenuItem(
+                              title: 'Dừng tìm kiếm',
+                              onPressed: () {
+                                model.controller.cancelFinding();
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
                           if (model.conversation != null) ...[
                             MenuItem(
                               title: 'Xin info',

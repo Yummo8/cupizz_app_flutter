@@ -18,13 +18,12 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
   Future loadData({String userId, ChatUser chatUser}) async {
     if (chatUser == null && userId == null) return;
 
-    if (chatUser != null) {
-      model.update(user: chatUser);
-    }
     if (chatUser is! SimpleUser && chatUser is! User) {
-      final user =
-          await Get.find<UserService>().getUser(id: chatUser?.id ?? userId);
-      model.update(user: user);
+      await _loading(() async {
+        final user =
+            await Get.find<UserService>().getUser(id: chatUser?.id ?? userId);
+        model.update(user: user);
+      });
     }
     unawaited(
         Get.find<UserService>().readFriendRequest(model.user.id).then((value) {
@@ -46,6 +45,23 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
       rethrow;
     } finally {
       model.update(isLoading: false);
+    }
+  }
+
+  Future _loading(Function func,
+      {bool throwError = false, bool enableLoading = true}) async {
+    if (enableLoading) {
+      model.update(isLoading: true);
+    }
+    try {
+      await func();
+    } catch (e) {
+      unawaited(Fluttertoast.showToast(msg: e.toString()));
+      if (throwError) rethrow;
+    } finally {
+      if (enableLoading) {
+        model.update(isLoading: false);
+      }
     }
   }
 }

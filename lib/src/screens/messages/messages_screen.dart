@@ -136,25 +136,19 @@ class MessagesScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DashChat(
       inverted: true,
+      shouldShowLoadEarlier:
+          !(model.conversation?.messages?.isLastPage ?? false),
       dateFormat: DateFormat('dd/MM/yyyy'),
       timeFormat: DateFormat('HH:mm'),
       user:
           Momentum.controller<CurrentUserController>(context).model.currentUser,
-      messages: <Message>[
-        ...model.isLoading ? [] : model.conversation?.messages?.data ?? [],
-        ...!(model.conversation?.messages?.isLastPage ?? false) ||
-                model.isLoading
-            ? List.generate(model.isLoading ? 10 : 2, (_) => null)
-            : [],
-      ].toList(),
+      messages: model.isLoading ? [] : model.conversation?.messages?.data ?? [],
       inputContainerStyle: BoxDecoration(
         border: Border(
           top: BorderSide(color: context.colorScheme.surface),
         ),
       ),
-      inputDecoration: InputDecoration(
-        hintText: Strings.messageScreen.hint,
-      ),
+      inputDecoration: InputDecoration(hintText: Strings.messageScreen.hint),
       trailing: [
         IconButton(
             icon: Icon(CupertinoIcons.camera),
@@ -176,11 +170,6 @@ class MessagesScreenWidget extends StatelessWidget {
       },
       onLoadEarlier: () {
         model.controller.loadmore();
-      },
-      onPressAvatar: (user) {
-        if (user != null) {
-          Get.toNamed(Routes.user, arguments: UserScreenParams(user: user));
-        }
       },
     );
   }

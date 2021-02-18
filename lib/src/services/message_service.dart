@@ -43,6 +43,7 @@ class MessageService extends GetxService {
   Future<Conversation> getMyAnonymousChat() async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.myAnonymousChatQuery();
+    if (data == null) return null;
     final result = Mapper.fromJson(data).toObject<Conversation>();
     return result;
   }

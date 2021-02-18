@@ -35,6 +35,11 @@ class AnonymousChatController extends MomentumController<AnonymousChatModel> {
     });
   }
 
+  void cancelFinding() {
+    findChatSupscription.cancel();
+    model.update(isFinding: false);
+  }
+
   Future deleteAnonymousChat() async {
     await trycatch(() async {
       await Get.find<MessageService>().deleteAnonymousChat();

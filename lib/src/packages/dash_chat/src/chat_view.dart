@@ -23,10 +23,10 @@ class DashChat extends StatefulWidget {
   final DateFormat dateFormat;
   final DateFormat timeFormat;
   final bool showUserAvatar;
-  final Widget Function(SimpleUser) avatarBuilder;
+  final Widget Function(ChatUser) avatarBuilder;
   final bool showAvatarForEveryMessage;
-  final Function(SimpleUser) onPressAvatar;
-  final Function(SimpleUser) onLongPressAvatar;
+  final void Function(ChatUser) onPressAvatar;
+  final void Function(ChatUser) onLongPressAvatar;
   final Function(Message) onLongPressMessage;
   final bool inverted;
   final Widget Function(Message) messageBuilder;

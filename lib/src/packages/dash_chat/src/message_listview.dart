@@ -7,12 +7,12 @@ class MessageListView extends StatefulWidget {
   final DateFormat dateFormat;
   final DateFormat timeFormat;
   final bool showAvatarForEverMessage;
-  final Function(SimpleUser user) onPressAvatar;
-  final Function(SimpleUser user) onLongPressAvatar;
+  final void Function(ChatUser user) onPressAvatar;
+  final void Function(ChatUser user) onLongPressAvatar;
   final bool renderAvatarOnTop;
   final Function(Message) onLongPressMessage;
   final bool inverted;
-  final Widget Function(SimpleUser user) avatarBuilder;
+  final Widget Function(ChatUser user) avatarBuilder;
   final Widget Function(Message) messageBuilder;
   final Widget Function(String, [Message]) messageTextBuilder;
   final Widget Function(String, [Message]) messageImageBuilder;
