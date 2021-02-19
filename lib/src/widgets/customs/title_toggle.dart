@@ -40,7 +40,7 @@ class TitleToggle extends StatelessWidget {
                             ? context.colorScheme.primary
                             : context.colorScheme.onBackground,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                     ),
                   ),
                   Transform.translate(

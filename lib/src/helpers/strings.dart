@@ -14,6 +14,8 @@ class Strings {
 
 class _Common {
   final inDeveloping = 'Tính năng đang phát triển';
+  final saved = 'Đã lưu';
+  final success = 'Thành công';
   final email = 'Email';
   final password = 'Mật khẩu';
   final oldPassword = 'Mật khẩu cũ';

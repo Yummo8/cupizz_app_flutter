@@ -247,10 +247,13 @@ class CurrentUserController extends MomentumController<CurrentUserModel> {
     updatePushNotiDebouncer.debounce(() async {
       try {
         final service = Get.find<UserService>();
-        model.update(
-            currentUser: await service.updateSetting(
+        await service.updateSetting(
           pushNotiSetting: currentUser.pushNotiSetting,
-        ));
+        );
+        Get.snackbar(
+          Strings.common.success,
+          'Đã lưu cài đặt thành công',
+        );
       } catch (e) {
         backward();
         await Fluttertoast.showToast(msg: e.toString());

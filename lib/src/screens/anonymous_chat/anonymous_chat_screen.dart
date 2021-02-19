@@ -49,6 +49,31 @@ class AnonymousChatScreen extends StatelessWidget {
                       }),
               ],
             ),
+            bottomNavigationBar: MomentumBuilder(
+                controllers: [CurrentUserController],
+                builder: (context, snapshot) {
+                  final model = snapshot<CurrentUserModel>();
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Transform.scale(
+                      scale: 0.8,
+                      child: CheckboxListTile(
+                          title: Text(NotificationType
+                                  .otherFindingAnonymousChat.title ??
+                              ''),
+                          value: model.currentUser?.pushNotiSetting?.contains(
+                                  NotificationType.otherFindingAnonymousChat) ??
+                              false,
+                          onChanged: (value) {
+                            if (value != null) {
+                              model.controller.updatePushNoti(
+                                  NotificationType.otherFindingAnonymousChat,
+                                  value);
+                            }
+                          }),
+                    ),
+                  );
+                }),
             body: model.isFinding
                 ? _Loading()
                 : model.conversation != null

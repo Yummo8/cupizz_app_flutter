@@ -119,22 +119,40 @@ class SocialProviderType extends Enumerable<String> {
 class NotificationType extends Enumerable<String> {
   @override
   final String rawValue;
-  final String displayValue;
+  final String shortTitle;
+  final String title;
 
-  NotificationType({@required this.rawValue, String displayValue})
-      : displayValue = displayValue ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue;
+  NotificationType({@required this.rawValue, String shortTitle, String title})
+      : shortTitle = shortTitle ??
+            getAll().firstWhere((e) => e.rawValue == rawValue).shortTitle ??
+            rawValue,
+        title =
+            title ?? getAll().firstWhere((e) => e.rawValue == rawValue).title;
 
   static final like = NotificationType(
-      rawValue: 'like', displayValue: 'Khi có người thích bạn');
+      rawValue: 'like',
+      shortTitle: 'Khi có người thích bạn',
+      title: 'Khi có người thích bạn');
   static final matching = NotificationType(
-      rawValue: 'matching', displayValue: 'Khi ghép đôi thành công');
+      rawValue: 'matching',
+      shortTitle: 'Khi ghép đôi thành công',
+      title: 'Khi ghép đôi thành công');
   static final newMessage = NotificationType(
-      rawValue: 'newMessage', displayValue: 'Khi có tin nhắn mới');
-  static final other =
-      NotificationType(rawValue: 'other', displayValue: 'Những thông báo khác');
+      rawValue: 'newMessage',
+      shortTitle: 'Khi có tin nhắn mới',
+      title: 'Khi có tin nhắn mới');
+  static final otherFindingAnonymousChat = NotificationType(
+    rawValue: 'otherFindingAnonymousChat',
+    shortTitle: 'Khi có người muốn trò chuyện ẩn danh',
+    title: 'Nhận thông báo khi có người muốn trò chuyện ẩn danh',
+  );
+  static final other = NotificationType(
+      rawValue: 'other',
+      shortTitle: 'Những thông báo khác',
+      title: 'Những thông báo khác');
 
-  static List<NotificationType> getAll() => [like, matching, newMessage, other];
+  static List<NotificationType> getAll() =>
+      [like, matching, newMessage, otherFindingAnonymousChat, other];
 }
 
 class EducationLevel extends Enumerable<String> {

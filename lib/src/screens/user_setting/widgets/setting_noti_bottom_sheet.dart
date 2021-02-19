@@ -12,6 +12,7 @@ class _SettingNotiBottomSheet {
         cornerRadius: 16,
         headerBuilder: (context, state) {
           return Material(
+            color: Colors.transparent,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text('Thông báo', style: context.textTheme.headline6),
@@ -35,7 +36,7 @@ class _SettingNotiBottomSheet {
                               paddingAbove:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               paddingBelow: const EdgeInsets.all(10),
-                              title: e.displayValue,
+                              title: e.shortTitle ?? '',
                               value: model.currentUser?.pushNotiSetting
                                       ?.contains(e) ??
                                   false,
