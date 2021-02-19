@@ -1,8 +1,21 @@
 import 'package:cupizz_app/src/base/base.dart';
 
+class AnonymousChatScreenArgs {
+  final bool findingImmediately;
+
+  AnonymousChatScreenArgs({this.findingImmediately = false});
+}
+
 class AnonymousChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final controller = Momentum.controller<AnonymousChatController>(context)
+      ..getMyAnonymousChat();
+    final args = Get.arguments as AnonymousChatScreenArgs;
+    if (args != null && args.findingImmediately) {
+      controller.findAnonymousChat();
+    }
+
     return MomentumBuilder(
         controllers: [AnonymousChatController],
         builder: (context, snapshot) {
@@ -49,48 +62,51 @@ class AnonymousChatScreen extends StatelessWidget {
                       }),
               ],
             ),
-            bottomNavigationBar: MomentumBuilder(
-                controllers: [CurrentUserController],
-                builder: (context, snapshot) {
-                  final model = snapshot<CurrentUserModel>();
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Transform.scale(
-                      scale: 0.8,
-                      child: CheckboxListTile(
-                          title: Text(NotificationType
-                                  .otherFindingAnonymousChat.title ??
-                              ''),
-                          value: model.currentUser?.pushNotiSetting?.contains(
-                                  NotificationType.otherFindingAnonymousChat) ??
-                              false,
-                          onChanged: (value) {
-                            if (value != null) {
-                              model.controller.updatePushNoti(
-                                  NotificationType.otherFindingAnonymousChat,
-                                  value);
-                            }
-                          }),
-                    ),
-                  );
-                }),
+            bottomNavigationBar: model.isFinding || model.conversation != null
+                ? null
+                : MomentumBuilder(
+                    controllers: [CurrentUserController],
+                    builder: (context, snapshot) {
+                      final model = snapshot<CurrentUserModel>();
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Transform.scale(
+                          scale: 0.8,
+                          child: CheckboxListTile(
+                              title: Text(NotificationType
+                                      .otherFindingAnonymousChat.title ??
+                                  ''),
+                              value: model.currentUser?.pushNotiSetting
+                                      ?.contains(NotificationType
+                                          .otherFindingAnonymousChat) ??
+                                  false,
+                              onChanged: (value) {
+                                if (value != null) {
+                                  model.controller.updatePushNoti(
+                                      NotificationType
+                                          .otherFindingAnonymousChat,
+                                      value);
+                                }
+                              }),
+                        ),
+                      );
+                    }),
             body: model.isFinding
                 ? _Loading()
                 : model.conversation != null
-                    ? MomentumBuilder(
-                        controllers: [MessagesScreenController],
-                        builder: (context, snapshot) {
-                          final messagesModel = snapshot<MessagesScreenModel>();
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((timeStamp) {
-                            final args = MessagesScreenParams(
-                                conversation: model.conversation);
-                            if (args != null) {
-                              messagesModel.controller.loadData(args);
-                            }
-                          });
-                          return MessagesScreenWidget(model: messagesModel);
-                        })
+                    ? Builder(builder: (context) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          final args = MessagesScreenParams(
+                              conversation: model.conversation);
+                          if (args != null) {
+                            Momentum.controller<MessagesScreenController>(
+                                    context)
+                                .loadData(args);
+                          }
+                        });
+                        return MessagesScreenWidget();
+                      })
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

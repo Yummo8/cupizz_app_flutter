@@ -29,6 +29,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
   MessagesScreenController controller;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final args = Get.arguments as MessagesScreenParams;
+      if (args != null) {
+        controller.loadData(args);
+      }
+    });
+  }
+
+  @override
   void dispose() {
     controller?.reset();
     super.dispose();
@@ -37,12 +48,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
     controller ??= Momentum.controller<MessagesScreenController>(context);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final args = Get.arguments as MessagesScreenParams;
-      if (args != null) {
-        controller.loadData(args);
-      }
-    });
     return MomentumBuilder(
         controllers: [MessagesScreenController],
         builder: (context, snapshot) {
@@ -118,59 +123,65 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ),
                   ),
-            body: MessagesScreenWidget(model: model),
+            body: MessagesScreenWidget(),
           );
         });
   }
 }
 
-class MessagesScreenWidget extends StatelessWidget {
-  const MessagesScreenWidget({
-    Key key,
-    @required this.model,
-  }) : super(key: key);
+class MessagesScreenWidget extends StatefulWidget {
+  @override
+  _MessagesScreenWidgetState createState() => _MessagesScreenWidgetState();
+}
 
-  final MessagesScreenModel model;
-
+class _MessagesScreenWidgetState extends State<MessagesScreenWidget> {
   @override
   Widget build(BuildContext context) {
-    return DashChat(
-      inverted: true,
-      shouldShowLoadEarlier:
-          !(model.conversation?.messages?.isLastPage ?? false),
-      dateFormat: DateFormat('dd/MM/yyyy'),
-      timeFormat: DateFormat('HH:mm'),
-      user:
-          Momentum.controller<CurrentUserController>(context).model.currentUser,
-      messages: model.isLoading ? [] : model.conversation?.messages?.data ?? [],
-      inputContainerStyle: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: context.colorScheme.surface),
-        ),
-      ),
-      inputDecoration: InputDecoration(hintText: Strings.messageScreen.hint),
-      trailing: [
-        IconButton(
-            icon: Icon(CupertinoIcons.camera),
-            onPressed: model.isSendingMessage
-                ? null
-                : () => pickImage(context, (images) {
-                      model.controller.sendMessage(attachments: images);
-                    }))
-      ],
-      sendButtonBuilder: (onSend) {
-        return IconButton(
-            icon: model.isSendingMessage
-                ? LoadingIndicator(size: 20)
-                : Icon(CupertinoIcons.paperplane),
-            onPressed: model.isSendingMessage ? null : onSend);
-      },
-      onSend: (Message message) {
-        model.controller.sendMessage(message: message.message);
-      },
-      onLoadEarlier: () {
-        model.controller.loadmore();
-      },
-    );
+    return MomentumBuilder(
+        controllers: [MessagesScreenController],
+        builder: (context, snapshot) {
+          final model = snapshot<MessagesScreenModel>();
+          return DashChat(
+            inverted: true,
+            shouldShowLoadEarlier:
+                !(model.conversation?.messages?.isLastPage ?? false),
+            dateFormat: DateFormat('dd/MM/yyyy'),
+            timeFormat: DateFormat('HH:mm'),
+            user: Momentum.controller<CurrentUserController>(context)
+                .model
+                .currentUser,
+            messages:
+                model.isLoading ? [] : model.conversation?.messages?.data ?? [],
+            inputContainerStyle: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: context.colorScheme.surface),
+              ),
+            ),
+            inputDecoration:
+                InputDecoration(hintText: Strings.messageScreen.hint),
+            trailing: [
+              IconButton(
+                  icon: Icon(CupertinoIcons.camera),
+                  onPressed: model.isSendingMessage
+                      ? null
+                      : () => pickImage(context, (images) {
+                            model.controller.sendMessage(attachments: images);
+                          }))
+            ],
+            sendButtonBuilder: (onSend) {
+              return IconButton(
+                  icon: model.isSendingMessage
+                      ? LoadingIndicator(size: 20)
+                      : Icon(CupertinoIcons.paperplane),
+                  onPressed: model.isSendingMessage ? null : onSend);
+            },
+            onSend: (Message message) {
+              model.controller.sendMessage(message: message.message);
+            },
+            onLoadEarlier: () {
+              model.controller.loadmore();
+            },
+          );
+        });
   }
 }

@@ -101,14 +101,14 @@ class AuthController extends MomentumController<AuthModel> {
   }
 
   Future _afterLogin() async {
-    await gotoHome();
+    reset();
+    unawaited(gotoHome());
     final userId = await Get.find<StorageService>().getUserId;
     if (userId.isExistAndNotEmpty) {
       await Get.find<OneSignalService>().subscribe(userId);
       await dependOn<LocationController>()
           .checkPermission(AppConfig.navigatorKey.currentContext);
     }
-    reset();
   }
 
   Future<void> _register(String registerToken) async {

@@ -46,9 +46,7 @@ class RecommendableUsersController
                     .currentUser
                     .remainingSuperLike <=
                 0) {
-          await Fluttertoast.showToast(
-            msg: Strings.error.outOfSuperLike,
-          );
+          await Fluttertoast.showToast(msg: Strings.error.outOfSuperLike);
           return;
         }
         final friendType = await service.addFriend(

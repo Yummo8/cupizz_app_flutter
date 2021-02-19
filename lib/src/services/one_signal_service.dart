@@ -17,15 +17,31 @@ class OneSignalService extends GetxService {
     await OneSignal.shared
         .promptUserForPushNotificationPermission(fallbackToSettings: true);
 
-    OneSignal.shared.setNotificationReceivedHandler((notification) {
-      debugPrint('New notification: ${notification.payload.additionalData}');
-      SystemController().fetchUnreadNoti();
-    });
+    OneSignal.shared.setNotificationReceivedHandler(_handleNewNotification);
 
     _handleOpenWhenClick();
     _isInited = true;
     debugPrint('OneSignal: Finished setting up.');
     return this;
+  }
+
+  void _handleNewNotification(OSNotification notification) {
+    debugPrint('New notification: ${notification.payload.additionalData}');
+    SystemController().fetchUnreadNoti();
+    final data = notification.payload.additionalData;
+
+    if (data != null && data is Map) {
+      final type = NotificationType(rawValue: data['type']);
+      final String code = data['code'];
+
+      if (type == NotificationType.other) {
+        if (code == 'deleteAnonymousChat') {
+          Momentum.controller<AnonymousChatController>(
+                  AppConfig.navigatorKey.currentContext)
+              .getMyAnonymousChat();
+        }
+      }
+    }
   }
 
   void _handleOpenWhenClick() {
@@ -37,6 +53,7 @@ class OneSignalService extends GetxService {
         final type = NotificationType(rawValue: data['type']);
         final String refUserId = data['refUserId'];
         final String refConversationId = data['refConversationId'];
+        final String code = data['code'];
 
         if (type == NotificationType.like ||
             type == NotificationType.matching) {
@@ -45,11 +62,23 @@ class OneSignalService extends GetxService {
             arguments: UserScreenParams(userId: refUserId),
           );
         } else if (type == NotificationType.newMessage) {
-          Get.toNamed(Routes.messages,
-              arguments: MessagesScreenParams(
-                  conversationKey:
-                      ConversationKey(conversationId: refConversationId)));
-        } else {}
+          if (code == 'newAnonymousMessage') {
+            Get.toNamed(Routes.anonymousChat);
+          } else {
+            Get.toNamed(Routes.messages,
+                arguments: MessagesScreenParams(
+                    conversationKey:
+                        ConversationKey(conversationId: refConversationId)));
+          }
+        } else if (type == NotificationType.otherFindingAnonymousChat) {
+          Get.toNamed(Routes.anonymousChat,
+              arguments: AnonymousChatScreenArgs(findingImmediately: true));
+        } else if (type == NotificationType.other) {
+          if (code == 'deleteAnonymousChat') {
+            Get.toNamed(Routes.anonymousChat,
+                arguments: AnonymousChatScreenArgs(findingImmediately: true));
+          }
+        }
 
         debugPrint(
             'Clicked on notification type: ${type.rawValue}, reference user id: $refUserId, reference conversation id: $refConversationId');

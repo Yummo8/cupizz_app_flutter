@@ -21,14 +21,16 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
 
   Future loadData(MessagesScreenParams params) async {
     model.update(isLoading: true);
-
-    if (params.conversation != null) {
-      model.update(conversation: params.conversation);
-    } else {
-      await _reload(key: params.conversationKey);
+    try {
+      if (params.conversation != null) {
+        model.update(conversation: params.conversation);
+      } else {
+        await _reload(key: params.conversationKey);
+      }
+      subscribe(ConversationKey(conversationId: model.conversation.id));
+    } finally {
+      model.update(isLoading: false);
     }
-    subscribe(ConversationKey(conversationId: model.conversation.id));
-    model.update(isLoading: false);
   }
 
   @override
@@ -94,7 +96,10 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
   }
 
   void subscribe(ConversationKey key) {
-    if (messageSupscription == null && key != null) {
+    if (key != null) {
+      if (messageSupscription != null) {
+        messageSupscription.cancel();
+      }
       messageSupscription =
           Get.find<MessageService>().onNewMessage(key).listen(onNewMessage);
       debugPrint('Subscribed conversation: $key');

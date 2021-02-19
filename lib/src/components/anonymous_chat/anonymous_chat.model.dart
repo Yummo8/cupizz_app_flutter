@@ -7,20 +7,24 @@ class AnonymousChatModel extends MomentumModel<AnonymousChatController> {
     AnonymousChatController controller, {
     this.conversation,
     this.isFinding = false,
+    this.isLoading = false,
   }) : super(controller);
 
   final Conversation conversation;
   final bool isFinding;
+  final bool isLoading;
 
   @override
   void update({
     Conversation conversation,
     bool isFinding,
+    bool isLoading,
   }) {
     AnonymousChatModel(
       controller,
       conversation: conversation ?? this.conversation,
       isFinding: isFinding ?? this.isFinding,
+      isLoading: isLoading ?? this.isLoading,
     ).updateMomentum();
   }
 
@@ -29,6 +33,7 @@ class AnonymousChatModel extends MomentumModel<AnonymousChatController> {
       controller,
       conversation: null,
       isFinding: isFinding,
+      isLoading: isLoading,
     ).updateMomentum();
   }
 
