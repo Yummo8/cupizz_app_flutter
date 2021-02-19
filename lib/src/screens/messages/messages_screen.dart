@@ -53,76 +53,69 @@ class _MessagesScreenState extends State<MessagesScreen> {
         builder: (context, snapshot) {
           final model = snapshot<MessagesScreenModel>();
           return PrimaryScaffold(
-            appBar: model.conversation == null ||
-                    model.conversation.isAnonymousChat
-                ? null
-                : AppBar(
-                    automaticallyImplyLeading: true,
-                    backgroundColor: context.colorScheme.background,
-                    shadowColor: context.colorScheme.onBackground,
-                    elevation: 1,
-                    leading: IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: Icon(
-                          Icons.chevron_left,
-                          color: context.colorScheme.onBackground,
-                          size: 40,
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+              backgroundColor: context.colorScheme.background,
+              shadowColor: context.colorScheme.onBackground,
+              elevation: 1,
+              leading: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.chevron_left,
+                    color: context.colorScheme.onBackground,
+                    size: 40,
+                  ),
+                  onPressed: () {
+                    Get.back();
+                  }),
+              title: Skeleton(
+                enabled: model.isLoading,
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Align(
+                        child: UserAvatar.fromConversation(
+                          size: 30,
+                          conversation: model.conversation,
                         ),
-                        onPressed: () {
-                          Get.back();
-                        }),
-                    title: Skeleton(
-                      enabled: model.isLoading,
-                      child: IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Align(
-                              child: UserAvatar.fromConversation(
-                                size: 30,
-                                conversation: model.conversation,
+                            SkeletonItem(
+                              child: Text(
+                                model.conversation?.name ?? 'Loading',
+                                style: context.textTheme.bodyText1
+                                    .copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  SkeletonItem(
-                                    child: Text(
-                                      model.conversation?.name ?? 'Loading',
-                                      style: context.textTheme.bodyText1
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  if (model.conversation?.onlineStatus !=
-                                              null &&
-                                          model.conversation.onlineStatus ==
-                                              OnlineStatus.online ||
-                                      model.conversation?.lastOnline != null)
-                                    SkeletonItem(
-                                      child: Text(
-                                        model.conversation.onlineStatus ==
-                                                OnlineStatus.online
-                                            ? 'Đang online'
-                                            : Strings.messageScreen
-                                                .lastOnlineAt(TimeAgo.format(
-                                                    model.conversation
-                                                        .lastOnline)),
-                                        style: context.textTheme.caption,
-                                      ),
-                                    ),
-                                ],
+                            if (model.conversation?.onlineStatus != null &&
+                                    model.conversation.onlineStatus ==
+                                        OnlineStatus.online ||
+                                model.conversation?.lastOnline != null)
+                              SkeletonItem(
+                                child: Text(
+                                  model.conversation.onlineStatus ==
+                                          OnlineStatus.online
+                                      ? 'Đang online'
+                                      : Strings.messageScreen.lastOnlineAt(
+                                          TimeAgo.format(
+                                              model.conversation.lastOnline)),
+                                  style: context.textTheme.caption,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                ),
+              ),
+            ),
             body: MessagesScreenWidget(),
           );
         });
@@ -150,8 +143,9 @@ class _MessagesScreenWidgetState extends State<MessagesScreenWidget> {
             user: Momentum.controller<CurrentUserController>(context)
                 .model
                 .currentUser,
-            messages:
-                model.isLoading ? [] : model.conversation?.messages?.data ?? [],
+            messages: model.isLoading
+                ? List.generate(20, (index) => null)
+                : model.conversation?.messages?.data ?? [],
             inputContainerStyle: BoxDecoration(
               border: Border(
                 top: BorderSide(color: context.colorScheme.surface),

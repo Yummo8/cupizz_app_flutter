@@ -18,7 +18,9 @@ class UserScreenController extends MomentumController<_UserScreenModel> {
   Future loadData({String userId, ChatUser chatUser}) async {
     if (chatUser == null && userId == null) return;
 
-    if (chatUser is! SimpleUser && chatUser is! User) {
+    if (chatUser is SimpleUser || chatUser is User) {
+      model.update(user: chatUser);
+    } else {
       await _loading(() async {
         final user =
             await Get.find<UserService>().getUser(id: chatUser?.id ?? userId);

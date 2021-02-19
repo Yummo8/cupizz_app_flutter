@@ -11,6 +11,7 @@ class PrimaryScaffold extends StatelessWidget {
   final Widget drawer;
   final Widget floatingActionButton;
   final Function onBack;
+  final double loadingBackgroundOpacity;
 
   PrimaryScaffold({
     Key key,
@@ -23,6 +24,7 @@ class PrimaryScaffold extends StatelessWidget {
     this.drawer,
     this.onBack,
     this.floatingActionButton,
+    this.loadingBackgroundOpacity = 0.5,
   }) : super(key: key);
 
   @override
@@ -52,13 +54,16 @@ class PrimaryScaffold extends StatelessWidget {
             )
           else
             scaffold,
-          if (isLoading)
-            Positioned.fill(
-              child: Container(
-                color: context.colorScheme.background.withOpacity(0.5),
-                child: LoadingIndicator(),
+          Positioned.fill(
+            child: IgnorePointer(
+              child: AnimatedContainer(
+                duration: 1.seconds,
+                color: context.colorScheme.background
+                    .withOpacity(isLoading ? loadingBackgroundOpacity : 0),
+                child: isLoading ? LoadingIndicator() : const SizedBox.shrink(),
               ),
-            )
+            ),
+          )
         ],
       ),
     );

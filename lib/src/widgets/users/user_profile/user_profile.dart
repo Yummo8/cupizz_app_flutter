@@ -78,6 +78,7 @@ class UserProfileState extends MomentumState<UserProfile>
 
     return PrimaryScaffold(
       isLoading: widget.isLoading,
+      loadingBackgroundOpacity: 1,
       body: Skeleton(
         enabled: user == null,
         child: RefreshIndicator(
