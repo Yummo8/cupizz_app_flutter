@@ -67,7 +67,7 @@ class InComingCallScreen extends StatelessWidget {
                                   PhotoManager.openSetting();
                                 }
                                 if (model.currentIncomingCall.roomId != null) {
-                                  // TODO accept call
+                                  await model.controller.acceptIncomingCall();
                                 }
                               },
                               icon: Icons.call,

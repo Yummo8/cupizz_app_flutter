@@ -4,21 +4,28 @@ import 'incoming_call.controller.dart';
 
 class IncomingCallModel extends MomentumModel<IncomingCallController> {
   IncomingCallModel(IncomingCallController controller,
-      {this.currentIncomingCall})
+      {this.currentIncomingCall, this.currentCall})
       : super(controller);
 
   final Message currentIncomingCall;
+  final Message currentCall;
 
   @override
-  void update({Message currentIncomingCall}) {
-    IncomingCallModel(controller,
-            currentIncomingCall:
-                currentIncomingCall ?? this.currentIncomingCall)
-        .updateMomentum();
+  void update({Message currentIncomingCall, Message currentCall}) {
+    IncomingCallModel(
+      controller,
+      currentIncomingCall: currentIncomingCall ?? this.currentIncomingCall,
+      currentCall: currentCall ?? this.currentCall,
+    ).updateMomentum();
   }
 
   void removeCurrentIncomingCall() {
-    IncomingCallModel(controller).updateMomentum();
+    IncomingCallModel(controller, currentCall: currentCall).updateMomentum();
+  }
+
+  void removeCurrentCall() {
+    IncomingCallModel(controller, currentIncomingCall: currentIncomingCall)
+        .updateMomentum();
   }
 
   @override

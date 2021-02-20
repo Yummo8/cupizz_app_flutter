@@ -8,6 +8,7 @@ class SystemModel extends MomentumModel<SystemController> {
     this.unreadMessageCount = 0,
     this.unreadReceiveFriendCount = 0,
     this.unreadAcceptedFriendCount = 0,
+    this.agoraAppId,
   }) : super(controller);
 
   final List<PostCategory> postCategories;
@@ -15,6 +16,7 @@ class SystemModel extends MomentumModel<SystemController> {
   final int unreadMessageCount;
   final int unreadReceiveFriendCount;
   final int unreadAcceptedFriendCount;
+  final String agoraAppId;
 
   @override
   void update({
@@ -23,6 +25,7 @@ class SystemModel extends MomentumModel<SystemController> {
     int unreadMessageCount,
     int unreadReceiveFriendCount,
     int unreadAcceptedFriendCount,
+    String agoraAppId,
   }) {
     SystemModel(
       controller,
@@ -33,6 +36,7 @@ class SystemModel extends MomentumModel<SystemController> {
           unreadReceiveFriendCount ?? this.unreadReceiveFriendCount,
       unreadAcceptedFriendCount:
           unreadAcceptedFriendCount ?? this.unreadAcceptedFriendCount,
+      agoraAppId: agoraAppId ?? this.agoraAppId,
     ).updateMomentum();
   }
 
@@ -53,6 +57,7 @@ class SystemModel extends MomentumModel<SystemController> {
       unreadMessageCount: json['unreadMessageCount'] ?? 0,
       unreadReceiveFriendCount: json['unreadReceiveFriendCount'] ?? 0,
       unreadAcceptedFriendCount: json['unreadAcceptedFriendCount'] ?? 0,
+      agoraAppId: json['agoraAppId'],
     );
   }
 
@@ -65,5 +70,6 @@ class SystemModel extends MomentumModel<SystemController> {
         'unreadMessageCount': unreadMessageCount ?? 0,
         'unreadReceiveFriendCount': unreadReceiveFriendCount ?? 0,
         'unreadAcceptedFriendCount': unreadAcceptedFriendCount ?? 0,
+        'agoraAppId': agoraAppId,
       };
 }

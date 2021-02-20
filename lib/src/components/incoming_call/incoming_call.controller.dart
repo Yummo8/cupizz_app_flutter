@@ -24,8 +24,16 @@ class IncomingCallController extends MomentumController<IncomingCallModel> {
     if (model.currentIncomingCall != null) {
       await Get.find<MessageService>().acceptCall(model.currentIncomingCall.id);
     }
+    model.update(currentCall: model.currentIncomingCall);
     _endRinging();
-    // TODO navigate to in call screen
+    unawaited(Get.toNamed(Routes.inCall));
+  }
+
+  void endCall() {
+    if (model.currentCall != null) {
+      Get.find<MessageService>().endCall(model.currentCall.id);
+    }
+    _endCall();
   }
 
   void endIncomingCall() {
@@ -40,5 +48,12 @@ class IncomingCallController extends MomentumController<IncomingCallModel> {
       Get.back();
     }
     model.removeCurrentIncomingCall();
+  }
+
+  void _endCall() {
+    if (Get.currentRoute == Routes.inCall) {
+      Get.back();
+    }
+    model.removeCurrentCall();
   }
 }
