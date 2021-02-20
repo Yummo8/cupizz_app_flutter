@@ -445,4 +445,14 @@ extension GraphqlMutation on GraphqlService {
     await mutate(
         MutationOptions(documentNode: gql('mutation { deleteAnonymousChat }')));
   }
+
+  Future endCallMutation(String messageId) async {
+    await mutate(MutationOptions(
+        documentNode: gql('mutation { endCall(messageId: "$messageId") }')));
+  }
+
+  Future acceptCallMutation(String messageId) async {
+    await mutate(MutationOptions(
+        documentNode: gql('mutation { acceptCall(messageId: "$messageId") }')));
+  }
 }

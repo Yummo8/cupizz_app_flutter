@@ -58,6 +58,35 @@ extension GraphqlSupscription on GraphqlService {
     return controller.stream;
   }
 
+  Stream<Message> messageChangeSubscription(ConversationKey key) {
+    StreamSubscription<FetchResult> _streamSubscription;
+    // ignore: close_sinks
+    final controller = StreamController<Message>.broadcast(
+      onCancel: () {
+        _streamSubscription?.cancel();
+      },
+    );
+    _streamSubscription = subscribe(
+      Operation(documentNode: gql('''subscription {
+          messageChange (
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
+          ) ${Message.graphqlQuery(includeConversation: false)}
+        }''')),
+    ).listen(
+      (event) {
+        if (event.errors != null && event.errors.isNotEmpty) {
+          controller.addError(event.errors[0].toString());
+        }
+        if (event.data != null) {
+          controller.add(
+              Mapper.fromJson(event.data['messageChange']).toObject<Message>());
+        }
+      },
+    );
+
+    return controller.stream;
+  }
+
   Stream<Conversation> conversationChangeSubscription() {
     StreamSubscription<FetchResult> _streamSubscription;
     // ignore: close_sinks

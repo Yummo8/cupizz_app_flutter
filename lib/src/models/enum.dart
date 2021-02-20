@@ -313,3 +313,19 @@ class LikeType extends Enumerable<String> {
 
   static List<LikeType> getAll() => [like, love, wow, haha, angry, sad];
 }
+
+class CallStatus extends Enumerable<String> {
+  @override
+  final String rawValue;
+
+  const CallStatus({@required this.rawValue});
+
+  static final ringing = CallStatus(rawValue: 'ringing');
+  static final rejected = CallStatus(rawValue: 'rejected');
+  static final missing = CallStatus(rawValue: 'missing');
+  static final inCall = CallStatus(rawValue: 'inCall');
+  static final ended = CallStatus(rawValue: 'ended');
+
+  static List<CallStatus> getAll() =>
+      [ringing, rejected, missing, inCall, ended];
+}

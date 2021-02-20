@@ -43,8 +43,14 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
 
   Future refresh() => _reload();
 
-  void onNewMessage(Message message) {
-    model.conversation.messages.data.insert(0, message);
+  void onMessageChange(Message message) {
+    final index =
+        model.conversation.messages.data.indexWhere((e) => e.id == message.id);
+    if (index < 0) {
+      model.conversation.messages.data.insert(0, message);
+    } else {
+      model.conversation.messages.data[index] = message;
+    }
     model.update(conversation: model.conversation);
   }
 
@@ -100,8 +106,9 @@ class MessagesScreenController extends MomentumController<MessagesScreenModel> {
       if (messageSupscription != null) {
         messageSupscription.cancel();
       }
-      messageSupscription =
-          Get.find<MessageService>().onNewMessage(key).listen(onNewMessage);
+      messageSupscription = Get.find<MessageService>()
+          .onMessageChange(key)
+          .listen(onMessageChange);
       debugPrint('Subscribed conversation: $key');
     }
   }

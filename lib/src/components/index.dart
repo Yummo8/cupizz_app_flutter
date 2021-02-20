@@ -12,6 +12,8 @@ export 'forgot_pass/forgot_pass.controller.dart';
 export 'forgot_pass/forgot_pass.model.dart';
 export 'hobby_list/hobby_list.controller.dart';
 export 'hobby_list/hobby_list.model.dart';
+export 'incoming_call/incoming_call.controller.dart';
+export 'incoming_call/incoming_call.model.dart';
 export 'location/location.controller.dart';
 export 'location/location.model.dart';
 export 'recommendable_users/recommendable_users.controller.dart';

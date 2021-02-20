@@ -49,7 +49,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     debugPrint('Subscribed conversation changes');
   }
 
-  void onConversationChange(newConversation) {
+  void onConversationChange(Conversation newConversation) {
     final oldConversationIndex =
         model.conversations.indexWhere((e) => e.id == newConversation.id);
 
@@ -64,6 +64,12 @@ class ChatPageController extends MomentumController<ChatPageModel> {
       }
     } else {
       model.conversations.insert(0, newConversation);
+    }
+
+    // Show Incoming call screen if newest message is a call
+    if (newConversation.newestMessage?.callStatus == CallStatus.ringing) {
+      dependOn<IncomingCallController>()
+          .onNewIncomingCall(newConversation.newestMessage);
     }
 
     model.update(conversations: model.conversations);

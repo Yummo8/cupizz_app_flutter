@@ -48,9 +48,6 @@ class MessageService extends GetxService {
     return result;
   }
 
-  Future deleteAnonymousChat() =>
-      Get.find<GraphqlService>().deleteAnonymousChatMutation();
-
   Future<String> sendMessage(ConversationKey key,
       {String message, List<File> attachments = const []}) async {
     final graphql = Get.find<GraphqlService>();
@@ -59,8 +56,20 @@ class MessageService extends GetxService {
     return result;
   }
 
+  Future deleteAnonymousChat() =>
+      Get.find<GraphqlService>().deleteAnonymousChatMutation();
+
+  Future endCall(String messageId) =>
+      Get.find<GraphqlService>().endCallMutation(messageId);
+
+  Future acceptCall(String messageId) =>
+      Get.find<GraphqlService>().acceptCallMutation(messageId);
+
   Stream<Message> onNewMessage(ConversationKey key) =>
       Get.find<GraphqlService>().newMessageSubscription(key);
+
+  Stream<Message> onMessageChange(ConversationKey key) =>
+      Get.find<GraphqlService>().messageChangeSubscription(key);
 
   Stream<Conversation> onConversationChange() =>
       Get.find<GraphqlService>().conversationChangeSubscription();

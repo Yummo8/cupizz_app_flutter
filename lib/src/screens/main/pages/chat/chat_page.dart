@@ -100,7 +100,8 @@ class _ChatPageState extends State<ChatPage>
                                     (model.isLastPage ? 0 : 3),
                                 itemExtent: null,
                                 shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
+                                physics: AlwaysScrollableScrollPhysics(
+                                    parent: BouncingScrollPhysics()),
                                 itemBuilder: (context, index) {
                                   return ChatItem(
                                     conversation:
