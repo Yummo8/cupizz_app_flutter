@@ -83,7 +83,10 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     dependOn<SystemController>().getUnreadMessageCount();
   }
 
-  Future refresh() => _reload();
+  Future refresh() async {
+    _connectSubsciption();
+    await _reload();
+  }
 
   Future loadmore() async {
     if (model.isLastPage) return;
