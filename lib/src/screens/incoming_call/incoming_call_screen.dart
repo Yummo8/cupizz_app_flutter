@@ -4,79 +4,92 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+class InComingCallScreenArgs {
+  final String avatar;
+  final String name;
+
+  InComingCallScreenArgs({@required this.avatar, @required this.name});
+}
+
 class InComingCallScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments as InComingCallScreenArgs;
     return PrimaryScaffold(
       body: MomentumBuilder(
-          controllers: [IncomingCallController],
+          controllers: [CallController],
           builder: (context, snapshot) {
-            final model = snapshot<IncomingCallModel>();
+            final model = snapshot<CallModel>();
+            final avatar =
+                args?.avatar ?? model.currentIncomingCall?.sender?.avatar?.url;
+            final name =
+                args?.name ?? model.currentIncomingCall?.sender?.nickName ?? '';
 
             return Stack(
               children: [
                 Positioned.fill(
-                  child: CustomNetworkImage(
-                    model.currentIncomingCall?.sender?.avatar?.url,
-                    isAvatar: true,
-                  ),
+                  child: CustomNetworkImage(avatar, isAvatar: true),
                 ),
                 Positioned.fill(
                   child: Container(color: Colors.black54),
                 ),
-                BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 25,
-                    sigmaY: 25,
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(70),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Wrap(
-                          direction: Axis.vertical,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 10,
-                          children: [
-                            Text(
-                              model.currentIncomingCall?.sender?.nickName ?? '',
-                              style: const TextStyle(
-                                fontSize: 42,
-                                color: Colors.white,
+                Positioned.fill(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 25,
+                      sigmaY: 25,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(70),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 42,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleCallButton(
+                                onPressed: model.controller.endCall,
+                                icon: CupertinoIcons.phone_down_fill,
+                                backgroundColor: Colors.red,
+                                title: model.currentIncomingCall != null
+                                    ? 'Từ chối'
+                                    : '',
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleCallButton(
-                              onPressed: model.controller.endIncomingCall,
-                              icon: Icons.call_end,
-                              backgroundColor: Colors.red,
-                              title: 'Từ chối',
-                            ),
-                            CircleCallButton(
-                              onPressed: () async {
-                                await Permission.microphone.request();
-                                await Permission.camera.request();
-                                final status =
-                                    await Permission.microphone.status;
-                                if (status.isUndetermined) {
-                                  PhotoManager.openSetting();
-                                }
-                                if (model.currentIncomingCall.roomId != null) {
-                                  await model.controller.acceptIncomingCall();
-                                }
-                              },
-                              icon: Icons.call,
-                              backgroundColor: Colors.green,
-                              title: 'Chấp nhận',
-                            ),
-                          ],
-                        ),
-                      ],
+                              if (model.currentIncomingCall != null) ...[
+                                Expanded(child: const SizedBox.shrink()),
+                                CircleCallButton(
+                                  onPressed: () async {
+                                    await Permission.microphone.request();
+                                    await Permission.camera.request();
+                                    final status =
+                                        await Permission.microphone.status;
+                                    if (status.isUndetermined) {
+                                      PhotoManager.openSetting();
+                                    }
+                                    if (model.currentIncomingCall.roomId !=
+                                        null) {
+                                      await model.controller
+                                          .acceptIncomingCall();
+                                    }
+                                  },
+                                  icon: CupertinoIcons.phone_fill,
+                                  backgroundColor: Colors.green,
+                                  title: 'Chấp nhận',
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

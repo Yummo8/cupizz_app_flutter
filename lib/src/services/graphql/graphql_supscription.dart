@@ -141,4 +141,34 @@ extension GraphqlSupscription on GraphqlService {
     debugPrint('Subscribed findAnonymousChat');
     return controller.stream;
   }
+
+  Stream<Message> callSubscription(ConversationKey key) {
+    StreamSubscription<FetchResult> _streamSubscription;
+    // ignore: close_sinks
+    final controller = StreamController<Message>.broadcast(
+      onCancel: () {
+        _streamSubscription?.cancel();
+      },
+    );
+    _streamSubscription = subscribe(
+      Operation(documentNode: gql('''subscription {
+          call(
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'}
+          ) ${Message.graphqlQuery(includeConversation: false)}
+        }''')),
+    ).listen(
+      (event) {
+        if (event.errors != null && event.errors.isNotEmpty) {
+          controller.addError(event.errors[0].toString());
+        }
+        if (event.data != null) {
+          controller
+              .add(Mapper.fromJson(event.data['call']).toObject<Message>());
+        }
+      },
+    );
+
+    debugPrint('Calling $key...');
+    return controller.stream;
+  }
 }

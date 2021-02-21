@@ -67,9 +67,15 @@ class ChatPageController extends MomentumController<ChatPageModel> {
     }
 
     // Show Incoming call screen if newest message is a call
-    if (newConversation.newestMessage?.callStatus == CallStatus.ringing) {
-      dependOn<IncomingCallController>()
+    if (newConversation.newestMessage?.callStatus == CallStatus.ringing &&
+        !newConversation.newestMessage.isCaller) {
+      dependOn<CallController>()
           .onNewIncomingCall(newConversation.newestMessage);
+    } else if (newConversation.newestMessage?.callStatus ==
+            CallStatus.missing ||
+        newConversation.newestMessage?.callStatus == CallStatus.rejected) {
+      dependOn<CallController>()
+          .onNewMissingCall(newConversation.newestMessage);
     }
 
     model.update(conversations: model.conversations);

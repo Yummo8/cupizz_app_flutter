@@ -35,7 +35,7 @@ class _InCallScreenState extends State<InCallScreen> {
     final appId =
         await Momentum.controller<SystemController>(context).getAgoraAppId();
     final callMessage =
-        Momentum.controller<IncomingCallController>(context).model.currentCall;
+        Momentum.controller<CallController>(context).model.currentCall;
 
     if (!appId.isExistAndNotEmpty) {
       setState(() {
@@ -76,7 +76,7 @@ class _InCallScreenState extends State<InCallScreen> {
     _engine = await RtcEngine.create(appId);
     await _engine.enableVideo();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    // await _engine.setClientRole(widget.role);
+    await _engine.setClientRole(ClientRole.Broadcaster);
   }
 
   void _addAgoraEventHandlers() {
@@ -120,9 +120,9 @@ class _InCallScreenState extends State<InCallScreen> {
     // if (widget.role == ClientRole.Broadcaster) {
     //   list.add(rtc_local_view.SurfaceView());
     // }
-    list.add(rtc_local_view.SurfaceView());
     _users
         .forEach((int uid) => list.add(rtc_remote_view.SurfaceView(uid: uid)));
+    list.add(rtc_local_view.SurfaceView(key: UniqueKey()));
     return list;
   }
 
@@ -139,41 +139,65 @@ class _InCallScreenState extends State<InCallScreen> {
     );
   }
 
-  Widget _viewRows() {
-    final views = _getRenderViews();
+  Widget _viewRows(List<Widget> views) {
+    var video = Container();
+    final local = views.removeLast();
     switch (views.length) {
       case 1:
-        return Container(
+        video = Container(
             child: Column(
-          children: <Widget>[_videoView(views[0])],
+          children: <Widget>[_videoView(views.last)],
         ));
+        break;
       case 2:
-        return Container(
+        video = Container(
             child: Column(
           children: <Widget>[
             _expandedVideoRow([views[0]]),
             _expandedVideoRow([views[1]])
           ],
         ));
+        break;
       case 3:
-        return Container(
+        video = Container(
             child: Column(
           children: <Widget>[
             _expandedVideoRow(views.sublist(0, 2)),
             _expandedVideoRow(views.sublist(2, 3))
           ],
         ));
+        break;
       case 4:
-        return Container(
+        video = Container(
             child: Column(
           children: <Widget>[
             _expandedVideoRow(views.sublist(0, 2)),
             _expandedVideoRow(views.sublist(2, 4))
           ],
         ));
+        break;
       default:
     }
-    return Container();
+
+    return Stack(
+      children: [
+        video,
+        Positioned(
+          right: 20,
+          top: 20,
+          child: SafeArea(
+            child: SizedBox(
+              width: Get.width * 0.25,
+              height: Get.height * 0.20,
+              child: Container(
+                  child: Column(
+                children: <Widget>[_videoView(local)],
+              )),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _toolbar() {
@@ -275,7 +299,7 @@ class _InCallScreenState extends State<InCallScreen> {
   }
 
   void _onCallEnd(BuildContext context) {
-    Momentum.controller<IncomingCallController>(context).endCall();
+    Momentum.controller<CallController>(context).endCall();
   }
 
   void _onToggleMute() {
@@ -295,8 +319,8 @@ class _InCallScreenState extends State<InCallScreen> {
       body: Center(
         child: Stack(
           children: <Widget>[
-            _viewRows(),
-            _panel(),
+            Container(child: _viewRows(_getRenderViews())),
+            if (AppConfig.instance.isDev) _panel(),
             _toolbar(),
           ],
         ),

@@ -76,4 +76,7 @@ class MessageService extends GetxService {
 
   Stream<Conversation> findAnonymousChat() =>
       Get.find<GraphqlService>().findAnonymousChatSubscription();
+
+  Stream<Message> call(ConversationKey key) =>
+      Get.find<GraphqlService>().callSubscription(key);
 }
