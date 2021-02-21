@@ -17,6 +17,7 @@ class SystemController extends MomentumController<SystemModel> {
     await Future.wait([
       fetchColor(),
       fetchUnreadNoti(),
+      _fetchAgoraAppId(),
     ]);
   }
 
@@ -70,6 +71,23 @@ class SystemController extends MomentumController<SystemModel> {
       final postCategories = await Get.find<PostService>().getPostCategories();
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         model.update(postCategories: postCategories);
+      });
+    });
+  }
+
+  Future<String> getAgoraAppId() async {
+    if (!model.agoraAppId.isExistAndNotEmpty) {
+      await _fetchAgoraAppId();
+    }
+
+    return model.agoraAppId;
+  }
+
+  Future _fetchAgoraAppId() async {
+    await trycatch(() async {
+      final getAgoraAppId = await Get.find<SystemService>().getAgoraAppId();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        model.update(agoraAppId: getAgoraAppId);
       });
     });
   }

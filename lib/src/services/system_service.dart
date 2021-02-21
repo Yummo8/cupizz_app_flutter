@@ -44,6 +44,12 @@ class SystemService extends GetxService {
     return data;
   }
 
+  Future<String> getAgoraAppId() async {
+    final graphql = Get.find<GraphqlService>();
+    final data = await graphql.getAgoraAppIdQuery();
+    return data;
+  }
+
   Future<WithIsLastPageOutput<Question>> getQuestions({
     String keyword,
     int page,

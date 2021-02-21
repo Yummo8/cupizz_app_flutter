@@ -1,5 +1,6 @@
 import 'package:cupizz_app/src/screens/answer_question/answer_question_screen.dart';
 import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
+import 'package:cupizz_app/src/screens/incoming_call/incoming_call_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/profile/profile_page.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
@@ -22,6 +23,8 @@ class Routes {
   static const createPost = '/post/create';
   static const friends = '/likes';
   static const anonymousChat = '/anonymous-chat';
+  static const incomingCall = 'incomming-call';
+  static const inCall = 'in-call';
 
   static const editAge = '/profile/edit/age';
   static const editDrink = '/profile/edit/drink';
@@ -54,6 +57,8 @@ final List<GetPage> getPages = [
   GetPage(name: Routes.createPost, page: () => CreatePostScreen()),
   GetPage(name: Routes.friends, page: () => FriendPageV2()),
   GetPage(name: Routes.anonymousChat, page: () => AnonymousChatScreen()),
+  GetPage(name: Routes.incomingCall, page: () => InComingCallScreen()),
+  GetPage(name: Routes.inCall, page: () => InCallScreen()),
   // Edit-screens
   GetPage(name: Routes.editAge, page: () => EditAgeScreen()),
   GetPage(name: Routes.editDrink, page: () => EditDrinkScreen()),

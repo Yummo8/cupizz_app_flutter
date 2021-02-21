@@ -27,6 +27,7 @@ export 'post.dart';
 
 void objectMapping() {
   Mappable.factories = {
+    CallStatus: (v) => CallStatus(rawValue: v),
     ChatUser: () => ChatUser(),
     ColorOfAnswer: () => ColorOfAnswer(),
     Comment: () => Comment(),

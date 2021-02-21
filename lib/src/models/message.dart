@@ -8,12 +8,27 @@ class Message extends BaseModel {
   List<FileModel> _attachments;
   ChatUser _sender;
 
+  String _roomId;
+  bool _isCallMessage;
+  bool _isCaller;
+  DateTime _startedCallAt;
+  DateTime _endedCallAt;
+  CallStatus _callStatus;
+  String _agoraToken;
+
   Conversation get conversation => _conversation;
   String get message => _message;
   DateTime get createdAt => _createdAt;
   DateTime get updatedAt => _updatedAt;
   List<FileModel> get attachments => _attachments;
   ChatUser get sender => _sender;
+  String get roomId => _roomId;
+  bool get isCallMessage => _isCallMessage;
+  bool get isCaller => _isCaller;
+  DateTime get startedCallAt => _startedCallAt;
+  DateTime get endedCallAt => _endedCallAt;
+  CallStatus get callStatus => _callStatus;
+  String get agoraToken => _agoraToken;
 
   Message({
     String id,
@@ -40,6 +55,15 @@ class Message extends BaseModel {
     map('updatedAt', _updatedAt, (v) => _updatedAt = v, DateTransform());
     map<FileModel>('attachments', _attachments, (v) => _attachments = v);
     map<ChatUser>('sender', _sender, (v) => _sender = v);
+    map('roomId', roomId, (v) => _roomId = v);
+    map('isCallMessage', isCallMessage, (v) => _isCallMessage = v);
+    map('isCaller', isCaller, (v) => _isCaller = v);
+    map('startedCallAt', startedCallAt, (v) => _startedCallAt = v,
+        DateTransform());
+    map('endedCallAt', endedCallAt, (v) => _endedCallAt = v, DateTransform());
+    map('callStatus', callStatus, (v) => _callStatus = v,
+        EnumTransform<CallStatus, String>());
+    map('agoraToken', agoraToken, (v) => _agoraToken = v);
   }
 
   static String graphqlQuery({bool includeConversation = true}) => '''{ 
@@ -50,5 +74,12 @@ class Message extends BaseModel {
     updatedAt 
     attachments ${FileModel.graphqlQuery} 
     sender ${ChatUser.graphqlQuery} 
+    roomId
+    isCallMessage
+    isCaller
+    startedCallAt
+    endedCallAt
+    callStatus
+    agoraToken
   }''';
 }

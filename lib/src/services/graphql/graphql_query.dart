@@ -204,6 +204,17 @@ extension GraphqlQuery on GraphqlService {
     return result.data['unreadAcceptedFriendCount'] ?? 0;
   }
 
+  Future<String> getAgoraAppIdQuery() async {
+    final queryString = '''{ agoraAppId }''';
+    final result = await query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        documentNode: gql(queryString),
+      ),
+    );
+    return result.data['agoraAppId'];
+  }
+
   Future postsQuery({
     int page = 1,
     String categoryId,
