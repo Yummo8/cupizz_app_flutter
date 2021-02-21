@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cupizz_app/src/base/base.dart';
+import 'package:vibration/vibration.dart';
 
 import 'call.model.dart';
 
@@ -48,6 +49,7 @@ class CallController extends MomentumController<CallModel> {
 
     model.update(currentIncomingCall: call);
     unawaited(Get.toNamed(Routes.incomingCall));
+    unawaited(Vibration.vibrate(duration: 15000));
   }
 
   void onNewMissingCall(Message call) {
@@ -79,6 +81,7 @@ class CallController extends MomentumController<CallModel> {
       Get.back();
     }
     callSubscription?.cancel();
+    Vibration.cancel();
     model.removeCurrentCall();
     model.removeCurrentIncomingCall();
   }

@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 class InComingCallScreenArgs {
   final String avatar;
@@ -58,7 +56,7 @@ class InComingCallScreen extends StatelessWidget {
                             children: [
                               CircleCallButton(
                                 onPressed: model.controller.endCall,
-                                icon: CupertinoIcons.phone_down_fill,
+                                icon: Icons.call_end,
                                 backgroundColor: Colors.red,
                                 title: model.currentIncomingCall != null
                                     ? 'Từ chối'
@@ -68,20 +66,13 @@ class InComingCallScreen extends StatelessWidget {
                                 Expanded(child: const SizedBox.shrink()),
                                 CircleCallButton(
                                   onPressed: () async {
-                                    await Permission.microphone.request();
-                                    await Permission.camera.request();
-                                    final status =
-                                        await Permission.microphone.status;
-                                    if (status.isUndetermined) {
-                                      PhotoManager.openSetting();
-                                    }
                                     if (model.currentIncomingCall.roomId !=
                                         null) {
                                       await model.controller
                                           .acceptIncomingCall();
                                     }
                                   },
-                                  icon: CupertinoIcons.phone_fill,
+                                  icon: Icons.call,
                                   backgroundColor: Colors.green,
                                   title: 'Chấp nhận',
                                 ),

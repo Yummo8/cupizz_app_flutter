@@ -2,6 +2,8 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class InCallScreen extends StatefulWidget {
   @override
@@ -25,6 +27,14 @@ class _InCallScreenState extends State<InCallScreen> {
   @override
   void initState() {
     super.initState();
+    (() async {
+      await Permission.microphone.request();
+      await Permission.camera.request();
+      final status = await Permission.microphone.status;
+      if (status.isUndetermined) {
+        PhotoManager.openSetting();
+      }
+    })();
     // initialize agora sdk
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initialize();

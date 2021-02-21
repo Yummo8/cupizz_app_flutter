@@ -73,7 +73,8 @@ class ChatPageController extends MomentumController<ChatPageModel> {
           .onNewIncomingCall(newConversation.newestMessage);
     } else if (newConversation.newestMessage?.callStatus ==
             CallStatus.missing ||
-        newConversation.newestMessage?.callStatus == CallStatus.rejected) {
+        newConversation.newestMessage?.callStatus == CallStatus.rejected ||
+        newConversation.newestMessage?.callStatus == CallStatus.ended) {
       dependOn<CallController>()
           .onNewMissingCall(newConversation.newestMessage);
     }
