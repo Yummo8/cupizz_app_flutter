@@ -163,8 +163,11 @@ class _MessagesScreenWidgetState extends State<MessagesScreenWidget> {
                 top: BorderSide(color: context.colorScheme.surface),
               ),
             ),
-            inputDecoration:
-                InputDecoration(hintText: Strings.messageScreen.hint),
+            maxInputLength: null,
+            inputMaxLines: 5,
+            inputDecoration: InputDecoration(
+              hintText: Strings.messageScreen.hint,
+            ),
             trailing: [
               IconButton(
                   icon: Icon(CupertinoIcons.camera),
