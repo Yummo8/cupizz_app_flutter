@@ -13,6 +13,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   @override
   Future<void> bootstrapAsync() async {
+    await Get.find<OneSignalService>().init();
     if (await isAuthenticated) {
       unawaited(gotoHome());
       await dependOn<LocationController>()

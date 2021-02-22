@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pedantic/pedantic.dart';
@@ -21,7 +23,7 @@ class OneSignalService extends GetxService {
 
     _handleOpenWhenClick();
     _isInited = true;
-    debugPrint('OneSignal: Finished setting up.');
+    log('Finished setting up.', name: 'OneSignal');
     return this;
   }
 
@@ -91,9 +93,8 @@ class OneSignalService extends GetxService {
       await init();
     }
     await OneSignal.shared.setSubscription(true);
-    unawaited(OneSignal.shared
-        .setExternalUserId(userId)
-        .then((_) => debugPrint('Sent tags userId: $userId to OneSignal.')));
+    unawaited(OneSignal.shared.setExternalUserId(userId).then((_) =>
+        log('Sent tags userId: $userId to OneSignal.', name: 'Onesignal')));
   }
 
   Future<void> unSubscribe() async {
