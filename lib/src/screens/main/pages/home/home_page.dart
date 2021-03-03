@@ -12,6 +12,7 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'widgets/super_like_anim_overlay.dart';
 
@@ -183,8 +184,11 @@ class _HomePageState extends State<HomePage> {
                       child: UserCard(
                         simpleUser: e,
                         onPressed: () {
-                          Get.toNamed(Routes.user,
-                              arguments: UserScreenParams(user: e));
+                          CupertinoScaffold.showCupertinoModalBottomSheet(
+                              context: context,
+                              builder: (context) => UserScreen(
+                                    params: UserScreenParams(user: e),
+                                  ));
                         },
                       ),
                       borderRadius: BorderRadius.circular(15),

@@ -1,5 +1,6 @@
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/foundation.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PrimaryScaffold extends StatelessWidget {
   final Widget body;
@@ -29,43 +30,37 @@ class PrimaryScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaffold = Scaffold(
+    final scaffold = CupertinoScaffold(
+        body: Scaffold(
       appBar: appBar,
       backgroundColor: context.colorScheme.background,
       drawer: drawer,
       body: body,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
-    );
-    return RouterPage(
-      onWillPop: onBack ??
-          () async {
-            Get.back(canPop: true);
-            return true;
-          },
-      child: Stack(
-        children: [
-          if (context.height > context.width && kIsWeb)
-            Center(
-              child: SizedBox(
-                width: context.height * 9 / 19.5,
-                child: scaffold,
-              ),
-            )
-          else
-            scaffold,
-          Positioned.fill(
-            child: IgnorePointer(
-              child: AnimatedContainer(
-                duration: 1.seconds,
-                color: context.colorScheme.background
-                    .withOpacity(isLoading ? loadingBackgroundOpacity : 0),
-                child: isLoading ? LoadingIndicator() : const SizedBox.shrink(),
-              ),
+    ));
+    return Stack(
+      children: [
+        if (context.height > context.width && kIsWeb)
+          Center(
+            child: SizedBox(
+              width: context.height * 9 / 19.5,
+              child: scaffold,
             ),
           )
-        ],
-      ),
+        else
+          scaffold,
+        Positioned.fill(
+          child: IgnorePointer(
+            child: AnimatedContainer(
+              duration: 1.seconds,
+              color: context.colorScheme.background
+                  .withOpacity(isLoading ? loadingBackgroundOpacity : 0),
+              child: isLoading ? LoadingIndicator() : const SizedBox.shrink(),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

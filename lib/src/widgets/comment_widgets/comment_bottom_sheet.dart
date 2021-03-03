@@ -24,7 +24,6 @@ class CommentBottomSheet {
 
     await showSlidingBottomSheet(
       context,
-      useRootNavigator: true,
       builder: (context) {
         return SlidingSheetDialog(
           controller: sheetController,

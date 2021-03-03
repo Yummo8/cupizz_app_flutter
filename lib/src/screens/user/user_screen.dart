@@ -17,10 +17,14 @@ class UserScreenParams extends RouterParam {
 }
 
 class UserScreen extends StatelessWidget {
+  final UserScreenParams params;
+
+  const UserScreen({Key key, this.params}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final controller = Momentum.controller<UserScreenController>(context);
-    final UserScreenParams params = Get.arguments;
+    final UserScreenParams params = this.params ?? Get.arguments;
     controller.loadData(chatUser: params?.user, userId: params?.userId);
 
     return MomentumBuilder(
@@ -30,7 +34,7 @@ class UserScreen extends StatelessWidget {
         return UserProfile(
           user: model.user,
           showBackButton: true,
-          onRefresh: controller.refresh,
+          enableRefresh: false,
           isLoading: model.isLoading,
         );
       },
