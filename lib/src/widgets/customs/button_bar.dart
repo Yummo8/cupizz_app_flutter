@@ -4,7 +4,7 @@ class ButtonBar extends StatelessWidget {
   final int selectedIndex;
   final List<String> items;
 
-  const ButtonBar({Key key, this.selectedIndex = 0, @required this.items})
+  const ButtonBar({Key? key, this.selectedIndex = 0, required this.items})
       : super(key: key);
 
   @override

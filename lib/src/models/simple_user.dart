@@ -1,51 +1,51 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:cupizz_app/src/base/base.dart';
 
 class SimpleUser extends ChatUser {
-  int age;
-  String introduction;
-  Gender gender;
-  List<Hobby> hobbies;
-  String phoneNumber;
-  String job;
-  int height;
-  String address;
-  EducationLevel educationLevel;
-  UsualType smoking;
-  UsualType drinking;
-  HaveKids yourKids;
-  List<LookingFor> lookingFors;
-  Religious religious;
-  List<UserImage> userImages;
+  int? age;
+  String? introduction;
+  Gender? gender;
+  List<Hobby>? hobbies;
+  String? phoneNumber;
+  String? job;
+  int? height;
+  String? address;
+  EducationLevel? educationLevel;
+  UsualType? smoking;
+  UsualType? drinking;
+  HaveKids? yourKids;
+  List<LookingFor>? lookingFors;
+  Religious? religious;
+  List<UserImage>? userImages;
 
-  List<HobbyWithIsSelect> _sameHobbies;
-  List<HobbyWithIsSelect> getSameHobbies(BuildContext context) {
+  List<HobbyWithIsSelect>? _sameHobbies;
+  List<HobbyWithIsSelect>? getSameHobbies(BuildContext context) {
     if (_sameHobbies == null) {
       final currentUserHobbies = Momentum.of<CurrentUserController>(context)
-              .model
+              .model!
               .currentUser
               ?.hobbies ??
           [];
 
       _sameHobbies = [];
-      final userHobbies = [...hobbies] ?? <Hobby>[];
+      final userHobbies = [...hobbies!];
 
       for (var hobby in userHobbies) {
-        if (_sameHobbies.length >= 5) break;
-        if (currentUserHobbies.firstWhere((e) => e.id == hobby.id,
-                orElse: () => null) !=
+        if (_sameHobbies!.length >= 5) break;
+        if (currentUserHobbies.firstWhereOrNull((e) => e.id == hobby.id) !=
             null) {
-          _sameHobbies.add(HobbyWithIsSelect(hobby, true));
+          _sameHobbies!.add(HobbyWithIsSelect(hobby, true));
         }
       }
 
-      if (_sameHobbies.length < 5) {
-        _sameHobbies.addAll(userHobbies
+      if (_sameHobbies!.length < 5) {
+        _sameHobbies!.addAll(userHobbies
             .takeWhile((e) => !currentUserHobbies.contains(e))
-            .take(5 - _sameHobbies.length)
+            .take(5 - _sameHobbies!.length)
             .map((e) => HobbyWithIsSelect(e, false))
             .toList());
       }
-      _sameHobbies.shuffle();
+      _sameHobbies!.shuffle();
     }
     return _sameHobbies;
   }

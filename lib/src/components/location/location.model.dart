@@ -13,7 +13,7 @@ class LocationModel extends MomentumModel<LocationController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return LocationModel(controller);
   }
 

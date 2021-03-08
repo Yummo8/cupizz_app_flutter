@@ -7,9 +7,9 @@ import 'package:simple_animations/simple_animations.dart';
 enum SuperLikeAniProps { opacity, scale }
 
 class SuperLikeOverlay extends StatelessWidget {
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
-  const SuperLikeOverlay({Key key, this.borderRadius}) : super(key: key);
+  const SuperLikeOverlay({Key? key, this.borderRadius}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

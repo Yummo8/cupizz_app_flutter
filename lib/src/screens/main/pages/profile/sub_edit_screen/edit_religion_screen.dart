@@ -6,14 +6,14 @@ class EditReligionScreen extends StatefulWidget {
 }
 
 class _EditReligionScreenState extends State<EditReligionScreen> {
-  Religious selectedValue;
+  Religious? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       selectedValue = Momentum.controller<CurrentUserController>(context)
-          .model
+          .model!
           .currentUser
           ?.religious;
       setState(() {});
@@ -38,11 +38,11 @@ class _EditReligionScreenState extends State<EditReligionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup<Religious>(
+              RadioButtonGroup<Religious?>(
                 spacing: 1.0,
                 items: Religious.getAll(),
                 selectedItems: [selectedValue],
-                valueToString: (v) => v.displayValue,
+                valueToString: (v) => v!.displayValue,
                 onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),

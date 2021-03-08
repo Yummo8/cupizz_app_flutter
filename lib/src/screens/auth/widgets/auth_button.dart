@@ -1,10 +1,10 @@
 part of '../index.dart';
 
 class AuthButton extends StatelessWidget {
-  final Future Function() onPressed;
+  final Future Function()? onPressed;
   final String text;
 
-  const AuthButton({Key key, this.onPressed, @required this.text})
+  const AuthButton({Key? key, this.onPressed, required this.text})
       : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class AuthButton extends StatelessWidget {
                 onTap: (startLoading, stopLoading, btnState) async {
                   startLoading();
                   try {
-                    if (onPressed != null) await onPressed();
+                    if (onPressed != null) await onPressed!();
                   } finally {
                     stopLoading();
                   }

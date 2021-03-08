@@ -3,79 +3,79 @@ part of dash_chat;
 class DashChat extends StatefulWidget {
   final int messageContainerFlex;
   final bool readOnly;
-  final double height;
-  final double width;
-  final List<Message> messages;
-  final TextEditingController textController;
-  final FocusNode focusNode;
+  final double? height;
+  final double? width;
+  final List<Message?> messages;
+  final TextEditingController? textController;
+  final FocusNode? focusNode;
   final TextDirection inputTextDirection;
-  final String text;
-  final Function(String) onTextChange;
+  final String? text;
+  final Function(String)? onTextChange;
   final bool inputDisabled;
-  final InputDecoration inputDecoration;
+  final InputDecoration? inputDecoration;
   final TextCapitalization textCapitalization;
-  final String Function() messageIdGenerator;
-  final SimpleUser user;
+  final String Function()? messageIdGenerator;
+  final SimpleUser? user;
   final Function(Message) onSend;
   final bool alwaysShowSend;
   final bool sendOnEnter;
-  final TextInputAction textInputAction;
-  final DateFormat dateFormat;
-  final DateFormat timeFormat;
+  final TextInputAction? textInputAction;
+  final DateFormat? dateFormat;
+  final DateFormat? timeFormat;
   final bool showUserAvatar;
-  final Widget Function(ChatUser) avatarBuilder;
+  final Widget Function(ChatUser?)? avatarBuilder;
   final bool showAvatarForEveryMessage;
-  final void Function(ChatUser) onPressAvatar;
-  final void Function(ChatUser) onLongPressAvatar;
-  final Function(Message) onLongPressMessage;
+  final void Function(ChatUser)? onPressAvatar;
+  final void Function(ChatUser)? onLongPressAvatar;
+  final Function(Message)? onLongPressMessage;
   final bool inverted;
-  final Widget Function(Message) messageBuilder;
-  final Widget Function(String, [Message]) messageTextBuilder;
-  final Widget Function(String url, [Message]) messageImageBuilder;
-  final Widget Function(String url, [Message]) messageTimeBuilder;
-  final Widget Function(String) dateBuilder;
-  final Widget Function() chatFooterBuilder;
-  final int maxInputLength;
+  final Widget Function(Message)? messageBuilder;
+  final Widget Function(String, [Message])? messageTextBuilder;
+  final Widget Function(String url, [Message])? messageImageBuilder;
+  final Widget Function(String url, [Message])? messageTimeBuilder;
+  final Widget Function(String)? dateBuilder;
+  final Widget Function()? chatFooterBuilder;
+  final int? maxInputLength;
   final List<MatchText> parsePatterns;
-  final BoxDecoration messageContainerDecoration;
+  final BoxDecoration? messageContainerDecoration;
   final List<Widget> leading;
   final List<Widget> trailing;
-  final Widget Function(Function) sendButtonBuilder;
-  final TextStyle inputTextStyle;
-  final BoxDecoration inputContainerStyle;
+  final Widget Function(Function)? sendButtonBuilder;
+  final TextStyle? inputTextStyle;
+  final BoxDecoration? inputContainerStyle;
   final int inputMaxLines;
   final bool showInputCursor;
   final double inputCursorWidth;
-  final Color inputCursorColor;
-  final ScrollController scrollController;
-  final Widget Function() inputFooterBuilder;
+  final Color? inputCursorColor;
+  final ScrollController? scrollController;
+  final Widget Function()? inputFooterBuilder;
   final EdgeInsetsGeometry messageContainerPadding;
-  final Function(Reply) onQuickReply;
+  final Function(Reply)? onQuickReply;
   final EdgeInsetsGeometry quickReplyPadding;
-  final BoxDecoration quickReplyStyle;
-  final TextStyle quickReplyTextStyle;
-  final Widget Function(Reply) quickReplyBuilder;
+  final BoxDecoration? quickReplyStyle;
+  final TextStyle? quickReplyTextStyle;
+  final Widget Function(Reply?)? quickReplyBuilder;
   final bool quickReplyScroll;
   final bool showTraillingBeforeSend;
   final bool scrollToBottom;
   final bool shouldStartMessagesFromTop;
-  final Widget Function() scrollToBottomWidget;
-  final Function onScrollToBottomPress;
+  final Widget Function()? scrollToBottomWidget;
+  final Function? onScrollToBottomPress;
   final bool shouldShowLoadEarlier;
-  final Widget Function() showLoadEarlierWidget;
-  final Function onLoadEarlier;
+  final Widget Function()? showLoadEarlierWidget;
+  final Function? onLoadEarlier;
   final EdgeInsets inputToolbarPadding;
   final EdgeInsets inputToolbarMargin;
-  final List<Widget> Function(Message) messageButtonsBuilder;
+  final List<Widget> Function(Message)? messageButtonsBuilder;
   final EdgeInsets messagePadding;
   final bool textBeforeImage;
   final double avatarMaxSize;
-  final BoxDecoration Function(Message, bool) messageDecorationBuilder;
+  final BoxDecoration Function(Message, bool?)? messageDecorationBuilder;
   final ScrollToBottomStyle scrollToBottomStyle;
 
   DashChat({
-    Key key,
-    ScrollToBottomStyle scrollToBottomStyle,
+    Key? key,
+    ScrollToBottomStyle? scrollToBottomStyle,
     this.avatarMaxSize = 30.0,
     this.inputTextDirection = TextDirection.ltr,
     this.inputToolbarMargin = const EdgeInsets.all(0.0),
@@ -112,7 +112,7 @@ class DashChat extends StatefulWidget {
     this.height,
     this.width,
     this.readOnly = false,
-    @required this.messages,
+    required this.messages,
     this.onTextChange,
     this.text,
     this.inputDisabled = false,
@@ -124,8 +124,8 @@ class DashChat extends StatefulWidget {
     this.messageIdGenerator,
     this.dateFormat,
     this.timeFormat,
-    @required this.user,
-    @required this.onSend,
+    required this.user,
+    required this.onSend,
     this.onLongPressAvatar,
     this.onLongPressMessage,
     this.onPressAvatar,
@@ -152,7 +152,7 @@ class DashChat extends StatefulWidget {
   })  : scrollToBottomStyle = scrollToBottomStyle ?? ScrollToBottomStyle(),
         super(key: key);
 
-  String getVal() {
+  String? getVal() {
     return text;
   }
 
@@ -161,9 +161,9 @@ class DashChat extends StatefulWidget {
 }
 
 class DashChatState extends State<DashChat> {
-  FocusNode inputFocusNode;
-  TextEditingController textController;
-  ScrollController scrollController;
+  FocusNode? inputFocusNode;
+  TextEditingController? textController;
+  ScrollController? scrollController;
   String _text = '';
   bool visible = false;
   GlobalKey inputKey = GlobalKey();
@@ -171,7 +171,7 @@ class DashChatState extends State<DashChat> {
   bool showLoadMore = false;
   String get messageInput => _text;
   bool _initialLoad = true;
-  Timer _timer;
+  Timer? _timer;
 
   void onTextChange(String text) {
     if (visible) {
@@ -201,7 +201,7 @@ class DashChatState extends State<DashChat> {
     scrollController = widget.scrollController ?? ScrollController();
     textController = widget.textController ?? TextEditingController();
     inputFocusNode = widget.focusNode ?? FocusNode();
-    WidgetsBinding.instance.addPostFrameCallback(widgetBuilt);
+    WidgetsBinding.instance!.addPostFrameCallback(widgetBuilt);
     super.initState();
   }
 
@@ -214,10 +214,10 @@ class DashChatState extends State<DashChat> {
   void widgetBuilt(Duration d) {
     final initPos = widget.inverted
         ? 0.0
-        : scrollController.position.maxScrollExtent + 25.0;
+        : scrollController!.position.maxScrollExtent + 25.0;
 
-    if (scrollController.hasClients) {
-      scrollController
+    if (scrollController!.hasClients) {
+      scrollController!
           .animateTo(
         initPos,
         duration: const Duration(milliseconds: 150),
@@ -234,14 +234,14 @@ class DashChatState extends State<DashChat> {
       });
     }
 
-    scrollController.addListener(() {
+    scrollController!.addListener(() {
       final topReached = widget.inverted
-          ? scrollController.offset >=
-                  scrollController.position.maxScrollExtent &&
-              !scrollController.position.outOfRange
-          : scrollController.offset <=
-                  scrollController.position.minScrollExtent &&
-              !scrollController.position.outOfRange;
+          ? scrollController!.offset >=
+                  scrollController!.position.maxScrollExtent &&
+              !scrollController!.position.outOfRange
+          : scrollController!.offset <=
+                  scrollController!.position.minScrollExtent &&
+              !scrollController!.position.outOfRange;
 
       if (widget.shouldShowLoadEarlier) {
         if (topReached) {
@@ -254,7 +254,7 @@ class DashChatState extends State<DashChat> {
           });
         }
       } else if (topReached) {
-        widget.onLoadEarlier();
+        widget.onLoadEarlier!();
       }
     });
   }
@@ -286,7 +286,7 @@ class DashChatState extends State<DashChat> {
                           padding: const EdgeInsets.symmetric(horizontal: 50),
                           child: Text(
                             'Hai bạn chưa nhắn tin với nhau. Hãy chủ động để tìm hiểu đối phương đi nào!',
-                            style: context.textTheme.subtitle1.copyWith(
+                            style: context.textTheme.subtitle1!.copyWith(
                               color: context.colorScheme.onSurface,
                             ),
                             textAlign: TextAlign.center,
@@ -303,7 +303,8 @@ class DashChatState extends State<DashChat> {
                         showLoadEarlierWidget: widget.showLoadEarlierWidget,
                         onLoadEarlier: widget.onLoadEarlier,
                         defaultLoadCallback: changeDefaultLoadMore,
-                        messageContainerPadding: widget.messageContainerPadding,
+                        messageContainerPadding:
+                            widget.messageContainerPadding as EdgeInsets,
                         scrollController:
                             widget.scrollController ?? scrollController,
                         user: widget.user,
@@ -333,7 +334,7 @@ class DashChatState extends State<DashChat> {
                         messageDecorationBuilder:
                             widget.messageDecorationBuilder),
                   if (widget.chatFooterBuilder != null)
-                    widget.chatFooterBuilder(),
+                    widget.chatFooterBuilder!(),
                   if (!widget.readOnly)
                     ChatInputToolbar(
                         key: inputKey,
@@ -377,7 +378,7 @@ class DashChatState extends State<DashChat> {
                   bottom: widget.scrollToBottomStyle.bottom,
                   top: widget.scrollToBottomStyle.top,
                   child: widget.scrollToBottomWidget != null
-                      ? widget.scrollToBottomWidget()
+                      ? widget.scrollToBottomWidget!()
                       : ScrollToBottom(
                           onScrollToBottomPress: widget.onScrollToBottomPress,
                           scrollToBottomStyle: widget.scrollToBottomStyle,

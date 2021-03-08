@@ -10,28 +10,31 @@ class RecommendableUsersModel
     this.isLastPage = false,
   }) : super(controller);
 
-  final List<SimpleUser> users;
+  final List<SimpleUser>? users;
   final bool isLoading;
   final bool isLastPage;
-  final String error;
+  final String? error;
 
   @override
   void update(
-      {List<SimpleUser> users, bool isLoading, String error, bool isLastPage}) {
+      {List<SimpleUser>? users,
+      bool? isLoading,
+      String? error,
+      bool? isLastPage}) {
     RecommendableUsersModel(
       controller,
       users: users ?? this.users,
-      isLoading: isLoading ?? this.isLoading ?? false,
+      isLoading: isLoading ?? this.isLoading,
       error: error,
-      isLastPage: isLastPage ?? this.isLastPage ?? false,
+      isLastPage: isLastPage ?? this.isLastPage,
     ).updateMomentum();
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return RecommendableUsersModel(
       controller,
-      users: (json['users'] as List)
+      users: (json!['users'] as List)
           .map((e) => Mapper.fromJson(e).toObject<SimpleUser>())
           .toList(),
       error: json['error'],
@@ -40,7 +43,7 @@ class RecommendableUsersModel
 
   @override
   Map<String, dynamic> toJson() => {
-        'users': users.map((e) => e.toJson()).toList(),
+        'users': users!.map((e) => e.toJson()).toList(),
         'error': error,
       };
 }

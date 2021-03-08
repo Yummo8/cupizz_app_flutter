@@ -7,26 +7,26 @@ class AppConfig extends InheritedWidget {
   final String wss;
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
-  static GlobalKey _globalKey;
-  static GlobalKey get globalKey => _globalKey;
+  static GlobalKey? _globalKey;
+  static GlobalKey? get globalKey => _globalKey;
   // final SentryClient sentry;
 
   bool get isDev => flavorName == AppFlavor.DEVELOPMENT;
 
   AppConfig({
-    @required this.appName,
-    @required this.flavorName,
-    @required this.apiUrl,
-    @required this.wss,
-    @required Widget child,
+    required this.appName,
+    required this.flavorName,
+    required this.apiUrl,
+    required this.wss,
+    required Widget child,
     // this.sentry,
   }) : super(child: Material(child: child)) {
-    _globalKey = child.key;
+    _globalKey = child.key as GlobalKey<State<StatefulWidget>>?;
     FlutterError.onError = (FlutterErrorDetails details) {
       if (isDev || kIsWeb) {
         FlutterError.dumpErrorToConsole(details);
       } else {
-        Zone.current.handleUncaughtError(details.exception, details.stack);
+        Zone.current.handleUncaughtError(details.exception, details.stack!);
       }
     };
 
@@ -34,11 +34,11 @@ class AppConfig extends InheritedWidget {
   }
 
   AppConfig copyWith({
-    String appName,
-    AppFlavor flavorName,
-    String apiUrl,
-    String wss,
-    Widget child,
+    String? appName,
+    AppFlavor? flavorName,
+    String? apiUrl,
+    String? wss,
+    Widget? child,
     // SentryClient sentry,
   }) {
     return AppConfig(
@@ -51,7 +51,7 @@ class AppConfig extends InheritedWidget {
     );
   }
 
-  static AppConfig get instance => _globalKey.currentContext
+  static AppConfig? get instance => _globalKey!.currentContext!
       .dependOnInheritedWidgetOfExactType(aspect: AppConfig);
 
   @override

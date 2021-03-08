@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cupizz_app/src/base/base.dart';
 
 class CustomNetworkImage extends StatelessWidget {
-  final String url;
+  final String? url;
   final BoxFit fit;
   final bool isAvatar;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
   const CustomNetworkImage(
     this.url, {
-    Key key,
+    Key? key,
     this.fit = BoxFit.cover,
     this.isAvatar = false,
     this.borderRadius,

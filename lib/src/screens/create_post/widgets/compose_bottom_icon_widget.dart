@@ -1,9 +1,9 @@
 part of 'create_post_widgets.dart';
 
 class ComposeBottomIconWidget extends StatelessWidget {
-  final Function(List<File>) onImageIconSelected;
+  final Function(List<File?>?)? onImageIconSelected;
 
-  ComposeBottomIconWidget({Key key, this.onImageIconSelected})
+  ComposeBottomIconWidget({Key? key, this.onImageIconSelected})
       : super(key: key);
 
   void _pickImage(BuildContext context, int maxSelected) {
@@ -21,7 +21,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
     return MomentumBuilder(
         controllers: [CreatePostController],
         builder: (context, snapshot) {
-          final model = snapshot<CreatePostModel>();
+          final model = snapshot<CreatePostModel>()!;
           return Container(
             width: MediaQuery.of(context).size.width,
             height: 50,
@@ -47,7 +47,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
                   child: Text(
                     'Mọi confession đều sẽ được ẩn danh',
                     textAlign: TextAlign.right,
-                    style: context.textTheme.caption
+                    style: context.textTheme.caption!
                         .copyWith(fontStyle: FontStyle.italic),
                   ),
                 ))

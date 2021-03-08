@@ -5,28 +5,28 @@ class MultiSelectHobby extends FormField<dynamic> {
   final Widget hintWidget;
   final bool required;
   final String errorText;
-  final List<MultiSelectDialogItem> dataSource;
-  final Function change;
-  final Function open;
-  final Function close;
-  final Widget leading;
-  final Widget trailing;
+  final List<MultiSelectDialogItem>? dataSource;
+  final Function? change;
+  final Function? open;
+  final Function? close;
+  final Widget? leading;
+  final Widget? trailing;
   final String okButtonLabel;
   final String cancelButtonLabel;
-  final Color fillColor;
-  final InputBorder border;
-  final TextStyle chipLabelStyle;
-  final Color chipBackGroundColor;
-  final TextStyle dialogTextStyle;
+  final Color? fillColor;
+  final InputBorder? border;
+  final TextStyle? chipLabelStyle;
+  final Color? chipBackGroundColor;
+  final TextStyle? dialogTextStyle;
   final ShapeBorder dialogShapeBorder;
-  final Color checkBoxCheckColor;
-  final Color checkBoxActiveColor;
+  final Color? checkBoxCheckColor;
+  final Color? checkBoxActiveColor;
   @override
   final bool enabled;
 
   MultiSelectHobby({
-    FormFieldSetter<dynamic> onSaved,
-    FormFieldValidator<dynamic> validator,
+    FormFieldSetter<dynamic>? onSaved,
+    FormFieldValidator<dynamic>? validator,
     dynamic initialValue,
     bool autovalidate = false,
     this.title = const Text('Title'),
@@ -64,21 +64,24 @@ class MultiSelectHobby extends FormField<dynamic> {
 
               if (state.value != null) {
                 state.value.forEach((item) {
-                  var existingItem = dataSource.singleWhere(
-                      (itm) => itm.value == item,
-                      orElse: () => null);
-                  selectedOptions.add(Chip(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
-                    labelStyle: chipLabelStyle,
-                    backgroundColor: chipBackGroundColor,
-                    avatar: Icon(existingItem.icon,
-                        color: state.context.colorScheme.onPrimary),
-                    label: Text(
-                      existingItem.label,
-                      style:
-                          TextStyle(color: state.context.colorScheme.onPrimary),
-                    ),
-                  ));
+                  var existingItem = (dataSource ?? [])
+                      .where((itm) => itm.value == item)
+                      .toList()
+                      .getAt(0);
+                  if (existingItem != null) {
+                    selectedOptions.add(Chip(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      labelStyle: chipLabelStyle,
+                      backgroundColor: chipBackGroundColor,
+                      avatar: Icon(existingItem.icon,
+                          color: state.context.colorScheme.onPrimary),
+                      label: Text(
+                        existingItem.label,
+                        style: TextStyle(
+                            color: state.context.colorScheme.onPrimary),
+                      ),
+                    ));
+                  }
                 });
               }
 
@@ -89,7 +92,7 @@ class MultiSelectHobby extends FormField<dynamic> {
               onTap: !enabled
                   ? null
                   : () async {
-                      List initialSelected = state.value;
+                      List? initialSelected = state.value;
                       initialSelected ??= [];
 
                       var selectedValues = await showDialog<List>(

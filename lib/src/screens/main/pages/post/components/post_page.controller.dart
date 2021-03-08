@@ -17,28 +17,28 @@ class PostPageController extends MomentumController<PostPageModel> {
 
   @override
   Future bootstrapAsync() async {
-    await _loading(_reload, enableLoading: !model.posts.isExistAndNotEmpty);
+    await _loading(_reload, enableLoading: !model!.posts!.isExistAndNotEmpty);
   }
 
   Future refresh() => _reload();
 
   Future loadMore() async {
-    if (model.isLastPage) return;
-    await _reload(model.currentPage + 1);
+    if (model!.isLastPage!) return;
+    await _reload(model!.currentPage! + 1);
   }
 
-  Future selectCategory(PostCategory category) async {
-    if (category?.id == model.selectedCategory?.id) return;
+  Future selectCategory(PostCategory? category) async {
+    if (category?.id == model!.selectedCategory?.id) return;
     if (category?.id == kIsMyPost) {
-      model.update(isMyPost: !model.isMyPost);
+      model!.update(isMyPost: !model!.isMyPost!);
     } else {
-      model.update(selectedCategory: category);
+      model!.update(selectedCategory: category);
     }
     await _loading(_reload);
   }
 
   void search(String keyword) {
-    if (keyword != model.keyword) {
+    if (keyword != model!.keyword) {
       _searchDebouncer.debounce(() {
         _search(keyword);
       });
@@ -48,40 +48,44 @@ class PostPageController extends MomentumController<PostPageModel> {
   Future clearSearch() => _search('');
 
   void changeIsIncognitoComment() {
-    model.update(isIncognitoComment: !model.isIncognitoComment);
+    model!.update(isIncognitoComment: !model!.isIncognitoComment!);
   }
 
   Future commentPost(Post post, String content) async {
-    final index = model.posts.indexWhere((e) => e.id == post.id);
+    final index = model!.posts!.indexWhere((e) => e.id == post.id);
     await trycatch(() async {
-      final comment = await Get.find<PostService>()
-          .commentPost(post.id, content, isIncognito: model.isIncognitoComment);
-      model.posts[index].comments.insert(0, comment);
-      model.posts[index].commentCount++;
-      model.update(posts: model.posts);
+      final comment = await Get.find<PostService>().commentPost(
+          post.id, content,
+          isIncognito: model!.isIncognitoComment);
+      model!.posts![index].comments!.insert(0, comment);
+      model!.posts![index].commentCount =
+          model!.posts![index].commentCount ?? 0 + 1;
+      model!.update(posts: model!.posts);
     });
   }
 
   Future loadmoreComments(Post post) async {
-    if (post.commentCount <= post.comments?.length) return;
-    final index = model.posts.indexWhere((e) => e.id == post.id);
+    if (post.commentCount == null ||
+        post.comments == null ||
+        post.commentCount! <= post.comments!.length) return;
+    final index = model!.posts!.indexWhere((e) => e.id == post.id);
     await trycatch(() async {
-      final lastComment = post.comments.last;
+      final lastComment = post.comments!.last;
       final comments = await Get.find<PostService>()
-          .getComments(post.id, commentCursorId: lastComment.id);
-      model.posts[index].comments.addAll(comments);
-      model.update(posts: model.posts);
+          .getComments(post.id, commentCursorId: lastComment.id!);
+      model!.posts![index].comments!.addAll(comments);
+      model!.update(posts: model!.posts);
     });
   }
 
-  Future likePost(Post post, [LikeType type]) async {
-    final index = model.posts.indexWhere((e) => e.id == post.id);
+  Future likePost(Post post, [LikeType? type]) async {
+    final index = model!.posts!.indexWhere((e) => e.id == post.id);
     final oldLikeType = post.myLikedPostType;
     if (index >= 0) {
-      model.posts[index].myLikedPostType = type ?? LikeType.love;
-      model.posts[index].likeCount++;
+      model!.posts![index].myLikedPostType = type ?? LikeType.love;
+      model!.posts![index].likeCount = model!.posts![index].likeCount ?? 0 + 1;
     }
-    model.update(posts: model.posts);
+    model!.update(posts: model!.posts);
 
     _likeDebouncer.debounce(() async {
       try {
@@ -91,10 +95,11 @@ class PostPageController extends MomentumController<PostPageModel> {
         // model.update(posts: model.posts);
       } catch (e) {
         if (index >= 0) {
-          model.posts[index].myLikedPostType = oldLikeType;
-          model.posts[index].likeCount--;
+          model!.posts![index].myLikedPostType = oldLikeType;
+          model!.posts![index].likeCount =
+              model!.posts![index].likeCount ?? 0 - 1;
         }
-        model.update(posts: model.posts);
+        model!.update(posts: model!.posts);
         await Fluttertoast.showToast(msg: e.toString());
         rethrow;
       }
@@ -102,13 +107,13 @@ class PostPageController extends MomentumController<PostPageModel> {
   }
 
   Future unlikePost(Post post) async {
-    final index = model.posts.indexWhere((e) => e.id == post.id);
+    final index = model!.posts!.indexWhere((e) => e.id == post.id);
     final oldLikeType = post.myLikedPostType;
     if (index >= 0) {
-      model.posts[index].myLikedPostType = null;
-      model.posts[index].likeCount--;
+      model!.posts![index].myLikedPostType = null;
+      model!.posts![index].likeCount = model!.posts![index].likeCount ?? 0 - 1;
     }
-    model.update(posts: model.posts);
+    model!.update(posts: model!.posts);
 
     _likeDebouncer.debounce(() async {
       try {
@@ -118,10 +123,11 @@ class PostPageController extends MomentumController<PostPageModel> {
         // model.update(posts: model.posts);
       } catch (e) {
         if (index >= 0) {
-          model.posts[index].myLikedPostType = oldLikeType;
-          model.posts[index].likeCount++;
+          model!.posts![index].myLikedPostType = oldLikeType;
+          model!.posts![index].likeCount =
+              model!.posts![index].likeCount ?? 0 + 1;
         }
-        model.update(posts: model.posts);
+        model!.update(posts: model!.posts);
         await Fluttertoast.showToast(msg: e.toString());
         rethrow;
       }
@@ -129,14 +135,14 @@ class PostPageController extends MomentumController<PostPageModel> {
   }
 
   void insertPost(Post post) {
-    final index = model.posts.indexWhere((e) => e.id == post.id);
+    final index = model!.posts!.indexWhere((e) => e.id == post.id);
     if (index > 0) return;
-    model.posts.insert(0, post);
-    model.update(posts: model.posts);
+    model!.posts!.insert(0, post);
+    model!.update(posts: model!.posts);
   }
 
   Future _search(String keyword) async {
-    model.update(keyword: keyword);
+    model!.update(keyword: keyword);
     await _loading(_reload);
   }
 
@@ -144,12 +150,12 @@ class PostPageController extends MomentumController<PostPageModel> {
     await trycatch(() async {
       final posts = await Get.find<PostService>().getPosts(
         page: page,
-        categoryId: model.selectedCategory?.id,
-        keyword: model.keyword,
-        isMyPost: model.isMyPost,
+        categoryId: model!.selectedCategory?.id ?? '',
+        keyword: model!.keyword,
+        isMyPost: model!.isMyPost,
       );
-      model.update(
-        posts: page == 1 ? posts.data : [...model.posts, ...posts.data],
+      model!.update(
+        posts: page == 1 ? posts.data : [...model!.posts!, ...posts.data!],
         currentPage: page,
         isLastPage: posts.isLastPage,
       );
@@ -159,7 +165,7 @@ class PostPageController extends MomentumController<PostPageModel> {
   Future _loading(Function func,
       {bool throwError = false, bool enableLoading = true}) async {
     if (enableLoading) {
-      model.update(isLoading: true);
+      model!.update(isLoading: true);
     }
     try {
       await func();
@@ -168,7 +174,7 @@ class PostPageController extends MomentumController<PostPageModel> {
       if (throwError) rethrow;
     } finally {
       if (enableLoading) {
-        model.update(isLoading: false);
+        model!.update(isLoading: false);
       }
     }
   }

@@ -37,9 +37,9 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen>
     with KeepScrollOffsetMixin {
-  CurrentUserModel model;
-  User user;
-  String bio;
+  late CurrentUserModel model;
+  User? user;
+  String? bio;
 
   static double lastScrollOffset = 0;
 
@@ -71,7 +71,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       body: MomentumBuilder(
           controllers: [CurrentUserController],
           builder: (context, snapshot) {
-            model = snapshot<CurrentUserModel>();
+            model = snapshot<CurrentUserModel>()!;
             user = model.currentUser;
             return SingleChildScrollView(
               controller: scrollController,
@@ -85,7 +85,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     children: [
                       Text(
                         Strings.editProfile.introduction,
-                        style: context.textTheme.headline6
+                        style: context.textTheme.headline6!
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
@@ -105,17 +105,17 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                             border: InputBorder.none,
                             hintText:
                                 'Hãy mô tả bản thân bạn bằng vài từ hoặc câu...',
-                            hintStyle: context.textTheme.bodyText1
+                            hintStyle: context.textTheme.bodyText1!
                                 .copyWith(color: context.colorScheme.onSurface),
                           ),
                         ),
                       ),
-                      if (bio.isExistAndNotEmpty)
+                      if (bio!.isExistAndNotEmpty)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${bio.length}/500',
+                              '${bio!.length}/500',
                               style: context.textTheme.caption,
                             ),
                             InkWell(
@@ -128,7 +128,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                               },
                               child: Text(
                                 Strings.button.save,
-                                style: context.textTheme.bodyText1.copyWith(
+                                style: context.textTheme.bodyText1!.copyWith(
                                   fontWeight: FontWeight.w500,
                                   color: context.colorScheme.primary,
                                 ),
@@ -163,7 +163,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     var children = <Widget>[];
     children.add(Text(
       title,
-      style: context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
+      style: context.textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
     ));
     children.add(const SizedBox(height: 10.0));
     for (var widget in listWidgetItems) {
@@ -195,7 +195,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         Get.toNamed(Routes.editText,
             arguments: EditTextScreenParams(
               title: 'Tên',
-              value: user.nickName,
+              value: user!.nickName,
               onSave: (value) {
                 model.controller.updateProfile(nickName: value);
               },
@@ -214,7 +214,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.location_on_rounded,
       title: 'Vị trí hẹn hò',
-      value: user?.address != null ? 'Đang ở ${user.address}' : null,
+      value: user?.address != null ? 'Đang ở ${user!.address}' : null,
       onClick: () {
         Get.toNamed(Routes.editLocation);
       },
@@ -232,7 +232,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     listWidgetItems.add(RowEditInfo(
       iconData: Icons.account_circle_outlined,
       title: 'Đang tìm kiếm',
-      value: user?.lookingFors?.map((e) => e.displayValue)?.join(', '),
+      value: user?.lookingFors?.map((e) => e.displayValue).join(', '),
       onClick: () {
         Get.toNamed(Routes.editLookup);
       },
@@ -394,7 +394,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
             ),
             SizedBox(height: sizeHelper.rW(3)),
             Text('Thêm sở thích',
-                style: context.textTheme.subtitle1.copyWith(
+                style: context.textTheme.subtitle1!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.background,
                 ))

@@ -16,28 +16,28 @@ typedef ResetAll = void Function(
 );
 
 typedef BuildSkipper = bool Function(
-  T Function<T extends MomentumController>(),
+  T Function<T extends MomentumController>()?,
   bool isTimeTravel,
 );
 
 typedef PersistSaver = Future<bool> Function(
-  BuildContext context,
-  String key,
+  BuildContext? context,
+  String? key,
   String value,
 );
 
-typedef PersistGet = Future<String> Function(
-  BuildContext context,
-  String key,
+typedef PersistGet = Future<String?> Function(
+  BuildContext? context,
+  String? key,
 );
 
 typedef PersistSaverSync = bool Function(
-  BuildContext context,
+  BuildContext? context,
   String key,
   String value,
 );
 
-typedef PersistGetSync = String Function(
-  BuildContext context,
+typedef PersistGetSync = String? Function(
+  BuildContext? context,
   String key,
 );

@@ -5,12 +5,12 @@ class Skeleton extends StatelessWidget {
   final Widget child;
   final bool enabled;
   final bool autoContainer;
-  final Color baseColor;
-  final Color highlightColor;
+  final Color? baseColor;
+  final Color? highlightColor;
 
   const Skeleton(
-      {Key key,
-      @required this.child,
+      {Key? key,
+      required this.child,
       this.enabled = true,
       this.autoContainer = false,
       this.baseColor,
@@ -22,11 +22,11 @@ class Skeleton extends StatelessWidget {
     return enabled
         ? Shimmer.fromColors(
             baseColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.grey[900]
-                : Colors.grey[100],
+                ? Colors.grey[900]!
+                : Colors.grey[100]!,
             highlightColor: Theme.of(context).brightness == Brightness.dark
-                ? Colors.grey[800]
-                : Colors.grey[200],
+                ? Colors.grey[800]!
+                : Colors.grey[200]!,
             enabled: true,
             child: autoContainer
                 ? Container(
@@ -41,13 +41,13 @@ class Skeleton extends StatelessWidget {
 
 class SkeletonItem extends StatelessWidget {
   const SkeletonItem(
-      {Key key, this.color, @required this.child, this.width, this.height})
+      {Key? key, this.color, required this.child, this.width, this.height})
       : super(key: key);
 
-  final Color color;
+  final Color? color;
   final Widget child;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {

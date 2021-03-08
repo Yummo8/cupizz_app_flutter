@@ -1,15 +1,15 @@
 part of '../index.dart';
 
 class SocialButton extends StatelessWidget {
-  final String imageName;
-  final EdgeInsetsGeometry margin;
+  final String? imageName;
+  final EdgeInsetsGeometry? margin;
   final SocialProviderType type;
 
   const SocialButton({
-    Key key,
+    Key? key,
     this.imageName,
     this.margin,
-    @required this.type,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class SocialButton extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(10.0),
           child: Image.asset(
-            imageName,
+            imageName!,
             height: 28,
             width: 28,
           ),

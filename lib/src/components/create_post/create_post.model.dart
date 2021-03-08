@@ -7,19 +7,19 @@ class CreatePostModel extends MomentumModel<CreatePostController> {
     CreatePostController controller, {
     this.selected,
     this.content,
-    List<File> images,
+    List<File>? images,
   })  : images = images ?? [],
         super(controller);
 
-  final PostCategory selected;
-  final String content;
+  final PostCategory? selected;
+  final String? content;
   final List<File> images;
 
   @override
   void update({
-    PostCategory selected,
-    String content,
-    List<File> images,
+    PostCategory? selected,
+    String? content,
+    List<File>? images,
   }) {
     CreatePostModel(
       controller,
@@ -30,14 +30,14 @@ class CreatePostModel extends MomentumModel<CreatePostController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return CreatePostModel(
       controller,
-      content: json['content'],
+      content: json!['content'],
       selected: json['selected'] != null
           ? Mapper.fromJson(json['selected']).toObject<PostCategory>()
           : null,
-      images: (json['images'] as List ?? []).map((e) => File(e)).toList(),
+      images: (json['images'] as List? ?? []).map((e) => File(e)).toList(),
     );
   }
 
@@ -45,6 +45,6 @@ class CreatePostModel extends MomentumModel<CreatePostController> {
   Map<String, dynamic> toJson() => {
         'content': content,
         'selected': selected?.toJson(),
-        'images': (images ?? []).map((e) => e.path).toList()
+        'images': images.map((e) => e.path).toList()
       };
 }

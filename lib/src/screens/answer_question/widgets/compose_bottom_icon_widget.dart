@@ -1,12 +1,12 @@
 part of 'screen_widget.dart';
 
 class ComposeBottomIconWidget extends StatelessWidget {
-  final Function(File file) onImageIconSelected;
-  final Function(ColorOfAnswer color) onColorChanged;
-  final Function onDeletePressed;
+  final Function(File? file)? onImageIconSelected;
+  final Function(ColorOfAnswer color)? onColorChanged;
+  final Function? onDeletePressed;
 
   ComposeBottomIconWidget(
-      {Key key,
+      {Key? key,
       this.onImageIconSelected,
       this.onColorChanged,
       this.onDeletePressed})
@@ -32,7 +32,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
           MomentumBuilder(
               controllers: [SystemController],
               builder: (context, snapshot) {
-                final model = snapshot<SystemModel>();
+                final model = snapshot<SystemModel>()!;
                 return Row(
                   children: (model.colorsOfAnswer ?? [])
                       .map<Widget>((e) => CupertinoButton(
@@ -49,7 +49,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: e.gradient != null ? null : e.color,
                                 gradient: e.gradient != null
-                                    ? AnswerGradient(e.gradient)
+                                    ? AnswerGradient(e.gradient!)
                                     : null,
                               ),
                               child: Center(
@@ -69,7 +69,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
               }),
           IconButton(
             padding: EdgeInsets.zero,
-            onPressed: onDeletePressed,
+            onPressed: onDeletePressed as void Function()?,
             icon: Icon(
               Icons.close,
               color: context.colorScheme.onBackground,
@@ -82,7 +82,7 @@ class ComposeBottomIconWidget extends StatelessWidget {
 
   void _pickImage(BuildContext context) {
     pickImage(context, (images) {
-      if (!images.isExistAndNotEmpty) return;
+      if (!images!.isExistAndNotEmpty) return;
 
       onImageIconSelected?.call(images[0]);
     }, maxSelected: 1);

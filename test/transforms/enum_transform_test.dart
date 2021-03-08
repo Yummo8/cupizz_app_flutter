@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:object_mapper/object_mapper.dart';
 
 class TestEnum extends Enumerable<int> {
   @override
   final int rawValue;
-  const TestEnum({@required this.rawValue});
+  const TestEnum({required this.rawValue});
 
   static const a = TestEnum(rawValue: 0);
   static const b = TestEnum(rawValue: 1);

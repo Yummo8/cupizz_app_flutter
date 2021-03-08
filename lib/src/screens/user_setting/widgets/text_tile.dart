@@ -4,7 +4,7 @@ class _TextTile extends StatelessWidget {
   const _TextTile({
     this.title = '',
     this.isEnabled = true,
-    @required this.text,
+    required this.text,
     this.onTap,
     this.titleColor,
     this.children,
@@ -13,9 +13,9 @@ class _TextTile extends StatelessWidget {
   final String title;
   final String text;
   final bool isEnabled;
-  final VoidCallback onTap;
-  final Color titleColor;
-  final List<Widget> children;
+  final VoidCallback? onTap;
+  final Color? titleColor;
+  final List<Widget>? children;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _TextTile extends StatelessWidget {
                   Expanded(
                     child: Wrap(
                       spacing: 10,
-                      children: children,
+                      children: children!,
                     ),
                   )
                 else

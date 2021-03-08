@@ -2,9 +2,9 @@ import 'package:cupizz_app/src/base/base.dart';
 
 class HeadingBar extends StatelessWidget {
   final String title;
-  final int badge;
+  final int? badge;
 
-  const HeadingBar({Key key, @required this.title, this.badge})
+  const HeadingBar({Key? key, required this.title, this.badge})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class HeadingBar extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: context.textTheme.headline4.copyWith(
+            style: context.textTheme.headline4!.copyWith(
               color: context.colorScheme.onBackground,
               fontWeight: FontWeight.bold,
             ),
@@ -30,7 +30,7 @@ class HeadingBar extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(BuildContext context, int length) {
+  Widget _buildBadge(BuildContext context, int? length) {
     return Container(
       decoration: BoxDecoration(
         color: context.colorScheme.primary,

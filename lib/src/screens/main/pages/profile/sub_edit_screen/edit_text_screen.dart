@@ -1,9 +1,9 @@
 part of '../edit_profile_screen.dart';
 
 class EditTextScreenParams extends RouterParam {
-  final ValueChanged<String> onSave;
-  final String title;
-  final String value;
+  final ValueChanged<String>? onSave;
+  final String? title;
+  final String? value;
 
   EditTextScreenParams({this.onSave, this.title, this.value});
 }
@@ -16,16 +16,16 @@ class EditTextScreen extends StatefulWidget {
 class _EditTextScreenState extends State<EditTextScreen> {
   final TextEditingController _textController = TextEditingController();
   bool isEdit = false;
-  String value;
-  EditTextScreenParams params;
+  String? value;
+  EditTextScreenParams? params;
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       params = Get.arguments;
-      _textController.text = params?.value != null ? params.value : '';
+      _textController.text = params?.value != null ? params!.value! : '';
       _textController.addListener(_textChange);
       isEdit = false;
       value = params?.value;
@@ -88,13 +88,13 @@ class _EditTextScreenState extends State<EditTextScreen> {
                         ),
                         child: Text(
                           'Bỏ',
-                          style: context.textTheme.button
+                          style: context.textTheme.button!
                               .copyWith(color: context.colorScheme.background),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
-                          params?.onSave(_textController.text);
+                          params?.onSave!(_textController.text);
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
@@ -106,7 +106,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
                         ),
                         child: Text(
                           'Lưu',
-                          style: context.textTheme.button
+                          style: context.textTheme.button!
                               .copyWith(color: _theme.colorScheme.onPrimary),
                         ),
                       )
@@ -136,7 +136,7 @@ class _EditTextScreenState extends State<EditTextScreen> {
         actions: [
           SaveButton(
             onPressed: () {
-              params.onSave?.call(_textController.text);
+              params!.onSave?.call(_textController.text);
               Get.back();
             },
           )

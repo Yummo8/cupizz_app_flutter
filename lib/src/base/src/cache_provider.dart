@@ -12,7 +12,7 @@ class CacheProvider {
     await _storage.setString(url, data);
   }
 
-  Future<String> readCache(String url) async {
+  Future<String?> readCache(String url) async {
     final _storage = await SharedPreferences.getInstance();
     return _storage.getString(url);
   }

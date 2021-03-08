@@ -6,13 +6,13 @@ enum ChatPageEventAction {
 
 class ChatPageEvent {
   final ChatPageEventAction action;
-  final String message;
+  final String? message;
 
-  ChatPageEvent({@required this.action, this.message});
+  ChatPageEvent({required this.action, this.message});
 }
 
 class ChatPageController extends MomentumController<ChatPageModel> {
-  StreamSubscription<Conversation> conversationSupscription;
+  StreamSubscription<Conversation>? conversationSupscription;
 
   @override
   ChatPageModel init() {
@@ -26,16 +26,16 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   }
 
   void initState() async {
-    if (!model.conversations.isExistAndNotEmpty) {
-      model.update(isLoading: true);
+    if (!model!.conversations.isExistAndNotEmpty) {
+      model!.update(isLoading: true);
       await _reload();
       _connectSubsciption();
-      model.update(isLoading: false);
+      model!.update(isLoading: false);
     }
   }
 
   @override
-  void reset({bool clearHistory}) {
+  void reset({bool? clearHistory}) {
     conversationSupscription?.cancel();
     debugPrint('Unsubscribed conversation changes');
     super.reset(clearHistory: clearHistory);
@@ -51,24 +51,24 @@ class ChatPageController extends MomentumController<ChatPageModel> {
 
   void onConversationChange(Conversation newConversation) {
     final oldConversationIndex =
-        model.conversations.indexWhere((e) => e.id == newConversation.id);
+        model!.conversations.indexWhere((e) => e.id == newConversation.id);
 
     if (oldConversationIndex >= 0) {
-      if (model.conversations[oldConversationIndex].newestMessage?.id ==
-          newConversation?.newestMessage?.id) {
-        model.conversations[oldConversationIndex] = newConversation;
+      if (model!.conversations[oldConversationIndex].newestMessage?.id ==
+          newConversation.newestMessage?.id) {
+        model!.conversations[oldConversationIndex] = newConversation;
       } else {
-        model.conversations
+        model!.conversations
           ..removeAt(oldConversationIndex)
           ..insert(0, newConversation);
       }
     } else {
-      model.conversations.insert(0, newConversation);
+      model!.conversations.insert(0, newConversation);
     }
 
     // Show Incoming call screen if newest message is a call
     if (newConversation.newestMessage?.callStatus == CallStatus.ringing &&
-        !newConversation.newestMessage.isCaller) {
+        !newConversation.newestMessage!.isCaller!) {
       dependOn<CallController>()
           .onNewIncomingCall(newConversation.newestMessage);
     } else if (newConversation.newestMessage?.callStatus ==
@@ -79,7 +79,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
           .onNewMissingCall(newConversation.newestMessage);
     }
 
-    model.update(conversations: model.conversations);
+    model!.update(conversations: model!.conversations);
     dependOn<SystemController>().getUnreadMessageCount();
   }
 
@@ -89,17 +89,17 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   }
 
   Future loadmore() async {
-    if (model.isLastPage) return;
+    if (model!.isLastPage!) return;
     try {
       final data = await Get.find<MessageService>().getMyConversations(
-        page: model.currentPage + 1,
+        page: model!.currentPage! + 1,
       );
-      final conversations = data.data;
-      model.conversations.addAll(conversations);
+      final conversations = data.data!;
+      model!.conversations.addAll(conversations);
 
-      model.update(
-        conversations: model.conversations,
-        currentPage: model.currentPage + 1,
+      model!.update(
+        conversations: model!.conversations,
+        currentPage: model!.currentPage! + 1,
         isLastPage: data.isLastPage,
       );
     } catch (e) {
@@ -113,7 +113,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
       final data = await Get.find<MessageService>().getMyConversations(
         page: 1,
       );
-      model.update(
+      model!.update(
         conversations: data.data,
         currentPage: 1,
         isLastPage: data.isLastPage,

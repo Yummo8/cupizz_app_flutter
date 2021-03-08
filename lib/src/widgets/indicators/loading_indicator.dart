@@ -3,11 +3,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingIndicator extends StatelessWidget {
   final double size;
-  final Color color;
+  final Color? color;
   final EdgeInsets padding;
 
   const LoadingIndicator({
-    Key key,
+    Key? key,
     this.size = 50,
     this.color,
     this.padding = EdgeInsets.zero,

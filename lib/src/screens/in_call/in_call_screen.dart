@@ -1,7 +1,7 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:cupizz_app/src/base/base.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as rtc_local_view;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as rtc_remote_view;
+import 'package:cupizz_app/src/base/base.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -14,7 +14,7 @@ class _InCallScreenState extends State<InCallScreen> {
   final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
-  RtcEngine _engine;
+  RtcEngine? _engine;
 
   @override
   void dispose() {
@@ -36,7 +36,7 @@ class _InCallScreenState extends State<InCallScreen> {
       }
     })();
     // initialize agora sdk
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       initialize();
     });
   }
@@ -45,7 +45,7 @@ class _InCallScreenState extends State<InCallScreen> {
     final appId =
         await Momentum.controller<SystemController>(context).getAgoraAppId();
     final callMessage =
-        Momentum.controller<CallController>(context).model.currentCall;
+        Momentum.controller<CallController>(context).model!.currentCall;
 
     if (!appId.isExistAndNotEmpty) {
       setState(() {
@@ -59,13 +59,13 @@ class _InCallScreenState extends State<InCallScreen> {
         _infoStrings.add('Agora Engine is not starting');
       });
       return;
-    } else if (!callMessage.agoraToken.isExistAndNotEmpty) {
+    } else if (!callMessage.agoraToken!.isExistAndNotEmpty) {
       setState(() {
         _infoStrings.add('Call message is missing token');
         _infoStrings.add('Agora Engine is not starting');
       });
       return;
-    } else if (!callMessage.roomId.isExistAndNotEmpty) {
+    } else if (!callMessage.roomId!.isExistAndNotEmpty) {
       setState(() {
         _infoStrings.add('Call message is missing room id');
         _infoStrings.add('Agora Engine is not starting');
@@ -73,24 +73,24 @@ class _InCallScreenState extends State<InCallScreen> {
       return;
     }
 
-    await _initAgoraRtcEngine(appId);
+    await _initAgoraRtcEngine(appId ?? '');
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
     var configuration = VideoEncoderConfiguration();
-    await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(
-        callMessage.agoraToken, callMessage.roomId, null, 0);
+    await _engine!.setVideoEncoderConfiguration(configuration);
+    await _engine!
+        .joinChannel(callMessage.agoraToken!, callMessage.roomId!, null, 0);
   }
 
   Future<void> _initAgoraRtcEngine(String appId) async {
     _engine = await RtcEngine.create(appId);
-    await _engine.enableVideo();
-    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await _engine.setClientRole(ClientRole.Broadcaster);
+    await _engine!.enableVideo();
+    await _engine!.setChannelProfile(ChannelProfile.LiveBroadcasting);
+    await _engine!.setClientRole(ClientRole.Broadcaster);
   }
 
   void _addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
+    _engine!.setEventHandler(RtcEngineEventHandler(error: (code) {
       setState(() {
         final info = 'onError: $code';
         _infoStrings.add(info);
@@ -272,7 +272,7 @@ class _InCallScreenState extends State<InCallScreen> {
             itemCount: _infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
-                return null;
+                return Container();
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -316,11 +316,11 @@ class _InCallScreenState extends State<InCallScreen> {
     setState(() {
       muted = !muted;
     });
-    _engine.muteLocalAudioStream(muted);
+    _engine!.muteLocalAudioStream(muted);
   }
 
   void _onSwitchCamera() {
-    _engine.switchCamera();
+    _engine!.switchCamera();
   }
 
   @override
@@ -330,7 +330,7 @@ class _InCallScreenState extends State<InCallScreen> {
         child: Stack(
           children: <Widget>[
             Container(child: _viewRows(_getRenderViews())),
-            if (AppConfig.instance.isDev) _panel(),
+            if (AppConfig.instance!.isDev) _panel(),
             _toolbar(),
           ],
         ),

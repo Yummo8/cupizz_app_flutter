@@ -1,10 +1,10 @@
 part of dash_chat;
 
 class ScrollToBottom extends StatelessWidget {
-  final Function onScrollToBottomPress;
-  final ScrollController scrollController;
-  final bool inverted;
-  final ScrollToBottomStyle scrollToBottomStyle;
+  final Function? onScrollToBottomPress;
+  final ScrollController? scrollController;
+  final bool? inverted;
+  final ScrollToBottomStyle? scrollToBottomStyle;
 
   ScrollToBottom({
     this.onScrollToBottomPress,
@@ -16,27 +16,27 @@ class ScrollToBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: scrollToBottomStyle.width,
-      height: scrollToBottomStyle.height,
+      width: scrollToBottomStyle!.width,
+      height: scrollToBottomStyle!.height,
       child: RawMaterialButton(
         elevation: 5,
-        fillColor: scrollToBottomStyle.backgroundColor ??
+        fillColor: scrollToBottomStyle!.backgroundColor ??
             Theme.of(context).primaryColor,
         shape: CircleBorder(),
         onPressed: () {
           if (onScrollToBottomPress != null) {
-            onScrollToBottomPress();
+            onScrollToBottomPress!();
           } else {
-            scrollController.animateTo(
-              inverted ? 0.0 : scrollController.position.maxScrollExtent + 25.0,
+            scrollController!.animateTo(
+              inverted! ? 0.0 : scrollController!.position.maxScrollExtent + 25.0,
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
           }
         },
         child: Icon(
-          scrollToBottomStyle.icon ?? Icons.keyboard_arrow_down,
-          color: scrollToBottomStyle.textColor ?? Colors.white,
+          scrollToBottomStyle!.icon ?? Icons.keyboard_arrow_down,
+          color: scrollToBottomStyle!.textColor ?? Colors.white,
         ),
       ),
     );

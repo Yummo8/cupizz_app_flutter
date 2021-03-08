@@ -1,9 +1,9 @@
 part of '../index.dart';
 
 class AnimationBuildLogin extends StatefulWidget {
-  final Size size;
-  final double yOffset;
-  final Color color;
+  final Size? size;
+  final double? yOffset;
+  final Color? color;
 
   AnimationBuildLogin({
     this.size,
@@ -17,7 +17,7 @@ class AnimationBuildLogin extends StatefulWidget {
 
 class _AnimationBuildLoginState extends State<AnimationBuildLogin>
     with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
   List<Offset> wavePoints = [];
 
   @override
@@ -35,12 +35,12 @@ class _AnimationBuildLoginState extends State<AnimationBuildLogin>
             final waveWidth = pi / 270;
             final waveHeight = 30.0;
 
-            for (var i = 0; i <= widget.size.width.toInt(); ++i) {
+            for (var i = 0; i <= widget.size!.width.toInt(); ++i) {
               var calc = sin((waveSpeed - i) * waveWidth);
               wavePoints.add(
                 Offset(
                   i.toDouble(), //X
-                  calc * waveHeight * normalizer + widget.yOffset, //Y
+                  calc * waveHeight * normalizer + widget.yOffset!, //Y
                 ),
               );
             }
@@ -65,8 +65,8 @@ class _AnimationBuildLoginState extends State<AnimationBuildLogin>
             waveList: wavePoints,
           ),
           child: Container(
-            width: widget.size.width,
-            height: widget.size.height,
+            width: widget.size!.width,
+            height: widget.size!.height,
             color: widget.color,
           ),
         );
@@ -76,14 +76,14 @@ class _AnimationBuildLoginState extends State<AnimationBuildLogin>
 }
 
 class ClipperWidget extends CustomClipper<Path> {
-  final List<Offset> waveList;
+  final List<Offset>? waveList;
 
   ClipperWidget({this.waveList});
 
   @override
   Path getClip(Size size) {
     final path = Path();
-    path.addPolygon(waveList, false);
+    path.addPolygon(waveList!, false);
     path.lineTo(size.width, size.height);
     path.lineTo(0.0, size.height);
     path.close();

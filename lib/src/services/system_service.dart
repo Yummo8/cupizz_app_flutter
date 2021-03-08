@@ -10,8 +10,8 @@ class SystemService extends GetxService {
     return hobies;
   }
 
-  Future<String> getAddress(
-      {@required String latitude, @required String longitude}) async {
+  Future<String?> getAddress(
+      {required String latitude, required String longitude}) async {
     final graphql = Get.find<GraphqlService>();
     final address = await graphql.getAddressQuery(latitude, longitude);
     return address;
@@ -44,15 +44,15 @@ class SystemService extends GetxService {
     return data;
   }
 
-  Future<String> getAgoraAppId() async {
+  Future<String?> getAgoraAppId() async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.getAgoraAppIdQuery();
     return data;
   }
 
   Future<WithIsLastPageOutput<Question>> getQuestions({
-    String keyword,
-    int page,
+    String? keyword,
+    int? page,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.questionsQuery(keyword, page);

@@ -7,13 +7,13 @@ class _UserScreenModel extends MomentumModel<UserScreenController> {
     this.isLoading = false,
   }) : super(controller);
 
-  final SimpleUser user;
+  final SimpleUser? user;
   final bool isLoading;
 
   @override
   void update({
-    SimpleUser user,
-    bool isLoading,
+    SimpleUser? user,
+    bool? isLoading,
   }) {
     _UserScreenModel(
       controller,
@@ -23,10 +23,10 @@ class _UserScreenModel extends MomentumModel<UserScreenController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return _UserScreenModel(
       controller,
-      user: json['user'] != null
+      user: json!['user'] != null
           ? Mapper.fromJson(json['user']).toObject<SimpleUser>()
           : null,
     );

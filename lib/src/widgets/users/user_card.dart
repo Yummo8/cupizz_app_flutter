@@ -1,22 +1,21 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class UserCard extends StatelessWidget {
-  final Function onPressed;
+  final Function? onPressed;
   final SimpleUser simpleUser;
   final bool showHobbies;
 
   const UserCard({
-    Key key,
+    Key? key,
     this.onPressed,
-    @required this.simpleUser,
+    required this.simpleUser,
     this.showHobbies = true,
-  })  : assert(simpleUser != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: onPressed as void Function()?,
       child: Stack(
         children: <Widget>[
           Container(
@@ -91,8 +90,8 @@ class UserCard extends StatelessWidget {
                             crossAxisAlignment: WrapCrossAlignment.end,
                             children: [
                               Text(
-                                simpleUser.displayName,
-                                style: context.textTheme.subtitle1.copyWith(
+                                simpleUser.displayName!,
+                                style: context.textTheme.subtitle1!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: context.colorScheme.primary,
                                 ),
@@ -104,12 +103,12 @@ class UserCard extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          if (simpleUser.introduction.isExistAndNotEmpty)
+                          if (simpleUser.introduction!.isExistAndNotEmpty)
                             Text(
-                              simpleUser.introduction,
+                              simpleUser.introduction!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: context.textTheme.caption.copyWith(
+                              style: context.textTheme.caption!.copyWith(
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -145,7 +144,7 @@ class UserCard extends StatelessWidget {
                           (i, e) => MapEntry(
                               i,
                               TextSpan(
-                                text: e?.hobby?.value != null
+                                text: e.hobby.value != null
                                     ? '${e.hobby.value}${i < hobbiesToShow.length - 1 ? ', ' : ''}'
                                     : '',
                                 style: TextStyle(

@@ -12,23 +12,23 @@ class AnswerQuestionScreenModel
     this.isSending = false,
   }) : super(controller);
 
-  final List<ColorOfAnswer> colors;
-  final ColorOfAnswer selectedColor;
-  final File backgroundImage;
-  final String content;
-  final Question question;
+  final List<ColorOfAnswer>? colors;
+  final ColorOfAnswer? selectedColor;
+  final File? backgroundImage;
+  final String? content;
+  final Question? question;
 
   final bool isSending;
 
   @override
   void update({
-    UserImage userImage,
-    List<ColorOfAnswer> colors,
-    ColorOfAnswer selectedColor,
-    File backgroundImage,
-    String content,
-    Question question,
-    bool isSending,
+    UserImage? userImage,
+    List<ColorOfAnswer>? colors,
+    ColorOfAnswer? selectedColor,
+    File? backgroundImage,
+    String? content,
+    Question? question,
+    bool? isSending,
   }) {
     AnswerQuestionScreenModel(
       controller,
@@ -53,10 +53,10 @@ class AnswerQuestionScreenModel
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return AnswerQuestionScreenModel(
       controller,
-      colors: ((json['colors'] ?? []) as List)
+      colors: ((json!['colors'] ?? []) as List)
           .map((e) => Mapper.fromJson(e).toObject<ColorOfAnswer>())
           .toList(),
       selectedColor: json['selectedColor'] != null
@@ -74,7 +74,7 @@ class AnswerQuestionScreenModel
 
   @override
   Map<String, dynamic> toJson() => {
-        'colors': colors?.map((e) => e.toJson())?.toList() ?? [],
+        'colors': colors?.map((e) => e.toJson()).toList() ?? [],
         'selectedColor': selectedColor?.toJson(),
         'backgroundImagePath': backgroundImage?.path,
         'content': content,

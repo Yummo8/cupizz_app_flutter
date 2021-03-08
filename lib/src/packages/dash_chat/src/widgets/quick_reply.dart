@@ -1,17 +1,17 @@
 part of dash_chat;
 
 class QuickReply extends StatelessWidget {
-  final Reply reply;
+  final Reply? reply;
 
-  final Function(Reply) onReply;
+  final Function(Reply)? onReply;
 
-  final BoxDecoration quickReplyStyle;
+  final BoxDecoration? quickReplyStyle;
 
-  final TextStyle quickReplyTextStyle;
+  final TextStyle? quickReplyTextStyle;
 
-  final Widget Function(Reply) quickReplyBuilder;
+  final Widget Function(Reply?)? quickReplyBuilder;
 
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
 
   const QuickReply({
     this.quickReplyBuilder,
@@ -29,11 +29,13 @@ class QuickReply extends StatelessWidget {
             maxHeight: MediaQuery.of(context).size.height,
             maxWidth: MediaQuery.of(context).size.width);
     return GestureDetector(
-      onTap: () {
-        onReply(reply);
-      },
+      onTap: reply == null
+          ? null
+          : () {
+              onReply?.call(reply!);
+            },
       child: quickReplyBuilder != null
-          ? quickReplyBuilder(reply)
+          ? quickReplyBuilder!(reply)
           : Container(
               margin: EdgeInsets.only(
                   left: 5.0, right: 5.0, top: 5.0, bottom: 10.0),
@@ -46,7 +48,7 @@ class QuickReply extends StatelessWidget {
                   ),
               constraints: BoxConstraints(maxWidth: constraints.maxWidth / 3),
               child: Text(
-                reply.title,
+                reply!.title!,
                 style: quickReplyTextStyle ??
                     TextStyle(
                       color: Theme.of(context).accentColor,

@@ -27,45 +27,41 @@ export 'src/provider/i18n_provider.dart'
 class PhotoPicker {
   factory PhotoPicker() {
     _instance ??= PhotoPicker._();
-    return _instance;
+    return _instance!;
   }
 
   PhotoPicker._();
 
-  static PhotoPicker _instance;
+  static PhotoPicker? _instance;
 
   static const String rootRouteName = 'photo_picker_image';
 
-  static Future<List<File>> pickAsset({
-    @required BuildContext context,
+  static Future<List<File>?> pickAsset({
+    required BuildContext context,
     int rowCount = 4,
     int maxSelected = 9,
     double padding = 0.5,
     double itemRadio = 1.0,
-    Color themeColor,
-    Color dividerColor,
-    Color textColor,
-    Color disableColor,
+    Color? themeColor,
+    Color? dividerColor,
+    Color? textColor,
+    Color? disableColor,
     int thumbSize = 64,
     I18nProvider provider = I18nProvider.vietnamese,
-    SortDelegate sortDelegate,
-    CheckBoxBuilderDelegate checkBoxBuilderDelegate,
-    LoadingDelegate loadingDelegate,
+    SortDelegate? sortDelegate,
+    CheckBoxBuilderDelegate? checkBoxBuilderDelegate,
+    LoadingDelegate? loadingDelegate,
     PickType pickType = PickType.all,
     BadgeDelegate badgeDelegate = const DefaultBadgeDelegate(),
-    List<AssetPathEntity> photoPathList,
-    List<AssetEntity> pickedAssetList,
+    List<AssetPathEntity>? photoPathList,
+    List<AssetEntity>? pickedAssetList,
     bool autoCloseOnSelectionLimit = false,
     bool isCropImage = true,
-    CropAspectRatio cropAspectRatio,
+    CropAspectRatio? cropAspectRatio,
   }) {
-    assert(provider != null, 'provider must be not null');
-    assert(context != null, 'context must be not null');
-    assert(pickType != null, 'pickType must be not null');
-
-    themeColor ??= Theme.of(context)?.primaryColor ?? Colors.black;
-    dividerColor ??= Theme.of(context)?.dividerColor ?? Colors.grey;
-    disableColor ??= Theme.of(context)?.disabledColor ?? Colors.grey;
+    themeColor ??= Theme.of(context).primaryColor;
+    dividerColor ??= Theme.of(context).dividerColor;
+    disableColor ??= Theme.of(context).disabledColor;
     textColor ??= Colors.white;
 
     sortDelegate ??= SortDelegate.common;
@@ -102,12 +98,12 @@ class PhotoPicker {
     );
   }
 
-  Future<List<File>> _pickAsset(
+  Future<List<File>?> _pickAsset(
     BuildContext context,
     Options options,
     I18nProvider provider,
-    List<AssetPathEntity> photoList,
-    List<AssetEntity> pickedAssetList,
+    List<AssetPathEntity>? photoList,
+    List<AssetEntity>? pickedAssetList,
   ) async {
     final requestPermission = await PhotoManager.requestPermission();
     if (requestPermission != true) {
@@ -132,12 +128,12 @@ class PhotoPicker {
     );
   }
 
-  Future<List<File>> _openGalleryContentPage(
+  Future<List<File>?> _openGalleryContentPage(
     BuildContext context,
     Options options,
     I18nProvider provider,
-    List<AssetPathEntity> photoList,
-    List<AssetEntity> pickedAssetList,
+    List<AssetPathEntity>? photoList,
+    List<AssetEntity>? pickedAssetList,
   ) async {
     return Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(

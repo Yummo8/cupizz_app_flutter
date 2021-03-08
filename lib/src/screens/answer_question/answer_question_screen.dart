@@ -15,7 +15,7 @@ class AnswerQuestionScreen extends StatelessWidget {
   static void answerQuestion(BuildContext context) {
     final controller =
         Momentum.controller<AnswerQuestionScreenController>(context);
-    if (controller.model.question == null) {
+    if (controller.model!.question == null) {
       _selectQuestion(context);
     } else {
       Get.toNamed(Routes.answer);
@@ -41,12 +41,12 @@ class AnswerQuestionScreen extends StatelessWidget {
     final controller =
         Momentum.controller<AnswerQuestionScreenController>(context);
     final textEditingController =
-        TextEditingController(text: controller.model.content);
+        TextEditingController(text: controller.model!.content);
 
     return MomentumBuilder(
         controllers: [AnswerQuestionScreenController],
         builder: (context, snapshot) {
-          final model = snapshot<AnswerQuestionScreenModel>();
+          final model = snapshot<AnswerQuestionScreenModel>()!;
           final colors = model.selectedColor ??
               model.question?.colors ??
               ColorOfAnswer.defaultColor;

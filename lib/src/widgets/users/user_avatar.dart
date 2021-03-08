@@ -1,13 +1,13 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class UserAvatar extends StatelessWidget {
-  final FileModel image;
-  final OnlineStatus onlineStatus;
+  final FileModel? image;
+  final OnlineStatus? onlineStatus;
   final double size;
   final bool showOnline;
 
   const UserAvatar({
-    Key key,
+    Key? key,
     this.image,
     this.onlineStatus,
     this.size = 50.0,
@@ -15,8 +15,8 @@ class UserAvatar extends StatelessWidget {
   }) : super(key: key);
 
   factory UserAvatar.fromChatUser({
-    Key key,
-    @required ChatUser user,
+    Key? key,
+    required ChatUser? user,
     double size = 50,
     bool showOnline = true,
   }) {
@@ -30,14 +30,14 @@ class UserAvatar extends StatelessWidget {
   }
 
   factory UserAvatar.fromConversation(
-      {Key key,
-      @required Conversation conversation,
+      {Key? key,
+      required Conversation? conversation,
       double size = 50,
       bool showOnline = true}) {
     return UserAvatar(
       key: key,
       image: (conversation?.images ?? []).isExistAndNotEmpty
-          ? conversation.images[0]
+          ? conversation!.images![0]
           : null,
       onlineStatus: conversation?.onlineStatus,
       size: size,

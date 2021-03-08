@@ -1,10 +1,10 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class SocialProvider extends BaseModel {
-  SocialProviderType _type;
-  SocialProviderType get type => _type;
+  SocialProviderType? _type;
+  SocialProviderType? get type => _type;
 
-  SocialProvider({String id, SocialProviderType type})
+  SocialProvider({String? id, SocialProviderType? type})
       : _type = type,
         super(id: id);
 

@@ -1,14 +1,15 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphqlService extends GetxService {
-  GraphQLClient _client;
-  GraphQLClient get client => _client;
-  WebSocketLink _socketLink;
+  GraphQLClient? _client;
+  GraphQLClient? get client => _client;
+  WebSocketLink? _socketLink;
   final String apiUrl;
   final String wss;
 
-  GraphqlService({@required this.apiUrl, @required this.wss}) {
+  GraphqlService({required this.apiUrl, required this.wss}) {
     reset();
   }
 
@@ -18,7 +19,7 @@ class GraphqlService extends GetxService {
     final httpLink = HttpLink(apiUrl);
 
     final authLink = AuthLink(
-      getToken: () async => await Get.find<StorageService>().getToken,
+      getToken: () async => (await Get.find<StorageService>().getToken) ?? '',
     );
 
     _socketLink = WebSocketLink(
@@ -33,7 +34,7 @@ class GraphqlService extends GetxService {
       ),
     );
 
-    final link = authLink.concat(httpLink).concat(_socketLink);
+    final link = authLink.concat(httpLink).concat(_socketLink!);
 
     _client = GraphQLClient(
       cache: GraphQLCache(store: HiveStore()),
@@ -42,27 +43,25 @@ class GraphqlService extends GetxService {
   }
 
   Future<QueryResult> query(QueryOptions options) =>
-      _processQueryResult(_client.query(options));
+      _processQueryResult(_client!.query(options));
   Future<QueryResult> mutate(MutationOptions options) =>
-      _processQueryResult(_client.mutate(options));
+      _processQueryResult(_client!.mutate(options));
   Stream<QueryResult> subscribe(SubscriptionOptions operation) =>
-      _processFetchResult(_client.subscribe(operation));
+      _processFetchResult(_client!.subscribe(operation));
 
   Future<QueryResult> _processQueryResult(Future<QueryResult> future) async {
     final result = await future;
-    debugPrint(result.data?.keys?.toString());
+    debugPrint(result.data?.keys.toString());
     if (result.hasException) {
-      if (result.exception.linkException != null) {
-        debugPrint(result.exception.linkException.toString());
-        throw result.exception.linkException;
-      } else if (result.exception.graphqlErrors != null &&
-          result.exception.graphqlErrors.isNotEmpty) {
-        final unauthenticatedError = result.exception.graphqlErrors.firstWhere(
-            (element) => element.extensions['code'] == 'UNAUTHENTICATED',
-            orElse: () => null);
-        final clientError = result.exception.graphqlErrors.firstWhere(
-            (element) => element.extensions['code'] == 'CLIENT_ERROR',
-            orElse: () => null);
+      if (result.exception!.linkException != null) {
+        debugPrint(result.exception!.linkException.toString());
+        throw result.exception!.linkException!;
+      } else if (result.exception!.graphqlErrors.isNotEmpty) {
+        final unauthenticatedError = result.exception!.graphqlErrors
+            .firstWhereOrNull(
+                (element) => element.extensions!['code'] == 'UNAUTHENTICATED');
+        final clientError = result.exception!.graphqlErrors.firstWhereOrNull(
+            (element) => element.extensions!['code'] == 'CLIENT_ERROR');
         if (unauthenticatedError != null) {
           await _LogoutHandler.logout();
           throw 'Vui lòng đăng nhập lại!';
@@ -73,7 +72,7 @@ class GraphqlService extends GetxService {
           //   result.exception.graphqlErrors[0].message,
           //   stackTrace: result.exception,
           // ));
-          debugPrint(result.exception.graphqlErrors[0].message.toString());
+          debugPrint(result.exception!.graphqlErrors[0].message.toString());
           throw 'Xảy ra lỗi!\nVui lòng liên hệ NPH để được hỗ trợ!';
         }
       } else {
@@ -100,7 +99,7 @@ class _LogoutHandler {
       _isLoggingOut = true;
       if (AppConfig.navigatorKey.currentContext != null) {
         final controller = Momentum.controller<AuthController>(
-            AppConfig.navigatorKey.currentContext);
+            AppConfig.navigatorKey.currentContext!);
         if (await controller.isAuthenticated) {
           await trycatch(controller.logout);
         }

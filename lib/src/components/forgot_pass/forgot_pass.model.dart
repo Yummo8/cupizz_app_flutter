@@ -11,22 +11,22 @@ class ForgotPassModel extends MomentumModel<ForgotController> {
     this.isVerifingOtp,
   }) : super(controller);
 
-  final String token;
-  final ForgotPassOutput data;
-  final String email;
+  final String? token;
+  final ForgotPassOutput? data;
+  final String? email;
 
-  final bool isSendingOtp;
-  final bool isChangingPass;
-  final bool isVerifingOtp;
+  final bool? isSendingOtp;
+  final bool? isChangingPass;
+  final bool? isVerifingOtp;
 
   @override
   void update({
-    String token,
-    bool isSendingOtp,
-    bool isChangingPass,
-    bool isVerifingOtp,
-    ForgotPassOutput data,
-    String email,
+    String? token,
+    bool? isSendingOtp,
+    bool? isChangingPass,
+    bool? isVerifingOtp,
+    ForgotPassOutput? data,
+    String? email,
   }) {
     ForgotPassModel(
       controller,
@@ -40,7 +40,7 @@ class ForgotPassModel extends MomentumModel<ForgotController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return ForgotPassModel(controller);
   }
 

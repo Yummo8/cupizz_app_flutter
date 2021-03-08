@@ -1,14 +1,14 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class FileModel extends BaseModel {
-  FileType _type;
-  String _url;
-  String _thumbnail;
+  FileType? _type;
+  String? _url;
+  String? _thumbnail;
 
-  String get url => _url;
-  String get thumbnail => _thumbnail ?? url;
+  String? get url => _url;
+  String? get thumbnail => _thumbnail ?? url;
 
-  FileModel({String id, FileType type, String url, String thumbnail})
+  FileModel({String? id, FileType? type, String? url, String? thumbnail})
       : _type = type,
         _thumbnail = thumbnail,
         _url = url,

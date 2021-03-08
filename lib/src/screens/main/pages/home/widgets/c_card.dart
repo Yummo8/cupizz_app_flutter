@@ -18,7 +18,7 @@ typedef BackCallback = void Function(int index);
 typedef EndCallback = Function();
 
 class CCardController {
-  _CCardState _state;
+  _CCardState? _state;
   bool _isAnimating = false;
   bool get isAnimating => _isAnimating;
 
@@ -32,9 +32,9 @@ class CCardController {
     if (!_isAnimating) {
       try {
         _isAnimating = true;
-        final swipInfo = SwipInfo(_state._frontCardIndex, direction);
-        _state._swipInfoList.add(swipInfo);
-        await _state._runChangeOrderAnimation();
+        final swipInfo = SwipInfo(_state!._frontCardIndex, direction);
+        _state!._swipInfoList.add(swipInfo);
+        await _state!._runChangeOrderAnimation();
       } finally {
         _isAnimating = false;
       }
@@ -45,7 +45,7 @@ class CCardController {
     if (!_isAnimating) {
       try {
         _isAnimating = true;
-        await _state._runReverseOrderAnimation();
+        await _state!._runReverseOrderAnimation();
       } finally {
         _isAnimating = false;
       }
@@ -53,7 +53,7 @@ class CCardController {
   }
 
   void reset() {
-    _state._reset();
+    _state!._reset();
   }
 
   void dispose() {
@@ -68,20 +68,20 @@ class CCard extends StatefulWidget {
 
   final List<Widget> cards;
 
-  final ForwardCallback onForward;
+  final ForwardCallback? onForward;
 
-  final BackCallback onBack;
+  final BackCallback? onBack;
 
-  final EndCallback onEnd;
+  final EndCallback? onEnd;
 
-  final VoidCallback onSwipeLeft;
+  final VoidCallback? onSwipeLeft;
 
-  final VoidCallback onSwipeRight;
+  final VoidCallback? onSwipeRight;
 
-  final CCardController controller;
+  final CCardController? controller;
 
   CCard({
-    @required this.cards,
+    required this.cards,
     this.controller,
     this.onForward,
     this.onBack,
@@ -90,8 +90,7 @@ class CCard extends StatefulWidget {
     this.onSwipeRight,
     this.size = const Size(380, 400),
     this.padding = EdgeInsets.zero,
-  })  : assert(cards != null),
-        assert(cards.isNotEmpty);
+  }) : assert(cards.isNotEmpty);
 
   @override
   _CCardState createState() => _CCardState();
@@ -102,20 +101,20 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
 
   final List<SwipInfo> _swipInfoList = [];
 
-  Color likeColor = Colors.green;
-  Color dislikeColor = Colors.grey;
+  Color? likeColor = Colors.green;
+  Color? dislikeColor = Colors.grey;
 
   Alignment _frontCardAlignment = CardAlignments.front;
 
   bool _showSuperLikeOverlay = false;
 
-  AnimationController _cardChangeController;
+  late AnimationController _cardChangeController;
 
-  AnimationController _cardReverseController;
+  late AnimationController _cardReverseController;
 
-  Animation<Alignment> _reboundAnimation;
+  late Animation<Alignment> _reboundAnimation;
 
-  AnimationController _reboundController;
+  late AnimationController _reboundController;
 
   int _frontCardIndex = 0;
   double _frontCardRotation = 0.0;
@@ -150,12 +149,12 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                         : Container(
                             decoration: BoxDecoration(
                               color: _frontCardAlignment.x > 0
-                                  ? likeColor.withOpacity(math.min(
+                                  ? likeColor!.withOpacity(math.min(
                                       1.0,
                                       _frontCardAlignment.x.abs() /
                                           (limit + _frontCardAlignment.x.abs()),
                                     ))
-                                  : dislikeColor.withOpacity(math.min(
+                                  : dislikeColor!.withOpacity(math.min(
                                       1.0,
                                       _frontCardAlignment.x.abs() /
                                           (limit + _frontCardAlignment.x.abs()),
@@ -355,7 +354,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     _frontCardIndex++;
     _return();
     if (widget.onForward != null && widget.onForward is Function) {
-      widget.onForward(
+      widget.onForward!(
         _frontCardIndex,
         _swipInfoList[_frontCardIndex - 1],
       );
@@ -364,14 +363,14 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     if (widget.onEnd != null &&
         widget.onEnd is Function &&
         _frontCardIndex >= _cards.length) {
-      widget.onEnd();
+      widget.onEnd!();
     }
   }
 
   void _backCallback() {
     _return();
     if (widget.onBack != null && widget.onBack is Function) {
-      widget.onBack(_frontCardIndex);
+      widget.onBack!(_frontCardIndex);
     }
   }
 
@@ -438,7 +437,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       likeColor = Colors.pink[200];
       dislikeColor = Colors.grey[400];
     });
@@ -446,7 +445,7 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
     _cards.addAll(widget.cards);
 
     if (widget.controller != null && widget.controller is CCardController) {
-      widget.controller._bindState(this);
+      widget.controller!._bindState(this);
     }
 
     _cardChangeController = AnimationController(
@@ -558,8 +557,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                         end: Alignment.topLeft,
                         stops: [0.1, 0.9],
                         colors: [
-                          dislikeColor,
-                          dislikeColor.withGreen(dislikeColor.green - 30),
+                          dislikeColor!,
+                          dislikeColor!.withGreen(dislikeColor!.green - 30),
                         ],
                       ),
                     ),
@@ -582,8 +581,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                             end: Alignment.topLeft,
                             stops: [0.1, 0.9],
                             colors: [
-                              likeColor.withGreen(likeColor.green - 30),
-                              likeColor,
+                              likeColor!.withGreen(likeColor!.green - 30),
+                              likeColor!,
                             ],
                           ),
                           borderRadius: BorderRadius.only(
@@ -661,7 +660,7 @@ class CardAnimations {
     );
   }
 
-  static Animation<Size> middleCardSizeAnimation(
+  static Animation<Size?> middleCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
@@ -705,7 +704,7 @@ class CardAnimations {
     );
   }
 
-  static Animation<Size> backCardSizeAnimation(
+  static Animation<Size?> backCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
@@ -757,7 +756,7 @@ class CardReverseAnimations {
     );
   }
 
-  static Animation<Size> middleCardSizeAnimation(
+  static Animation<Size?> middleCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
@@ -784,7 +783,7 @@ class CardReverseAnimations {
         parent: parent,
         curve: Interval(0.2, 0.5, curve: Curves.easeIn),
       ),
-    );
+    ) as Animation<double>;
   }
 
   static Animation<Alignment> backCardAlignmentAnimation(
@@ -801,7 +800,7 @@ class CardReverseAnimations {
     );
   }
 
-  static Animation<Size> backCardSizeAnimation(
+  static Animation<Size?> backCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {

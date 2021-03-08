@@ -13,8 +13,8 @@ part 'components/messages_screen.controller.dart';
 part 'components/messages_screen.model.dart';
 
 class MessagesScreenParams extends RouterParam {
-  final ConversationKey conversationKey;
-  final Conversation conversation;
+  final ConversationKey? conversationKey;
+  final Conversation? conversation;
 
   MessagesScreenParams({this.conversationKey, this.conversation})
       : assert(conversation != null || conversationKey != null);
@@ -26,15 +26,15 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
-  MessagesScreenController controller;
+  MessagesScreenController? controller;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final args = Get.arguments as MessagesScreenParams;
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      final args = Get.arguments as MessagesScreenParams?;
       if (args != null) {
-        controller.loadData(args);
+        controller!.loadData(args);
       }
     });
   }
@@ -51,7 +51,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     return MomentumBuilder(
         controllers: [MessagesScreenController],
         builder: (context, snapshot) {
-          final model = snapshot<MessagesScreenModel>();
+          final model = snapshot<MessagesScreenModel>()!;
           return PrimaryScaffold(
             appBar: AppBar(
               automaticallyImplyLeading: true,
@@ -89,22 +89,22 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             SkeletonItem(
                               child: Text(
                                 model.conversation?.name ?? 'Loading',
-                                style: context.textTheme.bodyText1
+                                style: context.textTheme.bodyText1!
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             if (model.conversation?.onlineStatus != null &&
-                                    model.conversation.onlineStatus ==
+                                    model.conversation!.onlineStatus ==
                                         OnlineStatus.online ||
                                 model.conversation?.lastOnline != null)
                               SkeletonItem(
                                 child: Text(
-                                  model.conversation.onlineStatus ==
+                                  model.conversation!.onlineStatus ==
                                           OnlineStatus.online
                                       ? 'Đang online'
                                       : Strings.messageScreen.lastOnlineAt(
                                           TimeAgo.format(
-                                              model.conversation.lastOnline)),
+                                              model.conversation!.lastOnline!)),
                                   style: context.textTheme.caption,
                                 ),
                               ),
@@ -145,7 +145,7 @@ class _MessagesScreenWidgetState extends State<MessagesScreenWidget> {
     return MomentumBuilder(
         controllers: [MessagesScreenController],
         builder: (context, snapshot) {
-          final model = snapshot<MessagesScreenModel>();
+          final model = snapshot<MessagesScreenModel>()!;
           return DashChat(
             inverted: true,
             shouldShowLoadEarlier:
@@ -153,7 +153,7 @@ class _MessagesScreenWidgetState extends State<MessagesScreenWidget> {
             dateFormat: DateFormat('dd/MM/yyyy'),
             timeFormat: DateFormat('HH:mm'),
             user: Momentum.controller<CurrentUserController>(context)
-                .model
+                .model!
                 .currentUser,
             messages: model.isLoading
                 ? List.generate(20, (index) => null)
@@ -182,7 +182,9 @@ class _MessagesScreenWidgetState extends State<MessagesScreenWidget> {
                   icon: model.isSendingMessage
                       ? LoadingIndicator(size: 20)
                       : Icon(CupertinoIcons.paperplane),
-                  onPressed: model.isSendingMessage ? null : onSend);
+                  onPressed: model.isSendingMessage
+                      ? null
+                      : onSend as void Function()?);
             },
             onSend: (Message message) {
               model.controller.sendMessage(message: message.message);

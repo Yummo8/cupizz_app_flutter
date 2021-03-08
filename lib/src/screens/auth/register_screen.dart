@@ -39,9 +39,8 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   void _backToLogin() {
     Get.back(
-      result:
-          // ignore: missing_required_param
-          PageTransition(
+      result: PageTransition(
+        child: Container(),
         type: PageTransitionType.leftToRight,
         duration: Duration(milliseconds: 800),
       ),
@@ -104,7 +103,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         validator: Validator.name,
                         onChanged: (v) {
                           Momentum.controller<AuthController>(context)
-                              .model
+                              .model!
                               .update(nickname: v);
                         },
                         focusNode: nameFocus,
@@ -123,7 +122,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         focusNode: emailFocus,
                         onChanged: (v) {
                           Momentum.controller<AuthController>(context)
-                              .model
+                              .model!
                               .update(email: v);
                         },
                       ),
@@ -141,7 +140,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         validator: Validator.password,
                         onChanged: (v) {
                           Momentum.controller<AuthController>(context)
-                              .model
+                              .model!
                               .update(password: v);
                         },
                       ),
@@ -158,7 +157,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: AuthButton(
                         text: Strings.button.register,
                         onPressed: () async {
-                          if (_formKey.currentState.validate()) {
+                          if (_formKey.currentState!.validate()) {
                             await Momentum.controller<AuthController>(context)
                                 .registerEmail();
 

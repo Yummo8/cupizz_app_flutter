@@ -149,7 +149,7 @@ packages:
     source: hosted
     version: "3.6.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -276,8 +276,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.6.0"
-      resolved-ref: "927eefc2cf4d9ec0ae95f0188fd42fca1d07b337"
+      ref: "v1.6.1"
+      resolved-ref: "120add3a1bbd7dd244617c45e65cb9b2118ba3ff"
       url: "https://github.com/hienlh/Flutter_beautiful_popup.git"
     source: git
     version: "1.5.0"

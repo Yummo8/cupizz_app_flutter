@@ -1,18 +1,18 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class ColorOfAnswer with Mappable {
-  Color _color;
-  List<Color> _gradient;
-  Color _textColor;
+  Color? _color;
+  List<Color>? _gradient;
+  Color? _textColor;
 
-  Color get color => _color;
-  List<Color> get gradient => _gradient;
-  Color get textColor => _textColor;
+  Color? get color => _color;
+  List<Color>? get gradient => _gradient;
+  Color? get textColor => _textColor;
 
   ColorOfAnswer({
-    Color color,
-    List<Color> gradient,
-    Color textColor,
+    Color? color,
+    List<Color>? gradient,
+    Color? textColor,
   })  : _color = color,
         _gradient = gradient,
         _textColor = textColor;

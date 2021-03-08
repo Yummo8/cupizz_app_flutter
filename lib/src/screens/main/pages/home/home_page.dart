@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
     return MomentumBuilder(
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
-          var model = snapshot<RecommendableUsersModel>();
-          if (model.users.isExistAndNotEmpty) {
+          var model = snapshot<RecommendableUsersModel>()!;
+          if (model.users!.isExistAndNotEmpty) {
             return Positioned(
               bottom: 10,
               right: 0,
@@ -116,15 +116,15 @@ class _HomePageState extends State<HomePage> {
     return MomentumBuilder(
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
-          var model = snapshot<RecommendableUsersModel>();
+          var model = snapshot<RecommendableUsersModel>()!;
           if (model.isLoading ||
-              !model.users.isExistAndNotEmpty && !model.isLastPage) {
-            if (!model.users.isExistAndNotEmpty && !model.isLastPage) {
+              !model.users!.isExistAndNotEmpty && !model.isLastPage) {
+            if (!model.users!.isExistAndNotEmpty && !model.isLastPage) {
               Momentum.of<RecommendableUsersController>(context)
                   .fetchRecommendableUsers();
             }
             return Center(child: LoadingIndicator());
-          } else if (model.error.isExistAndNotEmpty) {
+          } else if (model.error!.isExistAndNotEmpty) {
             return ErrorIndicator(
               moreErrorDetail: model.error,
               onReload: () {
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                     .fetchRecommendableUsers();
               },
             );
-          } else if (!model.users.isExistAndNotEmpty && model.isLastPage) {
+          } else if (!model.users!.isExistAndNotEmpty && model.isLastPage) {
             return FadeIn(
               child: Center(
                   child: Column(
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
             ),
             onEnd: () {
               model.update(isLoading: true);
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
                 model.update(isLoading: false);
               });
             },
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
               Momentum.controller<RecommendableUsersController>(context)
                   .onSwipe(context, isSwipeRight: true);
             },
-            cards: model.users
+            cards: model.users!
                 .map((e) => ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: UserCard(

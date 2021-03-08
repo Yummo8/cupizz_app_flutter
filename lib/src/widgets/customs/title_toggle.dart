@@ -2,7 +2,7 @@ import 'package:cupizz_app/src/base/base.dart';
 
 class TitleToggle extends StatelessWidget {
   TitleToggle({
-    @required this.title,
+    required this.title,
     this.description,
     this.divider = false,
     this.value = false,
@@ -13,12 +13,12 @@ class TitleToggle extends StatelessWidget {
   });
 
   final String title;
-  final String description;
+  final String? description;
   final bool divider;
   final bool hasColorTitle;
-  final ValueChanged valueChanged;
-  final EdgeInsets paddingAbove;
-  final EdgeInsets paddingBelow;
+  final ValueChanged? valueChanged;
+  final EdgeInsets? paddingAbove;
+  final EdgeInsets? paddingBelow;
   final bool value;
 
   @override
@@ -35,7 +35,7 @@ class TitleToggle extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: context.textTheme.subtitle1.copyWith(
+                      style: context.textTheme.subtitle1!.copyWith(
                         color: hasColorTitle
                             ? context.colorScheme.primary
                             : context.colorScheme.onBackground,
@@ -50,7 +50,7 @@ class TitleToggle extends StatelessWidget {
                       child: CupertinoSwitch(
                         value: value,
                         onChanged: (value) {
-                          valueChanged(value);
+                          valueChanged!(value);
                         },
                         activeColor: context.colorScheme.primary,
                       ),
@@ -63,8 +63,8 @@ class TitleToggle extends StatelessWidget {
               Padding(
                 padding: paddingBelow ?? EdgeInsets.zero,
                 child: Text(
-                  description,
-                  style: context.textTheme.caption
+                  description!,
+                  style: context.textTheme.caption!
                       .copyWith(fontWeight: FontWeight.w500),
                   textAlign: TextAlign.left,
                 ),

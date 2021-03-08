@@ -1,23 +1,23 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class Conversation extends BaseModel {
-  List<FileModel> _images;
-  String _name;
-  bool _isAnonymousChat;
-  Message _newestMessage;
-  OnlineStatus _onlineStatus;
-  DateTime _lastOnline;
-  int _unreadMessages;
-  WithIsLastPageOutput<Message> _messages;
+  List<FileModel>? _images;
+  String? _name;
+  bool? _isAnonymousChat;
+  Message? _newestMessage;
+  OnlineStatus? _onlineStatus;
+  DateTime? _lastOnline;
+  int? _unreadMessages;
+  WithIsLastPageOutput<Message>? _messages;
 
-  List<FileModel> get images => _images;
-  String get name => _name;
-  bool get isAnonymousChat => _isAnonymousChat;
-  Message get newestMessage => _newestMessage;
-  OnlineStatus get onlineStatus => _onlineStatus;
-  DateTime get lastOnline => _lastOnline;
-  int get unreadMessageCount => _unreadMessages;
-  WithIsLastPageOutput<Message> get messages => _messages;
+  List<FileModel>? get images => _images;
+  String? get name => _name;
+  bool? get isAnonymousChat => _isAnonymousChat;
+  Message? get newestMessage => _newestMessage;
+  OnlineStatus? get onlineStatus => _onlineStatus;
+  DateTime? get lastOnline => _lastOnline;
+  int? get unreadMessageCount => _unreadMessages;
+  WithIsLastPageOutput<Message>? get messages => _messages;
 
   @override
   void mapping(Mapper map) {

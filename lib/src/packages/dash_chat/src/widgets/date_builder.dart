@@ -2,23 +2,23 @@ part of dash_chat;
 
 class DateBuilder extends StatelessWidget {
   DateBuilder({
-    Key key,
-    @required this.date,
+    Key? key,
+    required this.date,
     this.customDateBuilder,
     this.dateFormat,
   }) : super(key: key);
 
-  final DateTime date;
-  final Widget Function(String) customDateBuilder;
-  final DateFormat dateFormat;
+  final DateTime? date;
+  final Widget Function(String)? customDateBuilder;
+  final DateFormat? dateFormat;
 
   @override
   Widget build(BuildContext context) {
     if (customDateBuilder != null) {
-      return customDateBuilder(
+      return customDateBuilder!(
         dateFormat != null
-            ? dateFormat.format(date)
-            : DateFormat('yyyy-MM-dd').format(date),
+            ? dateFormat!.format(date!)
+            : DateFormat('yyyy-MM-dd').format(date!),
       );
     } else {
       return Container(
@@ -35,8 +35,8 @@ class DateBuilder extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10.0),
         child: Text(
           dateFormat != null
-              ? dateFormat.format(date.toLocal())
-              : DateFormat('yyyy-MMM-dd').format(date.toLocal()),
+              ? dateFormat!.format(date!.toLocal())
+              : DateFormat('yyyy-MMM-dd').format(date!.toLocal()),
           style: TextStyle(
             color: context.colorScheme.onSurface,
             fontSize: 12.0,

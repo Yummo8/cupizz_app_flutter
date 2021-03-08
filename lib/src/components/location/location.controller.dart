@@ -14,22 +14,22 @@ class LocationController extends MomentumController<LocationModel> {
     );
   }
 
-  Future<bool> checkPermission(BuildContext context,
+  Future<bool> checkPermission(BuildContext? context,
       {bool showDialog = true}) async {
     final checkPermission = await Geolocator.checkPermission();
     if (checkPermission == LocationPermission.denied ||
         checkPermission == LocationPermission.deniedForever) {
       if (showDialog) {
         await Future.delayed(Duration(seconds: 1));
-        await _showDialog(context);
+        await _showDialog(context!);
       }
       final permission = await Permission.location.request();
       if (permission == PermissionStatus.restricted ||
           permission == PermissionStatus.denied) {
-        await _showFailDialog(context);
+        await _showFailDialog(context!);
         return false;
       } else if (permission == PermissionStatus.permanentlyDenied) {
-        await _showOpenSettingDialog(context);
+        await _showOpenSettingDialog(context!);
         return false;
       }
     }

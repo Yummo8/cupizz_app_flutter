@@ -11,11 +11,11 @@ class _EditAgeScreenState extends State<EditAgeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       setState(() {
         selectedDate = Momentum.controller<CurrentUserController>(context)
-                .model
-                .currentUser
+                .model!
+                .currentUser!
                 .birthday ??
             selectedDate;
       });

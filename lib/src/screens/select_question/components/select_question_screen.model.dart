@@ -4,7 +4,7 @@ class SelectQuestionScreenModel
     extends MomentumModel<SelectQuestionScreenController> {
   SelectQuestionScreenModel(
     SelectQuestionScreenController controller, {
-    WithIsLastPageOutput<Question> data,
+    WithIsLastPageOutput<Question>? data,
     this.isLoading,
     this.currentPage,
   })  : data =
@@ -12,14 +12,14 @@ class SelectQuestionScreenModel
         super(controller);
 
   final WithIsLastPageOutput<Question> data;
-  final int currentPage;
-  final bool isLoading;
+  final int? currentPage;
+  final bool? isLoading;
 
   @override
   void update({
-    WithIsLastPageOutput<Question> data,
-    int currentPage,
-    bool isLoading,
+    WithIsLastPageOutput<Question>? data,
+    int? currentPage,
+    bool? isLoading,
   }) {
     SelectQuestionScreenModel(
       controller,
@@ -30,10 +30,10 @@ class SelectQuestionScreenModel
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return SelectQuestionScreenModel(
       controller,
-      data: json['data'] != null
+      data: json!['data'] != null
           ? WithIsLastPageOutput.fromJson(json['data'])
           : null,
       currentPage: json['currentPage'],
@@ -42,7 +42,7 @@ class SelectQuestionScreenModel
 
   @override
   Map<String, dynamic> toJson() => {
-        'data': data?.toJson(),
+        'data': data.toJson(),
         'currentPage': currentPage,
       };
 }

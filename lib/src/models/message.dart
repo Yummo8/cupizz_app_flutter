@@ -1,43 +1,43 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class Message extends BaseModel {
-  Conversation _conversation;
-  String _message;
-  DateTime _createdAt;
-  DateTime _updatedAt;
-  List<FileModel> _attachments;
-  ChatUser _sender;
+  Conversation? _conversation;
+  String? _message;
+  DateTime? _createdAt;
+  DateTime? _updatedAt;
+  List<FileModel>? _attachments;
+  ChatUser? _sender;
 
-  String _roomId;
-  bool _isCallMessage;
-  bool _isCaller;
-  DateTime _startedCallAt;
-  DateTime _endedCallAt;
-  CallStatus _callStatus;
-  String _agoraToken;
+  String? _roomId;
+  bool? _isCallMessage;
+  bool? _isCaller;
+  DateTime? _startedCallAt;
+  DateTime? _endedCallAt;
+  CallStatus? _callStatus;
+  String? _agoraToken;
 
-  Conversation get conversation => _conversation;
-  String get message => _message;
-  DateTime get createdAt => _createdAt;
-  DateTime get updatedAt => _updatedAt;
-  List<FileModel> get attachments => _attachments;
-  ChatUser get sender => _sender;
-  String get roomId => _roomId;
-  bool get isCallMessage => _isCallMessage;
-  bool get isCaller => _isCaller;
-  DateTime get startedCallAt => _startedCallAt;
-  DateTime get endedCallAt => _endedCallAt;
-  CallStatus get callStatus => _callStatus;
-  String get agoraToken => _agoraToken;
+  Conversation? get conversation => _conversation;
+  String? get message => _message;
+  DateTime? get createdAt => _createdAt;
+  DateTime? get updatedAt => _updatedAt;
+  List<FileModel>? get attachments => _attachments;
+  ChatUser? get sender => _sender;
+  String? get roomId => _roomId;
+  bool? get isCallMessage => _isCallMessage;
+  bool? get isCaller => _isCaller;
+  DateTime? get startedCallAt => _startedCallAt;
+  DateTime? get endedCallAt => _endedCallAt;
+  CallStatus? get callStatus => _callStatus;
+  String? get agoraToken => _agoraToken;
 
   Message({
-    String id,
-    Conversation conversation,
-    String message,
-    DateTime createdAt,
-    DateTime updatedAt,
-    List<FileModel> attachments,
-    ChatUser sender,
+    String? id,
+    Conversation? conversation,
+    String? message,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    List<FileModel>? attachments,
+    ChatUser? sender,
   })  : _conversation = conversation,
         _message = message,
         _createdAt = createdAt,

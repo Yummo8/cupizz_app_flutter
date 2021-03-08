@@ -31,7 +31,7 @@ class CreatePostScreen extends StatelessWidget {
                       child: MomentumBuilder(
                           controllers: [CreatePostController],
                           builder: (context, snapshot) {
-                            final model = snapshot<CreatePostModel>();
+                            final model = snapshot<CreatePostModel>()!;
                             return CreatePostImageList(
                               images: model.images,
                               onRemovedImage: (image) {
@@ -48,8 +48,13 @@ class CreatePostScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: ComposeBottomIconWidget(
                 onImageIconSelected: (images) {
-                  Momentum.controller<CreatePostController>(context)
-                      .pickImages(images);
+                  if (images != null) {
+                    Momentum.controller<CreatePostController>(context)
+                        .pickImages(images
+                            .filter((e) => e != null)
+                            .map((e) => e!)
+                            .toList());
+                  }
                 },
               ),
             ),
@@ -66,7 +71,7 @@ class _SubmitButton extends StatelessWidget {
     return MomentumBuilder(
         controllers: [CreatePostController],
         builder: (context, snapshot) {
-          final model = snapshot<CreatePostModel>();
+          final model = snapshot<CreatePostModel>()!;
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
             child: ArgonButton(
@@ -85,15 +90,15 @@ class _SubmitButton extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color:
-                      model.selected != null && model.content.isExistAndNotEmpty
-                          ? Theme.of(context).primaryColor
-                          : Theme.of(context).primaryColor.withAlpha(150),
+                  color: model.selected != null &&
+                          model.content!.isExistAndNotEmpty
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).primaryColor.withAlpha(150),
                   borderRadius: BorderRadius.circular(90),
                 ),
                 child: Text(
                   'Đăng',
-                  style: context.textTheme.bodyText1.copyWith(
+                  style: context.textTheme.bodyText1!.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.onPrimary),
                 ),
@@ -110,8 +115,8 @@ class _CategoriesDropDown extends StatelessWidget {
     return MomentumBuilder(
         controllers: [CreatePostController, SystemController],
         builder: (context, snapshot) {
-          final categories = snapshot<SystemModel>().postCategories ?? [];
-          final model = snapshot<CreatePostModel>();
+          final categories = snapshot<SystemModel>()!.postCategories ?? [];
+          final model = snapshot<CreatePostModel>()!;
 
           return DropdownButton<PostCategory>(
             value: model.selected,
@@ -124,7 +129,7 @@ class _CategoriesDropDown extends StatelessWidget {
             underline: const SizedBox.shrink(),
             style: TextStyle(color: Colors.deepPurple),
             hint: Text('Chọn danh mục',
-                style: context.textTheme.bodyText1.copyWith(
+                style: context.textTheme.bodyText1!.copyWith(
                   color: context.colorScheme.onSurface,
                 )),
             onChanged: (category) {
@@ -136,7 +141,7 @@ class _CategoriesDropDown extends StatelessWidget {
                 value: value,
                 child: Text(
                   value.value,
-                  style: context.textTheme.bodyText1
+                  style: context.textTheme.bodyText1!
                       .copyWith(color: value.color, shadows: [
                     Shadow(
                       blurRadius: 2,
@@ -153,7 +158,7 @@ class _CategoriesDropDown extends StatelessWidget {
 
 class _CreatePostBody extends StatelessWidget {
   const _CreatePostBody({
-    Key key,
+    Key? key,
     this.textFieldPlaceholder = '',
   }) : super(key: key);
 
@@ -181,12 +186,12 @@ class _CreatePostBody extends StatelessWidget {
 
 class _TextField extends StatelessWidget {
   const _TextField({
-    Key key,
+    Key? key,
     this.textEditingController,
     this.placeholder = '',
   }) : super(key: key);
 
-  final TextEditingController textEditingController;
+  final TextEditingController? textEditingController;
   final String placeholder;
 
   @override
@@ -197,7 +202,7 @@ class _TextField extends StatelessWidget {
         MomentumBuilder(
             controllers: [CreatePostController],
             builder: (context, snapshot) {
-              final model = snapshot<CreatePostModel>();
+              final model = snapshot<CreatePostModel>()!;
               return TextFormField(
                 initialValue: model.content,
                 maxLines: null,

@@ -11,7 +11,7 @@ class StorageService extends GetxService {
   StorageService({this.isTesting = false});
 
   Future<SharedPreferences> get storage =>
-      isTesting ? _TestingStorage() : SharedPreferences.getInstance();
+      isTesting ? _TestingStorage() as Future<SharedPreferences> : SharedPreferences.getInstance();
 }
 
 extension LoginEmailStorage on StorageService {
@@ -23,7 +23,7 @@ extension LoginEmailStorage on StorageService {
     await (await storage).remove(_EMAIL_KEY);
   }
 
-  Future<String> get getLoginEmail async =>
+  Future<String?> get getLoginEmail async =>
       (await storage).getString(_EMAIL_KEY);
 }
 
@@ -38,7 +38,7 @@ extension UserIdStorage on StorageService {
     Get.find<GraphqlService>().reset();
   }
 
-  Future<String> get getUserId async => (await storage).getString(_USER_ID_KEY);
+  Future<String?> get getUserId async => (await storage).getString(_USER_ID_KEY);
 }
 
 extension TokenStorage on StorageService {
@@ -52,7 +52,7 @@ extension TokenStorage on StorageService {
     Get.find<GraphqlService>().reset();
   }
 
-  Future<String> get getToken async => (await storage).getString(_TOKEN_KEY);
+  Future<String?> get getToken async => (await storage).getString(_TOKEN_KEY);
 }
 
 extension ThemeStorage on StorageService {
@@ -83,17 +83,17 @@ class _TestingStorage implements SharedPreferences {
   }
 
   @override
-  bool getBool(String key) {
-    return _data[key] as bool;
+  bool? getBool(String key) {
+    return _data[key] as bool?;
   }
 
   @override
-  double getDouble(String key) {
+  double? getDouble(String key) {
     return double.tryParse(_data[key]);
   }
 
   @override
-  int getInt(String key) {
+  int? getInt(String key) {
     return int.tryParse(_data[key]);
   }
 
@@ -109,7 +109,7 @@ class _TestingStorage implements SharedPreferences {
 
   @override
   List<String> getStringList(String key) {
-    return (_data[key] as List ?? []).map((e) => e.toString()).toList();
+    return (_data[key] as List? ?? []).map((e) => e.toString()).toList();
   }
 
   @override

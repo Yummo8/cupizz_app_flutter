@@ -7,14 +7,14 @@ class EditEducationLevelScreen extends StatefulWidget {
 }
 
 class _EditEducationLevelScreenState extends State<EditEducationLevelScreen> {
-  EducationLevel selectedValue;
+  EducationLevel? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       selectedValue = Momentum.controller<CurrentUserController>(context)
-          .model
+          .model!
           .currentUser
           ?.educationLevel;
       setState(() {});
@@ -39,11 +39,11 @@ class _EditEducationLevelScreenState extends State<EditEducationLevelScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup<EducationLevel>(
+              RadioButtonGroup<EducationLevel?>(
                 spacing: 1.0,
                 items: EducationLevel.getAll(),
                 selectedItems: [selectedValue],
-                valueToString: (v) => v.displayValue,
+                valueToString: (v) => v!.displayValue,
                 onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),

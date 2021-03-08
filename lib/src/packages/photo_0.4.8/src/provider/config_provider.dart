@@ -6,27 +6,27 @@ import 'i18n_provider.dart';
 
 class PhotoPickerProvider extends InheritedWidget {
   PhotoPickerProvider({
-    @required this.options,
-    @required this.provider,
-    @required Widget child,
+    required this.options,
+    required this.provider,
+    required Widget child,
     this.pickedAssetList,
-    Key key,
+    Key? key,
   }) : super(key: key, child: child);
 
-  final Options options;
-  final I18nProvider provider;
+  final Options? options;
+  final I18nProvider? provider;
   final AssetProvider assetProvider = AssetProvider();
-  final List<AssetEntity> pickedAssetList;
+  final List<AssetEntity>? pickedAssetList;
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {
     return true;
   }
 
-  static PhotoPickerProvider of(BuildContext context) =>
+  static PhotoPickerProvider? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<PhotoPickerProvider>(
           aspect: PhotoPickerProvider);
 
   static AssetProvider assetProviderOf(BuildContext context) =>
-      of(context).assetProvider;
+      of(context)!.assetProvider;
 }

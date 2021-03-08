@@ -4,11 +4,11 @@ import 'package:flutter/painting.dart';
 import 'package:vibration/vibration.dart';
 
 class LikeControls extends StatelessWidget {
-  final Function onLike;
-  final Function onDislike;
-  final Function onSuperLike;
+  final Function? onLike;
+  final Function? onDislike;
+  final Function? onSuperLike;
 
-  const LikeControls({Key key, this.onLike, this.onDislike, this.onSuperLike})
+  const LikeControls({Key? key, this.onLike, this.onDislike, this.onSuperLike})
       : super(key: key);
 
   @override
@@ -53,7 +53,7 @@ class LikeControls extends StatelessWidget {
                         child: CupertinoButton(
                           padding: EdgeInsets.zero,
                           minSize: 0,
-                          onPressed: onDislike,
+                          onPressed: onDislike as void Function()?,
                           child: Icon(
                             Icons.close,
                             color: Colors.grey,

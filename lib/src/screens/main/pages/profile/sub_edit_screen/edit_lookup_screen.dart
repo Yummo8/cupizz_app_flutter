@@ -6,14 +6,14 @@ class EditLookupScreen extends StatefulWidget {
 }
 
 class _EditLookupScreenState extends State<EditLookupScreen> {
-  List<LookingFor> selectedValues = [];
+  List<LookingFor>? selectedValues = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       selectedValues = Momentum.controller<CurrentUserController>(context)
-          .model
+          .model!
           .currentUser
           ?.lookingFors;
       setState(() {});
@@ -50,10 +50,10 @@ class _EditLookupScreenState extends State<EditLookupScreen> {
                 selectedItems: selectedValues,
                 valueToString: (v) => v.displayValue,
                 onItemPressed: (value) => setState(() {
-                  if (selectedValues.contains(value)) {
-                    selectedValues.remove(value);
+                  if (selectedValues!.contains(value)) {
+                    selectedValues!.remove(value);
                   } else {
-                    selectedValues.add(value);
+                    selectedValues!.add(value);
                   }
                 }),
               ),

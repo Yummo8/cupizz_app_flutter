@@ -6,10 +6,11 @@ import 'package:simple_animations/simple_animations.dart';
 import '../home_page.dart';
 
 class SideBar extends StatefulWidget {
-  final OptionsDrawerController controller;
-  final double sideBarSize;
+  final OptionsDrawerController? controller;
+  final double? sideBarSize;
 
-  const SideBar({Key key, this.controller, this.sideBarSize}) : super(key: key);
+  const SideBar({Key? key, this.controller, this.sideBarSize})
+      : super(key: key);
 
   @override
   _SideBarState createState() => _SideBarState();
@@ -17,8 +18,8 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar>
     with SingleTickerProviderStateMixin<SideBar> {
-  OptionsDrawerController controller;
-  AnimationController _animationController;
+  late OptionsDrawerController controller;
+  late AnimationController _animationController;
   final _animationDuration = const Duration(milliseconds: 500);
   bool isMenuOpen = false;
   double screenWidth = 0;
@@ -108,7 +109,7 @@ class _SideBarState extends State<SideBar>
       child: MomentumBuilder(
           controllers: [CurrentUserController],
           builder: (context, snapshot) {
-            final model = snapshot<CurrentUserModel>();
+            final model = snapshot<CurrentUserModel>()!;
             if (model.currentUser == null) {
               return ErrorIndicator(
                 onReload: Momentum.controller<CurrentUserController>(context)
@@ -130,56 +131,58 @@ class _SideBarState extends State<SideBar>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _buildGender(model.currentUser),
-                        _buildHobbies(model.currentUser),
-                        _buildDistance(model.currentUser),
-                        _buildAge(model.currentUser),
-                        _buildHeight(model.currentUser),
+                        _buildGender(model.currentUser!),
+                        _buildHobbies(model.currentUser!),
+                        _buildDistance(model.currentUser!),
+                        _buildAge(model.currentUser!),
+                        _buildHeight(model.currentUser!),
                         _buildEnum<EducationLevel>(
                           title: Strings.common.educationLevel,
                           itemToString: (i) => i.displayValue,
                           items: EducationLevel.getAll(),
-                          value: model.currentUser.educationLevelsPrefer,
+                          value: model.currentUser!.educationLevelsPrefer,
                           onPressed: (i) {
-                            if (model.currentUser.educationLevelsPrefer !=
+                            if (model.currentUser!.educationLevelsPrefer !=
                                     null &&
-                                model.currentUser.educationLevelsPrefer
+                                model.currentUser!.educationLevelsPrefer!
                                     .contains(i)) {
-                              model.currentUser.educationLevelsPrefer.remove(i);
+                              model.currentUser!.educationLevelsPrefer!
+                                  .remove(i);
                             } else {
-                              model.currentUser.educationLevelsPrefer.add(i);
+                              model.currentUser!.educationLevelsPrefer!.add(i);
                             }
                             model.controller.updateDatingSetting(
                                 educationLevelsPrefer:
-                                    model.currentUser.educationLevelsPrefer);
+                                    model.currentUser!.educationLevelsPrefer);
                           },
                         ),
-                        _buildEnum<HaveKids>(
+                        _buildEnum<HaveKids?>(
                           title: 'Con cái',
-                          itemToString: (i) => i.theirDisplay,
+                          itemToString: (i) => i!.theirDisplay,
                           items: HaveKids.getAll(),
-                          value: [model.currentUser.theirKids],
+                          value: [model.currentUser!.theirKids],
                           onPressed: (i) {
-                            model.currentUser.theirKids = i;
+                            model.currentUser!.theirKids = i;
                             model.controller.updateDatingSetting(
-                                theirKids: model.currentUser.theirKids);
+                                theirKids: model.currentUser!.theirKids);
                           },
                         ),
                         _buildEnum<Religious>(
                           title: 'Tôn giáo',
                           itemToString: (i) => i.displayValue,
                           items: Religious.getAll(),
-                          value: model.currentUser.religiousPrefer,
+                          value: model.currentUser!.religiousPrefer,
                           onPressed: (i) {
-                            if (model.currentUser.religiousPrefer != null &&
-                                model.currentUser.religiousPrefer.contains(i)) {
-                              model.currentUser.religiousPrefer.remove(i);
+                            if (model.currentUser!.religiousPrefer != null &&
+                                model.currentUser!.religiousPrefer!
+                                    .contains(i)) {
+                              model.currentUser!.religiousPrefer!.remove(i);
                             } else {
-                              model.currentUser.religiousPrefer.add(i);
+                              model.currentUser!.religiousPrefer!.add(i);
                             }
                             model.controller.updateDatingSetting(
                                 religiousPrefer:
-                                    model.currentUser.religiousPrefer);
+                                    model.currentUser!.religiousPrefer);
                           },
                         ),
                         const SizedBox(height: 56),
@@ -199,8 +202,8 @@ class _SideBarState extends State<SideBar>
       children: [
         Text(
           Strings.drawer.filter,
-          style:
-              context.textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
+          style: context.textTheme.headline6!
+              .copyWith(fontWeight: FontWeight.bold),
         ),
         InkWell(
           enableFeedback: true,
@@ -246,7 +249,7 @@ class _SideBarState extends State<SideBar>
         children: [
           Wrap(
             spacing: 10,
-            children: currentUser.hobbies
+            children: currentUser.hobbies!
                 .take(5)
                 .map(
                   (e) => HobbyItem(hobby: e, isSelected: true),
@@ -258,7 +261,7 @@ class _SideBarState extends State<SideBar>
               HobbiesBottomSheet().show(context);
             },
             style: OutlinedButton.styleFrom(
-              side: BorderSide(width: 1, color: Colors.grey[500]),
+              side: BorderSide(width: 1, color: Colors.grey[500]!),
               primary: context.colorScheme.primary.withOpacity(0.5),
             ),
             child: Text(Strings.drawer.chooseOtherHoddies),
@@ -269,43 +272,40 @@ class _SideBarState extends State<SideBar>
   }
 
   Widget _buildDistance(User currentUser) {
-    return currentUser.distancePrefer == null
-        ? const SizedBox.shrink()
-        : _buildItem(
-            title: Strings.common.distance,
-            actions: Row(
-              children: [
-                Icon(
-                  Icons.room,
-                  size: 12,
-                  color: Colors.grey[500],
-                ),
-                const SizedBox(width: 5),
-                Text('${currentUser.distancePrefer} km',
-                    style: context.textTheme.caption),
-              ],
-            ),
-            body: FlutterSlider(
-              values: [currentUser.distancePrefer.toDouble()],
-              max: (1000 < currentUser.distancePrefer
-                      ? currentUser.distancePrefer
-                      : 1000)
-                  .toDouble(),
-              min: 0,
-              trackBar: FlutterSliderTrackBar(
-                activeTrackBar:
-                    BoxDecoration(color: context.colorScheme.primary),
-              ),
-              handler: HeartSliderHandler(context),
-              tooltip: CustomSliderTooltip(context, unit: 'km'),
-              onDragCompleted: (handlerIndex, lowerValue, upperValue) {
-                Momentum.controller<CurrentUserController>(context)
-                    .updateDatingSetting(
-                        distancePrefer:
-                            double.tryParse(lowerValue.toString()).round());
-              },
-            ),
-          );
+    return _buildItem(
+      title: Strings.common.distance,
+      actions: Row(
+        children: [
+          Icon(
+            Icons.room,
+            size: 12,
+            color: Colors.grey[500],
+          ),
+          const SizedBox(width: 5),
+          Text('${currentUser.distancePrefer} km',
+              style: context.textTheme.caption),
+        ],
+      ),
+      body: FlutterSlider(
+        values: [currentUser.distancePrefer.toDouble()],
+        max: (1000 < currentUser.distancePrefer
+                ? currentUser.distancePrefer
+                : 1000)
+            .toDouble(),
+        min: 0,
+        trackBar: FlutterSliderTrackBar(
+          activeTrackBar: BoxDecoration(color: context.colorScheme.primary),
+        ),
+        handler: HeartSliderHandler(context),
+        tooltip: CustomSliderTooltip(context, unit: 'km'),
+        onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+          Momentum.controller<CurrentUserController>(context)
+              .updateDatingSetting(
+                  distancePrefer:
+                      double.tryParse(lowerValue.toString())!.round());
+        },
+      ),
+    );
   }
 
   Widget _buildAge(User currentUser) {
@@ -318,16 +318,16 @@ class _SideBarState extends State<SideBar>
                 style: context.textTheme.caption),
             body: FlutterSlider(
               values: [
-                currentUser.minAgePrefer.toDouble(),
-                currentUser.maxAgePrefer.toDouble()
+                currentUser.minAgePrefer!.toDouble(),
+                currentUser.maxAgePrefer!.toDouble()
               ],
-              max: (60 < currentUser.maxAgePrefer
+              max: (60 < currentUser.maxAgePrefer!
                       ? currentUser.maxAgePrefer
-                      : 60)
+                      : 60)!
                   .toDouble(),
-              min: (18 > currentUser.minAgePrefer
+              min: (18 > currentUser.minAgePrefer!
                       ? currentUser.minAgePrefer
-                      : 18)
+                      : 18)!
                   .toDouble(),
               rangeSlider: true,
               minimumDistance: 1,
@@ -344,9 +344,9 @@ class _SideBarState extends State<SideBar>
                 Momentum.controller<CurrentUserController>(context)
                     .updateDatingSetting(
                         minAgePrefer:
-                            double.tryParse(lowerValue.toString()).round(),
+                            double.tryParse(lowerValue.toString())!.round(),
                         maxAgePrefer:
-                            double.tryParse(upperValue.toString()).round());
+                            double.tryParse(upperValue.toString())!.round());
               },
             ),
           );
@@ -363,16 +363,16 @@ class _SideBarState extends State<SideBar>
                 style: context.textTheme.caption),
             body: FlutterSlider(
               values: [
-                currentUser.minHeightPrefer.toDouble(),
-                currentUser.maxHeightPrefer.toDouble()
+                currentUser.minHeightPrefer!.toDouble(),
+                currentUser.maxHeightPrefer!.toDouble()
               ],
-              max: (200 < currentUser.maxHeightPrefer
+              max: (200 < currentUser.maxHeightPrefer!
                       ? currentUser.maxAgePrefer
-                      : 200)
+                      : 200)!
                   .toDouble(),
-              min: (150 > currentUser.minHeightPrefer
+              min: (150 > currentUser.minHeightPrefer!
                       ? currentUser.minHeightPrefer
-                      : 150)
+                      : 150)!
                   .toDouble(),
               rangeSlider: true,
               minimumDistance: 1,
@@ -389,20 +389,20 @@ class _SideBarState extends State<SideBar>
                 Momentum.controller<CurrentUserController>(context)
                     .updateDatingSetting(
                         minHeightPrefer:
-                            double.tryParse(lowerValue.toString()).round(),
+                            double.tryParse(lowerValue.toString())!.round(),
                         maxHeightPrefer:
-                            double.tryParse(upperValue.toString()).round());
+                            double.tryParse(upperValue.toString())!.round());
               },
             ),
           );
   }
 
-  Widget _buildEnum<T extends Enumerable>({
-    String title,
-    List<T> value,
+  Widget _buildEnum<T extends Enumerable?>({
+    String? title,
+    List<T>? value,
     List<T> items = const [],
-    Function(T i) onPressed,
-    String Function(T i) itemToString,
+    Function(T i)? onPressed,
+    String Function(T i)? itemToString,
   }) {
     return _buildItem(
       title: title ?? '',
@@ -422,9 +422,9 @@ class _SideBarState extends State<SideBar>
   }
 
   Widget _buildItem({
-    @required String title,
-    Widget actions,
-    Widget body,
+    required String title,
+    Widget? actions,
+    Widget? body,
     bool showBottomSeparator = true,
   }) {
     return Column(
@@ -436,7 +436,7 @@ class _SideBarState extends State<SideBar>
           children: [
             Text(
               title,
-              style: context.textTheme.bodyText1
+              style: context.textTheme.bodyText1!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             if (actions != null) actions
@@ -457,7 +457,7 @@ class _SideBarState extends State<SideBar>
           await Momentum.controller<CurrentUserController>(context)
               .toggleGenderButton(gender);
         } catch (e) {
-          await Fluttertoast.showToast(msg: e);
+          await Fluttertoast.showToast(msg: e.toString());
         }
       });
 }

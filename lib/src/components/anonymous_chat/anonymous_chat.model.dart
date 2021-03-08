@@ -10,15 +10,15 @@ class AnonymousChatModel extends MomentumModel<AnonymousChatController> {
     this.isLoading = false,
   }) : super(controller);
 
-  final Conversation conversation;
+  final Conversation? conversation;
   final bool isFinding;
   final bool isLoading;
 
   @override
   void update({
-    Conversation conversation,
-    bool isFinding,
-    bool isLoading,
+    Conversation? conversation,
+    bool? isFinding,
+    bool? isLoading,
   }) {
     AnonymousChatModel(
       controller,
@@ -38,10 +38,10 @@ class AnonymousChatModel extends MomentumModel<AnonymousChatController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return AnonymousChatModel(
       controller,
-      conversation: json['conversation'] != null
+      conversation: json!['conversation'] != null
           ? Mapper.fromJson(json['conversation']).toObject<Conversation>()
           : null,
     );

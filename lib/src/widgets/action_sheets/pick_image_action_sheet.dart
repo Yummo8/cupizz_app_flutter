@@ -6,11 +6,11 @@ import 'package:image_picker/image_picker.dart';
 
 void pickImage(
   BuildContext context,
-  Function(List<File> image) onPickedImage, {
+  Function(List<File?>? image) onPickedImage, {
   int maxSelected = 9,
-  String title,
+  String? title,
   bool isCropImage = true,
-  CropAspectRatio cropAspectRatio,
+  CropAspectRatio? cropAspectRatio,
 }) async {
   FocusScope.of(context).unfocus();
   await Menu(
@@ -28,18 +28,18 @@ void pickImage(
 
 List<MenuItem> getPickImagesMenuItem(
   BuildContext context,
-  Function(List<File> image) onPickedImage, {
+  Function(List<File?>? image) onPickedImage, {
   int maxSelected = 9,
   bool isCropImage = true,
-  CropAspectRatio cropAspectRatio,
+  CropAspectRatio? cropAspectRatio,
 }) =>
     [
       MenuItem(
         title: Strings.button.takeAPicture,
         onPressed: () async {
           try {
-            var rawImage = File(
-                (await ImagePicker().getImage(source: ImageSource.camera))
+            File? rawImage = File(
+                (await ImagePicker().getImage(source: ImageSource.camera))!
                     .path);
 
             if (isCropImage) {
@@ -66,15 +66,15 @@ List<MenuItem> getPickImagesMenuItem(
           isCropImage: isCropImage,
           cropAspectRatio: cropAspectRatio,
         ).then((assets) async {
-          if (assets.isExistAndNotEmpty) {
+          if (assets!.isExistAndNotEmpty) {
             onPickedImage(assets);
           }
         }).whenComplete(() => Navigator.pop(context)),
       ),
     ];
 
-Future<File> cropImage(BuildContext context, File image,
-        [CropAspectRatio ratio]) =>
+Future<File?> cropImage(BuildContext context, File image,
+        [CropAspectRatio? ratio]) =>
     ImageCropper.cropImage(
       sourcePath: image.path,
       aspectRatio: ratio,

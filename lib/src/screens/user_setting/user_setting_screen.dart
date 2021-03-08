@@ -1,5 +1,6 @@
 library user_setting_screen;
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 import '../../base/base.dart';
@@ -14,7 +15,7 @@ class UserSettingScreen extends StatelessWidget {
     return MomentumBuilder(
         controllers: [CurrentUserController],
         builder: (context, snapshot) {
-          final model = snapshot<CurrentUserModel>();
+          final model = snapshot<CurrentUserModel>()!;
           return PrimaryScaffold(
             appBar: BackAppBar(
               title: 'Cài đặt',
@@ -61,9 +62,8 @@ class UserSettingScreen extends StatelessWidget {
                     },
                   ),
                   if (model.currentUser != null &&
-                      model.currentUser.socialProviders.firstWhere(
-                              (e) => e.type == SocialProviderType.email,
-                              orElse: () => null) !=
+                      model.currentUser!.socialProviders!.firstWhereOrNull(
+                              (e) => e.type == SocialProviderType.email) !=
                           null) ...[
                     Divider(),
                     _TextTile(
@@ -71,11 +71,11 @@ class UserSettingScreen extends StatelessWidget {
                       onTap: () {
                         final controller =
                             Momentum.controller<CurrentUserController>(context);
-                        if (controller.model.currentUser != null) {
+                        if (controller.model!.currentUser != null) {
                           ChangePassDialog.show(
                             context,
-                            avatar: controller.model.currentUser.avatar?.url,
-                            nickName: controller.model.currentUser.nickName,
+                            avatar: controller.model!.currentUser!.avatar?.url,
+                            nickName: controller.model!.currentUser!.nickName,
                             isLoading: false,
                             requireOldPass: true,
                             onSend: (oldPass, newPass) async {

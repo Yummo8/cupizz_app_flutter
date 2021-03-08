@@ -6,9 +6,9 @@ class EditLocationScreen extends StatefulWidget {
 }
 
 class _EditLocationScreenState extends State<EditLocationScreen> {
-  Position _currentPosition;
-  String _currentAddress;
-  bool _onLoading;
+  late Position _currentPosition;
+  String? _currentAddress;
+  late bool _onLoading;
 
   @override
   void initState() {
@@ -16,9 +16,9 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
     _checkPermission();
     _onLoading = false;
     _currentAddress = '';
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _currentAddress = Momentum.controller<CurrentUserController>(context)
-              .model
+              .model!
               .currentUser
               ?.address ??
           '';
@@ -109,7 +109,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                           ),
                           Flexible(
                             child: Text(
-                              _currentAddress,
+                              _currentAddress!,
                               style: context.textTheme.bodyText1,
                             ),
                           ),

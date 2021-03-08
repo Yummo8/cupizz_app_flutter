@@ -2,7 +2,7 @@ part of '../photo_main_page.dart';
 
 class ImageItem extends StatelessWidget {
   const ImageItem({
-    Key key,
+    Key? key,
     this.entity,
     this.themeColor,
     this.size = 64,
@@ -10,11 +10,11 @@ class ImageItem extends StatelessWidget {
     this.badgeDelegate,
   }) : super(key: key);
 
-  final AssetEntity entity;
-  final Color themeColor;
-  final int size;
-  final LoadingDelegate loadingDelegate;
-  final BadgeDelegate badgeDelegate;
+  final AssetEntity? entity;
+  final Color? themeColor;
+  final int? size;
+  final LoadingDelegate? loadingDelegate;
+  final BadgeDelegate? badgeDelegate;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class ImageItem extends StatelessWidget {
       return _buildImageItem(context, thumb);
     }
 
-    return FutureBuilder<Uint8List>(
-      future: entity.thumbDataWithSize(size, size),
-      builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
+    return FutureBuilder<Uint8List?>(
+      future: entity!.thumbDataWithSize(size!, size!),
+      builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
         final futureData = snapshot.data;
         if (snapshot.connectionState == ConnectionState.done &&
             futureData != null) {
@@ -33,7 +33,7 @@ class ImageItem extends StatelessWidget {
           return _buildImageItem(context, futureData);
         }
         return Center(
-          child: loadingDelegate.buildPreviewLoading(
+          child: loadingDelegate!.buildPreviewLoading(
             context,
             entity,
             themeColor,
@@ -52,7 +52,7 @@ class ImageItem extends StatelessWidget {
     );
     Widget badge;
     final badgeBuilder =
-        badgeDelegate?.buildBadge(context, entity.type, entity.videoDuration);
+        badgeDelegate?.buildBadge(context, entity!.type, entity!.videoDuration);
     if (badgeBuilder == null) {
       badge = Container();
     } else {

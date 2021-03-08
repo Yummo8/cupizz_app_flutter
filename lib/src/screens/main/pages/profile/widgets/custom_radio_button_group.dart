@@ -1,14 +1,14 @@
 part of '../edit_profile_screen.dart';
 
 class RadioButtonGroup<T> extends StatelessWidget {
-  final List<T> items;
-  final ValueChanged<T> onItemPressed;
-  final String Function(T) valueToString;
+  final List<T>? items;
+  final ValueChanged<T>? onItemPressed;
+  final String Function(T)? valueToString;
   final double spacing;
-  final List<T> selectedItems;
+  final List<T>? selectedItems;
 
   const RadioButtonGroup({
-    Key key,
+    Key? key,
     this.items,
     this.onItemPressed,
     this.spacing = 10,
@@ -17,15 +17,15 @@ class RadioButtonGroup<T> extends StatelessWidget {
   }) : super(key: key);
 
   List<Widget> buildListItem() {
-    return items
+    return (items ?? [])
         .mapIndexed(
-          (item, index) => CustomItemChoice(
-            valueToString(item),
-            onChange: () {
-              onItemPressed(item);
-            },
-            isSelected: selectedItems.contains(item),
-          ),
+          ((item, index) => CustomItemChoice(
+                valueToString!(item),
+                onChange: () {
+                  onItemPressed!(item);
+                },
+                isSelected: selectedItems!.contains(item),
+              )),
         )
         .toList();
   }

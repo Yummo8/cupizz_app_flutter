@@ -5,21 +5,21 @@ import 'package:cupizz_app/src/base/base.dart';
 class RotateAnimatedTextKit extends StatefulWidget {
   final List<String> text;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
-  final Duration pause;
+  final Duration? pause;
 
-  final Duration duration;
+  final Duration? duration;
 
-  final double transitionHeight;
+  final double? transitionHeight;
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
-  final VoidCallback onFinished;
+  final VoidCallback? onFinished;
 
-  final void Function(int, bool) onNext;
+  final void Function(int?, bool)? onNext;
 
-  final void Function(int, bool) onNextBeforePause;
+  final void Function(int?, bool)? onNextBeforePause;
 
   final AlignmentGeometry alignment;
 
@@ -34,8 +34,8 @@ class RotateAnimatedTextKit extends StatefulWidget {
   final bool displayFullTextOnTap;
 
   const RotateAnimatedTextKit(
-      {Key key,
-      @required this.text,
+      {Key? key,
+      required this.text,
       this.textStyle,
       this.transitionHeight,
       this.pause,
@@ -58,27 +58,27 @@ class RotateAnimatedTextKit extends StatefulWidget {
 
 class _RotatingTextState extends State<RotateAnimatedTextKit>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController? _controller;
 
-  double _transitionHeight;
+  double? _transitionHeight;
 
-  Animation _fadeIn, _fadeOut, _slideIn, _slideOut;
+  late Animation _fadeIn, _fadeOut, _slideIn, _slideOut;
 
   List<Widget> textWidgetList = [];
 
-  Duration _pause;
+  Duration? _pause;
 
   final List<Map<String, dynamic>> _texts = [];
 
-  int _index;
+  int? _index;
 
   bool _isCurrentlyPausing = false;
 
-  Timer _timer;
+  Timer? _timer;
 
-  int _currentRepeatCount;
+  int? _currentRepeatCount;
 
-  Duration _duration;
+  Duration? _duration;
 
   @override
   void initState() {
@@ -111,7 +111,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
   @override
   Widget build(BuildContext context) {
     final textWidget = Text(
-      _texts[_index]['text'],
+      _texts[_index!]['text'],
       style: widget.textStyle,
       textAlign: widget.textAlign,
     );
@@ -119,13 +119,15 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
       onTap: _onTap,
       child: SizedBox(
         height: _transitionHeight,
-        child: _isCurrentlyPausing || !_controller.isAnimating
+        child: _isCurrentlyPausing || !_controller!.isAnimating
             ? textWidget
             : AnimatedBuilder(
-                animation: _controller,
-                builder: (BuildContext context, Widget child) {
+                animation: _controller!,
+                builder: (BuildContext context, Widget? child) {
                   return AlignTransition(
-                    alignment: _slideIn.value.y != 0.0 ? _slideIn : _slideOut,
+                    alignment: _slideIn.value.y != 0.0
+                        ? _slideIn as Animation<AlignmentGeometry>
+                        : _slideOut as Animation<AlignmentGeometry>,
                     child: Opacity(
                         opacity: _fadeIn.value != 1.0
                             ? _fadeIn.value
@@ -147,37 +149,37 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
     if (_index == 0) {
       _slideIn = AlignmentTween(
-              begin: Alignment(-1.0, -1.0).add(widget.alignment),
-              end: Alignment(-1.0, 0.0).add(widget.alignment))
+              begin: Alignment(-1.0, -1.0).add(widget.alignment) as Alignment?,
+              end: Alignment(-1.0, 0.0).add(widget.alignment) as Alignment?)
           .animate(CurvedAnimation(
-              parent: _controller,
+              parent: _controller!,
               curve: const Interval(0.0, 0.4, curve: Curves.linear)));
 
       _fadeIn = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          parent: _controller,
+          parent: _controller!,
           curve: const Interval(0.0, 0.4, curve: Curves.easeOut)));
     } else {
       _slideIn = AlignmentTween(
-              begin: Alignment(-1.0, -1.0).add(widget.alignment),
-              end: Alignment(-1.0, 0.0).add(widget.alignment))
+              begin: Alignment(-1.0, -1.0).add(widget.alignment) as Alignment?,
+              end: Alignment(-1.0, 0.0).add(widget.alignment) as Alignment?)
           .animate(CurvedAnimation(
-              parent: _controller,
+              parent: _controller!,
               curve: const Interval(0.0, 0.4, curve: Curves.linear)));
 
       _fadeIn = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          parent: _controller,
+          parent: _controller!,
           curve: const Interval(0.0, 0.4, curve: Curves.easeOut)));
     }
 
     _slideOut = AlignmentTween(
-      begin: Alignment(-1.0, 0.0).add(widget.alignment),
-      end: Alignment(-1.0, 1.0).add(widget.alignment),
+      begin: Alignment(-1.0, 0.0).add(widget.alignment) as Alignment?,
+      end: Alignment(-1.0, 1.0).add(widget.alignment) as Alignment?,
     ).animate(CurvedAnimation(
-        parent: _controller,
+        parent: _controller!,
         curve: const Interval(0.7, 1.0, curve: Curves.linear)));
 
     _fadeOut = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(
-        parent: _controller,
+        parent: _controller!,
         curve: const Interval(0.7, 1.0, curve: Curves.easeIn)))
       ..addStatusListener(_animationEndCallback);
   }
@@ -187,7 +189,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
     _isCurrentlyPausing = false;
 
-    if (_index > -1) {
+    if (_index! > -1) {
       widget.onNext?.call(_index, isLast);
     }
 
@@ -197,25 +199,25 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
               _currentRepeatCount != (widget.totalRepeatCount - 1))) {
         _index = 0;
         if (!widget.repeatForever) {
-          _currentRepeatCount++;
+          _currentRepeatCount = _currentRepeatCount ?? 0 + 1;
         }
       } else {
         widget.onFinished?.call();
         return;
       }
     } else {
-      _index++;
+      _index = _index ?? 0 + 1;
     }
 
     if (mounted) setState(() {});
 
     if (widget.transitionHeight == null) {
-      _transitionHeight = widget.textStyle.fontSize * 10 / 3;
+      _transitionHeight = widget.textStyle!.fontSize! * 10 / 3;
     } else {
       _transitionHeight = widget.transitionHeight;
     }
 
-    _controller.forward(from: 0.0);
+    _controller!.forward(from: 0.0);
   }
 
   void _setPause() {
@@ -229,8 +231,8 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
   void _animationEndCallback(state) {
     if (state == AnimationStatus.completed) {
-      assert(null == _timer || !_timer.isActive);
-      _timer = Timer(_texts[_index]['pause'], _nextAnimation);
+      assert(null == _timer || !_timer!.isActive);
+      _timer = Timer(_texts[_index!]['pause'], _nextAnimation);
     }
   }
 
@@ -244,8 +246,8 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
         _setPause();
 
-        assert(null == _timer || !_timer.isActive);
-        _timer = Timer(_texts[_index]['pause'], _nextAnimation);
+        assert(null == _timer || !_timer!.isActive);
+        _timer = Timer(_texts[_index!]['pause'], _nextAnimation);
       }
     }
 

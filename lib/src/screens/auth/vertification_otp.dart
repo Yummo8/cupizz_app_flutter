@@ -19,7 +19,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
 
   TextEditingController textEditingController = TextEditingController();
 
-  StreamController<ErrorAnimationType> errorController;
+  StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
   String currentText = '';
@@ -37,7 +37,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
 
   @override
   void dispose() {
-    errorController.close();
+    errorController!.close();
 
     super.dispose();
   }
@@ -81,7 +81,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
                       children: [
                         TextSpan(
                             text: Momentum.controller<AuthController>(context)
-                                .model
+                                .model!
                                 .email,
                             style: TextStyle(
                                 color: Colors.black,
@@ -111,7 +111,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
                       autovalidateMode: AutovalidateMode.disabled,
                       animationType: AnimationType.fade,
                       validator: (v) {
-                        if (v.length != 6) {
+                        if (v!.length != 6) {
                           return 'Vui lòng nhập mã xác thực';
                         } else {
                           return null;
@@ -131,7 +131,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
                       cursorColor: context.colorScheme.onBackground,
                       animationDuration: Duration(milliseconds: 300),
                       textStyle:
-                          context.textTheme.headline6.copyWith(height: 1.6),
+                          context.textTheme.headline6!.copyWith(height: 1.6),
                       enableActiveFill: true,
                       errorAnimationController: errorController,
                       controller: textEditingController,
@@ -165,7 +165,7 @@ class _VerificationOtpScreenState extends State<VerificationOtpScreen> {
                       TextSpan(
                           text: ' GỬI LẠI',
                           recognizer: onTapRecognizer,
-                          style: context.textTheme.subtitle1.copyWith(
+                          style: context.textTheme.subtitle1!.copyWith(
                             color: context.colorScheme.primary,
                             fontWeight: FontWeight.bold,
                           ))

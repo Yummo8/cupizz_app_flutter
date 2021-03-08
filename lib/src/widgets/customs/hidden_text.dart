@@ -3,16 +3,16 @@ import 'package:cupizz_app/src/base/base.dart';
 class HiddenText extends StatefulWidget {
   final String text;
   final int maxLength;
-  final TextOverflow overflow;
-  final TextStyle style;
-  final TextAlign textAlign;
+  final TextOverflow? overflow;
+  final TextStyle? style;
+  final TextAlign? textAlign;
   final String readmoreText;
-  final Color readmoreColor;
+  final Color? readmoreColor;
   final int duration;
 
   const HiddenText(
     this.text, {
-    Key key,
+    Key? key,
     this.maxLength = 200,
     this.overflow,
     this.style,
@@ -28,7 +28,7 @@ class HiddenText extends StatefulWidget {
 
 class _HiddenTextState extends State<HiddenText> with TickerProviderStateMixin {
   bool isShow = false;
-  TextStyle textStyle;
+  TextStyle? textStyle;
 
   bool get isCollapsing => !(widget.maxLength >= widget.text.length || isShow);
 

@@ -6,7 +6,7 @@ class StorageProvider {
     await _storage.setString(key, data);
   }
 
-  Future<String> read(String key) async {
+  Future<String?> read(String key) async {
     final _storage = await SharedPreferences.getInstance();
     return _storage.getString(key);
   }

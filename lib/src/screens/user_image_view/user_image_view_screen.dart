@@ -4,14 +4,14 @@ import 'package:flutter/cupertino.dart' hide Router;
 import '../../base/base.dart';
 
 class UserImageViewScreen extends StatelessWidget {
-  final UserImage userImage;
+  final UserImage? userImage;
 
-  const UserImageViewScreen({Key key, this.userImage}) : super(key: key);
+  const UserImageViewScreen({Key? key, this.userImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (userImage == null) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
         Navigator.pop(context);
       });
     }
@@ -23,14 +23,14 @@ class UserImageViewScreen extends StatelessWidget {
               Navigator.pop(context);
             },
             body: Hero(
-              tag: userImage.id,
+              tag: userImage!.id!,
               child: Container(
                 decoration: haveImageBackground
                     ? BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:
-                              CachedNetworkImageProvider(userImage?.image?.url),
+                          image: CachedNetworkImageProvider(
+                              userImage?.image?.url ?? ''),
                         ),
                       )
                     : null,
@@ -42,13 +42,13 @@ class UserImageViewScreen extends StatelessWidget {
                             haveImageBackground ? Config.userImageOpacity : 1,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: userImage.gradient != null &&
-                                      userImage.gradient.length > 1
+                              color: userImage!.gradient != null &&
+                                      userImage!.gradient!.length > 1
                                   ? null
-                                  : userImage.color,
-                              gradient: userImage.gradient != null &&
-                                      userImage.gradient.length > 1
-                                  ? AnswerGradient(userImage.gradient)
+                                  : userImage!.color,
+                              gradient: userImage!.gradient != null &&
+                                      userImage!.gradient!.length > 1
+                                  ? AnswerGradient(userImage!.gradient!)
                                   : null),
                         ),
                       ),
@@ -62,7 +62,7 @@ class UserImageViewScreen extends StatelessWidget {
                           },
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
-                          textColor: userImage.textColor,
+                          textColor: userImage!.textColor,
                         ),
                         Expanded(
                           child: Container(
@@ -71,8 +71,8 @@ class UserImageViewScreen extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                if (userImage.answer?.question != null
-                                    ? userImage.answer.question.content
+                                if (userImage!.answer?.question != null
+                                    ? userImage!.answer!.question!.content!
                                         .isExistAndNotEmpty
                                     : false) ...[
                                   Row(
@@ -85,10 +85,12 @@ class UserImageViewScreen extends StatelessWidget {
                                         child: InkWell(
                                           onTap: null,
                                           child: Text(
-                                            userImage.answer.question.content,
-                                            style: context.textTheme.bodyText1
+                                            userImage!
+                                                .answer!.question!.content!,
+                                            style: context.textTheme.bodyText1!
                                                 .copyWith(
-                                                    color: userImage.textColor),
+                                                    color:
+                                                        userImage!.textColor),
                                           ),
                                         ),
                                       ),
@@ -96,25 +98,26 @@ class UserImageViewScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
                                 ],
-                                if (userImage.answer != null)
+                                if (userImage!.answer != null)
                                   Expanded(
                                     child: Center(
                                       child: TextFormField(
                                         keyboardType: TextInputType.multiline,
                                         maxLines: null,
                                         textAlign: TextAlign.center,
-                                        style: context.textTheme.headline6
+                                        style: context.textTheme.headline6!
                                             .copyWith(
-                                                color: userImage.textColor),
+                                                color: userImage!.textColor),
                                         readOnly: true,
                                         initialValue:
-                                            userImage.answer?.content ?? '',
+                                            userImage!.answer?.content ?? '',
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
                                           hintText: 'Câu trả lời ...',
-                                          hintStyle: context.textTheme.headline6
+                                          hintStyle: context
+                                              .textTheme.headline6!
                                               .copyWith(
-                                                  color: userImage.textColor),
+                                                  color: userImage!.textColor),
                                         ),
                                       ),
                                     ),

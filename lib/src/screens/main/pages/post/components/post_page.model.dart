@@ -15,26 +15,26 @@ class PostPageModel extends MomentumModel<PostPageController> {
     this.keyword,
   }) : super(controller);
 
-  final List<Post> posts;
-  final bool isLastPage;
-  final PostCategory selectedCategory;
-  final int currentPage;
-  final String keyword;
-  final bool isMyPost;
-  final bool isIncognitoComment;
+  final List<Post>? posts;
+  final bool? isLastPage;
+  final PostCategory? selectedCategory;
+  final int? currentPage;
+  final String? keyword;
+  final bool? isMyPost;
+  final bool? isIncognitoComment;
 
   final bool isLoading;
 
   @override
   void update({
-    List<Post> posts,
-    bool isLastPage,
-    PostCategory selectedCategory,
-    int currentPage,
-    bool isMyPost,
-    bool isLoading,
-    String keyword,
-    bool isIncognitoComment,
+    List<Post>? posts,
+    bool? isLastPage,
+    PostCategory? selectedCategory,
+    int? currentPage,
+    bool? isMyPost,
+    bool? isLoading,
+    String? keyword,
+    bool? isIncognitoComment,
   }) {
     PostPageModel(
       controller,
@@ -43,20 +43,20 @@ class PostPageModel extends MomentumModel<PostPageController> {
       selectedCategory: selectedCategory ?? this.selectedCategory,
       currentPage: currentPage ?? this.currentPage,
       isMyPost: isMyPost ?? this.isMyPost ?? false,
-      isLoading: isLoading ?? this.isLoading ?? false,
+      isLoading: isLoading ?? this.isLoading,
       keyword: keyword ?? this.keyword,
       isIncognitoComment: isIncognitoComment ?? this.isIncognitoComment ?? true,
     ).updateMomentum();
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return PostPageModel(
       controller,
-      isLastPage: json['isLastPage'] ?? false,
-      posts: (json['posts'] as List)
+      isLastPage: json!['isLastPage'] ?? false,
+      posts: (json['posts'] as List?)
               ?.map((e) => Mapper.fromJson(e).toObject<Post>())
-              ?.toList() ??
+              .toList() ??
           [],
       selectedCategory: json['selectedCategory'] != null
           ? Mapper.fromJson(json['selectedCategory']).toObject<PostCategory>()
@@ -70,7 +70,7 @@ class PostPageModel extends MomentumModel<PostPageController> {
 
   @override
   Map<String, dynamic> toJson() => {
-        'posts': posts?.map((e) => e.toJson())?.toList() ?? [],
+        'posts': posts?.map((e) => e.toJson()).toList() ?? [],
         'isLastPage': isLastPage,
         'selectedCategory': selectedCategory?.toJson(),
         'currentPage': currentPage ?? 1,

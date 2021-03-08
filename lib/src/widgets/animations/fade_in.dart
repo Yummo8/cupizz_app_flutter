@@ -10,9 +10,9 @@ class FadeInTranslate extends StatelessWidget {
   final bool enabled;
 
   FadeInTranslate({
-    Key key,
+    Key? key,
     this.delay = 0,
-    @required this.child,
+    required this.child,
     this.enabled = true,
     this.delayDuration = 300,
   }) : super(key: key);
@@ -28,7 +28,7 @@ class FadeInTranslate extends StatelessWidget {
       duration: tween.duration,
       tween: tween,
       builder: (context, child, value) => !enabled
-          ? child
+          ? child!
           : Opacity(
               opacity: value.get(_AniProps.opacity),
               child: Transform.translate(
@@ -41,16 +41,16 @@ class FadeInTranslate extends StatelessWidget {
 }
 
 class FadeIn extends StatelessWidget {
-  final Duration delay;
+  final Duration? delay;
   final Widget child;
   final int duration;
 
-  FadeIn({this.delay, @required this.child, this.duration = 500});
+  FadeIn({this.delay, required this.child, this.duration = 500});
 
   @override
   Widget build(BuildContext context) {
     return PlayAnimation<double>(
-      delay: delay,
+      delay: delay!,
       duration: duration.milliseconds,
       tween: 0.0.tweenTo(1.0),
       builder: (context, child, value) => Opacity(

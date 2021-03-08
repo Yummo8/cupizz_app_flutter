@@ -30,25 +30,25 @@ class _MainScreenState extends MomentumState<MainScreen>
     ProfilePage(),
   ];
 
-  TabController _tabController;
-  MainScreenController _screenController;
+  TabController? _tabController;
+  late MainScreenController _screenController;
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _screenController = Momentum.controller<MainScreenController>(context);
       setState(() {
         _tabController = TabController(
           length: _tabs.length,
           vsync: this,
-          initialIndex: _screenController.model.currentTabIndex,
+          initialIndex: _screenController.model!.currentTabIndex!,
         );
       });
 
-      _tabController.addListener(() {
-        _screenController.changeTab(_tabController.index);
+      _tabController!.addListener(() {
+        _screenController.changeTab(_tabController!.index);
       });
     });
   }
@@ -56,7 +56,7 @@ class _MainScreenState extends MomentumState<MainScreen>
   @override
   Widget build(BuildContext context) {
     final currentUser =
-        Momentum.controller<CurrentUserController>(context).model.currentUser;
+        Momentum.controller<CurrentUserController>(context).model!.currentUser;
     return PrimaryScaffold(
       body: _tabController == null
           ? const SizedBox.shrink()
@@ -65,10 +65,10 @@ class _MainScreenState extends MomentumState<MainScreen>
               builder: (context, snapshot) {
                 return ExtendedTabBarView(
                   cacheExtent: _tabs.length,
-                  physics: [0, 2].contains(_tabController.index)
+                  physics: [0, 2].contains(_tabController!.index)
                       ? NeverScrollableScrollPhysics()
                       : BouncingScrollPhysics(),
-                  controller: _tabController,
+                  controller: _tabController!,
                   children: _tabs,
                 );
               }),
@@ -85,8 +85,8 @@ class _MainScreenState extends MomentumState<MainScreen>
             child: MomentumBuilder(
                 controllers: [MainScreenController, SystemController],
                 builder: (context, snapshot) {
-                  final model = snapshot<MainScreenModel>();
-                  final systemModel = snapshot<SystemModel>();
+                  final model = snapshot<MainScreenModel>()!;
+                  final systemModel = snapshot<SystemModel>()!;
                   return GNav(
                       gap: 8,
                       activeColor: context.colorScheme.onBackground,
@@ -114,7 +114,7 @@ class _MainScreenState extends MomentumState<MainScreen>
                           icon: CupertinoIcons.bubble_left_bubble_right,
                         ),
                         _BottomNavButtonData(
-                          currentUser?.displayName?.split(' ')?.first ??
+                          currentUser?.displayName?.split(' ').getAt(0) ??
                               'Cá nhân',
                           context.colorScheme.secondaryVariant,
                           number: systemModel.unreadAcceptedFriendCount +
@@ -141,7 +141,9 @@ class _MainScreenState extends MomentumState<MainScreen>
                           backgroundColor: e.color.withOpacity(0.2),
                           iconActiveColor: e.color,
                           textColor: e.color,
-                          leading: e.number != null && e.number > 0
+                          leading: e.number != null &&
+                                  e.number != null &&
+                                  e.number! > 0
                               ? Badge(
                                   badgeColor: Colors.red.shade100,
                                   elevation: 0,
@@ -158,7 +160,7 @@ class _MainScreenState extends MomentumState<MainScreen>
                       }).toList(),
                       selectedIndex: model.currentTabIndex,
                       onTabChange: (index) {
-                        _tabController.animateTo(index);
+                        _tabController!.animateTo(index);
                       });
                 }),
           ),
@@ -169,11 +171,11 @@ class _MainScreenState extends MomentumState<MainScreen>
 }
 
 class _BottomNavButtonData {
-  final IconData icon;
-  final Widget iconWidget;
+  final IconData? icon;
+  final Widget? iconWidget;
   final String text;
   final Color color;
-  final int number;
+  final int? number;
 
   _BottomNavButtonData(this.text, this.color,
       {this.icon, this.iconWidget, this.number});

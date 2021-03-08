@@ -1,14 +1,14 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class ChatUser extends BaseModel {
-  String nickName;
-  FileModel avatar;
-  FileModel cover;
-  OnlineStatus onlineStatus;
-  DateTime lastOnline;
-  FriendType friendType;
+  String? nickName;
+  FileModel? avatar;
+  FileModel? cover;
+  OnlineStatus? onlineStatus;
+  DateTime? lastOnline;
+  FriendType? friendType;
 
-  String get displayName => nickName;
+  String? get displayName => nickName;
 
   bool get meOrFriend =>
       friendType == FriendType.me || friendType == FriendType.friend;

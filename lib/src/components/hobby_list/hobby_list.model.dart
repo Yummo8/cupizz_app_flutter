@@ -8,12 +8,12 @@ class HobbyListModel extends MomentumModel<HobbyListController> {
     this.isLoading,
   }) : super(controller);
 
-  final List<Hobby> hobbies;
-  final String error;
-  final bool isLoading;
+  final List<Hobby>? hobbies;
+  final String? error;
+  final bool? isLoading;
 
   @override
-  void update({List<Hobby> hobbies, String error, bool isLoading}) {
+  void update({List<Hobby>? hobbies, String? error, bool? isLoading}) {
     HobbyListModel(
       controller,
       hobbies: hobbies ?? this.hobbies,
@@ -23,14 +23,14 @@ class HobbyListModel extends MomentumModel<HobbyListController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return HobbyListModel(controller,
-        hobbies: (json['hobbies'] as List)
+        hobbies: (json!['hobbies'] as List)
             .map((e) => Mapper.fromJson(e).toObject<Hobby>())
             .toList());
   }
 
   @override
   Map<String, dynamic> toJson() =>
-      {'hobbies': hobbies?.map((e) => e.toJson())?.toList() ?? []};
+      {'hobbies': hobbies?.map((e) => e.toJson()).toList() ?? []};
 }

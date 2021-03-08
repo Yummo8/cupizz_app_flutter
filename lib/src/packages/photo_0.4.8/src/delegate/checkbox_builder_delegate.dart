@@ -8,8 +8,8 @@ abstract class CheckBoxBuilderDelegate {
     BuildContext context,
     bool checked,
     int index,
-    Options options,
-    I18nProvider i18nProvider,
+    Options? options,
+    I18nProvider? i18nProvider,
   );
 }
 
@@ -30,20 +30,20 @@ class DefaultCheckBoxBuilderDelegate extends CheckBoxBuilderDelegate {
     BuildContext context,
     bool checked,
     int index,
-    Options options,
-    I18nProvider i18nProvider,
+    Options? options,
+    I18nProvider? i18nProvider,
   ) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: unselectedColor),
       child: CheckboxListTile(
         value: checked,
-        onChanged: (bool check) {},
+        onChanged: (bool? check) {},
         activeColor: activeColor,
         checkColor: checkColor,
         title: Text(
-          i18nProvider.getSelectedOptionsText(options),
+          i18nProvider!.getSelectedOptionsText(options),
           textAlign: TextAlign.end,
-          style: TextStyle(color: options.textColor),
+          style: TextStyle(color: options!.textColor),
         ),
       ),
     );
@@ -64,19 +64,19 @@ class RadioCheckBoxBuilderDelegate extends CheckBoxBuilderDelegate {
     BuildContext context,
     bool checked,
     int index,
-    Options options,
-    I18nProvider i18nProvider,
+    Options? options,
+    I18nProvider? i18nProvider,
   ) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: unselectedColor),
       child: RadioListTile<bool>(
         value: true,
-        onChanged: (bool check) {},
+        onChanged: (bool? check) {},
         activeColor: activeColor,
         title: Text(
-          i18nProvider.getSelectedOptionsText(options),
+          i18nProvider!.getSelectedOptionsText(options),
           textAlign: TextAlign.end,
-          style: TextStyle(color: options.textColor, fontSize: 14.0),
+          style: TextStyle(color: options!.textColor, fontSize: 14.0),
         ),
         groupValue: checked,
         controlAffinity: ListTileControlAffinity.trailing,

@@ -1,35 +1,35 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class Post with Mappable {
-  int _id;
-  String _content;
-  PostCategory _category;
-  DateTime _createdAt;
-  int commentCount;
-  int likeCount;
-  int _loveCount;
-  int _wowCount;
-  int _hahaCount;
-  int _angryCount;
-  int _sadCount;
-  LikeType myLikedPostType;
-  List<Comment> _comments;
-  List<FileModel> _images;
+  int? _id;
+  String? _content;
+  PostCategory? _category;
+  DateTime? _createdAt;
+  int? commentCount;
+  int? likeCount;
+  int? _loveCount;
+  int? _wowCount;
+  int? _hahaCount;
+  int? _angryCount;
+  int? _sadCount;
+  LikeType? myLikedPostType;
+  List<Comment>? _comments;
+  List<FileModel>? _images;
 
-  int get id => _id;
-  String get content => _content;
-  PostCategory get category => _category;
-  DateTime get createdAt => _createdAt;
+  int? get id => _id;
+  String? get content => _content;
+  PostCategory? get category => _category;
+  DateTime? get createdAt => _createdAt;
   int get loveCount => _loveCount ?? 0;
   int get wowCount => _wowCount ?? 0;
   int get hahaCount => _hahaCount ?? 0;
   int get angryCount => _angryCount ?? 0;
   int get sadCount => _sadCount ?? 0;
-  List<Comment> get comments => _comments;
-  List<FileModel> get images => _images;
+  List<Comment>? get comments => _comments;
+  List<FileModel>? get images => _images;
 
   int get totalReaction =>
-      likeCount + loveCount + wowCount + hahaCount + angryCount + sadCount;
+      likeCount! + loveCount + wowCount + hahaCount + angryCount + sadCount;
 
   @override
   void mapping(Mapper map) {
@@ -70,16 +70,16 @@ class Post with Mappable {
 }
 
 class PostCategory extends BaseModel {
-  String _value;
-  Color _color;
+  String? _value;
+  Color? _color;
 
   String get value => _value ?? '';
   Color get color => _color ?? Colors.white;
 
   PostCategory({
-    String id,
-    String value,
-    Color color,
+    String? id,
+    String? value,
+    Color? color,
   })  : _value = value,
         _color = color,
         super(id: id);
@@ -95,15 +95,15 @@ class PostCategory extends BaseModel {
 }
 
 class Comment extends BaseModel {
-  int _index;
-  String _content;
-  DateTime _createdAt;
-  ChatUser _createdBy;
+  int? _index;
+  String? _content;
+  DateTime? _createdAt;
+  ChatUser? _createdBy;
 
-  int get index => _index;
-  String get content => _content;
-  DateTime get createdAt => _createdAt;
-  ChatUser get createdBy => _createdBy;
+  int? get index => _index;
+  String? get content => _content;
+  DateTime? get createdAt => _createdAt;
+  ChatUser? get createdBy => _createdBy;
 
   @override
   void mapping(Mapper map) {
@@ -116,7 +116,7 @@ class Comment extends BaseModel {
 
   static String get graphqlQuery =>
       '{ id index content createdAt createdBy ${ChatUser.graphqlQuery} }';
-  static String listFilter({String cursorId}) => '''(
+  static String listFilter({String? cursorId}) => '''(
         take: ${PageSizeConst.comment} 
         ${cursorId.isExistAndNotEmpty ? 'cursor: { id: "$cursorId" } ' : ''}
         orderBy: {updatedAt: desc}

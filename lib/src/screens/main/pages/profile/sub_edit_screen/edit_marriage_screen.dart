@@ -6,14 +6,14 @@ class EditMarriageScreen extends StatefulWidget {
 }
 
 class _EditMarriageScreenState extends State<EditMarriageScreen> {
-  HaveKids selectedValue;
+  HaveKids? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       selectedValue = Momentum.controller<CurrentUserController>(context)
-          .model
+          .model!
           .currentUser
           ?.yourKids;
       setState(() {});
@@ -38,11 +38,11 @@ class _EditMarriageScreenState extends State<EditMarriageScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup<HaveKids>(
+              RadioButtonGroup<HaveKids?>(
                 spacing: 1.0,
                 items: HaveKids.getAll(),
                 selectedItems: [selectedValue],
-                valueToString: (v) => v.displayValue,
+                valueToString: (v) => v!.displayValue,
                 onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),

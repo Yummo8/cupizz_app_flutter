@@ -1,17 +1,17 @@
 part of '../user_profile.dart';
 
 class CartImage extends StatelessWidget {
-  final UserImage userImage;
+  final UserImage? userImage;
   final bool readOnly;
 
-  const CartImage({Key key, this.userImage, this.readOnly = true})
+  const CartImage({Key? key, this.userImage, this.readOnly = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     return Hero(
-      tag: userImage.id,
+      tag: userImage!.id!,
       child: InkWell(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(
@@ -25,7 +25,7 @@ class CartImage extends StatelessWidget {
           child: Stack(
             children: [
               Container(
-                height: userImage.image == null ? 300.0 : null,
+                height: userImage!.image == null ? 300.0 : null,
                 constraints: BoxConstraints(minHeight: 300),
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -41,21 +41,22 @@ class CartImage extends StatelessWidget {
                 ),
                 child: userImage?.image != null
                     ? CustomNetworkImage(
-                        userImage.image.url,
+                        userImage!.image!.url,
                         borderRadius: BorderRadius.circular(10.0),
                       )
                     : null,
               ),
-              if (userImage.answer != null)
+              if (userImage!.answer != null)
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: userImage?.color?.withOpacity(userImage?.opacity),
+                      color: userImage?.color
+                          ?.withOpacity(userImage?.opacity ?? 1),
                       gradient: userImage != null &&
-                              userImage.gradient.isExistAndNotEmpty
-                          ? AnswerGradient(userImage.gradient
-                              .map((e) => e.withOpacity(userImage.opacity))
+                              userImage!.gradient!.isExistAndNotEmpty
+                          ? AnswerGradient(userImage!.gradient!
+                              .map((e) => e.withOpacity(userImage!.opacity))
                               .toList())
                           : null,
                     ),
@@ -69,7 +70,7 @@ class CartImage extends StatelessWidget {
                               userImage?.answer?.question?.content ?? '',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: context.textTheme.bodyText1
+                              style: context.textTheme.bodyText1!
                                   .copyWith(color: userImage?.textColor),
                             ),
                           ),
@@ -81,7 +82,7 @@ class CartImage extends StatelessWidget {
                               child: Text(
                                 userImage?.answer?.content ?? '',
                                 textAlign: TextAlign.center,
-                                style: context.textTheme.headline6
+                                style: context.textTheme.headline6!
                                     .copyWith(color: userImage?.textColor),
                               ),
                             ),
@@ -97,7 +98,7 @@ class CartImage extends StatelessWidget {
                                 userImage?.answer?.question?.content ?? '',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: context.textTheme.bodyText1
+                                style: context.textTheme.bodyText1!
                                     .copyWith(color: userImage?.textColor),
                               ),
                             ),

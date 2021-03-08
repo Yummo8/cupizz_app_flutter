@@ -1,22 +1,22 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class WithIsLastPageOutput<T extends Mappable> {
-  List<T> _data;
-  bool _isLastPage;
+  List<T>? _data;
+  bool? _isLastPage;
 
-  List<T> get data => _data;
-  bool get isLastPage => _isLastPage;
-  T get last => _data?.last;
-  T get first => _data?.first;
+  List<T>? get data => _data;
+  bool? get isLastPage => _isLastPage;
+  T? get last => _data?.getAt(_data?.length ?? 0);
+  T? get first => _data?.getAt(0);
 
   WithIsLastPageOutput({
-    List<T> data,
-    bool isLastPage,
+    List<T>? data,
+    bool? isLastPage,
   })  : _data = data,
         _isLastPage = isLastPage;
 
-  factory WithIsLastPageOutput.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+  factory WithIsLastPageOutput.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return WithIsLastPageOutput();
     return WithIsLastPageOutput(
       data: (json['data'] as List)
           .map((e) => Mapper.fromJson(e).toObject<T>())
@@ -26,12 +26,12 @@ class WithIsLastPageOutput<T extends Mappable> {
   }
 
   void add(WithIsLastPageOutput<T> other) {
-    _data.addAll(other._data);
+    _data!.addAll(other._data!);
     _isLastPage = other._isLastPage;
   }
 
   Map<String, dynamic> toJson() => {
-        'data': data.map((e) => e.toJson()).toList(),
+        'data': data!.map((e) => e.toJson()).toList(),
         'isLastPage': isLastPage,
       };
 

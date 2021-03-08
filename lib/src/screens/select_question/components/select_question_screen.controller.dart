@@ -11,20 +11,20 @@ class SelectQuestionScreenController
 
   @override
   Future bootstrapAsync() async {
-    model.update(isLoading: true);
+    model!.update(isLoading: true);
     await _reload();
-    model.update(isLoading: false);
+    model!.update(isLoading: false);
   }
 
   Future loadMore() async {
     final result = await Get.find<SystemService>()
-        .getQuestions(page: model.currentPage + 1);
-    model.update(
-        data: model.data..add(result), currentPage: model.currentPage + 1);
+        .getQuestions(page: model!.currentPage! + 1);
+    model!.update(
+        data: model!.data..add(result), currentPage: model!.currentPage! + 1);
   }
 
   Future _reload() async {
     final result = await Get.find<SystemService>().getQuestions(page: 1);
-    model.update(data: result);
+    model!.update(data: result);
   }
 }

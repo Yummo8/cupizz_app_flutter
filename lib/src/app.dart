@@ -27,7 +27,7 @@ Momentum momentum({bool isTesting = false}) {
     key: UniqueKey(),
     maxTimeTravelSteps: 200,
     restartCallback: () {
-      runApp(AppConfig.instance.copyWith(child: App()));
+      runApp(AppConfig.instance!.copyWith(child: App()));
     },
     controllers: [
       LocationController()..config(lazy: true),
@@ -76,7 +76,7 @@ class App extends AppBase {
 
 class AppLoader extends StatelessWidget {
   const AppLoader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -126,22 +126,17 @@ class AppLoader extends StatelessWidget {
 class _MyApp extends StatelessWidget {
   final bool isTesting;
 
-  _MyApp({Key key, this.isTesting = false}) : super(key: key);
+  _MyApp({Key? key, this.isTesting = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
         controllers: [ThemeController, AuthController],
         builder: (context, snapshot) {
-          final theme =
-              snapshot<ThemeModel>().controller.selectedTheme.copyWith(
-                      pageTransitionsTheme: PageTransitionsTheme(builders: {
-                    TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-                  }));
+          final theme = snapshot<ThemeModel>()!.controller.selectedTheme;
           return GetMaterialApp(
             debugShowCheckedModeBanner:
-                AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
+                AppConfig.instance!.flavorName != AppFlavor.PRODUCTION,
             title: 'Cupizz',
             navigatorKey: isTesting ? null : AppConfig.navigatorKey,
             navigatorObservers: [

@@ -5,19 +5,19 @@ import 'package:photo_manager/photo_manager.dart';
 
 LRUMap<_ImageCacheEntity, Uint8List> _map = LRUMap(500);
 
-Uint8List getData(AssetEntity entity, [int size = 64]) {
+Uint8List? getData(AssetEntity? entity, [int? size = 64]) {
   return _map.get(_ImageCacheEntity(entity, size));
 }
 
-void setData(AssetEntity entity, int size, Uint8List list) {
+void setData(AssetEntity? entity, int? size, Uint8List list) {
   _map.put(_ImageCacheEntity(entity, size), list);
 }
 
 class _ImageCacheEntity {
   _ImageCacheEntity(this.entity, this.size);
 
-  AssetEntity entity;
-  int size;
+  AssetEntity? entity;
+  int? size;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -44,9 +44,9 @@ class LRUMap<K, V> {
 
   final LinkedHashMap<K, V> _map = LinkedHashMap<K, V>();
   final int _maxSize;
-  final EvictionHandler<K, V> _handler;
+  final EvictionHandler<K, V?>? _handler;
 
-  V get(K key) {
+  V? get(K key) {
     final value = _map.remove(key);
     if (value != null) {
       _map[key] = value;
@@ -61,7 +61,7 @@ class LRUMap<K, V> {
       final evictedKey = _map.keys.first;
       final evictedValue = _map.remove(evictedKey);
       if (_handler != null) {
-        _handler(evictedKey, evictedValue);
+        _handler!(evictedKey, evictedValue);
       }
     }
   }

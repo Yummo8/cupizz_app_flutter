@@ -33,7 +33,7 @@ void main() async {
     test('Get my info', () async {
       final email = currentUser.socialProviders
           ?.firstWhere((e) => e.type == SocialProviderType.email)
-          ?.id;
+          .id;
       expect(email, loginEmail);
     });
 
@@ -63,9 +63,10 @@ void main() async {
 
         // Undo
         debugPrint('Testing undo');
-        final userUndo =
-            Mapper.fromJson(await graphql.undoLastDislikeUserMutation())
-                .toObject<SimpleUser>();
+        final userUndo = Mapper.fromJson(
+                await (graphql.undoLastDislikeUserMutation()
+                    as FutureOr<Map<String, dynamic>>))
+            .toObject<SimpleUser>();
         expect(userUndo, recommendUsers[0]);
         final recommendUsersAfterUndo =
             (await graphql.recommendableUsersQuery() as List)
@@ -123,10 +124,14 @@ void main() async {
       final allHobbies = (await graphql.hobbiesQuery() as List)
           .map((e) => Mapper.fromJson(e).toObject<Hobby>())
           .toList();
-      final currentAvatar =
-          Mapper.fromJson(await graphql.meQuery()).toObject<ChatUser>().avatar;
-      final currentCover =
-          Mapper.fromJson(await graphql.meQuery()).toObject<SimpleUser>().cover;
+      final currentAvatar = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
+          .toObject<ChatUser>()
+          .avatar;
+      final currentCover = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
+          .toObject<SimpleUser>()
+          .cover;
       final nickName = 'Hien ${Random().nextInt(100)}';
       final introduction = 'Introduction ${Random().nextInt(100)}';
       final gender =
@@ -188,7 +193,7 @@ void main() async {
       expect(user.phoneNumber, phoneNumber);
       expect(user.job, job);
       expect(user.height, height);
-      expect(user.birthday.toLocal(), birthday);
+      expect(user.birthday!.toLocal(), birthday);
       expect(user.address, address);
       expect(user.educationLevel, educationLevel);
       expect(user.smoking, smoking);
@@ -248,8 +253,8 @@ void main() async {
       expect(friends.length, greaterThan(0));
       for (var i = 0; i < friends.length - 1; i++) {
         expect(
-          (currentUser.age - friends[i].friend.age).abs() <
-              (currentUser.age - friends[i + 1].friend.age),
+          (currentUser.age! - friends[i].friend!.age!).abs() <
+              (currentUser.age! - friends[i + 1].friend!.age!),
           true,
         );
       }
@@ -263,16 +268,16 @@ void main() async {
 
       expect(friends.length, greaterThan(0));
       for (var i = 0; i < friends.length - 1; i++) {
-        if (friends[i].friend.lastOnline == null) {
-          expect(friends[i + 1].friend.lastOnline, null);
-        } else if (friends[i + 1].friend.lastOnline == null) {
+        if (friends[i].friend!.lastOnline == null) {
+          expect(friends[i + 1].friend!.lastOnline, null);
+        } else if (friends[i + 1].friend!.lastOnline == null) {
           continue;
         } else {
           expect(
               friends[i]
-                  .friend
-                  .lastOnline
-                  .compareTo(friends[i + 1].friend.lastOnline),
+                  .friend!
+                  .lastOnline!
+                  .compareTo(friends[i + 1].friend!.lastOnline!),
               1);
         }
       }
@@ -289,9 +294,10 @@ void main() async {
       ))['id'];
 
       final newestMessages = WithIsLastPageOutput<Message>.fromJson(
-          await graphql.messagesQuery(conversationKey));
+          await (graphql.messagesQuery(conversationKey)
+              as FutureOr<Map<String, dynamic>?>));
 
-      expect(newestMessages.data[0].id, messageId);
+      expect(newestMessages.data![0].id, messageId);
     });
 
     test('Send images message', () async {
@@ -299,10 +305,11 @@ void main() async {
           conversationKey, null, [File(Assets.images.defaultAvatar)]))['id'];
 
       final newestMessages = WithIsLastPageOutput<Message>.fromJson(
-          await graphql.messagesQuery(conversationKey));
+          await (graphql.messagesQuery(conversationKey)
+              as FutureOr<Map<String, dynamic>?>));
 
-      expect(newestMessages.data[0].id, messageId);
-      expect(newestMessages.data[0].attachments.length, 1);
+      expect(newestMessages.data![0].id, messageId);
+      expect(newestMessages.data![0].attachments!.length, 1);
     });
 
     test('Test get my conversation matching with newest message', () async {
@@ -312,9 +319,10 @@ void main() async {
       ))['id'];
 
       final newestConversations = WithIsLastPageOutput<Conversation>.fromJson(
-          await graphql.myConversationsQuery());
+          await (graphql.myConversationsQuery()
+              as FutureOr<Map<String, dynamic>?>));
 
-      expect(newestConversations.data[0].newestMessage?.id, messageId);
+      expect(newestConversations.data![0].newestMessage?.id, messageId);
     });
 
     test('Test get conversation detail', () async {
@@ -324,7 +332,7 @@ void main() async {
 
       final conversation = Mapper.fromJson(json).toObject<Conversation>();
 
-      if (conversationKey?.conversationId != null) {
+      if (conversationKey.conversationId != null) {
         expect(conversationKey.conversationId, conversation.id);
       } else {
         expect(conversation, isNotNull);
@@ -332,8 +340,8 @@ void main() async {
     });
 
     test('Test realtime send message', () async {
-      String messageId;
-      StreamSubscription subscription;
+      String? messageId;
+      late StreamSubscription subscription;
       subscription =
           graphql.newMessageSubscription(conversationKey).listen((message) {
         expect(message.id, messageId);
@@ -347,11 +355,11 @@ void main() async {
     });
 
     test('Test realtime conversation change', () async {
-      String messageId;
-      StreamSubscription subscription;
+      String? messageId;
+      late StreamSubscription subscription;
       subscription =
           graphql.conversationChangeSubscription().listen((conversation) {
-        expect(conversation.newestMessage.id, messageId);
+        expect(conversation.newestMessage!.id, messageId);
         subscription.cancel();
       });
 
@@ -369,54 +377,63 @@ void main() async {
 
       final userImage = Mapper.fromJson(json).toObject<UserImage>();
 
-      expect(userImage?.image != null, true);
+      expect(userImage.image != null, true);
 
-      final currentUserImages =
-          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+      final currentUserImages = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
+          .toObject<User>()
+          .userImages!;
 
       expect(currentUserImages.contains(userImage), true);
 
       await graphql.removeUserImage(userImage.id);
 
-      final currentUserImagesAfterDelete =
-          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+      final currentUserImagesAfterDelete = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
+          .toObject<User>()
+          .userImages!;
 
       expect(currentUserImagesAfterDelete.contains(userImage), false);
     });
 
     test('answerQuestion', () async {
       final allQuestions = WithIsLastPageOutput<Question>.fromJson(
-              await graphql.questionsQuery())
-          .data;
+              await (graphql.questionsQuery()
+                  as FutureOr<Map<String, dynamic>?>))
+          .data!;
       expect(allQuestions.isNotEmpty, true);
 
       // Without image
       final userImageWithoutImage = Mapper.fromJson(
-              await graphql.answerQuestion(allQuestions[0].id, 'Testing'))
+              await (graphql.answerQuestion(allQuestions[0].id, 'Testing')
+                  as FutureOr<Map<String, dynamic>>))
           .toObject<UserImage>();
-      expect(userImageWithoutImage?.answer != null, true);
+      expect(userImageWithoutImage.answer != null, true);
 
       // With image
-      final userImageWithImage = Mapper.fromJson(await graphql.answerQuestion(
+      final userImageWithImage = Mapper.fromJson(await (graphql.answerQuestion(
         allQuestions[0].id,
         'Testing',
         backgroundImage: File(Assets.images.defaultAvatar),
-      ))
+      ) as FutureOr<Map<String, dynamic>>))
           .toObject<UserImage>();
-      expect(userImageWithImage?.answer != null, true);
-      expect(userImageWithImage?.image != null, true);
+      expect(userImageWithImage.answer != null, true);
+      expect(userImageWithImage.image != null, true);
 
-      final currentUserImages =
-          Mapper.fromJson(await graphql.meQuery()).toObject<User>().userImages;
+      final currentUserImages = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
+          .toObject<User>()
+          .userImages!;
 
       expect(currentUserImages.contains(userImageWithoutImage), true);
       expect(currentUserImages.contains(userImageWithImage), true);
     });
 
     test('updateUserImagesSortOrder', () async {
-      final currentUserImages = Mapper.fromJson(await graphql.meQuery())
+      final currentUserImages = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
           .toObject<User>()
-          .userImages
+          .userImages!
           .map((e) => e.id)
           .toList();
       final expectSort = [...currentUserImages];
@@ -426,7 +443,7 @@ void main() async {
 
       final afterSort = Mapper.fromJson(json)
           .toObject<User>()
-          .userImages
+          .userImages!
           .map((e) => e.id)
           .toList();
 
@@ -434,9 +451,10 @@ void main() async {
     });
 
     test('editAnswer', () async {
-      final currentUserImages = Mapper.fromJson(await graphql.meQuery())
+      final currentUserImages = Mapper.fromJson(
+              await (graphql.meQuery() as FutureOr<Map<String, dynamic>>))
           .toObject<User>()
-          .userImages
+          .userImages!
           .toList();
 
       expect(currentUserImages.isExistAndNotEmpty, true);
@@ -452,7 +470,7 @@ void main() async {
       ];
 
       final json = await graphql.editAnswer(
-        userImage.answer.id,
+        userImage.answer!.id,
         content,
         color,
         textColor,

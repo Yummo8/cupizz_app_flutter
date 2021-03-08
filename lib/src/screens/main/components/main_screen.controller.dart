@@ -11,8 +11,8 @@ class MainScreenController extends MomentumController<MainScreenModel> {
   }
 
   void changeTab(int index) {
-    if (index != model.currentTabIndex && index >= 0 && index < 4) {
-      model.update(currentTabIndex: index);
+    if (index != model!.currentTabIndex && index >= 0 && index < 4) {
+      model!.update(currentTabIndex: index);
     }
   }
 }
