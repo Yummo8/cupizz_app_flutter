@@ -316,13 +316,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0-nullsafety.1"
-  flutter_feather_icons:
-    dependency: "direct main"
-    description:
-      name: flutter_feather_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   flutter_parsed_text:
     dependency: "direct main"
     description:
@@ -337,13 +330,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  flutter_sequence_animation:
-    dependency: "direct main"
-    description:
-      name: flutter_sequence_animation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -424,13 +410,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0-nullsafety.2"
-  giffy_dialog:
-    dependency: "direct main"
-    description:
-      name: giffy_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.8.0"
   glob:
     dependency: transitive
     description:
@@ -659,11 +638,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.1.0"
-      resolved-ref: e349bb5472ba947c1c6c2afa091a30d38b3bf8bb
+      ref: "v2.0.0"
+      resolved-ref: "6e5c7e81d8512e24feaec5c4d52f686fc0563c2b"
       url: "https://github.com/hienlh/object_mapper.git"
     source: git
-    version: "1.0.0+2"
+    version: "2.0.0+3"
   octo_image:
     dependency: transitive
     description:
@@ -888,13 +867,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0-nullsafety.0"
-  shrink_sidemenu:
-    dependency: "direct main"
-    description:
-      name: shrink_sidemenu
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+3"
   simple_animations:
     dependency: "direct main"
     description:
@@ -1005,13 +977,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  tutorial_coach_mark:
-    dependency: "direct main"
-    description:
-      name: tutorial_coach_mark
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.3"
   typed_data:
     dependency: transitive
     description:

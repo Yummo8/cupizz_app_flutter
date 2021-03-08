@@ -26,11 +26,9 @@ dependencies:
   graphql_flutter: ^5.0.0-nullsafety.1
   fluttertoast: ^8.0.1-nullsafety.0
   flutter_svg: ^0.21.0-nullsafety.0
-  shrink_sidemenu: ^1.0.0+3
   flutter_xlider: ^3.4.0
   google_nav_bar: ^3.1.0
   extended_tabs: ^0.2.3
-  flutter_sequence_animation: ^3.0.1
   dotted_border: ^2.0.0-nullsafety.0
   cached_network_image: ^3.0.0-nullsafety
   onesignal_flutter: ^2.0.0
@@ -45,7 +43,7 @@ dependencies:
   object_mapper:
     git:
       url: https://github.com/hienlh/object_mapper.git
-      ref: v1.1.0
+      ref: v2.0.0
   flutter_beautiful_popup:
     git:
       url: https://github.com/hienlh/Flutter_beautiful_popup.git
@@ -56,15 +54,12 @@ dependencies:
   flutter_facebook_auth: ^3.0.0-nullsafety.1
   pin_code_fields: ^7.0.0-nullsafety
   badges: ^1.1.6
-  giffy_dialog: ^1.8.0
   permission_handler: ^6.0.1
   app_settings: ^4.0.4
   # firebase_analytics: ^6.3.0
-  tutorial_coach_mark: ^0.5.2
   simple_animations: ^3.0.0
   supercharged: ^2.0.0
   vibration: ^1.7.4-nullsafety.0
-  flutter_feather_icons: ^1.0.3
   get: ^4.0.0-nullsafety.2
   hive: ^2.0.0
   hive_flutter: ^1.0.0
