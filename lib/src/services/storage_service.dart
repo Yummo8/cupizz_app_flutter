@@ -24,7 +24,7 @@ extension LoginEmailStorage on StorageService {
   }
 
   Future<String> get getLoginEmail async =>
-      await (await storage).getString(_EMAIL_KEY);
+      (await storage).getString(_EMAIL_KEY);
 }
 
 extension UserIdStorage on StorageService {
@@ -38,8 +38,7 @@ extension UserIdStorage on StorageService {
     Get.find<GraphqlService>().reset();
   }
 
-  Future<String> get getUserId async =>
-      await (await storage).getString(_USER_ID_KEY);
+  Future<String> get getUserId async => (await storage).getString(_USER_ID_KEY);
 }
 
 extension TokenStorage on StorageService {
@@ -53,8 +52,7 @@ extension TokenStorage on StorageService {
     Get.find<GraphqlService>().reset();
   }
 
-  Future<String> get getToken async =>
-      await (await storage).getString(_TOKEN_KEY);
+  Future<String> get getToken async => (await storage).getString(_TOKEN_KEY);
 }
 
 extension ThemeStorage on StorageService {
@@ -62,7 +60,7 @@ extension ThemeStorage on StorageService {
       await (await storage).setString(_THEME_KEY, index.toString());
 
   Future<int> get getTheme async =>
-      int.tryParse(await (await storage).getString(_THEME_KEY) ?? '') ?? 0;
+      int.tryParse((await storage).getString(_THEME_KEY) ?? '') ?? 0;
 }
 
 class _TestingStorage implements SharedPreferences {

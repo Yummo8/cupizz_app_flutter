@@ -80,8 +80,8 @@ class MessageContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment:
                       isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-                  children: messageButtonsBuilder(message),
                   mainAxisSize: MainAxisSize.min,
+                  children: messageButtonsBuilder(message),
                 ),
               if (messageTimeBuilder != null && message != null)
                 messageTimeBuilder(

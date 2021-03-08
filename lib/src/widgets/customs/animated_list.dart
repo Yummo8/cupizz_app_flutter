@@ -40,7 +40,7 @@ class CustomAnimatedListState extends State<CustomAnimatedList> {
   }
 
   void onHided(int index) {
-    _slidableController.activeState..close();
+    _slidableController.activeState.close();
     removeItem(index).then((value) => widget.onHided?.call(index));
   }
 

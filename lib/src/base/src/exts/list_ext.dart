@@ -13,4 +13,11 @@ extension ListExt<T> on List<T> {
     if (length - 1 < index) return null;
     return elementAt(index);
   }
+
+  List<K> mapIndexed<K>(K Function(T, int) func) {
+    return asMap()
+        .map((key, value) => MapEntry(key, func(value, key)))
+        .values
+        .toList();
+  }
 }

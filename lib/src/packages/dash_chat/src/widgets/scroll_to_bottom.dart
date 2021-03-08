@@ -23,10 +23,6 @@ class ScrollToBottom extends StatelessWidget {
         fillColor: scrollToBottomStyle.backgroundColor ??
             Theme.of(context).primaryColor,
         shape: CircleBorder(),
-        child: Icon(
-          scrollToBottomStyle.icon ?? Icons.keyboard_arrow_down,
-          color: scrollToBottomStyle.textColor ?? Colors.white,
-        ),
         onPressed: () {
           if (onScrollToBottomPress != null) {
             onScrollToBottomPress();
@@ -38,6 +34,10 @@ class ScrollToBottom extends StatelessWidget {
             );
           }
         },
+        child: Icon(
+          scrollToBottomStyle.icon ?? Icons.keyboard_arrow_down,
+          color: scrollToBottomStyle.textColor ?? Colors.white,
+        ),
       ),
     );
   }

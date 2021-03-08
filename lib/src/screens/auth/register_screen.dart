@@ -195,6 +195,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                     width: width,
                     duration: Duration(milliseconds: 1000),
                     curve: Curves.linear,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        ),
+                        color: context.colorScheme.primaryVariant),
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -242,12 +248,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(40),
-                          topRight: Radius.circular(40),
-                        ),
-                        color: context.colorScheme.primaryVariant),
                   ),
                 ),
                 AnimatedContainer(

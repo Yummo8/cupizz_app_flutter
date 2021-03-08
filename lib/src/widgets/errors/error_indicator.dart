@@ -46,8 +46,8 @@ class _ErrorIndicatorState extends State<ErrorIndicator> {
           if (widget.onReload != null) ...[
             const SizedBox(height: 10),
             TextButton(
-              child: Text(Strings.button.reload),
               onPressed: widget.onReload,
+              child: Text(Strings.button.reload),
             )
           ]
         ],

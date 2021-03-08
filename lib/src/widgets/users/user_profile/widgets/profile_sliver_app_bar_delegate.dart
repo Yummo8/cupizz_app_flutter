@@ -240,8 +240,8 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             backgroundColor: context.colorScheme.background,
             shape: CircleBorder(),
           ),
-          child: Icon(icon, size: 18),
           onPressed: onPressed,
+          child: Icon(icon, size: 18),
         ),
       ),
     );
@@ -254,14 +254,14 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: Opacity(
         opacity: 1 - scrollRate,
         child: InkWell(
+          onTap: () {
+            Get.back();
+          },
           child: Icon(
             Icons.chevron_left,
             color: context.colorScheme.onPrimary,
             size: 40,
           ),
-          onTap: () {
-            Get.back();
-          },
         ),
       ),
     );

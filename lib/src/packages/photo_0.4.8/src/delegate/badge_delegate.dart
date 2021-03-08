@@ -26,6 +26,7 @@ class DefaultBadgeDelegate extends BadgeDelegate {
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(3.0),
             ),
+            padding: const EdgeInsets.all(4.0),
             child: const Text(
               'video',
               style: TextStyle(
@@ -33,7 +34,6 @@ class DefaultBadgeDelegate extends BadgeDelegate {
                 color: Colors.white,
               ),
             ),
-            padding: const EdgeInsets.all(4.0),
           ),
         ),
       );
@@ -66,6 +66,7 @@ class DurationBadgeDelegate extends BadgeDelegate {
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.65),
             ),
+            padding: const EdgeInsets.all(4.0),
             child: Text(
               text,
               style: const TextStyle(
@@ -73,7 +74,6 @@ class DurationBadgeDelegate extends BadgeDelegate {
                 color: Colors.white,
               ),
             ),
-            padding: const EdgeInsets.all(4.0),
           ),
         ),
       );

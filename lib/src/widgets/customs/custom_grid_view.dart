@@ -39,12 +39,13 @@ class CustomGridView extends StatelessWidget {
               .map((i, e) => MapEntry<int, Widget>(
                   i,
                   Expanded(
-                      child: Padding(
-                        child: e,
-                        padding: EdgeInsets.only(
-                            left: i == 0 ? 0 : crossAxisSpacing),
-                      ),
-                      flex: 1)))
+                    flex: 1,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(left: i == 0 ? 0 : crossAxisSpacing),
+                      child: e,
+                    ),
+                  )))
               .values
               .toList(),
         ),

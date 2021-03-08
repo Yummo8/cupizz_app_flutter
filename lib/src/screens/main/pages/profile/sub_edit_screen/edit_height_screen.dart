@@ -94,8 +94,8 @@ class MySelectionItem extends StatelessWidget {
       height: 60.0,
       child: isForList
           ? Padding(
-              child: _buildItem(context),
               padding: EdgeInsets.all(10.0),
+              child: _buildItem(context),
             )
           : Card(
               margin: EdgeInsets.symmetric(horizontal: 10.0),

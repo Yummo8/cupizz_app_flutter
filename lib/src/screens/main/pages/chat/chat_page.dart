@@ -22,11 +22,11 @@ class _ChatPageState extends State<ChatPage>
   static double _lastOffset = 0;
 
   @override
-  double get lastOffset => _lastOffset;
+  double get lastOffset => _ChatPageState._lastOffset;
 
   @override
   set lastOffset(double value) {
-    _lastOffset = value;
+    _ChatPageState._lastOffset = value;
   }
 
   final GlobalKey<CustomAnimatedListState> _key =
@@ -182,12 +182,6 @@ class _ChatPageState extends State<ChatPage>
       child: Row(
         children: <Widget>[
           Container(
-            child: Center(
-              child: Text(
-                'Công khai',
-                style: TextStyle(color: context.colorScheme.onPrimary),
-              ),
-            ),
             width: 80.0,
             height: 32.0,
             decoration: BoxDecoration(
@@ -198,6 +192,12 @@ class _ChatPageState extends State<ChatPage>
                 ],
                 color: context.colorScheme.secondary,
                 borderRadius: BorderRadius.circular(20.0)),
+            child: Center(
+              child: Text(
+                'Công khai',
+                style: TextStyle(color: context.colorScheme.onPrimary),
+              ),
+            ),
           ),
           SizedBox(width: 12.0),
           InkWell(

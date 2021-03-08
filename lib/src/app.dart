@@ -8,8 +8,8 @@ import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -53,7 +53,6 @@ Momentum momentum({bool isTesting = false}) {
       CallController()..config(lazy: true),
     ],
     appLoader: AppLoader(),
-    child: _MyApp(),
     persistSave: (context, key, value) async {
       final box = await Hive.openBox('cupizz');
       await box.put(key, value);
@@ -63,6 +62,7 @@ Momentum momentum({bool isTesting = false}) {
       final box = await Hive.openBox('cupizz');
       return box.get(key);
     },
+    child: _MyApp(),
   );
 }
 
@@ -145,7 +145,7 @@ class _MyApp extends StatelessWidget {
             title: 'Cupizz',
             navigatorKey: isTesting ? null : AppConfig.navigatorKey,
             navigatorObservers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
+              // FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
             ],
             enableLog: false,
             popGesture: true,

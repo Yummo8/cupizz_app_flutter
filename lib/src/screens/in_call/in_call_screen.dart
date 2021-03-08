@@ -31,7 +31,7 @@ class _InCallScreenState extends State<InCallScreen> {
       await Permission.microphone.request();
       await Permission.camera.request();
       final status = await Permission.microphone.status;
-      if (status.isUndetermined) {
+      if (status.isPermanentlyDenied) {
         PhotoManager.openSetting();
       }
     })();
@@ -220,39 +220,39 @@ class _InCallScreenState extends State<InCallScreen> {
         children: <Widget>[
           RawMaterialButton(
             onPressed: _onToggleMute,
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: muted ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
             child: Icon(
               muted ? Icons.mic_off : Icons.mic,
               color: muted ? Colors.white : Colors.blueAccent,
               size: 20.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
             onPressed: () => _onCallEnd(context),
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
               size: 35.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
           ),
           RawMaterialButton(
             onPressed: _onSwitchCamera,
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
             child: Icon(
               Icons.switch_camera,
               color: Colors.blueAccent,
               size: 20.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
           )
         ],
       ),

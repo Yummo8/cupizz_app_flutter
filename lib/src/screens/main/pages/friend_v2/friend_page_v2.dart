@@ -44,7 +44,8 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Momentum.controller<FriendPageV2Controller>(context)
-        ..model.update(animationController: animationController);
+          .model
+          .update(animationController: animationController);
       _pageController.animateToPage(
           Momentum.controller<FriendPageV2Controller>(context).model.currentTab,
           duration: Duration(milliseconds: 10),
@@ -149,6 +150,12 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                         padding: const EdgeInsets.all(12),
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.vertical,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: multiple ? 2 : 1,
+                          mainAxisSpacing: _PADDING,
+                          crossAxisSpacing: _PADDING,
+                          childAspectRatio: 1,
+                        ),
                         children: friendsList
                             .asMap()
                             .map((index, value) {
@@ -172,12 +179,6 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                             })
                             .values
                             .toList(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: multiple ? 2 : 1,
-                          mainAxisSpacing: _PADDING,
-                          crossAxisSpacing: _PADDING,
-                          childAspectRatio: 1,
-                        ),
                       ),
                     );
                   },

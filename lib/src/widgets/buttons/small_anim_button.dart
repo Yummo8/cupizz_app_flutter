@@ -48,13 +48,6 @@ class SmallAnimButton extends StatelessWidget {
         borderRadius: 22.0,
         roundLoadingShape: false,
         color: Colors.transparent,
-        child: Text(
-          text,
-          style: TextStyle(
-              color: context.colorScheme.primary,
-              fontSize: 18,
-              fontWeight: FontWeight.w700),
-        ),
         loader: Center(
           child: LoadingIndicator(
             color: context.colorScheme.primaryVariant,
@@ -69,6 +62,13 @@ class SmallAnimButton extends StatelessWidget {
             stopLoading();
           }
         },
+        child: Text(
+          text,
+          style: TextStyle(
+              color: context.colorScheme.primary,
+              fontSize: 18,
+              fontWeight: FontWeight.w700),
+        ),
       ),
     );
   }

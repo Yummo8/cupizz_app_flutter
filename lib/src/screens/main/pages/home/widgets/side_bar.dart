@@ -65,10 +65,9 @@ class _SideBarState extends State<SideBar>
       right: isMenuOpen ? 0 : -screenWidth,
       child: ClipPath(
         clipper: HierenMenuClipper(),
-        child: Plasma(
+        child: PlasmaRenderer(
           particles: 10,
-          foregroundColor: context.colorScheme.primary.withOpacity(0.9),
-          backgroundColor: context.colorScheme.onPrimary.withOpacity(0.9),
+          color: context.colorScheme.primary.withOpacity(0.9),
           size: 1.00,
           speed: 6.00,
           offset: 0.00,
@@ -205,14 +204,14 @@ class _SideBarState extends State<SideBar>
         ),
         InkWell(
           enableFeedback: true,
+          onTap: () {
+            Momentum.of<ThemeController>(context).randomTheme();
+          },
           child: Icon(
             Icons.color_lens,
             color: context.colorScheme.primary,
             size: 20,
           ),
-          onTap: () {
-            Momentum.of<ThemeController>(context).randomTheme();
-          },
         ),
       ],
     );

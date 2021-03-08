@@ -23,6 +23,7 @@ class OpacityIconButton extends StatelessWidget {
     return CupertinoButton(
       padding: padding,
       color: Colors.transparent,
+      onPressed: onPressed,
       child: Badge(
         badgeColor: Colors.red.shade100,
         elevation: 0,
@@ -44,7 +45,6 @@ class OpacityIconButton extends StatelessWidget {
               ),
         ),
       ),
-      onPressed: onPressed,
     );
   }
 }

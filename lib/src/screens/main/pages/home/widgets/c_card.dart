@@ -547,8 +547,6 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    child: SvgPicture.asset(Assets.icons.dislikeUser,
-                        color: Colors.black54),
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
@@ -565,6 +563,8 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
+                    child: SvgPicture.asset(Assets.icons.dislikeUser,
+                        color: Colors.black54),
                   ),
                 ),
               ),
@@ -573,11 +573,9 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                 top: 0,
                 bottom: 0,
                 child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
                       padding: EdgeInsets.all(10),
-                      child: SvgPicture.asset(Assets.icons.likeUser,
-                          color: Colors.white.withOpacity(0.3)),
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.centerRight,
@@ -592,8 +590,10 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                               bottomLeft: Radius.circular(15),
                               topLeft: Radius.circular(15))),
                       width: 100,
-                      height: 100),
-                ),
+                      height: 100,
+                      child: SvgPicture.asset(Assets.icons.likeUser,
+                          color: Colors.white.withOpacity(0.3)),
+                    )),
               )
             ],
           );

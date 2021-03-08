@@ -181,6 +181,7 @@ class _HomePageState extends State<HomePage> {
             },
             cards: model.users
                 .map((e) => ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
                       child: UserCard(
                         simpleUser: e,
                         onPressed: () {
@@ -191,7 +192,6 @@ class _HomePageState extends State<HomePage> {
                                   ));
                         },
                       ),
-                      borderRadius: BorderRadius.circular(15),
                     ))
                 .toList(),
           );

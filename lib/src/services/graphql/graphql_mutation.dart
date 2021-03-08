@@ -4,7 +4,7 @@ extension GraphqlMutation on GraphqlService {
   Future loginMutation(
       {@required String email, @required String password}) async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''
+      document: gql('''
           mutation login(\$email: String, \$password: String){
             login(email: \$email password: \$password) {
               token
@@ -21,7 +21,7 @@ extension GraphqlMutation on GraphqlService {
   Future loginSocialMutation(
       {@required SocialProviderType type, @required String accessToken}) async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''
+      document: gql('''
           mutation loginSocialNetwork(\$type: SocialProviderEnumType!, \$accessToken: String!){
             loginSocialNetwork(type: \$type accessToken: \$accessToken) {
               token
@@ -40,7 +40,7 @@ extension GraphqlMutation on GraphqlService {
       @required String token,
       @required String password}) async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''
+      document: gql('''
           mutation register(\$nickName: String!, \$password: String, \$token: String!){
             register(nickName: \$nickName password: \$password token: \$token) {
               token
@@ -56,7 +56,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future<String> registerEmailMutation(String email) async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''
+      document: gql('''
           mutation { registerEmail(email:"$email") { token } }
         '''),
     ));
@@ -66,7 +66,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future<String> verifyOtpMutation(String token, String otp) async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''
+      document: gql('''
           mutation { verifyOtp(token: "$token" otp: "$otp") { token } }
         '''),
     ));
@@ -118,7 +118,7 @@ extension GraphqlMutation on GraphqlService {
             ) ${User.graphqlQuery}
           }''';
     final result = await mutate(
-      MutationOptions(documentNode: gql(query), variables: {
+      MutationOptions(document: gql(query), variables: {
         'avatar': avatar != null ? await multiPartFile(avatar) : null,
         'cover': cover != null ? await multiPartFile(cover) : null,
       }),
@@ -164,7 +164,7 @@ extension GraphqlMutation on GraphqlService {
           }''';
     final result = await mutate(
       MutationOptions(
-        documentNode: gql(query),
+        document: gql(query),
       ),
     );
 
@@ -174,7 +174,7 @@ extension GraphqlMutation on GraphqlService {
   Future addFriendMutation(
       {@required String id, bool isSuperLike = false}) async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''mutation {
+      document: gql('''mutation {
         addFriend(userId: "$id" isSuperLike: $isSuperLike) { status }
       }'''),
     ));
@@ -184,7 +184,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future<void> removeFriendMutation({@required String id}) async {
     await mutate(MutationOptions(
-      documentNode: gql('''mutation {
+      document: gql('''mutation {
         removeFriend(userId: "$id")
       }'''),
     ));
@@ -192,7 +192,7 @@ extension GraphqlMutation on GraphqlService {
 
   Future undoLastDislikeUserMutation() async {
     final result = await mutate(MutationOptions(
-      documentNode: gql('''mutation {
+      document: gql('''mutation {
         undoLastDislikedUser ${SimpleUser.graphqlQuery}
       }'''),
     ));
@@ -203,7 +203,7 @@ extension GraphqlMutation on GraphqlService {
   Future sendMessage(ConversationKey key,
       [String message, List<io.File> attachments = const []]) async {
     final result = await mutate(MutationOptions(
-        documentNode: gql(
+        document: gql(
             '''mutation sendMessage(\$attachments: [Upload], \$message: String) {
           sendMessage(
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'} 
@@ -228,7 +228,7 @@ extension GraphqlMutation on GraphqlService {
             addUserImage(image: \$image) ${UserImage.graphqlQuery}
           }''';
     final result = await mutate(
-      MutationOptions(documentNode: gql(query), variables: {
+      MutationOptions(document: gql(query), variables: {
         'image': await multiPartFile(image),
       }),
     );
@@ -256,7 +256,7 @@ extension GraphqlMutation on GraphqlService {
             ) ${UserImage.graphqlQuery}
           }''';
     final result = await mutate(
-      MutationOptions(documentNode: gql(query), variables: {
+      MutationOptions(document: gql(query), variables: {
         'backgroundImage': backgroundImage != null
             ? await multiPartFile(backgroundImage)
             : null,
@@ -272,7 +272,7 @@ extension GraphqlMutation on GraphqlService {
           mutation {
             removeUserImage(id: "$id") { id }
           }''';
-    final result = await mutate(MutationOptions(documentNode: gql(query)));
+    final result = await mutate(MutationOptions(document: gql(query)));
 
     return result.data['removeUserImage'];
   }
@@ -285,7 +285,7 @@ extension GraphqlMutation on GraphqlService {
             ) ${User.graphqlQuery}
           }''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
     ));
 
@@ -330,7 +330,7 @@ extension GraphqlMutation on GraphqlService {
               (color != null ? [] : null),
     };
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
       fetchPolicy: FetchPolicy.networkOnly,
       variables: variables,
     ));
@@ -341,7 +341,7 @@ extension GraphqlMutation on GraphqlService {
   Future forgotPassword(String email) async {
     final query = '''mutation { forgotPassword(email: "$email") }''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['forgotPassword'];
@@ -354,7 +354,7 @@ extension GraphqlMutation on GraphqlService {
     }
     ''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['validateForgotPasswordToken'];
@@ -367,7 +367,7 @@ extension GraphqlMutation on GraphqlService {
     }
     ''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['changePasswordByForgotPasswordToken'];
@@ -379,7 +379,7 @@ extension GraphqlMutation on GraphqlService {
     }
     ''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['changePassword'];
@@ -388,7 +388,7 @@ extension GraphqlMutation on GraphqlService {
   Future readFriendRequestMutation(String userId) async {
     final query = '''mutation { readFriendRequest(userId: "$userId") }''';
     await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
   }
 
@@ -399,7 +399,7 @@ extension GraphqlMutation on GraphqlService {
         ${Post.graphqlQuery}
       }''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['likePost'];
@@ -409,7 +409,7 @@ extension GraphqlMutation on GraphqlService {
     final query =
         '''mutation { unlikePost(postId: $postId) ${Post.graphqlQuery} }''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['unlikePost'];
@@ -420,7 +420,7 @@ extension GraphqlMutation on GraphqlService {
     final query =
         '''mutation { commentPost(postId: $postId, content: "$content" isIncognito: $isIncognito) ${Comment.graphqlQuery} }''';
     final result = await mutate(MutationOptions(
-      documentNode: gql(query),
+      document: gql(query),
     ));
 
     return result.data['commentPost'];
@@ -433,7 +433,7 @@ extension GraphqlMutation on GraphqlService {
       createPost(categoryId: "$categoryId" content: \$content images: \$images) ${Post.graphqlQuery}
     }''';
     final result =
-        await mutate(MutationOptions(documentNode: gql(query), variables: {
+        await mutate(MutationOptions(document: gql(query), variables: {
       'images': await Future.wait((images ?? []).map((e) => multiPartFile(e))),
       'content': content,
     }));
@@ -443,16 +443,16 @@ extension GraphqlMutation on GraphqlService {
 
   Future deleteAnonymousChatMutation() async {
     await mutate(
-        MutationOptions(documentNode: gql('mutation { deleteAnonymousChat }')));
+        MutationOptions(document: gql('mutation { deleteAnonymousChat }')));
   }
 
   Future endCallMutation(String messageId) async {
     await mutate(MutationOptions(
-        documentNode: gql('mutation { endCall(messageId: "$messageId") }')));
+        document: gql('mutation { endCall(messageId: "$messageId") }')));
   }
 
   Future acceptCallMutation(String messageId) async {
     await mutate(MutationOptions(
-        documentNode: gql('mutation { acceptCall(messageId: "$messageId") }')));
+        document: gql('mutation { acceptCall(messageId: "$messageId") }')));
   }
 }

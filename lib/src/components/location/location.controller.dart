@@ -37,7 +37,7 @@ class LocationController extends MomentumController<LocationModel> {
     return true;
   }
 
-  void _updateLocation() async {
+  Future _updateLocation() async {
     await trycatch(() async {
       final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
@@ -49,7 +49,7 @@ class LocationController extends MomentumController<LocationModel> {
     });
   }
 
-  void _showDialog(BuildContext context) async {
+  Future _showDialog(BuildContext context) async {
     final popup = BeautifulPopup(
       context: context,
       template: TemplateGeolocation,
@@ -68,7 +68,7 @@ class LocationController extends MomentumController<LocationModel> {
         close: null);
   }
 
-  void _showFailDialog(BuildContext context) async {
+  Future _showFailDialog(BuildContext context) async {
     final popup = BeautifulPopup(
       context: context,
       template: TemplateFail,
@@ -95,7 +95,7 @@ class LocationController extends MomentumController<LocationModel> {
     );
   }
 
-  void _showOpenSettingDialog(BuildContext context) async {
+  Future _showOpenSettingDialog(BuildContext context) async {
     final popup = BeautifulPopup(
       context: context,
       template: TemplateFail,

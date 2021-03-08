@@ -4,7 +4,7 @@ extension GraphqlQuery on GraphqlService {
   Future meQuery() async {
     final queryString = '{ me ${User.graphqlQuery} }';
     final result = await query(QueryOptions(
-      documentNode: gql(queryString),
+      document: gql(queryString),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     ));
     return result.data['me'];
@@ -12,7 +12,7 @@ extension GraphqlQuery on GraphqlService {
 
   Future<int> remainingSuperLikeQuery() async {
     final result = await query(QueryOptions(
-      documentNode: gql('{ me { data { remainingSuperLike } } }'),
+      document: gql('{ me { data { remainingSuperLike } } }'),
       fetchPolicy: FetchPolicy.networkOnly,
     ));
     return result.data['me']['data']['remainingSuperLike'];
@@ -21,14 +21,13 @@ extension GraphqlQuery on GraphqlService {
   Future recommendableUsersQuery() async {
     final result = await query(QueryOptions(
         fetchPolicy: FetchPolicy.noCache,
-        documentNode:
-            gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }')));
+        document: gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }')));
     return result.data['recommendableUsers'];
   }
 
   Future hobbiesQuery() async {
     final result = await query(
-        QueryOptions(documentNode: gql('{ hobbies ${Hobby.graphqlQuery} }')));
+        QueryOptions(document: gql('{ hobbies ${Hobby.graphqlQuery} }')));
     return result.data['hobbies'];
   }
 
@@ -39,7 +38,7 @@ extension GraphqlQuery on GraphqlService {
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(
+      document: gql(
           '{ friends(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${FriendData.graphqlQuery} }'),
     ));
     return result.data['friends'];
@@ -53,7 +52,7 @@ extension GraphqlQuery on GraphqlService {
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(
+      document: gql(
           '''{ friendsV2(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page ${isSuperLike != null ? 'isSuperLike: $isSuperLike' : ''}) 
           ${WithIsLastPageOutput.graphqlQuery(FriendData.graphqlQuery)} }'''),
     ));
@@ -65,7 +64,7 @@ extension GraphqlQuery on GraphqlService {
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(
+      document: gql(
           '{ myConversations(page: $page) ${WithIsLastPageOutput.graphqlQuery(Conversation.graphqlQuery)} }'),
     ));
     return result.data['myConversations'];
@@ -83,7 +82,7 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
     return result.data['messages'];
   }
@@ -101,7 +100,7 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
     return result.data['messagesV2'];
   }
@@ -114,7 +113,7 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
     return result.data['conversation'];
   }
@@ -125,7 +124,7 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
     return result.data['user'];
   }
@@ -136,7 +135,7 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheFirst,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
     return result.data['getAddress'];
   }
@@ -148,7 +147,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheFirst,
-        documentNode: gql(queryString),
+        document: gql(queryString),
         variables: {
           'keyword': keyword,
           'page': page,
@@ -165,7 +164,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['colorsOfAnswer'];
@@ -176,7 +175,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['unreadMessageCount'] ?? 0;
@@ -187,7 +186,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['unreadReceiveFriendCount'] ?? 0;
@@ -198,7 +197,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['unreadAcceptedFriendCount'] ?? 0;
@@ -209,7 +208,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['agoraAppId'];
@@ -239,7 +238,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['posts'];
@@ -250,7 +249,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['postCategories'];
@@ -265,7 +264,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     final post = result.data['post'];
@@ -277,7 +276,7 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
     return result.data['myAnonymousChat'];

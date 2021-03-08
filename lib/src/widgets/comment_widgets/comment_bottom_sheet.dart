@@ -145,10 +145,6 @@ class CommentBottomSheet {
                                 borderRadius: 22.0,
                                 roundLoadingShape: false,
                                 color: Colors.transparent,
-                                child: Icon(
-                                  CupertinoIcons.paperplane,
-                                  color: context.colorScheme.primary,
-                                ),
                                 loader: Center(
                                   child: LoadingIndicator(
                                     color: context.colorScheme.primaryVariant,
@@ -169,6 +165,10 @@ class CommentBottomSheet {
                                     stopLoading();
                                   }
                                 },
+                                child: Icon(
+                                  CupertinoIcons.paperplane,
+                                  color: context.colorScheme.primary,
+                                ),
                               ),
                             ),
                           ),
@@ -209,12 +209,6 @@ class CommentBottomSheet {
                         ArgonButton(
                           height: 50,
                           width: context.width,
-                          child: Text(
-                            'Tải thêm bình luận',
-                            style: context.textTheme.button.copyWith(
-                              color: context.colorScheme.primary,
-                            ),
-                          ),
                           loader: LoadingIndicator(
                               size: 30,
                               color: context.colorScheme.onBackground),
@@ -225,6 +219,12 @@ class CommentBottomSheet {
                             });
                             stopLoading();
                           },
+                          child: Text(
+                            'Tải thêm bình luận',
+                            style: context.textTheme.button.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
                         ),
                     ],
                   );

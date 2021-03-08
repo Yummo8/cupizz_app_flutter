@@ -118,7 +118,7 @@ class Router extends MomentumService {
     Route Function(BuildContext, Widget) transition,
     RouterParam result,
   }) async {
-    await trycatch(() => _history.removeLast());
+    trycatch(() => _history.removeLast());
     if (_canPersist && _enablePersistence) {
       if (_testMode) {
         _persistSaverSync(

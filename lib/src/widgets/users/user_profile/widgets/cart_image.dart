@@ -117,16 +117,16 @@ class CartImage extends StatelessWidget {
                         elevation: 2.0,
                         padding: const EdgeInsets.all(10),
                         shape: CircleBorder()),
-                    child: Icon(
-                      Icons.edit,
-                      color: _theme.primaryColor,
-                    ),
                     onPressed: () {
                       Get.toNamed(
                         Routes.editImages,
                         arguments: EditUserImagesScreenParams(userImage),
                       );
                     },
+                    child: Icon(
+                      Icons.edit,
+                      color: _theme.primaryColor,
+                    ),
                   ),
                 ),
             ],

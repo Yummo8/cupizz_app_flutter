@@ -143,6 +143,12 @@ class _FriendPageState extends MomentumState<FriendPage>
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   controller: scrollController,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: multiple ? 2 : 1,
+                    mainAxisSpacing: _PADDING,
+                    crossAxisSpacing: _PADDING,
+                    childAspectRatio: 1,
+                  ),
                   children: friendsList
                       .asMap()
                       .map((index, value) {
@@ -166,12 +172,6 @@ class _FriendPageState extends MomentumState<FriendPage>
                       })
                       .values
                       .toList(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: multiple ? 2 : 1,
-                    mainAxisSpacing: _PADDING,
-                    crossAxisSpacing: _PADDING,
-                    childAspectRatio: 1,
-                  ),
                 );
               }),
         ),

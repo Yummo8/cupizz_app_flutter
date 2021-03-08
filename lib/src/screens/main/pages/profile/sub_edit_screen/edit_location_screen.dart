@@ -46,7 +46,6 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
       _getAddressFromLatLng();
     }).catchError((e, stackTrace) {
       Fluttertoast.showToast(msg: e.toString());
-      AppConfig.instance.sentry?.captureException(e, stackTrace: stackTrace);
     }).whenComplete(() => setState(() {
               _onLoading = false;
             }));
@@ -62,9 +61,8 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
         _currentAddress = address;
         _onLoading = false;
       });
-    } catch (e, stackTrace) {
-      await AppConfig.instance.sentry
-          .captureException(e, stackTrace: stackTrace);
+    } catch (e) {
+      await Fluttertoast.showToast(msg: e.toString());
     }
   }
 

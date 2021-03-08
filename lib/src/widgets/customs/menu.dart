@@ -23,9 +23,9 @@ class Menu {
                 .map(
                   (e) => CupertinoActionSheetAction(
                     onPressed: e.onPressed,
-                    child: Text(e.title),
                     isDefaultAction: e.isDefaultAction,
                     isDestructiveAction: e.isDestructiveAction,
+                    child: Text(e.title),
                   ),
                 )
                 .toList(),
@@ -36,8 +36,8 @@ class Menu {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(Strings.button.cancel),
                   isDestructiveAction: true,
+                  child: Text(Strings.button.cancel),
                 ),
         );
       },

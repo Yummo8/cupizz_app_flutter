@@ -1,20 +1,20 @@
 part of 'index.dart';
 
 class MessageSubscription extends MomentumService {
-  StreamSubscription<FetchResult> _streamSubscription;
+  StreamSubscription<QueryResult> _streamSubscription;
   final StreamController _controller = StreamController<Message>.broadcast();
 
   void init(ConversationKey key) {
     _streamSubscription?.cancel();
     _streamSubscription = Get.find<GraphqlService>()
-        .subscribe(Operation(documentNode: gql('''subscription {
+        .subscribe(SubscriptionOptions(document: gql('''subscription {
           newMessage (
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')))
         .listen((event) {
-      if (event.errors != null && event.errors.isNotEmpty) {
-        _controller.addError(event.errors[0].toString());
+      if (event.hasException && event.exception != null) {
+        _controller.addError(event.exception.graphqlErrors.first.message);
       }
       if (event.data != null) {
         _controller
@@ -30,7 +30,7 @@ class MessageSubscription extends MomentumService {
 
 extension GraphqlSupscription on GraphqlService {
   Stream<Message> newMessageSubscription(ConversationKey key) {
-    StreamSubscription<FetchResult> _streamSubscription;
+    StreamSubscription<QueryResult> _streamSubscription;
     // ignore: close_sinks
     final controller = StreamController<Message>.broadcast(
       onCancel: () {
@@ -38,15 +38,15 @@ extension GraphqlSupscription on GraphqlService {
       },
     );
     _streamSubscription = subscribe(
-      Operation(documentNode: gql('''subscription {
+      SubscriptionOptions(document: gql('''subscription {
           newMessage (
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')),
     ).listen(
       (event) {
-        if (event.errors != null && event.errors.isNotEmpty) {
-          controller.addError(event.errors[0].toString());
+        if (event.hasException && event.exception != null) {
+          controller.addError(event.exception.graphqlErrors.first.message);
         }
         if (event.data != null) {
           controller.add(
@@ -59,7 +59,7 @@ extension GraphqlSupscription on GraphqlService {
   }
 
   Stream<Message> messageChangeSubscription(ConversationKey key) {
-    StreamSubscription<FetchResult> _streamSubscription;
+    StreamSubscription<QueryResult> _streamSubscription;
     // ignore: close_sinks
     final controller = StreamController<Message>.broadcast(
       onCancel: () {
@@ -67,15 +67,15 @@ extension GraphqlSupscription on GraphqlService {
       },
     );
     _streamSubscription = subscribe(
-      Operation(documentNode: gql('''subscription {
+      SubscriptionOptions(document: gql('''subscription {
           messageChange (
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')),
     ).listen(
       (event) {
-        if (event.errors != null && event.errors.isNotEmpty) {
-          controller.addError(event.errors[0].toString());
+        if (event.hasException && event.exception != null) {
+          controller.addError(event.exception.graphqlErrors.first.message);
         }
         if (event.data != null) {
           controller.add(
@@ -88,7 +88,7 @@ extension GraphqlSupscription on GraphqlService {
   }
 
   Stream<Conversation> conversationChangeSubscription() {
-    StreamSubscription<FetchResult> _streamSubscription;
+    StreamSubscription<QueryResult> _streamSubscription;
     // ignore: close_sinks
     final controller = StreamController<Conversation>.broadcast(
       onCancel: () {
@@ -96,13 +96,13 @@ extension GraphqlSupscription on GraphqlService {
       },
     );
     _streamSubscription = subscribe(
-      Operation(documentNode: gql('''subscription {
+      SubscriptionOptions(document: gql('''subscription {
           conversationChange ${Conversation.graphqlQuery}
         }''')),
     ).listen(
       (event) {
-        if (event.errors != null && event.errors.isNotEmpty) {
-          controller.addError(event.errors[0].toString());
+        if (event.hasException && event.exception != null) {
+          controller.addError(event.exception.graphqlErrors.first.message);
         }
         if (event.data != null) {
           controller.add(Mapper.fromJson(event.data['conversationChange'])
@@ -115,7 +115,7 @@ extension GraphqlSupscription on GraphqlService {
   }
 
   Stream<Conversation> findAnonymousChatSubscription() {
-    StreamSubscription<FetchResult> _streamSubscription;
+    StreamSubscription<QueryResult> _streamSubscription;
     // ignore: close_sinks
     final controller = StreamController<Conversation>.broadcast(
       onCancel: () {
@@ -123,13 +123,13 @@ extension GraphqlSupscription on GraphqlService {
       },
     );
     _streamSubscription = subscribe(
-      Operation(documentNode: gql('''subscription {
+      SubscriptionOptions(document: gql('''subscription {
           findAnonymousChat ${Conversation.graphqlQuery}
         }''')),
     ).listen(
       (event) {
-        if (event.errors != null && event.errors.isNotEmpty) {
-          controller.addError(event.errors[0].toString());
+        if (event.hasException && event.exception != null) {
+          controller.addError(event.exception.graphqlErrors.first.message);
         }
         if (event.data != null) {
           controller.add(Mapper.fromJson(event.data['findAnonymousChat'])
@@ -143,7 +143,7 @@ extension GraphqlSupscription on GraphqlService {
   }
 
   Stream<Message> callSubscription(ConversationKey key) {
-    StreamSubscription<FetchResult> _streamSubscription;
+    StreamSubscription<QueryResult> _streamSubscription;
     // ignore: close_sinks
     final controller = StreamController<Message>.broadcast(
       onCancel: () {
@@ -151,15 +151,15 @@ extension GraphqlSupscription on GraphqlService {
       },
     );
     _streamSubscription = subscribe(
-      Operation(documentNode: gql('''subscription {
+      SubscriptionOptions(document: gql('''subscription {
           call(
             ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')),
     ).listen(
       (event) {
-        if (event.errors != null && event.errors.isNotEmpty) {
-          controller.addError(event.errors[0].toString());
+        if (event.hasException && event.exception != null) {
+          controller.addError(event.exception.graphqlErrors.first.message);
         }
         if (event.data != null) {
           controller

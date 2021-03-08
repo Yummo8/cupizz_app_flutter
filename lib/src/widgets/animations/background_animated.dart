@@ -58,7 +58,6 @@ class LinearGradientAnimatedContainer extends StatelessWidget {
             margin: margin,
             transform: transform,
             transformAlignment: transformAlignment,
-            child: child,
             clipBehavior: clipBehavior,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -69,6 +68,7 @@ class LinearGradientAnimatedContainer extends StatelessWidget {
               tileMode: gradient.tileMode,
               transform: gradient.transform,
             )),
+            child: child,
           );
         });
   }

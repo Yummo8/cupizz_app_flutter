@@ -9,7 +9,7 @@ class AppConfig extends InheritedWidget {
       GlobalKey<NavigatorState>();
   static GlobalKey _globalKey;
   static GlobalKey get globalKey => _globalKey;
-  final SentryClient sentry;
+  // final SentryClient sentry;
 
   bool get isDev => flavorName == AppFlavor.DEVELOPMENT;
 
@@ -19,7 +19,7 @@ class AppConfig extends InheritedWidget {
     @required this.apiUrl,
     @required this.wss,
     @required Widget child,
-    this.sentry,
+    // this.sentry,
   }) : super(child: Material(child: child)) {
     _globalKey = child.key;
     FlutterError.onError = (FlutterErrorDetails details) {
@@ -39,7 +39,7 @@ class AppConfig extends InheritedWidget {
     String apiUrl,
     String wss,
     Widget child,
-    SentryClient sentry,
+    // SentryClient sentry,
   }) {
     return AppConfig(
       appName: appName ?? this.appName,
@@ -47,7 +47,7 @@ class AppConfig extends InheritedWidget {
       apiUrl: apiUrl ?? this.apiUrl,
       wss: wss ?? this.wss,
       child: child ?? this.child,
-      sentry: sentry,
+      // sentry: sentry,
     );
   }
 

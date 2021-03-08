@@ -21,12 +21,6 @@ class Skeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return enabled
         ? Shimmer.fromColors(
-            child: autoContainer
-                ? Container(
-                    child: child,
-                    color: context.colorScheme.background,
-                  )
-                : child,
             baseColor: Theme.of(context).brightness == Brightness.dark
                 ? Colors.grey[900]
                 : Colors.grey[100],
@@ -34,6 +28,12 @@ class Skeleton extends StatelessWidget {
                 ? Colors.grey[800]
                 : Colors.grey[200],
             enabled: true,
+            child: autoContainer
+                ? Container(
+                    color: context.colorScheme.background,
+                    child: child,
+                  )
+                : child,
           )
         : child;
   }

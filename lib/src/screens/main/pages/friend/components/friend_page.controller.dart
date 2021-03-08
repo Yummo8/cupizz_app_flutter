@@ -39,7 +39,7 @@ class FriendPageController extends MomentumController<FriendPageModel> {
       );
       await _reloadFriends();
       model.update(isLoading: false);
-      await model.animationController?.reset();
+      model.animationController?.reset();
       await model.animationController?.forward();
     }
   }

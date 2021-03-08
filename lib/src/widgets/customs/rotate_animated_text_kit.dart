@@ -123,7 +123,6 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
             ? textWidget
             : AnimatedBuilder(
                 animation: _controller,
-                child: textWidget,
                 builder: (BuildContext context, Widget child) {
                   return AlignTransition(
                     alignment: _slideIn.value.y != 0.0 ? _slideIn : _slideOut,
@@ -134,6 +133,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
                         child: child),
                   );
                 },
+                child: textWidget,
               ),
       ),
     );

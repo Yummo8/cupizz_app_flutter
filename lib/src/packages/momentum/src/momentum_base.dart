@@ -1323,19 +1323,6 @@ class Momentum extends InheritedWidget {
   }) {
     return Momentum._internal(
       key: key,
-      child: _MomentumRoot(
-        child: child,
-        appLoader: appLoader,
-        controllers: controllers ?? [],
-        services: services ?? [],
-        disabledPersistentState: disabledPersistentState,
-        enableLogging: enableLogging,
-        maxTimeTravelSteps: maxTimeTravelSteps,
-        lazy: lazy,
-        minimumBootstrapTime: minimumBootstrapTime,
-        testMode: testMode ?? false,
-        strategy: strategy,
-      ),
       controllers: controllers,
       services: services,
       disabledPersistentState: disabledPersistentState,
@@ -1350,6 +1337,19 @@ class Momentum extends InheritedWidget {
       testMode: testMode,
       testSessionName: testSessionName,
       restartCallback: restartCallback,
+      child: _MomentumRoot(
+        appLoader: appLoader,
+        controllers: controllers ?? [],
+        services: services ?? [],
+        disabledPersistentState: disabledPersistentState,
+        enableLogging: enableLogging,
+        maxTimeTravelSteps: maxTimeTravelSteps,
+        lazy: lazy,
+        minimumBootstrapTime: minimumBootstrapTime,
+        testMode: testMode ?? false,
+        strategy: strategy,
+        child: child,
+      ),
     );
   }
 

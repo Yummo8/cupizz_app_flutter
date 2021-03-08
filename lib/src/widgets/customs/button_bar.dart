@@ -31,9 +31,6 @@ class ButtonBar extends StatelessWidget {
                       return MapEntry(
                           key,
                           Container(
-                            child: Center(
-                              child: child,
-                            ),
                             width: 80.0,
                             height: 32.0,
                             decoration: BoxDecoration(
@@ -45,6 +42,9 @@ class ButtonBar extends StatelessWidget {
                                 ],
                                 color: context.colorScheme.secondary,
                                 borderRadius: BorderRadius.circular(20.0)),
+                            child: Center(
+                              child: child,
+                            ),
                           ));
                     } else {
                       return MapEntry(key, child);

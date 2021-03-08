@@ -62,12 +62,12 @@ class __BottomWidgetState extends State<_BottomWidget> {
                 child: Container(
                   height: 44.0,
                   alignment: Alignment.center,
+                  padding: textPadding,
                   child: Text(
                     i18nProvider.getPreviewText(
                         options, widget.selectedProvider),
                     style: textStyle,
                   ),
-                  padding: textPadding,
                 ),
               ),
             ],

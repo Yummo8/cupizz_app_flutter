@@ -6,7 +6,6 @@ import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../../../base/base.dart';
 
@@ -222,7 +221,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     ));
 
     listWidgetItems.add(RowEditInfo(
-      iconData: MdiIcons.human,
+      iconData: CupertinoIcons.person_alt,
       title: 'Giới tính',
       value: user?.gender?.displayValue,
       onClick: () {

@@ -139,13 +139,13 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             ),
             actions: <Widget>[
               TextButton(
+                onPressed: selectedCount == 0 ? null : sure,
                 child: Text(
                   i18nProvider.getSureText(options, selectedCount),
                   style: selectedCount == 0
                       ? textStyle.copyWith(color: options.disableColor)
                       : textStyle,
                 ),
-                onPressed: selectedCount == 0 ? null : sure,
               ),
             ],
           ),
@@ -453,6 +453,8 @@ class _PhotoMainPageState extends State<PhotoMainPage>
   Widget _buildLoading() {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
             width: 40.0,
@@ -472,8 +474,6 @@ class _PhotoMainPageState extends State<PhotoMainPage>
             ),
           ),
         ],
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
       ),
     );
   }

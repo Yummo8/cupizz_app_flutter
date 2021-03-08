@@ -27,7 +27,6 @@ class FadeInTranslate extends StatelessWidget {
       delay: Duration(milliseconds: (delayDuration * delay).round()),
       duration: tween.duration,
       tween: tween,
-      child: child,
       builder: (context, child, value) => !enabled
           ? child
           : Opacity(
@@ -36,6 +35,7 @@ class FadeInTranslate extends StatelessWidget {
                   offset: Offset(value.get(_AniProps.translateX), 0),
                   child: child),
             ),
+      child: child,
     );
   }
 }
@@ -53,11 +53,11 @@ class FadeIn extends StatelessWidget {
       delay: delay,
       duration: duration.milliseconds,
       tween: 0.0.tweenTo(1.0),
-      child: child,
       builder: (context, child, value) => Opacity(
         opacity: value,
         child: child,
       ),
+      child: child,
     );
   }
 }

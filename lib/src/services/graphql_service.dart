@@ -1,6 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:pedantic/pedantic.dart';
 
 class GraphqlService extends GetxService {
   GraphQLClient _client;
@@ -16,19 +15,17 @@ class GraphqlService extends GetxService {
   void reset() {
     _socketLink?.dispose();
 
-    final httpLink = HttpLink(
-      uri: apiUrl,
-    );
+    final httpLink = HttpLink(apiUrl);
 
     final authLink = AuthLink(
       getToken: () async => await Get.find<StorageService>().getToken,
     );
 
     _socketLink = WebSocketLink(
-      url: wss,
+      wss,
       config: SocketClientConfig(
         autoReconnect: true,
-        initPayload: () async {
+        initialPayload: () async {
           return {
             'Authorization': await Get.find<StorageService>().getToken,
           };
@@ -39,7 +36,7 @@ class GraphqlService extends GetxService {
     final link = authLink.concat(httpLink).concat(_socketLink);
 
     _client = GraphQLClient(
-      cache: InMemoryCache(),
+      cache: GraphQLCache(store: HiveStore()),
       link: link,
     );
   }
@@ -48,17 +45,16 @@ class GraphqlService extends GetxService {
       _processQueryResult(_client.query(options));
   Future<QueryResult> mutate(MutationOptions options) =>
       _processQueryResult(_client.mutate(options));
-  Stream<FetchResult> subscribe(Operation operation) =>
+  Stream<QueryResult> subscribe(SubscriptionOptions operation) =>
       _processFetchResult(_client.subscribe(operation));
 
   Future<QueryResult> _processQueryResult(Future<QueryResult> future) async {
     final result = await future;
     debugPrint(result.data?.keys?.toString());
     if (result.hasException) {
-      if (result.exception.clientException != null &&
-          result.exception.clientException.message.isExistAndNotEmpty) {
-        debugPrint(result.exception.clientException.message);
-        throw result.exception.clientException.message;
+      if (result.exception.linkException != null) {
+        debugPrint(result.exception.linkException.toString());
+        throw result.exception.linkException;
       } else if (result.exception.graphqlErrors != null &&
           result.exception.graphqlErrors.isNotEmpty) {
         final unauthenticatedError = result.exception.graphqlErrors.firstWhere(
@@ -73,10 +69,10 @@ class GraphqlService extends GetxService {
         } else if (clientError != null) {
           throw clientError.message;
         } else {
-          unawaited(AppConfig.instance.sentry?.captureException(
-            result.exception.graphqlErrors[0].message,
-            stackTrace: result.exception,
-          ));
+          // unawaited(AppConfig.instance.sentry?.captureException(
+          //   result.exception.graphqlErrors[0].message,
+          //   stackTrace: result.exception,
+          // ));
           debugPrint(result.exception.graphqlErrors[0].message.toString());
           throw 'Xảy ra lỗi!\nVui lòng liên hệ NPH để được hỗ trợ!';
         }
@@ -89,7 +85,7 @@ class GraphqlService extends GetxService {
     return result;
   }
 
-  Stream<FetchResult> _processFetchResult(Stream<FetchResult> stream) async* {
+  Stream<QueryResult> _processFetchResult(Stream<QueryResult> stream) async* {
     await for (final result in stream) {
       yield result;
     }

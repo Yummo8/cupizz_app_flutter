@@ -248,6 +248,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 65.0,
                           width: width,
                           duration: Duration(milliseconds: 1000),
+                          curve: Curves.linear,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              topLeft: Radius.circular(40),
+                            ),
+                            color: context.colorScheme.primaryVariant,
+                          ),
                           child: Row(
                             children: <Widget>[
                               Container(
@@ -291,14 +299,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ],
-                          ),
-                          curve: Curves.linear,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(40),
-                              topLeft: Radius.circular(40),
-                            ),
-                            color: context.colorScheme.primaryVariant,
                           ),
                         ),
                       ),

@@ -199,26 +199,26 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
           children: [
             InkWell(
               enableFeedback: true,
+              onTap: () {
+                Momentum.of<ThemeController>(context).randomTheme();
+              },
               child: Icon(
                 Icons.color_lens,
                 color: context.colorScheme.primary,
                 size: 20,
               ),
-              onTap: () {
-                Momentum.of<ThemeController>(context).randomTheme();
-              },
             ),
             const SizedBox(width: 10),
             InkWell(
               enableFeedback: true,
+              onTap: () {
+                controller.closeMenu();
+              },
               child: Icon(
                 Icons.arrow_right_alt,
                 color: context.colorScheme.onBackground,
                 size: 30,
               ),
-              onTap: () {
-                controller.closeMenu();
-              },
             ),
           ],
         ),
