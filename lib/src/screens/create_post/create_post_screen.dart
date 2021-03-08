@@ -90,10 +90,10 @@ class _SubmitButton extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: model.selected != null &&
-                          model.content!.isExistAndNotEmpty
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).primaryColor.withAlpha(150),
+                  color:
+                      model.selected != null && model.content.isExistAndNotEmpty
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).primaryColor.withAlpha(150),
                   borderRadius: BorderRadius.circular(90),
                 ),
                 child: Text(

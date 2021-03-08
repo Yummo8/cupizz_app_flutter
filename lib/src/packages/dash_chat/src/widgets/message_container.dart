@@ -42,7 +42,7 @@ class MessageContainer extends StatelessWidget {
     final createdAt = message?.createdAt ?? DateTime.now();
     final children = [
       _buildMessageImages(),
-      if (message == null || message!.message!.isExistAndNotEmpty)
+      if (message == null || message!.message.isExistAndNotEmpty)
         Container(
           decoration: messageDecorationBuilder != null && message != null
               ? messageDecorationBuilder!(message, isUser)
@@ -144,7 +144,8 @@ class MessageContainer extends StatelessWidget {
   Widget _buildMessageImages() {
     if (message?.attachments != null && message!.attachments!.isNotEmpty) {
       if (messageImageBuilder != null) {
-        return messageImageBuilder!(message!.attachments![0].thumbnail, message);
+        return messageImageBuilder!(
+            message!.attachments![0].thumbnail, message);
       } else {
         final images = GroupImage(images: message!.attachments);
         return Padding(

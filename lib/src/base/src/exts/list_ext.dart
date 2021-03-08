@@ -1,8 +1,11 @@
 part of base;
 
-extension ListExt<T> on List<T?> {
-  bool get isExistAndNotEmpty => isNotEmpty;
+extension NullableListExt<T> on List<T?>? {
+  bool get isExistAndNotEmpty =>
+      this != null && this!.isNotEmpty && this!.getAt(0) != null;
+}
 
+extension ListExt<T> on List<T?> {
   List<T?> addBetweenEvery(T value) {
     final r = [];
     asMap().forEach((i, e) => i < length - 1 ? r.addAll([e, value]) : r.add(e));

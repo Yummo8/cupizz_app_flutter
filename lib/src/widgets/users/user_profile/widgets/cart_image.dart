@@ -54,7 +54,7 @@ class CartImage extends StatelessWidget {
                       color: userImage?.color
                           ?.withOpacity(userImage?.opacity ?? 1),
                       gradient: userImage != null &&
-                              userImage!.gradient!.isExistAndNotEmpty
+                              userImage!.gradient.isExistAndNotEmpty
                           ? AnswerGradient(userImage!.gradient!
                               .map((e) => e.withOpacity(userImage!.opacity))
                               .toList())

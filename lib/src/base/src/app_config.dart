@@ -1,19 +1,36 @@
 part of base;
 
 class AppConfig extends InheritedWidget {
+  static late AppConfig _instance;
+
   final String appName;
   final AppFlavor flavorName;
   final String apiUrl;
   final String wss;
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
-  static GlobalKey? _globalKey;
-  static GlobalKey? get globalKey => _globalKey;
   // final SentryClient sentry;
 
   bool get isDev => flavorName == AppFlavor.DEVELOPMENT;
 
-  AppConfig({
+  factory AppConfig({
+    required String appName,
+    required AppFlavor flavorName,
+    required String apiUrl,
+    required String wss,
+    required Widget child,
+    // required SentryClient sentry,
+  }) =>
+      _instance = AppConfig._(
+        apiUrl: apiUrl,
+        appName: appName,
+        flavorName: flavorName,
+        wss: wss,
+        // sentry: sentry,
+        child: child,
+      );
+
+  AppConfig._({
     required this.appName,
     required this.flavorName,
     required this.apiUrl,
@@ -21,15 +38,13 @@ class AppConfig extends InheritedWidget {
     required Widget child,
     // this.sentry,
   }) : super(child: Material(child: child)) {
-    _globalKey = child.key as GlobalKey<State<StatefulWidget>>?;
-    FlutterError.onError = (FlutterErrorDetails details) {
-      if (isDev || kIsWeb) {
-        FlutterError.dumpErrorToConsole(details);
-      } else {
-        Zone.current.handleUncaughtError(details.exception, details.stack!);
-      }
-    };
-
+    // FlutterError.onError = (FlutterErrorDetails details) {
+    //   if (isDev || kIsWeb) {
+    //     FlutterError.dumpErrorToConsole(details);
+    //   } else {
+    //     Zone.current.handleUncaughtError(details.exception, details.stack);
+    //   }
+    // };
     timeago.setLocaleMessages('vi', ViMessages());
   }
 
@@ -39,20 +54,20 @@ class AppConfig extends InheritedWidget {
     String? apiUrl,
     String? wss,
     Widget? child,
-    // SentryClient sentry,
+    // SentryClient? sentry,
   }) {
-    return AppConfig(
+    _instance = AppConfig(
       appName: appName ?? this.appName,
       flavorName: flavorName ?? this.flavorName,
       apiUrl: apiUrl ?? this.apiUrl,
       wss: wss ?? this.wss,
-      child: child ?? this.child,
       // sentry: sentry,
+      child: child ?? this.child,
     );
+    return _instance;
   }
 
-  static AppConfig? get instance => _globalKey!.currentContext!
-      .dependOnInheritedWidgetOfExactType(aspect: AppConfig);
+  static AppConfig get instance => _instance;
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

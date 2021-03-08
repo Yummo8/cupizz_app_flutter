@@ -46,7 +46,7 @@ class AnswerScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final haveImageBackground =
-        imageFile != null || imageUrl!.isExistAndNotEmpty;
+        imageFile != null || imageUrl.isExistAndNotEmpty;
     return PrimaryScaffold(
       onBack: onBack,
       body: Container(
@@ -104,7 +104,7 @@ class AnswerScreenWidget extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        if (questionContent!.isExistAndNotEmpty) ...[
+                        if (questionContent.isExistAndNotEmpty) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,

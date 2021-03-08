@@ -53,7 +53,7 @@ class OtpDialog {
                         text: TextSpan(
                             text: 'Nhập mã xác thực đã được gửi tới email ',
                             children: [
-                              if (email!.isExistAndNotEmpty)
+                              if (email.isExistAndNotEmpty)
                                 TextSpan(
                                     text: email,
                                     style: TextStyle(

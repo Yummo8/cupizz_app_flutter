@@ -76,7 +76,7 @@ extension GraphqlQuery on GraphqlService {
   ]) async {
     final queryString = '''{ 
         messages(
-          ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
+          ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
           page: $page
         ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
       }''';
@@ -93,7 +93,7 @@ extension GraphqlQuery on GraphqlService {
   ]) async {
     final queryString = '''{ 
         messagesV2(
-          ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
+          ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
           cursor: "${cursor ?? ''}"
           ${cursor.isExistAndNotEmpty ? 'skip: 1' : ''}
         ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
@@ -108,7 +108,7 @@ extension GraphqlQuery on GraphqlService {
   Future conversationQuery(ConversationKey key) async {
     final queryString = '''{ 
         conversation(
-          ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
+          ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
         ) ${Conversation.graphqlQuery}
       }''';
     final result = await query(QueryOptions(

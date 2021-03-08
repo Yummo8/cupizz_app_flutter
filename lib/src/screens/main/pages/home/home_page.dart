@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
           var model = snapshot<RecommendableUsersModel>()!;
-          if (model.users!.isExistAndNotEmpty) {
+          if (model.users.isExistAndNotEmpty) {
             return Positioned(
               bottom: 10,
               right: 0,
@@ -118,13 +118,13 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           var model = snapshot<RecommendableUsersModel>()!;
           if (model.isLoading ||
-              !model.users!.isExistAndNotEmpty && !model.isLastPage) {
-            if (!model.users!.isExistAndNotEmpty && !model.isLastPage) {
+              !model.users.isExistAndNotEmpty && !model.isLastPage) {
+            if (!model.users.isExistAndNotEmpty && !model.isLastPage) {
               Momentum.of<RecommendableUsersController>(context)
                   .fetchRecommendableUsers();
             }
             return Center(child: LoadingIndicator());
-          } else if (model.error!.isExistAndNotEmpty) {
+          } else if (model.error.isExistAndNotEmpty) {
             return ErrorIndicator(
               moreErrorDetail: model.error,
               onReload: () {
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                     .fetchRecommendableUsers();
               },
             );
-          } else if (!model.users!.isExistAndNotEmpty && model.isLastPage) {
+          } else if (!model.users.isExistAndNotEmpty && model.isLastPage) {
             return FadeIn(
               child: Center(
                   child: Column(

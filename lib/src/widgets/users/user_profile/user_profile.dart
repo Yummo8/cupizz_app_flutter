@@ -158,7 +158,7 @@ class UserProfileState extends MomentumState<UserProfile>
               title: 'Đang ở ${user?.address ?? 'Address'}',
             ),
           ],
-          if (user == null || user.lookingFors!.isExistAndNotEmpty) ...[
+          if (user == null || user.lookingFors.isExistAndNotEmpty) ...[
             const SizedBox(height: 16.0),
             RowInfo(
               iconData: Icons.favorite,
@@ -250,7 +250,7 @@ class UserProfileState extends MomentumState<UserProfile>
             indent: 20,
             endIndent: 20,
           ),
-          if (user != null && user.userImages!.isExistAndNotEmpty)
+          if (user != null && user.userImages.isExistAndNotEmpty)
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) => FadeInTranslate(
@@ -300,8 +300,9 @@ class UserProfileState extends MomentumState<UserProfile>
                             ? null
                             : () {
                                 pickImage(context, (files) {
-                                  if (files!.isExistAndNotEmpty) {
-                                    model.controller.addImage(files[0]!);
+                                  if (files.isExistAndNotEmpty &&
+                                      files!.getAt(0) != null) {
+                                    model.controller.addImage(files.getAt(0)!);
                                   }
                                 }, maxSelected: 1);
                               },

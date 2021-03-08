@@ -19,7 +19,6 @@ import 'screens/main/components/main_screen.controller.dart';
 import 'screens/main/pages/chat/chat_page.dart';
 import 'screens/main/pages/friend/friend_page.dart';
 import 'screens/messages/messages_screen.dart';
-import 'services/index.dart';
 import 'widgets/index.dart';
 
 Momentum momentum({bool isTesting = false}) {
@@ -27,7 +26,7 @@ Momentum momentum({bool isTesting = false}) {
     key: UniqueKey(),
     maxTimeTravelSteps: 200,
     restartCallback: () {
-      runApp(AppConfig.instance!.copyWith(child: App()));
+      runApp(AppConfig.instance.copyWith(child: App()));
     },
     controllers: [
       LocationController()..config(lazy: true),
@@ -69,7 +68,6 @@ Momentum momentum({bool isTesting = false}) {
 class App extends AppBase {
   @override
   Widget build(BuildContext context) {
-    initServices();
     return momentum();
   }
 }
@@ -136,7 +134,7 @@ class _MyApp extends StatelessWidget {
           final theme = snapshot<ThemeModel>()!.controller.selectedTheme;
           return GetMaterialApp(
             debugShowCheckedModeBanner:
-                AppConfig.instance!.flavorName != AppFlavor.PRODUCTION,
+                AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
             title: 'Cupizz',
             navigatorKey: isTesting ? null : AppConfig.navigatorKey,
             navigatorObservers: [

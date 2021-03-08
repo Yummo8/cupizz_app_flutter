@@ -22,14 +22,14 @@ class HobbiesBottomSheet {
 
                 if (hobbyListModel.isLoading!) {
                   return LoadingIndicator(padding: EdgeInsets.all(20));
-                } else if (hobbyListModel.error!.isExistAndNotEmpty) {
+                } else if (hobbyListModel.error.isExistAndNotEmpty) {
                   return ErrorIndicator(
                     moreErrorDetail: hobbyListModel.error,
                     onReload: () {
                       hobbyListModel.controller.loadHobbies();
                     },
                   );
-                } else if (hobbyListModel.hobbies!.isExistAndNotEmpty) {
+                } else if (hobbyListModel.hobbies.isExistAndNotEmpty) {
                   return Container(
                     height: 400,
                     child: SingleChildScrollView(

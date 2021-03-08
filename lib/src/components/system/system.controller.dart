@@ -76,7 +76,7 @@ class SystemController extends MomentumController<SystemModel> {
   }
 
   Future<String?> getAgoraAppId() async {
-    if (!model!.agoraAppId!.isExistAndNotEmpty) {
+    if (!model!.agoraAppId.isExistAndNotEmpty) {
       await _fetchAgoraAppId();
     }
 

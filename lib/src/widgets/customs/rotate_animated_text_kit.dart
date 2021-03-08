@@ -70,7 +70,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
   final List<Map<String, dynamic>> _texts = [];
 
-  int? _index;
+  late int _index;
 
   bool _isCurrentlyPausing = false;
 
@@ -111,7 +111,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
   @override
   Widget build(BuildContext context) {
     final textWidget = Text(
-      _texts[_index!]['text'],
+      _texts[_index]['text'],
       style: widget.textStyle,
       textAlign: widget.textAlign,
     );
@@ -189,7 +189,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
 
     _isCurrentlyPausing = false;
 
-    if (_index! > -1) {
+    if (_index > -1) {
       widget.onNext?.call(_index, isLast);
     }
 
@@ -206,7 +206,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
         return;
       }
     } else {
-      _index = _index ?? 0 + 1;
+      _index++;
     }
 
     if (mounted) setState(() {});
@@ -232,7 +232,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
   void _animationEndCallback(state) {
     if (state == AnimationStatus.completed) {
       assert(null == _timer || !_timer!.isActive);
-      _timer = Timer(_texts[_index!]['pause'], _nextAnimation);
+      _timer = Timer(_texts[_index]['pause'], _nextAnimation);
     }
   }
 
@@ -247,7 +247,7 @@ class _RotatingTextState extends State<RotateAnimatedTextKit>
         _setPause();
 
         assert(null == _timer || !_timer!.isActive);
-        _timer = Timer(_texts[_index!]['pause'], _nextAnimation);
+        _timer = Timer(_texts[_index]['pause'], _nextAnimation);
       }
     }
 

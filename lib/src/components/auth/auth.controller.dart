@@ -63,31 +63,30 @@ class AuthController extends MomentumController<AuthModel> {
       } else if (type == SocialProviderType.facebook) {
         try {
           var accessToken = await FacebookAuth.instance.login();
-          if (accessToken == null || !accessToken.token!.isExistAndNotEmpty) {
+          if (accessToken == null || !accessToken.token.isExistAndNotEmpty) {
             return;
           }
           await Get.find<AuthService>().loginSocial(
               SocialProviderType.facebook,
               accessToken.token,
               dependOn<CurrentUserController>().getCurrentUser);
-        } catch (e) {
-          if ((e as dynamic).errorCode != null) {
-            switch ((e as dynamic).errorCode) {
-              case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
-                print('Đang đăng nhập');
-                break;
-              case FacebookAuthErrorCode.CANCELLED:
-                print('login facebook cancelled');
-                break;
-              case FacebookAuthErrorCode.FAILED:
-                print('login facebook failed');
-                await Fluttertoast.showToast(msg: e.toString());
-                break;
-            }
-          } else {
-            await Fluttertoast.showToast(msg: e.toString());
+        } on FacebookAuthException catch (e) {
+          switch (e.errorCode) {
+            case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+              print('Đang đăng nhập');
+              break;
+            case FacebookAuthErrorCode.CANCELLED:
+              print('login facebook cancelled');
+              break;
+            case FacebookAuthErrorCode.FAILED:
+              print('login facebook failed');
+              await Fluttertoast.showToast(msg: e.toString());
+              break;
           }
-          return;
+          rethrow;
+        } catch (e) {
+          await Fluttertoast.showToast(msg: e.toString());
+          rethrow;
         }
       } else {
         return;
@@ -133,7 +132,7 @@ class AuthController extends MomentumController<AuthModel> {
   }
 
   Future<void> vertifyOtp(String otp) async {
-    if (!model!.otpToken!.isExistAndNotEmpty) return;
+    if (!model!.otpToken.isExistAndNotEmpty) return;
     await trycatch(() async {
       final registerToken =
           await Get.find<AuthService>().verifyOtpEmail(model!.otpToken, otp);

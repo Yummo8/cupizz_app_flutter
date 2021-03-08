@@ -40,7 +40,7 @@ class ChangePassDialog {
                     textColor: context.colorScheme.onBackground,
                   ),
                   const SizedBox(height: 15),
-                ] else if (nickName!.isExistAndNotEmpty) ...[
+                ] else if (nickName.isExistAndNotEmpty) ...[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -53,7 +53,7 @@ class ChangePassDialog {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(nickName,
+                      Text(nickName ?? '',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

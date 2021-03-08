@@ -9,7 +9,7 @@ class MessageSubscription extends MomentumService {
     _streamSubscription = Get.find<GraphqlService>()
         .subscribe(SubscriptionOptions(document: gql('''subscription {
           newMessage (
-            ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')))
         .listen((event) {
@@ -17,8 +17,8 @@ class MessageSubscription extends MomentumService {
         _controller.addError(event.exception!.graphqlErrors.first.message);
       }
       if (event.data != null) {
-        _controller
-            .add(Mapper.fromJson(event.data!['newMessage']).toObject<Message>());
+        _controller.add(
+            Mapper.fromJson(event.data!['newMessage']).toObject<Message>());
       }
     });
   }
@@ -40,7 +40,7 @@ extension GraphqlSupscription on GraphqlService {
     _streamSubscription = subscribe(
       SubscriptionOptions(document: gql('''subscription {
           newMessage (
-            ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')),
     ).listen(
@@ -69,7 +69,7 @@ extension GraphqlSupscription on GraphqlService {
     _streamSubscription = subscribe(
       SubscriptionOptions(document: gql('''subscription {
           messageChange (
-            ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'senderId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')),
     ).listen(
@@ -78,8 +78,8 @@ extension GraphqlSupscription on GraphqlService {
           controller.addError(event.exception!.graphqlErrors.first.message);
         }
         if (event.data != null) {
-          controller.add(
-              Mapper.fromJson(event.data!['messageChange']).toObject<Message>());
+          controller.add(Mapper.fromJson(event.data!['messageChange'])
+              .toObject<Message>());
         }
       },
     );
@@ -153,7 +153,7 @@ extension GraphqlSupscription on GraphqlService {
     _streamSubscription = subscribe(
       SubscriptionOptions(document: gql('''subscription {
           call(
-            ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'}
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'}
           ) ${Message.graphqlQuery(includeConversation: false)}
         }''')),
     ).listen(

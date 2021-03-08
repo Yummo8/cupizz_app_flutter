@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    if (AppConfig.instance!.isDev) {
+    if (AppConfig.instance.isDev) {
       email.text = 'test12@gmail.com';
       password.text = '123456789';
     } else {
@@ -164,9 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               validator: Validator.email,
                             ),
                           ),
-                          SizedBox(
-                            height: 22,
-                          ),
+                          const SizedBox(height: 22),
                           Container(
                             child: TextFieldWidget(
                               hintText: Strings.common.password,

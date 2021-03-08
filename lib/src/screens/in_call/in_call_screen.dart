@@ -59,13 +59,13 @@ class _InCallScreenState extends State<InCallScreen> {
         _infoStrings.add('Agora Engine is not starting');
       });
       return;
-    } else if (!callMessage.agoraToken!.isExistAndNotEmpty) {
+    } else if (!callMessage.agoraToken.isExistAndNotEmpty) {
       setState(() {
         _infoStrings.add('Call message is missing token');
         _infoStrings.add('Agora Engine is not starting');
       });
       return;
-    } else if (!callMessage.roomId!.isExistAndNotEmpty) {
+    } else if (!callMessage.roomId.isExistAndNotEmpty) {
       setState(() {
         _infoStrings.add('Call message is missing room id');
         _infoStrings.add('Agora Engine is not starting');
@@ -330,7 +330,7 @@ class _InCallScreenState extends State<InCallScreen> {
         child: Stack(
           children: <Widget>[
             Container(child: _viewRows(_getRenderViews())),
-            if (AppConfig.instance!.isDev) _panel(),
+            if (AppConfig.instance.isDev) _panel(),
             _toolbar(),
           ],
         ),

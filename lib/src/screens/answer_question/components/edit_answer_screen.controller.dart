@@ -18,7 +18,7 @@ class EditAnswerScreenController
       model!.update(colors: colors);
     } catch (e) {
       debugPrint(e.toString());
-      if (!model!.colors!.isExistAndNotEmpty) {
+      if (!model!.colors.isExistAndNotEmpty) {
         model!.update(colors: [ColorOfAnswer.defaultColor]);
       }
     }

@@ -36,7 +36,7 @@ class _ErrorIndicatorState extends State<ErrorIndicator> {
                   .copyWith(color: context.colorScheme.error),
             ),
           ),
-          isShowingDetail && widget.moreErrorDetail!.isExistAndNotEmpty
+          isShowingDetail && widget.moreErrorDetail.isExistAndNotEmpty
               ? Text(
                   widget.moreErrorDetail!,
                   style: context.textTheme.overline!

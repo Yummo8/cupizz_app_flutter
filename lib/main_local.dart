@@ -1,12 +1,11 @@
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'src/app.dart';
 import 'src/base/base.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+  await initHiveForFlutter();
   var configuredApp = AppConfig(
     appName: 'Cubiz Development',
     flavorName: AppFlavor.DEVELOPMENT,
@@ -16,5 +15,6 @@ void main() async {
   );
 
   objectMapping();
+  await initServices();
   runApp(configuredApp);
 }

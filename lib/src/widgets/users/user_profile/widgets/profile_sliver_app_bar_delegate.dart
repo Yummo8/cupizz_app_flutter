@@ -85,8 +85,8 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                       ViewImageMenuItem(context, [user!.cover]),
                       if (!model.isUpdatingAvatar && isCurrentUser)
                         ...getPickImagesMenuItem(context, (images) {
-                          if (images!.isExistAndNotEmpty) {
-                            model.controller.updateCover(images[0]);
+                          if (images.isExistAndNotEmpty) {
+                            model.controller.updateCover(images![0]);
                           }
                         },
                             maxSelected: 1,
@@ -150,10 +150,10 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                         ...getPickImagesMenuItem(
                           context,
                           (images) {
-                            if (images!.isExistAndNotEmpty) {
+                            if (images.isExistAndNotEmpty) {
                               Momentum.controller<CurrentUserController>(
                                       context)
-                                  .updateAvatar(images[0]);
+                                  .updateAvatar(images![0]);
                             }
                           },
                           maxSelected: 1,

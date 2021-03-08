@@ -82,9 +82,9 @@ class ComposeBottomIconWidget extends StatelessWidget {
 
   void _pickImage(BuildContext context) {
     pickImage(context, (images) {
-      if (!images!.isExistAndNotEmpty) return;
+      if (!images.isExistAndNotEmpty) return;
 
-      onImageIconSelected?.call(images[0]);
+      onImageIconSelected?.call(images![0]);
     }, maxSelected: 1);
   }
 

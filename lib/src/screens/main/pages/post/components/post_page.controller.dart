@@ -17,7 +17,7 @@ class PostPageController extends MomentumController<PostPageModel> {
 
   @override
   Future bootstrapAsync() async {
-    await _loading(_reload, enableLoading: !model!.posts!.isExistAndNotEmpty);
+    await _loading(_reload, enableLoading: !model!.posts.isExistAndNotEmpty);
   }
 
   Future refresh() => _reload();

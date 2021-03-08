@@ -110,7 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                           ),
                         ),
                       ),
-                      if (bio!.isExistAndNotEmpty)
+                      if (bio.isExistAndNotEmpty)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

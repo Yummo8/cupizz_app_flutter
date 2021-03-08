@@ -207,7 +207,7 @@ extension GraphqlMutation on GraphqlService {
         document: gql(
             '''mutation sendMessage(\$attachments: [Upload], \$message: String) {
           sendMessage(
-            ${key.conversationId!.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'} 
+            ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'receiverId: "${key.targetUserId}"'} 
             message: \$message
             attachments: \$attachments
           ) {

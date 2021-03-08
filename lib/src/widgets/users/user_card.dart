@@ -103,7 +103,7 @@ class UserCard extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          if (simpleUser.introduction!.isExistAndNotEmpty)
+                          if (simpleUser.introduction.isExistAndNotEmpty)
                             Text(
                               simpleUser.introduction!,
                               maxLines: 2,

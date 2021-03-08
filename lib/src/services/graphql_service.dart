@@ -3,18 +3,16 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphqlService extends GetxService {
-  GraphQLClient? _client;
-  GraphQLClient? get client => _client;
+  late GraphQLClient _client;
+  GraphQLClient get client => _client;
   WebSocketLink? _socketLink;
   final String apiUrl;
   final String wss;
 
-  GraphqlService({required this.apiUrl, required this.wss}) {
-    reset();
-  }
+  GraphqlService({required this.apiUrl, required this.wss});
 
-  void reset() {
-    _socketLink?.dispose();
+  Future<GraphqlService> reset() async {
+    await _socketLink?.dispose();
 
     final httpLink = HttpLink(apiUrl);
 
@@ -40,14 +38,15 @@ class GraphqlService extends GetxService {
       cache: GraphQLCache(store: HiveStore()),
       link: link,
     );
+    return this;
   }
 
   Future<QueryResult> query(QueryOptions options) =>
-      _processQueryResult(_client!.query(options));
+      _processQueryResult(_client.query(options));
   Future<QueryResult> mutate(MutationOptions options) =>
-      _processQueryResult(_client!.mutate(options));
+      _processQueryResult(_client.mutate(options));
   Stream<QueryResult> subscribe(SubscriptionOptions operation) =>
-      _processFetchResult(_client!.subscribe(operation));
+      _processFetchResult(_client.subscribe(operation));
 
   Future<QueryResult> _processQueryResult(Future<QueryResult> future) async {
     final result = await future;

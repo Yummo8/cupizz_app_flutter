@@ -133,7 +133,7 @@ class ListCategories extends StatelessWidget {
           builder: (context, snapshot) {
             final systemModel = snapshot<SystemModel>()!;
             final model = snapshot<PostPageModel>()!;
-            if (!systemModel.postCategories!.isExistAndNotEmpty) {
+            if (!systemModel.postCategories.isExistAndNotEmpty) {
               systemModel.controller.getPostCategories();
             }
             return SingleChildScrollView(

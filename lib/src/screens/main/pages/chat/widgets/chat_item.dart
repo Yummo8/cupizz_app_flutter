@@ -70,7 +70,7 @@ class _ChatItemState extends State<ChatItem> {
                                     (widget.conversation?.newestMessage !=
                                                 null &&
                                             widget.conversation!.newestMessage!
-                                                .attachments!.isExistAndNotEmpty
+                                                .attachments.isExistAndNotEmpty
                                         ? '[${Strings.common.image}]'
                                         : 'Loading last message'),
                                 maxLines: 1,
@@ -85,8 +85,8 @@ class _ChatItemState extends State<ChatItem> {
                             Text(
                               ' ‧ ' +
                                   (widget.conversation?.newestMessage != null
-                                      ? TimeAgo.format(widget
-                                          .conversation!.newestMessage!.createdAt!)
+                                      ? TimeAgo.format(widget.conversation!
+                                          .newestMessage!.createdAt!)
                                       : 'Loading time'),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

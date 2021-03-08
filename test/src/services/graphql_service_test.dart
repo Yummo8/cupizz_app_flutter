@@ -21,7 +21,7 @@ void main() async {
       email: loginEmail, password: loginPassword))['token'];
 
   await storage.saveToken(token);
-  graphql.reset();
+  await graphql.reset();
   final currentUserJson = await graphql.meQuery();
   final currentUser = Mapper.fromJson(currentUserJson).toObject<User>();
 

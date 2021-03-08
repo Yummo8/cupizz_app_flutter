@@ -66,7 +66,7 @@ List<MenuItem> getPickImagesMenuItem(
           isCropImage: isCropImage,
           cropAspectRatio: cropAspectRatio,
         ).then((assets) async {
-          if (assets!.isExistAndNotEmpty) {
+          if (assets.isExistAndNotEmpty) {
             onPickedImage(assets);
           }
         }).whenComplete(() => Navigator.pop(context)),

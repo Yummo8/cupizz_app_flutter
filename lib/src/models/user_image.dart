@@ -11,7 +11,7 @@ class UserImage extends BaseModel {
 
   List<Color>? get gradient => _answer?.gradient ?? _answer?.question?.gradient;
 
-  Color? get color => gradient!.isExistAndNotEmpty
+  Color? get color => gradient.isExistAndNotEmpty
       ? null
       : _answer != null
           ? _answer!.color ??

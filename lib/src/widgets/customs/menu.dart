@@ -12,7 +12,7 @@ class Menu {
       context: context,
       builder: (context) {
         return CupertinoActionSheet(
-          title: title!.isExistAndNotEmpty
+          title: title.isExistAndNotEmpty
               ? Text(title!,
                   style: context.textTheme.headline6!.copyWith(
                       fontWeight: FontWeight.bold,

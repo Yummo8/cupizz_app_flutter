@@ -11,7 +11,7 @@ class RecommendableUsersController
 
   @override
   Future<void> bootstrapAsync() =>
-      model!.users!.isExistAndNotEmpty ? _reload() : fetchRecommendableUsers();
+      model!.users.isExistAndNotEmpty ? _reload() : fetchRecommendableUsers();
 
   Future<void> fetchRecommendableUsers() async {
     try {
