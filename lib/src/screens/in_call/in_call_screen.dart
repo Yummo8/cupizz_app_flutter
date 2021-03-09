@@ -83,7 +83,8 @@ class _InCallScreenState extends State<InCallScreen> {
   }
 
   Future<void> _initAgoraRtcEngine(String appId) async {
-    _engine = await RtcEngine.create(appId);
+    _engine = await RtcEngine.createWithConfig(
+        RtcEngineConfig(appId, areaCode: AreaCode.AS));
     await _engine!.enableVideo();
     await _engine!.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine!.setClientRole(ClientRole.Broadcaster);

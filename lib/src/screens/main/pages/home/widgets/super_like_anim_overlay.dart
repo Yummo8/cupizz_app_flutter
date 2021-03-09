@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 enum SuperLikeAniProps { opacity, scale }

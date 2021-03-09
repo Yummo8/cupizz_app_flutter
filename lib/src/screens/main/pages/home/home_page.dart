@@ -9,18 +9,15 @@ import 'package:cupizz_app/src/widgets/buttons/like_controls.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter/physics.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'widgets/super_like_anim_overlay.dart';
-
-import '../../../../assets.dart';
 import '../../../../base/base.dart';
 import '../../../../packages/wave/config.dart';
 import '../../../../packages/wave/wave.dart';
 import '../../../../widgets/index.dart';
+import 'widgets/super_like_anim_overlay.dart';
 
 part 'widgets/animated_background.dart';
 part 'widgets/c_card.dart';
