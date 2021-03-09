@@ -10,7 +10,7 @@ class UserService extends GetxService {
     return user;
   }
 
-  Future<int> remainingSuperLikeQuery() async {
+  Future<int?> remainingSuperLikeQuery() async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.remainingSuperLikeQuery();
     return data;
@@ -25,7 +25,7 @@ class UserService extends GetxService {
     return users;
   }
 
-  Future<FriendType> addFriend(String userId,
+  Future<FriendType> addFriend(String? userId,
       {bool isSuperLike = false}) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.addFriendMutation(
@@ -36,35 +36,35 @@ class UserService extends GetxService {
     return result;
   }
 
-  Future<void> removeFriend(String userId) async {
+  Future<void> removeFriend(String? userId) async {
     final graphql = Get.find<GraphqlService>();
     await graphql.removeFriendMutation(id: userId);
   }
 
-  Future<void> readFriendRequest(String userId) async {
+  Future<void> readFriendRequest(String? userId) async {
     final graphql = Get.find<GraphqlService>();
     await graphql.readFriendRequestMutation(userId);
   }
 
   Future<User> updateProfile({
-    String nickName,
-    String introduction,
-    Gender gender,
-    List<Hobby> hobbies,
-    String phoneNumber,
-    String job,
-    int height,
-    File avatar,
-    File cover,
-    DateTime birthday,
-    double latitude,
-    double longitude,
-    EducationLevel educationLevel,
-    UsualType smoking,
-    UsualType drinking,
-    HaveKids yourKids,
-    List<LookingFor> lookingFors,
-    Religious religious,
+    String? nickName,
+    String? introduction,
+    Gender? gender,
+    List<Hobby>? hobbies,
+    String? phoneNumber,
+    String? job,
+    int? height,
+    File? avatar,
+    File? cover,
+    DateTime? birthday,
+    double? latitude,
+    double? longitude,
+    EducationLevel? educationLevel,
+    UsualType? smoking,
+    UsualType? drinking,
+    HaveKids? yourKids,
+    List<LookingFor>? lookingFors,
+    Religious? religious,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.updateProfile(
@@ -92,20 +92,20 @@ class UserService extends GetxService {
   }
 
   Future<User> updateSetting({
-    int minAgePrefer,
-    int maxAgePrefer,
-    int minHeightPrefer,
-    int maxHeightPrefer,
-    List<Gender> genderPrefer,
-    int distancePrefer,
-    List<String> mustHaveFields,
-    List<EducationLevel> educationLevelsPrefer,
-    HaveKids theirKids,
-    List<Religious> religiousPrefer,
-    bool allowMatching,
-    bool isPrivate,
-    bool showActive,
-    List<NotificationType> pushNotiSetting,
+    int? minAgePrefer,
+    int? maxAgePrefer,
+    int? minHeightPrefer,
+    int? maxHeightPrefer,
+    List<Gender>? genderPrefer,
+    int? distancePrefer,
+    List<String>? mustHaveFields,
+    List<EducationLevel>? educationLevelsPrefer,
+    HaveKids? theirKids,
+    List<Religious>? religiousPrefer,
+    bool? allowMatching,
+    bool? isPrivate,
+    bool? showActive,
+    List<NotificationType>? pushNotiSetting,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.updateMySetting(
@@ -129,9 +129,9 @@ class UserService extends GetxService {
   }
 
   Future<List<FriendData>> getFriends({
-    FriendQueryType type,
-    FriendQueryOrderBy orderBy,
-    int page,
+    required FriendQueryType type,
+    required FriendQueryOrderBy orderBy,
+    int? page,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.friendsQuery(type, orderBy, page);
@@ -145,7 +145,7 @@ class UserService extends GetxService {
     FriendQueryType type = FriendQueryType.all,
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
-    bool isSuperLike,
+    bool? isSuperLike,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.friendsV2Query(type, orderBy, page, isSuperLike);
@@ -153,7 +153,7 @@ class UserService extends GetxService {
     return result;
   }
 
-  Future<SimpleUser> getUser({String id}) async {
+  Future<SimpleUser> getUser({String? id}) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.userQuery(id);
     final result = Mapper.fromJson(data).toObject<SimpleUser>();
@@ -167,18 +167,18 @@ class UserService extends GetxService {
     return result;
   }
 
-  Future removeUserImage(String imageId) async {
+  Future removeUserImage(String? imageId) async {
     final graphql = Get.find<GraphqlService>();
     await graphql.removeUserImage(imageId);
   }
 
   Future<UserImage> answerQuestion(
-    String questionId,
-    String content, {
-    String color,
-    String textColor,
-    List<String> gradient,
-    File backgroundImage,
+    String? questionId,
+    String? content, {
+    String? color,
+    String? textColor,
+    List<String>? gradient,
+    File? backgroundImage,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.answerQuestion(
@@ -194,12 +194,12 @@ class UserService extends GetxService {
   }
 
   Future<UserImage> editAnswer(
-    String answerId, {
-    String content,
-    Color color,
-    Color textColor,
-    List<Color> gradient,
-    File backgroundImage,
+    String? answerId, {
+    String? content,
+    Color? color,
+    Color? textColor,
+    List<Color>? gradient,
+    File? backgroundImage,
   }) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.editAnswer(
@@ -222,14 +222,14 @@ class UserService extends GetxService {
     return result;
   }
 
-  Future<String> forgotPassword(String email) async {
+  Future<String?> forgotPassword(String email) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.forgotPassword(email);
     return data;
   }
 
   Future<ForgotPassOutput> validateForgotPasswordToken(
-      String token, String otp) async {
+      String? token, String otp) async {
     final graphql = Get.find<GraphqlService>();
     final data = await graphql.validateForgotPasswordToken(token, otp);
     final result = Mapper.fromJson(data).toObject<ForgotPassOutput>();
@@ -237,7 +237,7 @@ class UserService extends GetxService {
   }
 
   Future changePasswordByForgotPasswordToken(
-      String token, String newPassword) async {
+      String? token, String newPassword) async {
     final graphql = Get.find<GraphqlService>();
     await graphql.changePasswordByForgotPasswordToken(token, newPassword);
   }

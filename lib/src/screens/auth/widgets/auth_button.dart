@@ -1,10 +1,10 @@
 part of '../index.dart';
 
 class AuthButton extends StatelessWidget {
-  final Future Function() onPressed;
+  final Future Function()? onPressed;
   final String text;
 
-  const AuthButton({Key key, this.onPressed, @required this.text})
+  const AuthButton({Key? key, this.onPressed, required this.text})
       : super(key: key);
 
   @override
@@ -60,13 +60,6 @@ class AuthButton extends StatelessWidget {
                 borderRadius: 22.0,
                 roundLoadingShape: false,
                 color: Colors.transparent,
-                child: Text(
-                  text,
-                  style: TextStyle(
-                      color: context.colorScheme.primary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
-                ),
                 loader: Center(
                   child: LoadingIndicator(
                     color: context.colorScheme.primaryVariant,
@@ -76,11 +69,18 @@ class AuthButton extends StatelessWidget {
                 onTap: (startLoading, stopLoading, btnState) async {
                   startLoading();
                   try {
-                    if (onPressed != null) await onPressed();
+                    if (onPressed != null) await onPressed!();
                   } finally {
                     stopLoading();
                   }
                 },
+                child: Text(
+                  text,
+                  style: TextStyle(
+                      color: context.colorScheme.primary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ),

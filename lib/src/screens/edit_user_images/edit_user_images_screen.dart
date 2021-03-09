@@ -2,7 +2,7 @@ import '../../base/base.dart';
 import '../answer_question/edit_answer_screen.dart';
 
 class EditUserImagesScreenParams extends RouterParam {
-  final UserImage focusItem;
+  final UserImage? focusItem;
 
   EditUserImagesScreenParams(this.focusItem);
 }
@@ -16,7 +16,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
     with KeepScrollOffsetMixin {
   static double lastScrollOffset = 0;
   final focusItemKey = GlobalKey();
-  UserImage forcusItem;
+  UserImage? forcusItem;
 
   @override
   double get lastOffset => lastScrollOffset;
@@ -26,19 +26,19 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
     lastScrollOffset = value;
   }
 
-  bool isEdit;
+  bool? isEdit;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final EditUserImagesScreenParams params = Get.arguments;
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      final EditUserImagesScreenParams? params = Get.arguments;
       if (params?.focusItem != null) {
         setState(() {
-          forcusItem = params.focusItem;
+          forcusItem = params!.focusItem;
         });
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          Scrollable.ensureVisible(focusItemKey.currentContext,
+        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+          Scrollable.ensureVisible(focusItemKey.currentContext!,
               duration: Duration(milliseconds: 500));
         });
       }
@@ -52,14 +52,14 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
     return MomentumBuilder(
         controllers: [CurrentUserController],
         builder: (context, snapshot) {
-          final model = snapshot<CurrentUserModel>();
+          final model = snapshot<CurrentUserModel>()!;
 
           return PrimaryScaffold(
             isLoading: model.isDeletingImage,
             appBar: BackAppBar(
               title: 'Ảnh',
               actions: model.newOrderList.isExistAndNotEmpty &&
-                      model.newOrderList != model.currentUser.userImages
+                      model.newOrderList != model.currentUser!.userImages
                   ? [
                       SaveButtonAsync(
                         onPressed: () async {
@@ -87,7 +87,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       children: (model.newOrderList.isExistAndNotEmpty
                               ? model.newOrderList
-                              : model.currentUser.userImages)
+                              : model.currentUser!.userImages)!
                           .map((e) => _buildListTile(context, e))
                           .toList(),
                     ),
@@ -101,7 +101,7 @@ class _EditUserImagesScreenState extends State<EditUserImagesScreen>
 
   Widget _buildListTile(BuildContext context, UserImage userImage) {
     return IntrinsicHeight(
-      key: forcusItem?.id == userImage.id ? focusItemKey : Key(userImage.id),
+      key: forcusItem?.id == userImage.id ? focusItemKey : Key(userImage.id!),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

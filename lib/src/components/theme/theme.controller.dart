@@ -4,13 +4,13 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:flutter/services.dart';
 
 class ThemeController extends MomentumController<ThemeModel> {
-  StorageService _storage;
+  late StorageService _storage;
 
   @override
   ThemeModel init() {
     _storage = Get.find<StorageService>();
     _storage.getTheme.then((value) {
-      model.update(activeTheme: value ?? 0);
+      model!.update(activeTheme: value);
     });
     return ThemeModel(
       this,
@@ -24,7 +24,7 @@ class ThemeController extends MomentumController<ThemeModel> {
 
   void _selectTheme(int index) {
     _storage.saveTheme(index);
-    model.update(activeTheme: index);
+    model!.update(activeTheme: index);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarBrightness: themes[index].brightness,
@@ -36,7 +36,7 @@ class ThemeController extends MomentumController<ThemeModel> {
     );
   }
 
-  ThemeData get selectedTheme => themes[model.activeTheme];
+  ThemeData get selectedTheme => themes[model!.activeTheme!];
 
   List<ThemeData> get themes {
     return [

@@ -6,7 +6,7 @@ import 'package:vibration/vibration.dart';
 import 'call.model.dart';
 
 class CallController extends MomentumController<CallModel> {
-  StreamSubscription callSubscription;
+  StreamSubscription? callSubscription;
 
   @override
   CallModel init() {
@@ -15,7 +15,7 @@ class CallController extends MomentumController<CallModel> {
     );
   }
 
-  void call({Conversation conversation, ChatUser user}) {
+  void call({Conversation? conversation, ChatUser? user}) {
     assert(conversation != null || user != null);
     callSubscription = Get.find<MessageService>()
         .call(
@@ -25,15 +25,15 @@ class CallController extends MomentumController<CallModel> {
       ),
     )
         .listen((callMessage) {
-      model.update(currentCall: callMessage);
+      model!.update(currentCall: callMessage);
 
       if (callMessage.callStatus == CallStatus.missing ||
           callMessage.callStatus == CallStatus.rejected) {
-        callSubscription.cancel();
+        callSubscription!.cancel();
       } else if (callMessage.callStatus == CallStatus.ringing) {
         Get.toNamed(Routes.incomingCall,
             arguments: InComingCallScreenArgs(
-              avatar: conversation?.images?.first?.url ?? user?.avatar?.url,
+              avatar: conversation?.images?.getAt(0)?.url ?? user?.avatar?.url,
               name: conversation?.name ?? user?.nickName,
             ));
       } else if (callMessage.callStatus == CallStatus.inCall) {
@@ -44,31 +44,32 @@ class CallController extends MomentumController<CallModel> {
     });
   }
 
-  Future onNewIncomingCall(Message call) async {
-    if (model.currentIncomingCall != null) return;
+  Future onNewIncomingCall(Message? call) async {
+    if (model!.currentIncomingCall != null) return;
 
-    model.update(currentIncomingCall: call);
+    model!.update(currentIncomingCall: call);
     unawaited(Get.toNamed(Routes.incomingCall));
     unawaited(Vibration.vibrate(duration: 15000));
   }
 
-  void onNewMissingCall(Message call) {
-    if (model.currentIncomingCall?.id != call?.id &&
-        model.currentCall?.id != call?.id) return;
+  void onNewMissingCall(Message? call) {
+    if (model!.currentIncomingCall?.id != call?.id &&
+        model!.currentCall?.id != call?.id) return;
     endCall();
   }
 
   Future acceptIncomingCall() async {
-    if (model.currentIncomingCall != null) {
-      await Get.find<MessageService>().acceptCall(model.currentIncomingCall.id);
+    if (model!.currentIncomingCall != null) {
+      await Get.find<MessageService>()
+          .acceptCall(model!.currentIncomingCall!.id);
     }
-    model.update(currentCall: model.currentIncomingCall);
-    model.removeCurrentIncomingCall();
+    model!.update(currentCall: model!.currentIncomingCall);
+    model!.removeCurrentIncomingCall();
     unawaited(Get.offNamed(Routes.inCall));
   }
 
   void endCall() {
-    final call = model.currentIncomingCall ?? model.currentCall;
+    final call = model!.currentIncomingCall ?? model!.currentCall;
     if (call != null) {
       Get.find<MessageService>().endCall(call.id);
     }
@@ -82,7 +83,7 @@ class CallController extends MomentumController<CallModel> {
     }
     callSubscription?.cancel();
     Vibration.cancel();
-    model.removeCurrentCall();
-    model.removeCurrentIncomingCall();
+    model!.removeCurrentCall();
+    model!.removeCurrentIncomingCall();
   }
 }

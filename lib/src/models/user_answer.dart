@@ -1,22 +1,22 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class UserAnswer extends BaseModel {
-  String _content;
-  Color _color;
-  Color _textColor;
-  List<Color> _gradient;
-  Question _question;
+  String? _content;
+  Color? _color;
+  Color? _textColor;
+  List<Color>? _gradient;
+  Question? _question;
 
-  String get content => _content;
-  Color get color => _color;
-  Color get textColor => _textColor;
-  List<Color> get gradient => _gradient;
-  Question get question => _question;
+  String? get content => _content;
+  Color? get color => _color;
+  Color? get textColor => _textColor;
+  List<Color>? get gradient => _gradient;
+  Question? get question => _question;
 
   ColorOfAnswer get colors => ColorOfAnswer(
-        color: _color ?? _question.color,
-        textColor: _textColor ?? _question.textColor,
-        gradient: _gradient ?? _question.gradient,
+        color: _color ?? _question!.color,
+        textColor: _textColor ?? _question!.textColor,
+        gradient: _gradient ?? _question!.gradient,
       );
 
   @override

@@ -17,29 +17,29 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
 
   final FriendQueryType filter;
   final FriendQueryOrderBy sort;
-  final bool isMultiColumn;
+  final bool? isMultiColumn;
   final List<FriendData> friends;
-  final double scrollOffset;
-  final int currentPage;
-  final bool isLastPage;
+  final double? scrollOffset;
+  final int? currentPage;
+  final bool? isLastPage;
 
-  final AnimationController animationController;
+  final AnimationController? animationController;
   final bool isLoading;
   final bool isLoadingMore;
 
   @override
   void update({
-    List<FriendData> friends,
-    double scrollOffset,
-    FriendQueryType filter,
-    FriendQueryOrderBy sort,
-    bool isMultiColumn,
-    int currentPage,
-    bool isLastPage,
-    bool isLoading,
-    bool isLoadingMore,
-    int pageSize,
-    AnimationController animationController,
+    List<FriendData>? friends,
+    double? scrollOffset,
+    FriendQueryType? filter,
+    FriendQueryOrderBy? sort,
+    bool? isMultiColumn,
+    int? currentPage,
+    bool? isLastPage,
+    bool? isLoading,
+    bool? isLoadingMore,
+    int? pageSize,
+    AnimationController? animationController,
   }) {
     FriendPageModel(
       controller,
@@ -57,10 +57,10 @@ class FriendPageModel extends MomentumModel<FriendPageController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return FriendPageModel(
       controller,
-      friends: ((json['friends'] ?? []) as List)
+      friends: ((json!['friends'] ?? []) as List)
           .map((e) => Mapper.fromJson(e).toObject<FriendData>())
           .toList(),
       scrollOffset: json['scrollOffset'],

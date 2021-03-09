@@ -3,21 +3,21 @@ import 'dart:ui';
 import 'package:cupizz_app/src/base/base.dart';
 
 class InComingCallScreenArgs {
-  final String avatar;
-  final String name;
+  final String? avatar;
+  final String? name;
 
-  InComingCallScreenArgs({@required this.avatar, @required this.name});
+  InComingCallScreenArgs({required this.avatar, required this.name});
 }
 
 class InComingCallScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final args = Get.arguments as InComingCallScreenArgs;
+    final args = Get.arguments as InComingCallScreenArgs?;
     return PrimaryScaffold(
       body: MomentumBuilder(
           controllers: [CallController],
           builder: (context, snapshot) {
-            final model = snapshot<CallModel>();
+            final model = snapshot<CallModel>()!;
             final avatar =
                 args?.avatar ?? model.currentIncomingCall?.sender?.avatar?.url;
             final name =
@@ -66,7 +66,7 @@ class InComingCallScreen extends StatelessWidget {
                                 Expanded(child: const SizedBox.shrink()),
                                 CircleCallButton(
                                   onPressed: () async {
-                                    if (model.currentIncomingCall.roomId !=
+                                    if (model.currentIncomingCall!.roomId !=
                                         null) {
                                       await model.controller
                                           .acceptIncomingCall();
@@ -93,16 +93,16 @@ class InComingCallScreen extends StatelessWidget {
 
 class CircleCallButton extends StatefulWidget {
   const CircleCallButton({
-    Key key,
+    Key? key,
     this.onPressed,
     this.backgroundColor,
     this.icon,
     this.title,
   }) : super(key: key);
-  final VoidCallback onPressed;
-  final Color backgroundColor;
-  final IconData icon;
-  final String title;
+  final VoidCallback? onPressed;
+  final Color? backgroundColor;
+  final IconData? icon;
+  final String? title;
 
   @override
   _CircleCallButtonState createState() => _CircleCallButtonState();
@@ -128,7 +128,7 @@ class _CircleCallButtonState extends State<CircleCallButton> {
           ),
         ),
         if (widget.title != null)
-          Text(widget.title, style: const TextStyle(color: Colors.white))
+          Text(widget.title!, style: const TextStyle(color: Colors.white))
       ],
     );
   }

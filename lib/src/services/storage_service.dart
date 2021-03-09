@@ -1,5 +1,5 @@
 import 'package:cupizz_app/src/base/base.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 const _THEME_KEY = 'cupizz_theme';
 const _TOKEN_KEY = 'token';
@@ -8,155 +8,76 @@ const _EMAIL_KEY = 'email';
 
 class StorageService extends GetxService {
   final bool isTesting;
+  final Map<String, dynamic> _data = {};
+  late final Box _box;
+
   StorageService({this.isTesting = false});
 
-  Future<SharedPreferences> get storage =>
-      isTesting ? _TestingStorage() : SharedPreferences.getInstance();
+  Future<StorageService> init() async {
+    _box = await Hive.openBox('StorageService');
+    return this;
+  }
+
+  Future set<T>(String key, T value) async {
+    if (isTesting) {
+      _data.addAll({key: value});
+    } else {
+      await _box.put(key, value);
+    }
+  }
+
+  Future<T?> get<T>(String key) async {
+    if (isTesting) {
+      return _data[key];
+    } else {
+      return await _box.get(key);
+    }
+  }
+
+  Future delete(String key) async {
+    if (isTesting) {
+      _data.remove(key);
+    } else {
+      await _box.delete(key);
+    }
+  }
 }
 
 extension LoginEmailStorage on StorageService {
-  Future<void> saveLoginEmail(String email) async {
-    await (await storage).setString(_EMAIL_KEY, email);
-  }
-
-  Future<void> deleteLoginEmail() async {
-    await (await storage).remove(_EMAIL_KEY);
-  }
-
-  Future<String> get getLoginEmail async =>
-      await (await storage).getString(_EMAIL_KEY);
+  Future<void> saveLoginEmail(String email) => set(_EMAIL_KEY, email);
+  Future<void> deleteLoginEmail() => delete(_EMAIL_KEY);
+  Future<String?> get getLoginEmail async => get<String>(_EMAIL_KEY);
 }
 
 extension UserIdStorage on StorageService {
   Future<void> saveUserId(String token) async {
-    await (await storage).setString(_USER_ID_KEY, token);
-    Get.find<GraphqlService>().reset();
+    await set(_USER_ID_KEY, token);
+    await Get.find<GraphqlService>().reset();
   }
 
   Future<void> deleteUserId() async {
-    await (await storage).remove(_USER_ID_KEY);
-    Get.find<GraphqlService>().reset();
+    await delete(_USER_ID_KEY);
+    await Get.find<GraphqlService>().reset();
   }
 
-  Future<String> get getUserId async =>
-      await (await storage).getString(_USER_ID_KEY);
+  Future<String?> get getUserId async => get(_USER_ID_KEY);
 }
 
 extension TokenStorage on StorageService {
   Future<void> saveToken(String token) async {
-    await (await storage).setString(_TOKEN_KEY, token);
-    Get.find<GraphqlService>().reset();
+    await set(_TOKEN_KEY, token);
+    await Get.find<GraphqlService>().reset();
   }
 
   Future<void> deleteToken() async {
-    await (await storage).remove(_TOKEN_KEY);
-    Get.find<GraphqlService>().reset();
+    await delete(_TOKEN_KEY);
+    await Get.find<GraphqlService>().reset();
   }
 
-  Future<String> get getToken async =>
-      await (await storage).getString(_TOKEN_KEY);
+  Future<String?> get getToken async => get(_TOKEN_KEY);
 }
 
 extension ThemeStorage on StorageService {
-  Future<void> saveTheme(int index) async =>
-      await (await storage).setString(_THEME_KEY, index.toString());
-
-  Future<int> get getTheme async =>
-      int.tryParse(await (await storage).getString(_THEME_KEY) ?? '') ?? 0;
-}
-
-class _TestingStorage implements SharedPreferences {
-  final Map<String, dynamic> _data = {};
-
-  @override
-  Future<bool> clear() async {
-    _data.removeWhere((key, value) => true);
-    return true;
-  }
-
-  @override
-  Future<bool> commit() async {
-    return true;
-  }
-
-  @override
-  dynamic get(String key) {
-    return _data[key];
-  }
-
-  @override
-  bool getBool(String key) {
-    return _data[key] as bool;
-  }
-
-  @override
-  double getDouble(String key) {
-    return double.tryParse(_data[key]);
-  }
-
-  @override
-  int getInt(String key) {
-    return int.tryParse(_data[key]);
-  }
-
-  @override
-  Set<String> getKeys() {
-    return _data.keys.toSet();
-  }
-
-  @override
-  String getString(String key) {
-    return _data[key].toString();
-  }
-
-  @override
-  List<String> getStringList(String key) {
-    return (_data[key] as List ?? []).map((e) => e.toString()).toList();
-  }
-
-  @override
-  Future<void> reload() async {
-    return;
-  }
-
-  @override
-  Future<bool> remove(String key) async {
-    _data.remove(key);
-    return true;
-  }
-
-  @override
-  Future<bool> setBool(String key, bool value) async {
-    _data.addAll({key: value});
-    return true;
-  }
-
-  @override
-  Future<bool> setDouble(String key, double value) async {
-    _data.addAll({key: value});
-    return true;
-  }
-
-  @override
-  Future<bool> setInt(String key, int value) async {
-    _data.addAll({key: value});
-    return true;
-  }
-
-  @override
-  Future<bool> setString(String key, String value) async {
-    _data.addAll({key: value});
-    return true;
-  }
-
-  @override
-  Future<bool> setStringList(String key, List<String> value) async {
-    _data.addAll({key: value});
-    return true;
-  }
-
-  @override
-  bool containsKey(String key) {
-    return _data.containsKey(key);
-  }
+  Future<void> saveTheme(int index) async => set(_THEME_KEY, index.toString());
+  Future<int> get getTheme async => await get<int>(_THEME_KEY) ?? 0;
 }

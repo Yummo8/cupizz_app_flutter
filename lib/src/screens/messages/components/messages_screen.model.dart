@@ -9,18 +9,18 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
     this.isSendingMessage = false,
   }) : super(controller);
 
-  final Conversation conversation;
-  final double scrollOffset;
+  final Conversation? conversation;
+  final double? scrollOffset;
 
   final bool isLoading;
   final bool isSendingMessage;
 
   @override
   void update({
-    Conversation conversation,
-    double scrollOffset,
-    bool isLoading,
-    bool isSendingMessage,
+    Conversation? conversation,
+    double? scrollOffset,
+    bool? isLoading,
+    bool? isSendingMessage,
   }) {
     MessagesScreenModel(
       controller,
@@ -32,10 +32,10 @@ class MessagesScreenModel extends MomentumModel<MessagesScreenController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return MessagesScreenModel(
       controller,
-      conversation: json['conversation'] != null
+      conversation: json!['conversation'] != null
           ? Mapper.fromJson(json['conversation']).toObject<Conversation>()
           : null,
       scrollOffset: json['scrollOffset'],

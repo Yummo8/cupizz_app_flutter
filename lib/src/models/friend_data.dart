@@ -1,26 +1,26 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class FriendData with Mappable {
-  SimpleUser _friend;
-  DateTime _sentAt;
-  DateTime _acceptedAt;
-  DateTime _updatedAt;
-  bool _isSuperLike;
-  bool readSent;
-  bool readAccepted;
+  SimpleUser? _friend;
+  DateTime? _sentAt;
+  DateTime? _acceptedAt;
+  DateTime? _updatedAt;
+  bool? _isSuperLike;
+  bool? readSent;
+  bool? readAccepted;
 
-  SimpleUser get friend => _friend;
-  DateTime get sentAt => _sentAt;
-  DateTime get acceptedAt => _acceptedAt;
-  DateTime get updatedAt => _updatedAt;
-  bool get isSuperLike => _isSuperLike;
+  SimpleUser? get friend => _friend;
+  DateTime? get sentAt => _sentAt;
+  DateTime? get acceptedAt => _acceptedAt;
+  DateTime? get updatedAt => _updatedAt;
+  bool? get isSuperLike => _isSuperLike;
 
   FriendData({
-    SimpleUser friend,
-    DateTime sentAt,
-    DateTime acceptedAt,
-    DateTime updatedAt,
-    bool isSuperLike,
+    SimpleUser? friend,
+    DateTime? sentAt,
+    DateTime? acceptedAt,
+    DateTime? updatedAt,
+    bool? isSuperLike,
     this.readSent,
     this.readAccepted,
   })  : _friend = friend,

@@ -6,7 +6,7 @@ class EditPicturesScreen extends StatefulWidget {
 }
 
 class _EditPicturesScreenState extends State<EditPicturesScreen> {
-  bool isEdit;
+  bool? isEdit;
   final List<String> _list = <String>[];
   List<String> alphabetList = [
     'A',

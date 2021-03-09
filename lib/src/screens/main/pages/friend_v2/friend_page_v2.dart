@@ -30,9 +30,9 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
     lastScrollOffset = value;
   }
 
-  AnimationController animationController;
+  AnimationController? animationController;
   bool multiple = true;
-  Animation<double> topBarAnimation;
+  Animation<double>? topBarAnimation;
 
   double topBarOpacity = 0.0;
 
@@ -42,14 +42,17 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Momentum.controller<FriendPageV2Controller>(context)
-        ..model.update(animationController: animationController);
+          .model!
+          .update(animationController: animationController);
       _pageController.animateToPage(
-          Momentum.controller<FriendPageV2Controller>(context).model.currentTab,
+          Momentum.controller<FriendPageV2Controller>(context)
+              .model!
+              .currentTab!,
           duration: Duration(milliseconds: 10),
           curve: Curves.ease);
-      animationController.fling();
+      animationController!.fling();
     });
   }
 
@@ -60,7 +63,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
 
   @override
   void dispose() {
-    animationController.dispose();
+    animationController!.dispose();
     super.dispose();
   }
 
@@ -69,7 +72,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
     return MomentumBuilder(
         controllers: [FriendPageV2Controller],
         builder: (context, snapshot) {
-          final model = snapshot<FriendPageV2Model>();
+          final model = snapshot<FriendPageV2Model>()!;
           return PrimaryScaffold(
             appBar: BackAppBar(title: 'Yêu thích'),
             body: NestedScrollView(
@@ -103,12 +106,12 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                   model.update(currentTab: i);
                 },
                 children: [
-                  model.allFriends ?? FriendV2TabData(),
-                  model.receivedFriends ?? FriendV2TabData(),
+                  model.allFriends,
+                  model.receivedFriends,
                 ].mapIndexed(
                   (e, i) {
-                    final friendsList = <FriendData>[
-                      ...e.friends ?? [],
+                    final friendsList = <FriendData?>[
+                      ...e.friends,
                       ...!e.isLastPage
                           ? List.generate(
                               e.friends.length % 2 == 0 ? 2 : 3, (_) => null)
@@ -124,7 +127,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                               i == 0
                                   ? 'Những người đã ghép đôi với bạn sẽ xuất hiện ở đây.'
                                   : 'Những người đã siêu thích bạn sẽ xuất hiện ở đây.',
-                              style: context.textTheme.subtitle1.copyWith(
+                              style: context.textTheme.subtitle1!.copyWith(
                                   color: context.colorScheme.onSurface),
                               textAlign: TextAlign.center,
                             ),
@@ -149,6 +152,12 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                         padding: const EdgeInsets.all(12),
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.vertical,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: multiple ? 2 : 1,
+                          mainAxisSpacing: _PADDING,
+                          crossAxisSpacing: _PADDING,
+                          childAspectRatio: 1,
+                        ),
                         children: friendsList
                             .asMap()
                             .map((index, value) {
@@ -156,7 +165,7 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                               final animation =
                                   Tween<double>(begin: 0.0, end: 1.0).animate(
                                 CurvedAnimation(
-                                  parent: animationController,
+                                  parent: animationController!,
                                   curve: Interval((1 / count) * index, 1.0,
                                       curve: Curves.fastOutSlowIn),
                                 ),
@@ -172,12 +181,6 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
                             })
                             .values
                             .toList(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: multiple ? 2 : 1,
-                          mainAxisSpacing: _PADDING,
-                          crossAxisSpacing: _PADDING,
-                          childAspectRatio: 1,
-                        ),
                       ),
                     );
                   },
@@ -191,30 +194,30 @@ class _FriendPageV2State extends MomentumState<FriendPageV2>
 
 class _Item extends StatelessWidget {
   const _Item({
-    Key key,
+    Key? key,
     this.friendData,
     this.animationController,
     this.animation,
   }) : super(key: key);
 
-  final FriendData friendData;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final FriendData? friendData;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
             transform: Matrix4.translationValues(
-                0.0, 50 * (1.0 - animation.value), 0.0),
+                0.0, 50 * (1.0 - animation!.value), 0.0),
             child: UserItem(
               simpleUser: friendData?.friend,
               isHighlight: friendData != null &&
-                  !(friendData.readSent || friendData.readAccepted),
+                  !(friendData!.readSent! || friendData!.readAccepted!),
             ),
           ),
         );
@@ -227,15 +230,15 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final double minHeight;
   final List<bool> selecteds;
-  final Function(int) onChanged;
+  final Function(int)? onChanged;
 
   @override
-  final FloatingHeaderSnapConfiguration snapConfiguration;
+  final FloatingHeaderSnapConfiguration? snapConfiguration;
 
   _SliverAppBarDelegate({
-    @required this.selecteds,
-    @required this.expandedHeight,
-    @required this.minHeight,
+    required this.selecteds,
+    required this.expandedHeight,
+    required this.minHeight,
     this.onChanged,
     this.snapConfiguration,
   });
@@ -276,7 +279,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                     i,
                     Expanded(
                       child: InkWell(
-                        onTap: () => onChanged(i),
+                        onTap: () => onChanged!(i),
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 300),
                           decoration: BoxDecoration(
@@ -291,7 +294,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                           child: MomentumBuilder(
                               controllers: [SystemController],
                               builder: (context, snapshot) {
-                                final model = snapshot<SystemModel>();
+                                final model = snapshot<SystemModel>()!;
                                 final badgeCount = i == 0
                                     ? model.unreadAcceptedFriendCount
                                     : model.unreadReceiveFriendCount;
@@ -314,7 +317,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                                       ),
                                       child: Text(
                                         e,
-                                        style: context.textTheme.bodyText2
+                                        style: context.textTheme.bodyText2!
                                             .copyWith(
                                           fontWeight: FontWeight.bold,
                                           color: selecteds[i]

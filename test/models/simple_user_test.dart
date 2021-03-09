@@ -49,16 +49,16 @@ void main() {
     expect(info.nickName, json['data']['nickName']);
     expect(info.age, json['data']['age']);
     expect(info.introduction, json['data']['introduction']);
-    expect(info.gender.rawValue, json['data']['gender']);
+    expect(info.gender!.rawValue, json['data']['gender']);
     expect(
-        info.hobbies.map((e) => e.toJson()).toList(), json['data']['hobbies']);
+        info.hobbies!.map((e) => e.toJson()).toList(), json['data']['hobbies']);
     expect(info.phoneNumber, json['data']['phoneNumber']);
     expect(info.job, json['data']['job']);
     expect(info.height, json['data']['height']);
-    expect(info.avatar.toJson(), json['data']['avatar']);
-    expect(info.onlineStatus.rawValue, json['data']['onlineStatus']);
+    expect(info.avatar!.toJson(), json['data']['avatar']);
+    expect(info.onlineStatus!.rawValue, json['data']['onlineStatus']);
     expect(info.lastOnline, DateTime.tryParse(json['data']['lastOnline']));
-    expect(info.friendType.rawValue, json['data']['friendType']['status']);
+    expect(info.friendType!.rawValue, json['data']['friendType']['status']);
   });
 
   test('Test compare', () {

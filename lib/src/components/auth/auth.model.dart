@@ -10,22 +10,22 @@ class AuthModel extends MomentumModel<AuthController> {
     this.isLoading,
   }) : super(controller);
 
-  final String otpToken;
+  final String? otpToken;
 
-  final String email;
-  final String nickname;
-  final String password;
+  final String? email;
+  final String? nickname;
+  final String? password;
 
-  final bool isLoading;
+  final bool? isLoading;
 
   @override
   void update({
-    String otpToken,
-    String registerToken,
-    String email,
-    String nickname,
-    String password,
-    bool isLoading,
+    String? otpToken,
+    String? registerToken,
+    String? email,
+    String? nickname,
+    String? password,
+    bool? isLoading,
   }) {
     AuthModel(
       controller,

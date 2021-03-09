@@ -1,9 +1,9 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class CommentItem extends StatelessWidget {
-  final Comment comment;
+  final Comment? comment;
 
-  const CommentItem({Key key, @required this.comment}) : super(key: key);
+  const CommentItem({Key? key, required this.comment}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CommentItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                UserAvatar.fromChatUser(user: comment.createdBy),
+                UserAvatar.fromChatUser(user: comment?.createdBy),
                 SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -37,15 +37,16 @@ class CommentItem extends StatelessWidget {
                                 text: '#' +
                                     (comment?.index?.toString() ?? 'Loading') +
                                     ' • ',
-                                style: context.textTheme.subtitle1.copyWith(
+                                style: context.textTheme.subtitle1!.copyWith(
                                   color: context.colorScheme.onSurface,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              if (comment.createdBy != null)
+                              if (comment?.createdBy != null)
                                 TextSpan(
-                                  text: comment.createdBy.displayName + ' • ',
-                                  style: context.textTheme.subtitle1.copyWith(
+                                  text:
+                                      comment!.createdBy!.displayName! + ' • ',
+                                  style: context.textTheme.subtitle1!.copyWith(
                                     color: context.colorScheme.onSurface,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -53,7 +54,7 @@ class CommentItem extends StatelessWidget {
                               TextSpan(
                                 text: TimeAgo.format(
                                     comment?.createdAt ?? DateTime.now()),
-                                style: context.textTheme.bodyText2.copyWith(
+                                style: context.textTheme.bodyText2!.copyWith(
                                     color: context.colorScheme.onSurface),
                               ),
                             ],

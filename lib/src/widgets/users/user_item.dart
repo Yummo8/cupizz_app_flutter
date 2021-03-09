@@ -1,20 +1,20 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class UserItem extends StatelessWidget {
-  final SimpleUser simpleUser;
-  final Function(SimpleUser simpleUser) onPressed;
+  final SimpleUser? simpleUser;
+  final Function(SimpleUser? simpleUser)? onPressed;
   final bool isHighlight;
 
   const UserItem({
-    Key key,
-    @required this.simpleUser,
+    Key? key,
+    required this.simpleUser,
     this.onPressed,
     this.isHighlight = false,
   }) : super(key: key);
 
   void handlePressed(BuildContext context) {
     if (onPressed != null) {
-      onPressed(simpleUser);
+      onPressed!(simpleUser);
     } else {
       Get.toNamed(Routes.user, arguments: UserScreenParams(user: simpleUser));
     }
@@ -97,14 +97,14 @@ class UserItem extends StatelessWidget {
                         children: [
                           Text(
                             simpleUser?.displayName ?? 'Loading',
-                            style: context.textTheme.subtitle1.copyWith(
+                            style: context.textTheme.subtitle1!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: textColor,
                             ),
                           ),
                           if (simpleUser?.age != null)
                             Text(
-                              simpleUser.age.toString(),
+                              simpleUser!.age.toString(),
                               style: context.textTheme.caption,
                             ),
                         ],

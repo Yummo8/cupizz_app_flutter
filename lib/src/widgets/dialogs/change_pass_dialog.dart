@@ -3,11 +3,11 @@ import 'package:cupizz_app/src/base/base.dart';
 class ChangePassDialog {
   static Future show(
     BuildContext context, {
-    String avatar,
-    String nickName,
+    String? avatar,
+    String? nickName,
     bool requireOldPass = false,
-    Future Function(String oldPass, String newPass) onSend,
-    bool isLoading,
+    Future Function(String oldPass, String newPass)? onSend,
+    bool? isLoading,
   }) async {
     final oldPassword = TextEditingController(text: '');
     final newPassword = TextEditingController(text: '');
@@ -25,7 +25,7 @@ class ChangePassDialog {
               children: [
                 Text(
                   'Đổi mật khẩu',
-                  style: context.textTheme.headline6
+                  style: context.textTheme.headline6!
                       .copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
@@ -53,7 +53,7 @@ class ChangePassDialog {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(nickName,
+                      Text(nickName ?? '',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -95,7 +95,7 @@ class ChangePassDialog {
                     width: 120,
                     onPressed: () async {
                       FocusScope.of(context).unfocus();
-                      if (formKey.currentState.validate()) {
+                      if (formKey.currentState!.validate()) {
                         if (onSend != null) {
                           await onSend(oldPassword.text, newPassword.text);
                         }

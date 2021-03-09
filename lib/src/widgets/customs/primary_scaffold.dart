@@ -3,19 +3,19 @@ import 'package:flutter/foundation.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PrimaryScaffold extends StatelessWidget {
-  final Widget body;
+  final Widget? body;
   final bool isLoading;
-  final ScrollController scrollController;
-  final Widget footer;
-  final Widget bottomNavigationBar;
-  final PreferredSizeWidget appBar;
-  final Widget drawer;
-  final Widget floatingActionButton;
-  final Function onBack;
+  final ScrollController? scrollController;
+  final Widget? footer;
+  final Widget? bottomNavigationBar;
+  final PreferredSizeWidget? appBar;
+  final Widget? drawer;
+  final Widget? floatingActionButton;
+  final Function? onBack;
   final double loadingBackgroundOpacity;
 
   PrimaryScaffold({
-    Key key,
+    Key? key,
     this.body,
     this.isLoading = false,
     this.scrollController,

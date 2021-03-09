@@ -5,18 +5,18 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   static const _AVATAR_MIN_SIZE = 50.0;
   static const _HEADER_MIN_HEIGHT = 100.0;
   final double expandedHeight;
-  final PreferredSizeWidget bottom;
-  final ChatUser user;
+  final PreferredSizeWidget? bottom;
+  final ChatUser? user;
   final bool showBackButton;
 
-  bool get isCurrentUser => user.isCurrentUser;
+  bool get isCurrentUser => user!.isCurrentUser;
 
   @override
-  final FloatingHeaderSnapConfiguration snapConfiguration;
+  final FloatingHeaderSnapConfiguration? snapConfiguration;
 
   _ProfileSliverAppBarDelegate(
     this.user, {
-    @required this.expandedHeight,
+    required this.expandedHeight,
     this.bottom,
     this.snapConfiguration,
     this.showBackButton = false,
@@ -58,7 +58,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           if (showBackButton) _buildBackButton(context, scrollRate),
           _buildAvatar(context, scrollRate),
-          if (user != null && user.isCurrentUser)
+          if (user != null && user!.isCurrentUser)
             _buildFriendsButton(context, scrollRate),
           if (user != null) _buildSettingOrMessageButton(context, scrollRate),
         ],
@@ -76,17 +76,17 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child: MomentumBuilder(
             controllers: [CurrentUserController],
             builder: (context, snapshot) {
-              final model = snapshot<CurrentUserModel>();
+              final model = snapshot<CurrentUserModel>()!;
               return CupertinoButton(
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   Menu(
                     [
-                      ViewImageMenuItem(context, [user.cover]),
+                      ViewImageMenuItem(context, [user!.cover]),
                       if (!model.isUpdatingAvatar && isCurrentUser)
                         ...getPickImagesMenuItem(context, (images) {
                           if (images.isExistAndNotEmpty) {
-                            model.controller.updateCover(images[0]);
+                            model.controller.updateCover(images![0]);
                           }
                         },
                             maxSelected: 1,
@@ -140,12 +140,12 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           child: MomentumBuilder(
               controllers: [CurrentUserController],
               builder: (context, snapshot) {
-                final model = snapshot<CurrentUserModel>();
+                final model = snapshot<CurrentUserModel>()!;
                 return CupertinoButton(
                   padding: EdgeInsets.zero,
                   onPressed: () => Menu(
                     [
-                      ViewImageMenuItem(context, [user.avatar]),
+                      ViewImageMenuItem(context, [user!.avatar]),
                       if (!model.isUpdatingAvatar && isCurrentUser)
                         ...getPickImagesMenuItem(
                           context,
@@ -153,7 +153,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                             if (images.isExistAndNotEmpty) {
                               Momentum.controller<CurrentUserController>(
                                       context)
-                                  .updateAvatar(images[0]);
+                                  .updateAvatar(images![0]);
                             }
                           },
                           maxSelected: 1,
@@ -189,7 +189,7 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child: MomentumBuilder(
             controllers: [SystemController],
             builder: (context, snapshot) {
-              final model = snapshot<SystemModel>();
+              final model = snapshot<SystemModel>()!;
               final number = model.unreadAcceptedFriendCount +
                   model.unreadReceiveFriendCount;
               return OpacityIconButton(
@@ -207,21 +207,21 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget _buildSettingOrMessageButton(BuildContext context, double scrollRate) {
     IconData icon;
     Function onPressed;
-    if (user.friendType == FriendType.me) {
+    if (user!.friendType == FriendType.me) {
       icon = Icons.settings;
       onPressed = () {
         Get.toNamed(Routes.setting);
       };
-    } else if (user.friendType == FriendType.friend) {
+    } else if (user!.friendType == FriendType.friend) {
       icon = Icons.message_outlined;
       onPressed = () {
         Get.toNamed(
           Routes.messages,
           arguments: MessagesScreenParams(
-              conversationKey: ConversationKey(targetUserId: user.id)),
+              conversationKey: ConversationKey(targetUserId: user!.id)),
         );
       };
-    } else if (user.friendType == FriendType.received) {
+    } else if (user!.friendType == FriendType.received) {
       icon = Icons.done;
       onPressed = () {
         Momentum.controller<UserScreenController>(context).addFriend();
@@ -240,8 +240,8 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             backgroundColor: context.colorScheme.background,
             shape: CircleBorder(),
           ),
+          onPressed: onPressed as void Function()?,
           child: Icon(icon, size: 18),
-          onPressed: onPressed,
         ),
       ),
     );
@@ -254,25 +254,25 @@ class _ProfileSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: Opacity(
         opacity: 1 - scrollRate,
         child: InkWell(
+          onTap: () {
+            Get.back();
+          },
           child: Icon(
             Icons.chevron_left,
             color: context.colorScheme.onPrimary,
             size: 40,
           ),
-          onTap: () {
-            Get.back();
-          },
         ),
       ),
     );
   }
 
   @override
-  double get maxExtent => expandedHeight + (bottom?.preferredSize?.height ?? 0);
+  double get maxExtent => expandedHeight + (bottom?.preferredSize.height ?? 0);
 
   @override
   double get minExtent =>
-      _HEADER_MIN_HEIGHT + (bottom?.preferredSize?.height ?? 0);
+      _HEADER_MIN_HEIGHT + (bottom?.preferredSize.height ?? 0);
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;

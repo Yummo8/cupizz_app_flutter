@@ -71,10 +71,10 @@ void main() {
 
     expect(conversation.id, json['id']);
     expect(conversation.name, json['data']['name']);
-    expect(conversation.images.map((e) => e.toJson()).toList(),
+    expect(conversation.images!.map((e) => e.toJson()).toList(),
         json['data']['images']);
-    expect(conversation.newestMessage.toJson(), json['data']['newestMessage']);
-    expect(conversation.onlineStatus.rawValue, json['data']['onlineStatus']);
+    expect(conversation.newestMessage!.toJson(), json['data']['newestMessage']);
+    expect(conversation.onlineStatus!.rawValue, json['data']['onlineStatus']);
     expect(conversation.unreadMessageCount,
         json['personalData']['unreadMessageCount']);
   });

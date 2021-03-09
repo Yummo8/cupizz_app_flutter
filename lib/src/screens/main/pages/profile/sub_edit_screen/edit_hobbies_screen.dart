@@ -6,7 +6,7 @@ class EditHobbiesScreen extends StatefulWidget {
 }
 
 class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
-  bool isEdit;
+  bool? isEdit;
 
   List<MultiSelectDialogItem<String>> dataSource =
       <MultiSelectDialogItem<String>>[
@@ -19,7 +19,7 @@ class _EditHobbiesScreenState extends State<EditHobbiesScreen> {
         label: 'Football', value: 'Football', icon: Icons.sports_basketball),
   ];
 
-  List _myActivities;
+  List? _myActivities;
 
   @override
   void initState() {

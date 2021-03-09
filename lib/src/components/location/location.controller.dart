@@ -14,22 +14,22 @@ class LocationController extends MomentumController<LocationModel> {
     );
   }
 
-  Future<bool> checkPermission(BuildContext context,
+  Future<bool> checkPermission(BuildContext? context,
       {bool showDialog = true}) async {
     final checkPermission = await Geolocator.checkPermission();
     if (checkPermission == LocationPermission.denied ||
         checkPermission == LocationPermission.deniedForever) {
       if (showDialog) {
         await Future.delayed(Duration(seconds: 1));
-        await _showDialog(context);
+        await _showDialog(context!);
       }
       final permission = await Permission.location.request();
       if (permission == PermissionStatus.restricted ||
           permission == PermissionStatus.denied) {
-        await _showFailDialog(context);
+        await _showFailDialog(context!);
         return false;
       } else if (permission == PermissionStatus.permanentlyDenied) {
-        await _showOpenSettingDialog(context);
+        await _showOpenSettingDialog(context!);
         return false;
       }
     }
@@ -37,7 +37,7 @@ class LocationController extends MomentumController<LocationModel> {
     return true;
   }
 
-  void _updateLocation() async {
+  Future _updateLocation() async {
     await trycatch(() async {
       final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
@@ -49,7 +49,7 @@ class LocationController extends MomentumController<LocationModel> {
     });
   }
 
-  void _showDialog(BuildContext context) async {
+  Future _showDialog(BuildContext context) async {
     final popup = BeautifulPopup(
       context: context,
       template: TemplateGeolocation,
@@ -68,7 +68,7 @@ class LocationController extends MomentumController<LocationModel> {
         close: null);
   }
 
-  void _showFailDialog(BuildContext context) async {
+  Future _showFailDialog(BuildContext context) async {
     final popup = BeautifulPopup(
       context: context,
       template: TemplateFail,
@@ -95,7 +95,7 @@ class LocationController extends MomentumController<LocationModel> {
     );
   }
 
-  void _showOpenSettingDialog(BuildContext context) async {
+  Future _showOpenSettingDialog(BuildContext context) async {
     final popup = BeautifulPopup(
       context: context,
       template: TemplateFail,

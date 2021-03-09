@@ -11,7 +11,7 @@ class AnonymousChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Momentum.controller<AnonymousChatController>(context)
       ..getMyAnonymousChat();
-    final args = Get.arguments as AnonymousChatScreenArgs;
+    final args = Get.arguments as AnonymousChatScreenArgs?;
     if (args != null && args.findingImmediately) {
       controller.findAnonymousChat();
     }
@@ -19,7 +19,7 @@ class AnonymousChatScreen extends StatelessWidget {
     return MomentumBuilder(
         controllers: [AnonymousChatController],
         builder: (context, snapshot) {
-          final model = snapshot<AnonymousChatModel>();
+          final model = snapshot<AnonymousChatModel>()!;
           return PrimaryScaffold(
             appBar: BackAppBar(
               title: 'Trò chuyện ẩn danh',
@@ -67,15 +67,14 @@ class AnonymousChatScreen extends StatelessWidget {
                 : MomentumBuilder(
                     controllers: [CurrentUserController],
                     builder: (context, snapshot) {
-                      final model = snapshot<CurrentUserModel>();
+                      final model = snapshot<CurrentUserModel>()!;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Transform.scale(
                           scale: 0.8,
                           child: CheckboxListTile(
                               title: Text(NotificationType
-                                      .otherFindingAnonymousChat.title ??
-                                  ''),
+                                  .otherFindingAnonymousChat.title),
                               value: model.currentUser?.pushNotiSetting
                                       ?.contains(NotificationType
                                           .otherFindingAnonymousChat) ??
@@ -95,15 +94,12 @@ class AnonymousChatScreen extends StatelessWidget {
                 ? _Loading()
                 : model.conversation != null
                     ? Builder(builder: (context) {
-                        WidgetsBinding.instance
+                        WidgetsBinding.instance!
                             .addPostFrameCallback((timeStamp) {
                           final args = MessagesScreenParams(
                               conversation: model.conversation);
-                          if (args != null) {
-                            Momentum.controller<MessagesScreenController>(
-                                    context)
-                                .loadData(args);
-                          }
+                          Momentum.controller<MessagesScreenController>(context)
+                              .loadData(args);
                         });
                         return MessagesScreenWidget();
                       })
@@ -116,14 +112,14 @@ class AnonymousChatScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   '''Trò chuyện ẩn danh là nơi giúp bạn tìm kiếm một người lạ để tâm sự, chia sẻ.''',
-                                  style: context.textTheme.subtitle1.copyWith(
+                                  style: context.textTheme.subtitle1!.copyWith(
                                       color: context.colorScheme.onSurface),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
                                   '''Chúng tôi sẽ đảm bảo không để lộ danh tính của bạn cũng như đối phương khi chưa được phép.''',
-                                  style: context.textTheme.caption.copyWith(
+                                  style: context.textTheme.caption!.copyWith(
                                       color: context.colorScheme.onSurface,
                                       fontStyle: FontStyle.italic),
                                   textAlign: TextAlign.center,
@@ -148,7 +144,7 @@ class AnonymousChatScreen extends StatelessWidget {
 
 class _Loading extends StatelessWidget {
   const _Loading({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

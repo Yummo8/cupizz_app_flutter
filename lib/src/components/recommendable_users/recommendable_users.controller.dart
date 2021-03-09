@@ -11,23 +11,23 @@ class RecommendableUsersController
 
   @override
   Future<void> bootstrapAsync() =>
-      model.users.isExistAndNotEmpty ? _reload() : fetchRecommendableUsers();
+      model!.users.isExistAndNotEmpty ? _reload() : fetchRecommendableUsers();
 
   Future<void> fetchRecommendableUsers() async {
     try {
-      model.update(isLoading: true);
+      model!.update(isLoading: true);
       await _reload();
     } catch (e) {
-      model.update(error: e.toString(), isLoading: false);
+      model!.update(error: e.toString(), isLoading: false);
       rethrow;
     } finally {
-      model.update(isLoading: false);
+      model!.update(isLoading: false);
     }
   }
 
   Future _reload() async {
     final users = await Get.find<UserService>().getRecommendableUsers();
-    model.update(users: users, isLastPage: !users.isExistAndNotEmpty);
+    model!.update(users: users, isLastPage: !users.isExistAndNotEmpty);
     debugPrint('Fetched ${users.length} recommend users');
   }
 
@@ -35,22 +35,22 @@ class RecommendableUsersController
     BuildContext context, {
     bool isSwipeRight = false,
     bool isSuperLike = false,
-    Future waitForUpdateUi,
+    Future? waitForUpdateUi,
   }) async {
-    if (model.users.isNotEmpty) {
+    if (model!.users!.isNotEmpty) {
       final service = Get.find<UserService>();
       if (isSwipeRight) {
         if (isSuperLike &&
             dependOn<CurrentUserController>()
-                    .model
-                    .currentUser
-                    .remainingSuperLike <=
+                    .model!
+                    .currentUser!
+                    .remainingSuperLike! <=
                 0) {
           await Fluttertoast.showToast(msg: Strings.error.outOfSuperLike);
           return;
         }
         final friendType = await service.addFriend(
-          model.users[0].id,
+          model!.users![0].id,
           isSuperLike: isSuperLike,
         );
         if (isSuperLike) {
@@ -58,16 +58,16 @@ class RecommendableUsersController
         }
         unawaited(dependOn<FriendPageController>().refresh());
         if (friendType == FriendType.friend) {
-          _onMatched(context, model.users[0]);
+          _onMatched(context, model!.users![0]);
         }
       } else {
-        await service.removeFriend(model.users[0].id);
+        await service.removeFriend(model!.users![0].id);
       }
-      model.users.removeAt(0);
+      model!.users!.removeAt(0);
       if (waitForUpdateUi != null) {
         await waitForUpdateUi;
       }
-      model.update(users: model.users);
+      model!.update(users: model!.users);
     }
   }
 

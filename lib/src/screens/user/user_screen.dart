@@ -9,28 +9,28 @@ part 'components/user_screen.controller.dart';
 part 'components/user_screen.model.dart';
 
 class UserScreenParams extends RouterParam {
-  final ChatUser user;
-  final String userId;
+  final ChatUser? user;
+  final String? userId;
 
   UserScreenParams({this.userId, this.user})
       : assert(userId != null || user != null);
 }
 
 class UserScreen extends StatelessWidget {
-  final UserScreenParams params;
+  final UserScreenParams? params;
 
-  const UserScreen({Key key, this.params}) : super(key: key);
+  const UserScreen({Key? key, this.params}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final controller = Momentum.controller<UserScreenController>(context);
-    final UserScreenParams params = this.params ?? Get.arguments;
+    final UserScreenParams? params = this.params ?? Get.arguments;
     controller.loadData(chatUser: params?.user, userId: params?.userId);
 
     return MomentumBuilder(
       controllers: [UserScreenController],
       builder: (context, snapshot) {
-        var model = snapshot<_UserScreenModel>();
+        var model = snapshot<_UserScreenModel>()!;
         return UserProfile(
           user: model.user,
           showBackButton: true,

@@ -4,21 +4,21 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class PhotoViewDescription {
-  final String title;
-  final String subTitle;
-  final String content;
+  final String? title;
+  final String? subTitle;
+  final String? content;
 
   PhotoViewDescription({this.title, this.subTitle, this.content});
 }
 
 class PhotoViewDialog {
   final BuildContext context;
-  final List<FileModel> images;
-  final List<PhotoViewDescription> descriptions;
+  final List<FileModel?>? images;
+  final List<PhotoViewDescription>? descriptions;
 
   PhotoViewDialog(
     this.context, {
-    @required this.images,
+    required this.images,
     this.descriptions,
   });
 
@@ -33,13 +33,11 @@ class PhotoViewDialog {
 }
 
 class _PhotoView extends StatefulWidget {
-  final List<FileModel> images;
-  final List<PhotoViewDescription> descriptions;
+  final List<FileModel?>? images;
+  final List<PhotoViewDescription>? descriptions;
 
-  const _PhotoView({Key key, this.images = const [], this.descriptions})
-      : assert(descriptions == null || descriptions.length == images.length,
-            'Mảng images và mảng description phải có cùng độ dài'),
-        super(key: key);
+  const _PhotoView({Key? key, this.images = const [], this.descriptions})
+      : super(key: key);
 
   @override
   __PhotoViewState createState() => __PhotoViewState();
@@ -62,7 +60,7 @@ class __PhotoViewState extends State<_PhotoView> {
         body: Stack(children: <Widget>[
           PhotoViewGallery.builder(
             scrollPhysics: const BouncingScrollPhysics(),
-            itemCount: widget.images.length,
+            itemCount: widget.images!.length,
             onPageChanged: (i) {
               setState(() {
                 currentPage = i;
@@ -71,11 +69,11 @@ class __PhotoViewState extends State<_PhotoView> {
             builder: (context, index) {
               return PhotoViewGalleryPageOptions(
                 imageProvider:
-                    CachedNetworkImageProvider(widget.images[index].url),
+                    CachedNetworkImageProvider(widget.images![index]!.url!),
                 minScale: PhotoViewComputedScale.contained * 1,
                 maxScale: PhotoViewComputedScale.contained * 5,
                 heroAttributes:
-                    PhotoViewHeroAttributes(tag: widget.images[index].url),
+                    PhotoViewHeroAttributes(tag: widget.images![index]!.url!),
               );
             },
             loadingBuilder: (context, event) {
@@ -96,32 +94,32 @@ class __PhotoViewState extends State<_PhotoView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    if (widget.descriptions[currentPage].title != null)
+                    if (widget.descriptions![currentPage].title != null)
                       Text(
-                        widget.descriptions[currentPage].title ?? '',
-                        style: context.textTheme.subtitle1.copyWith(
+                        widget.descriptions![currentPage].title ?? '',
+                        style: context.textTheme.subtitle1!.copyWith(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
-                    if (widget.descriptions[currentPage].subTitle != null)
+                    if (widget.descriptions![currentPage].subTitle != null)
                       Text(
-                        widget.descriptions[currentPage].subTitle ?? '',
-                        style: context.textTheme.caption
+                        widget.descriptions![currentPage].subTitle ?? '',
+                        style: context.textTheme.caption!
                             .copyWith(color: Colors.white70),
                       ),
                     const SizedBox(height: 4),
-                    if (widget.descriptions[currentPage].content != null)
+                    if (widget.descriptions![currentPage].content != null)
                       ConstrainedBox(
                         constraints: BoxConstraints(
                           maxHeight: MediaQuery.of(context).size.height * 0.6,
                         ),
                         child: SingleChildScrollView(
                           child: HiddenText(
-                            (widget.descriptions[currentPage].content ?? '')
+                            (widget.descriptions![currentPage].content ?? '')
                                 .replaceAll('\\n', '\n'),
                             maxLength: 200,
                             duration: 300,
                             readmoreText: '',
-                            style: context.textTheme.bodyText2
+                            style: context.textTheme.bodyText2!
                                 .copyWith(color: Colors.white),
                           ),
                         ),
@@ -148,9 +146,9 @@ class __PhotoViewState extends State<_PhotoView> {
                       size: 30,
                     ),
                   ),
-                  if (widget.images.length > 1)
-                    Text('${currentPage + 1} / ${widget.images.length}',
-                        style: context.textTheme.caption
+                  if (widget.images!.length > 1)
+                    Text('${currentPage + 1} / ${widget.images!.length}',
+                        style: context.textTheme.caption!
                             .copyWith(color: Colors.white))
                 ],
               ),

@@ -1,15 +1,15 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  final String hintText;
-  final IconData prefixIconData;
-  final IconData suffixIconData;
-  final bool obscureText;
-  final Function onChanged;
-  final FocusNode focusNode;
-  final TextEditingController textEditingController;
-  final FormFieldValidator<String> validator;
-  final Color textColor;
+  final String? hintText;
+  final IconData? prefixIconData;
+  final IconData? suffixIconData;
+  final bool? obscureText;
+  final Function? onChanged;
+  final FocusNode? focusNode;
+  final TextEditingController? textEditingController;
+  final FormFieldValidator<String>? validator;
+  final Color? textColor;
 
   TextFieldWidget({
     this.hintText,
@@ -26,8 +26,8 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: onChanged,
-      obscureText: obscureText,
+      onChanged: onChanged as void Function(String)?,
+      obscureText: obscureText!,
       controller: textEditingController,
       cursorColor: context.colorScheme.primary,
       focusNode: focusNode,

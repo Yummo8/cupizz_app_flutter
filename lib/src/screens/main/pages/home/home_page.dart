@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
     return MomentumBuilder(
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
-          var model = snapshot<RecommendableUsersModel>();
+          var model = snapshot<RecommendableUsersModel>()!;
           if (model.users.isExistAndNotEmpty) {
             return Positioned(
               bottom: 10,
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
     return MomentumBuilder(
         controllers: [RecommendableUsersController],
         builder: (context, snapshot) {
-          var model = snapshot<RecommendableUsersModel>();
+          var model = snapshot<RecommendableUsersModel>()!;
           if (model.isLoading ||
               !model.users.isExistAndNotEmpty && !model.isLastPage) {
             if (!model.users.isExistAndNotEmpty && !model.isLastPage) {
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
             ),
             onEnd: () {
               model.update(isLoading: true);
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
                 model.update(isLoading: false);
               });
             },
@@ -179,8 +179,9 @@ class _HomePageState extends State<HomePage> {
               Momentum.controller<RecommendableUsersController>(context)
                   .onSwipe(context, isSwipeRight: true);
             },
-            cards: model.users
+            cards: model.users!
                 .map((e) => ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
                       child: UserCard(
                         simpleUser: e,
                         onPressed: () {
@@ -191,7 +192,6 @@ class _HomePageState extends State<HomePage> {
                                   ));
                         },
                       ),
-                      borderRadius: BorderRadius.circular(15),
                     ))
                 .toList(),
           );

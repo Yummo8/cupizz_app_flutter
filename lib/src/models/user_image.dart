@@ -1,26 +1,26 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class UserImage extends BaseModel {
-  FileModel _image;
-  UserAnswer _answer;
-  int _sortOrder;
+  FileModel? _image;
+  UserAnswer? _answer;
+  int? _sortOrder;
 
-  FileModel get image => _image;
-  UserAnswer get answer => _answer;
-  int get sortOrder => _sortOrder;
+  FileModel? get image => _image;
+  UserAnswer? get answer => _answer;
+  int? get sortOrder => _sortOrder;
 
-  List<Color> get gradient => _answer?.gradient ?? _answer?.question?.gradient;
+  List<Color>? get gradient => _answer?.gradient ?? _answer?.question?.gradient;
 
-  Color get color => gradient.isExistAndNotEmpty
+  Color? get color => gradient.isExistAndNotEmpty
       ? null
       : _answer != null
-          ? _answer.color ??
-              _answer.question?.color ??
+          ? _answer!.color ??
+              _answer!.question?.color ??
               ColorOfAnswer.defaultColor.color
           : Colors.transparent;
-  Color get textColor => _answer != null
-      ? _answer.textColor ??
-          _answer.question?.textColor ??
+  Color? get textColor => _answer != null
+      ? _answer!.textColor ??
+          _answer!.question?.textColor ??
           ColorOfAnswer.defaultColor.textColor
       : null;
 

@@ -4,76 +4,75 @@ extension GraphqlQuery on GraphqlService {
   Future meQuery() async {
     final queryString = '{ me ${User.graphqlQuery} }';
     final result = await query(QueryOptions(
-      documentNode: gql(queryString),
+      document: gql(queryString),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
     ));
-    return result.data['me'];
+    return result.data!['me'];
   }
 
-  Future<int> remainingSuperLikeQuery() async {
+  Future<int?> remainingSuperLikeQuery() async {
     final result = await query(QueryOptions(
-      documentNode: gql('{ me { data { remainingSuperLike } } }'),
+      document: gql('{ me { data { remainingSuperLike } } }'),
       fetchPolicy: FetchPolicy.networkOnly,
     ));
-    return result.data['me']['data']['remainingSuperLike'];
+    return result.data!['me']['data']['remainingSuperLike'];
   }
 
   Future recommendableUsersQuery() async {
     final result = await query(QueryOptions(
         fetchPolicy: FetchPolicy.noCache,
-        documentNode:
-            gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }')));
-    return result.data['recommendableUsers'];
+        document: gql('{ recommendableUsers ${SimpleUser.graphqlQuery} }')));
+    return result.data!['recommendableUsers'];
   }
 
   Future hobbiesQuery() async {
     final result = await query(
-        QueryOptions(documentNode: gql('{ hobbies ${Hobby.graphqlQuery} }')));
-    return result.data['hobbies'];
+        QueryOptions(document: gql('{ hobbies ${Hobby.graphqlQuery} }')));
+    return result.data!['hobbies'];
   }
 
   Future friendsQuery([
     FriendQueryType type = FriendQueryType.all,
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
-    int page = 1,
+    int? page = 1,
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(
+      document: gql(
           '{ friends(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page) ${FriendData.graphqlQuery} }'),
     ));
-    return result.data['friends'];
+    return result.data!['friends'];
   }
 
   Future friendsV2Query([
     FriendQueryType type = FriendQueryType.all,
     FriendQueryOrderBy orderBy = FriendQueryOrderBy.recent,
     int page = 1,
-    bool isSuperLike,
+    bool? isSuperLike,
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(
+      document: gql(
           '''{ friendsV2(type: ${type.rawValue} orderBy: ${orderBy.rawValue} page: $page ${isSuperLike != null ? 'isSuperLike: $isSuperLike' : ''}) 
           ${WithIsLastPageOutput.graphqlQuery(FriendData.graphqlQuery)} }'''),
     ));
-    return result.data['friendsV2'];
+    return result.data!['friendsV2'];
   }
 
   Future myConversationsQuery([
-    int page = 1,
+    int? page = 1,
   ]) async {
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(
+      document: gql(
           '{ myConversations(page: $page) ${WithIsLastPageOutput.graphqlQuery(Conversation.graphqlQuery)} }'),
     ));
-    return result.data['myConversations'];
+    return result.data!['myConversations'];
   }
 
   Future messagesQuery(
     ConversationKey key, [
-    int page = 1,
+    int? page = 1,
   ]) async {
     final queryString = '''{ 
         messages(
@@ -83,27 +82,27 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
-    return result.data['messages'];
+    return result.data!['messages'];
   }
 
   Future messagesV2Query(
     ConversationKey key, [
-    String cursor,
+    String? cursor,
   ]) async {
     final queryString = '''{ 
         messagesV2(
           ${key.conversationId.isExistAndNotEmpty ? 'conversationId: "${key.conversationId}"' : 'userId: "${key.targetUserId}"'} 
-          cursor: "$cursor"
+          cursor: "${cursor ?? ''}"
           ${cursor.isExistAndNotEmpty ? 'skip: 1' : ''}
         ) ${WithIsLastPageOutput.graphqlQuery(Message.graphqlQuery(includeConversation: false))}
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
-    return result.data['messagesV2'];
+    return result.data!['messagesV2'];
   }
 
   Future conversationQuery(ConversationKey key) async {
@@ -114,20 +113,20 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
-    return result.data['conversation'];
+    return result.data!['conversation'];
   }
 
-  Future userQuery(String id) async {
+  Future userQuery(String? id) async {
     final queryString = '''{ 
         user(id: "$id") ${SimpleUser.graphqlQuery}
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheAndNetwork,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
-    return result.data['user'];
+    return result.data!['user'];
   }
 
   Future getAddressQuery(String latitude, String longitude) async {
@@ -136,26 +135,26 @@ extension GraphqlQuery on GraphqlService {
       }''';
     final result = await query(QueryOptions(
       fetchPolicy: FetchPolicy.cacheFirst,
-      documentNode: gql(queryString),
+      document: gql(queryString),
     ));
-    return result.data['getAddress'];
+    return result.data!['getAddress'];
   }
 
-  Future questionsQuery([String keyword, int page]) async {
+  Future questionsQuery([String? keyword, int? page]) async {
     final queryString = '''query questions(\$keyword: String, \$page: Int){ 
         questions(keyword: \$keyword, page: \$page) ${WithIsLastPageOutput.graphqlQuery(Question.graphqlQuery)}
       }''';
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheFirst,
-        documentNode: gql(queryString),
+        document: gql(queryString),
         variables: {
           'keyword': keyword,
           'page': page,
         },
       ),
     );
-    return result.data['questions'];
+    return result.data!['questions'];
   }
 
   Future colorsOfAnswerQuery() async {
@@ -165,10 +164,10 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['colorsOfAnswer'];
+    return result.data!['colorsOfAnswer'];
   }
 
   Future<int> unreadMessageCountQuery() async {
@@ -176,10 +175,10 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['unreadMessageCount'] ?? 0;
+    return result.data!['unreadMessageCount'] ?? 0;
   }
 
   Future<int> unreadReceiveFriendCountQuery() async {
@@ -187,10 +186,10 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['unreadReceiveFriendCount'] ?? 0;
+    return result.data!['unreadReceiveFriendCount'] ?? 0;
   }
 
   Future<int> unreadAcceptedFriendCountQuery() async {
@@ -198,28 +197,28 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['unreadAcceptedFriendCount'] ?? 0;
+    return result.data!['unreadAcceptedFriendCount'] ?? 0;
   }
 
-  Future<String> getAgoraAppIdQuery() async {
+  Future<String?> getAgoraAppIdQuery() async {
     final queryString = '''{ agoraAppId }''';
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['agoraAppId'];
+    return result.data!['agoraAppId'];
   }
 
   Future postsQuery({
-    int page = 1,
-    String categoryId,
-    String keyword,
-    bool isMyPost = false,
+    int? page = 1,
+    required String categoryId,
+    String? keyword,
+    bool? isMyPost = false,
   }) async {
     final queryString = '''{ 
       posts(
@@ -239,10 +238,10 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['posts'];
+    return result.data!['posts'];
   }
 
   Future postCategoriesQuery() async {
@@ -250,13 +249,13 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['postCategories'];
+    return result.data!['postCategories'];
   }
 
-  Future postCommentsQuery(int postId, [String commentCursorId]) async {
+  Future postCommentsQuery(int? postId, [String? commentCursorId]) async {
     final queryString = '''{
       post(where: {id: $postId}) {
         comments${Comment.listFilter(cursorId: commentCursorId)} ${Comment.graphqlQuery}
@@ -265,10 +264,10 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    final post = result.data['post'];
+    final post = result.data!['post'];
     return post == null ? null : post['comments'];
   }
 
@@ -277,9 +276,9 @@ extension GraphqlQuery on GraphqlService {
     final result = await query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        documentNode: gql(queryString),
+        document: gql(queryString),
       ),
     );
-    return result.data['myAnonymousChat'];
+    return result.data!['myAnonymousChat'];
   }
 }

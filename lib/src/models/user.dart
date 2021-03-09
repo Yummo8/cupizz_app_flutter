@@ -1,24 +1,24 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class User extends SimpleUser {
-  DateTime birthday;
-  int minAgePrefer;
-  int maxAgePrefer;
-  int minHeightPrefer;
-  int maxHeightPrefer;
+  DateTime? birthday;
+  int? minAgePrefer;
+  int? maxAgePrefer;
+  int? minHeightPrefer;
+  int? maxHeightPrefer;
   int distancePrefer = 0;
-  bool allowMatching;
-  bool isPrivate;
-  bool showActive;
-  List<Gender> genderPrefer;
-  List<SocialProvider> socialProviders;
-  List<NotificationType> pushNotiSetting;
-  List<EducationLevel> educationLevelsPrefer;
-  HaveKids theirKids;
-  List<Religious> religiousPrefer;
-  int remainingSuperLike;
+  bool? allowMatching;
+  bool? isPrivate;
+  bool? showActive;
+  List<Gender>? genderPrefer;
+  List<SocialProvider>? socialProviders;
+  List<NotificationType>? pushNotiSetting;
+  List<EducationLevel>? educationLevelsPrefer;
+  HaveKids? theirKids;
+  List<Religious>? religiousPrefer;
+  int? remainingSuperLike;
 
-  int get getRemainingSuperLike => this?.remainingSuperLike ?? 0;
+  int get getRemainingSuperLike => remainingSuperLike ?? 0;
 
   @override
   void mapping(Mapper map) {

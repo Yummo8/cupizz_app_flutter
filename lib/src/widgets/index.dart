@@ -35,3 +35,4 @@ export 'users/user_item.dart';
 export 'users/user_profile/user_profile.dart';
 export 'comment_widgets/comment_bottom_sheet.dart';
 export 'comment_widgets/comment_item.dart';
+export 'custom_paints/index.dart';

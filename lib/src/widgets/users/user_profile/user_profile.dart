@@ -16,15 +16,15 @@ part 'widgets/profile_sliver_app_bar_delegate.dart';
 part 'widgets/row_info.dart';
 
 class UserProfile extends StatefulWidget {
-  final SimpleUser user;
+  final SimpleUser? user;
   final bool showBackButton;
   final bool enableRefresh;
-  final Future Function() onRefresh;
+  final Future Function()? onRefresh;
   final bool isLoading;
 
   const UserProfile({
-    Key key,
-    @required this.user,
+    Key? key,
+    required this.user,
     this.showBackButton = false,
     this.onRefresh,
     this.isLoading = false,
@@ -50,15 +50,16 @@ class UserProfileState extends MomentumState<UserProfile>
   @override
   void initState() {
     super.initState();
-    if (widget.user != null && widget.user.isCurrentUser) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    if (widget.user != null && widget.user!.isCurrentUser) {
+      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
         Momentum.controller<CurrentUserController>(context)
             .listen<CurrentUserEvent>(
                 state: this,
                 invoke: (event) {
                   switch (event.action) {
                     case CurrentUserEventAction.newUserImage:
-                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                      WidgetsBinding.instance!
+                          .addPostFrameCallback((timeStamp) {
                         scrollController.animateTo(
                           scrollController.position.maxScrollExtent,
                           curve: Curves.easeIn,
@@ -98,7 +99,7 @@ class UserProfileState extends MomentumState<UserProfile>
   }
 
   CustomScrollView _body(
-      SimpleUser user, BuildContext context, ThemeData _theme) {
+      SimpleUser? user, BuildContext context, ThemeData _theme) {
     return CustomScrollView(
       controller: scrollController,
       slivers: [
@@ -118,7 +119,7 @@ class UserProfileState extends MomentumState<UserProfile>
             children: [
               Text(
                 '${user?.displayName ?? ''}${user?.age != null ? ',' : ''}',
-                style: context.textTheme.headline6.copyWith(
+                style: context.textTheme.headline6!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -128,7 +129,7 @@ class UserProfileState extends MomentumState<UserProfile>
                   '${user?.age} tuổi',
                   style: context.textTheme.subtitle1,
                 ),
-              if (widget.user != null && widget.user.isCurrentUser)
+              if (widget.user != null && widget.user!.isCurrentUser)
                 IconButton(
                   icon: Icon(
                     Icons.edit,
@@ -141,7 +142,7 @@ class UserProfileState extends MomentumState<UserProfile>
                 ),
             ],
           ),
-          if (user == null || user?.introduction != null) ...[
+          if (user == null || user.introduction != null) ...[
             const SizedBox(height: 8.0),
             Align(
               alignment: Alignment.centerLeft,
@@ -149,7 +150,7 @@ class UserProfileState extends MomentumState<UserProfile>
                   style: context.textTheme.subtitle2),
             )
           ],
-          if (user == null || user?.address != null) ...[
+          if (user == null || user.address != null) ...[
             const SizedBox(height: 16.0),
             RowInfo(
               iconData: Icons.location_on_rounded,
@@ -164,12 +165,12 @@ class UserProfileState extends MomentumState<UserProfile>
               semanticLabel: '',
               title: user?.lookingFors
                       ?.map((e) => e.displayValue)
-                      ?.toList()
-                      ?.join(', ') ??
+                      .toList()
+                      .join(', ') ??
                   'Looking for',
             ),
           ],
-          if (user == null || user?.height != null) ...[
+          if (user == null || user.height != null) ...[
             const SizedBox(height: 16.0),
             RowInfo(
               iconData: Icons.height,
@@ -254,14 +255,14 @@ class UserProfileState extends MomentumState<UserProfile>
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) => FadeInTranslate(
                 delay: (index + 1).toDouble(),
-                enabled: !widget.user.isCurrentUser,
+                enabled: !widget.user!.isCurrentUser,
                 child: CartImage(
-                  userImage: user.userImages[index],
-                  readOnly: !widget.user.isCurrentUser,
+                  userImage: user.userImages![index],
+                  readOnly: !widget.user!.isCurrentUser,
                 ),
               ),
               shrinkWrap: true,
-              itemCount: user?.userImages?.length ?? 0,
+              itemCount: user.userImages?.length ?? 0,
             )
           else if (user != null && user.isCurrentUser)
             Column(
@@ -290,7 +291,7 @@ class UserProfileState extends MomentumState<UserProfile>
             MomentumBuilder(
                 controllers: [CurrentUserController],
                 builder: (context, snapshot) {
-                  final model = snapshot<CurrentUserModel>();
+                  final model = snapshot<CurrentUserModel>()!;
                   if (model.isAddingImage) return LoadingIndicator();
                   return Column(
                     children: [
@@ -299,8 +300,9 @@ class UserProfileState extends MomentumState<UserProfile>
                             ? null
                             : () {
                                 pickImage(context, (files) {
-                                  if (files.isExistAndNotEmpty) {
-                                    model.controller.addImage(files[0]);
+                                  if (files.isExistAndNotEmpty &&
+                                      files!.getAt(0) != null) {
+                                    model.controller.addImage(files.getAt(0)!);
                                   }
                                 }, maxSelected: 1);
                               },

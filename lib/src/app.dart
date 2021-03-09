@@ -8,8 +8,8 @@ import 'package:cupizz_app/src/screens/answer_question/edit_answer_screen.dart';
 import 'package:cupizz_app/src/screens/main/pages/friend_v2/friend_page_v2.dart';
 import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.controller.dart';
 import 'package:cupizz_app/src/screens/select_question/select_question_screen.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -19,7 +19,6 @@ import 'screens/main/components/main_screen.controller.dart';
 import 'screens/main/pages/chat/chat_page.dart';
 import 'screens/main/pages/friend/friend_page.dart';
 import 'screens/messages/messages_screen.dart';
-import 'services/index.dart';
 import 'widgets/index.dart';
 
 Momentum momentum({bool isTesting = false}) {
@@ -53,7 +52,6 @@ Momentum momentum({bool isTesting = false}) {
       CallController()..config(lazy: true),
     ],
     appLoader: AppLoader(),
-    child: _MyApp(),
     persistSave: (context, key, value) async {
       final box = await Hive.openBox('cupizz');
       await box.put(key, value);
@@ -63,20 +61,20 @@ Momentum momentum({bool isTesting = false}) {
       final box = await Hive.openBox('cupizz');
       return box.get(key);
     },
+    child: _MyApp(),
   );
 }
 
 class App extends AppBase {
   @override
   Widget build(BuildContext context) {
-    initServices();
     return momentum();
   }
 }
 
 class AppLoader extends StatelessWidget {
   const AppLoader({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -126,26 +124,21 @@ class AppLoader extends StatelessWidget {
 class _MyApp extends StatelessWidget {
   final bool isTesting;
 
-  _MyApp({Key key, this.isTesting = false}) : super(key: key);
+  _MyApp({Key? key, this.isTesting = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MomentumBuilder(
         controllers: [ThemeController, AuthController],
         builder: (context, snapshot) {
-          final theme =
-              snapshot<ThemeModel>().controller.selectedTheme.copyWith(
-                      pageTransitionsTheme: PageTransitionsTheme(builders: {
-                    TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-                  }));
+          final theme = snapshot<ThemeModel>()!.controller.selectedTheme;
           return GetMaterialApp(
             debugShowCheckedModeBanner:
                 AppConfig.instance.flavorName != AppFlavor.PRODUCTION,
             title: 'Cupizz',
             navigatorKey: isTesting ? null : AppConfig.navigatorKey,
             navigatorObservers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
+              // FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
             ],
             enableLog: false,
             popGesture: true,

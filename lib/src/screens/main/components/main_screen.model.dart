@@ -4,10 +4,10 @@ class MainScreenModel extends MomentumModel<MainScreenController> {
   MainScreenModel(MainScreenController controller, {this.currentTabIndex = 0})
       : super(controller);
 
-  final int currentTabIndex;
+  final int? currentTabIndex;
 
   @override
-  void update({int currentTabIndex}) {
+  void update({int? currentTabIndex}) {
     MainScreenModel(
       controller,
       currentTabIndex: currentTabIndex ?? this.currentTabIndex,
@@ -15,9 +15,9 @@ class MainScreenModel extends MomentumModel<MainScreenController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return MainScreenModel(controller,
-        currentTabIndex: json['currentTabIndex']);
+        currentTabIndex: json!['currentTabIndex']);
   }
 
   @override

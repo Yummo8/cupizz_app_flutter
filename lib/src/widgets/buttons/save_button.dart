@@ -1,12 +1,12 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class SaveButton extends StatelessWidget {
-  final Function onPressed;
+  final Function? onPressed;
   final bool loading;
-  final Color textColor;
+  final Color? textColor;
 
   const SaveButton(
-      {Key key, this.onPressed, this.textColor, this.loading = false})
+      {Key? key, this.onPressed, this.textColor, this.loading = false})
       : super(key: key);
 
   @override
@@ -18,15 +18,15 @@ class SaveButton extends StatelessWidget {
               Icons.done,
               color: textColor ?? context.colorScheme.onBackground,
             ),
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
     );
   }
 }
 
 class SaveButtonAsync extends StatefulWidget {
-  final Future Function() onPressed;
+  final Future Function()? onPressed;
 
-  const SaveButtonAsync({Key key, this.onPressed}) : super(key: key);
+  const SaveButtonAsync({Key? key, this.onPressed}) : super(key: key);
 
   @override
   _SaveButtonAsyncState createState() => _SaveButtonAsyncState();
@@ -50,7 +50,7 @@ class _SaveButtonAsyncState extends State<SaveButtonAsync> {
                 loading = true;
               });
               try {
-                await widget.onPressed();
+                await widget.onPressed!();
               } finally {
                 if (mounted) {
                   setState(() {

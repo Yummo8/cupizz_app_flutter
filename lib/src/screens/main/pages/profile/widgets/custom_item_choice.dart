@@ -2,8 +2,8 @@ part of '../edit_profile_screen.dart';
 
 class CustomItemChoice extends StatefulWidget {
   const CustomItemChoice(this.label,
-      {Key key,
-      @required this.onChange,
+      {Key? key,
+      required this.onChange,
       this.selectedBackgroundColor,
       this.notSelectedBackgroundColor,
       this.selectedTextColor,
@@ -13,10 +13,10 @@ class CustomItemChoice extends StatefulWidget {
 
   final String label;
   final Function onChange;
-  final Color selectedBackgroundColor;
-  final Color selectedTextColor;
-  final Color notSelectedBackgroundColor;
-  final Color notSelectedTextColor;
+  final Color? selectedBackgroundColor;
+  final Color? selectedTextColor;
+  final Color? notSelectedBackgroundColor;
+  final Color? notSelectedTextColor;
   final bool isSelected;
 
   @override

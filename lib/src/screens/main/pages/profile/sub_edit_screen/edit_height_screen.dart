@@ -6,14 +6,14 @@ class EditHeightScreen extends StatefulWidget {
 }
 
 class _EditHeightScreenState extends State<EditHeightScreen> {
-  double selectedHeight = 160;
+  double? selectedHeight = 160;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       selectedHeight = Momentum.controller<CurrentUserController>(context)
-              .model
+              .model!
               .currentUser
               ?.height
               ?.toDouble() ??
@@ -30,7 +30,7 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
       appBar: BackAppBar(title: Strings.common.height, actions: [
         SaveButton(onPressed: () {
           Momentum.controller<CurrentUserController>(context)
-              .updateProfile(height: selectedHeight.round());
+              .updateProfile(height: selectedHeight!.round());
           Get.back();
         })
       ]),
@@ -44,10 +44,10 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
                 children: [
                   Expanded(
                     child: FlutterSlider(
-                      values: [selectedHeight],
-                      max: (200 < selectedHeight ? selectedHeight : 200)
+                      values: [selectedHeight!],
+                      max: (200 < selectedHeight! ? selectedHeight : 200)!
                           .toDouble(),
-                      min: (150 > selectedHeight ? selectedHeight : 150)
+                      min: (150 > selectedHeight! ? selectedHeight : 150)!
                           .toDouble(),
                       tooltip: FlutterSliderTooltip(
                         disabled: true,
@@ -65,7 +65,7 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
                     ),
                   ),
                   Text(
-                    '${selectedHeight.round()}cm',
+                    '${selectedHeight!.round()}cm',
                     style: context.textTheme.caption,
                   )
                 ],
@@ -82,10 +82,10 @@ class _EditHeightScreenState extends State<EditHeightScreen> {
 
 //You can use any Widget
 class MySelectionItem extends StatelessWidget {
-  final String title;
+  final String? title;
   final bool isForList;
 
-  const MySelectionItem({Key key, this.title, this.isForList = true})
+  const MySelectionItem({Key? key, this.title, this.isForList = true})
       : super(key: key);
 
   @override
@@ -94,8 +94,8 @@ class MySelectionItem extends StatelessWidget {
       height: 60.0,
       child: isForList
           ? Padding(
-              child: _buildItem(context),
               padding: EdgeInsets.all(10.0),
+              child: _buildItem(context),
             )
           : Card(
               margin: EdgeInsets.symmetric(horizontal: 10.0),
@@ -116,7 +116,7 @@ class MySelectionItem extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
-      child: Text(title),
+      child: Text(title!),
     );
   }
 }

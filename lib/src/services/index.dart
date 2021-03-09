@@ -11,12 +11,13 @@ export 'user_service.dart';
 export 'post_service.dart';
 
 Future initServices([bool isTesting = false]) async {
-  Get.put(StorageService());
-  Get.put(GraphqlService(
-    //192.168.1.10:2020
-    apiUrl: !isTesting ? AppConfig.instance.apiUrl : 'http://cupizz.cf/graphql',
-    wss: !isTesting ? AppConfig.instance.wss : 'ws://cupizz.cf/graphql',
-  ));
+  await Get.putAsync(() => StorageService().init());
+  await Get.putAsync(() => GraphqlService(
+        //192.168.1.10:2020
+        apiUrl:
+            !isTesting ? AppConfig.instance.apiUrl : 'http://cupizz.cf/graphql',
+        wss: !isTesting ? AppConfig.instance.wss : 'ws://cupizz.cf/graphql',
+      ).reset());
   Get.put(AuthService());
   Get.put(MessageService());
   if (!isTesting) {

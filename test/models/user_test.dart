@@ -64,14 +64,14 @@ void main() {
     expect(user.nickName, json['data']['nickName']);
     expect(user.age, json['data']['age']);
     expect(user.introduction, json['data']['introduction']);
-    expect(user.gender.rawValue, json['data']['gender']);
+    expect(user.gender!.rawValue, json['data']['gender']);
     expect(
-        user.hobbies.map((e) => e.toJson()).toList(), json['data']['hobbies']);
+        user.hobbies!.map((e) => e.toJson()).toList(), json['data']['hobbies']);
     expect(user.phoneNumber, json['data']['phoneNumber']);
     expect(user.job, json['data']['job']);
     expect(user.height, json['data']['height']);
-    expect(user.avatar.toJson(), json['data']['avatar']);
-    expect(user.onlineStatus.rawValue, json['data']['onlineStatus']);
+    expect(user.avatar!.toJson(), json['data']['avatar']);
+    expect(user.onlineStatus!.rawValue, json['data']['onlineStatus']);
     expect(user.lastOnline, DateTime.tryParse(json['data']['lastOnline']));
 
     expect(user.birthday, DateTime.tryParse(json['data']['birthday']));
@@ -80,14 +80,14 @@ void main() {
     expect(user.minHeightPrefer, json['data']['minHeightPrefer']);
     expect(user.maxHeightPrefer, json['data']['maxHeightPrefer']);
     expect(user.distancePrefer, json['data']['distancePrefer']);
-    expect(user.genderPrefer.map((e) => e.rawValue).toList(),
+    expect(user.genderPrefer!.map((e) => e.rawValue).toList(),
         json['data']['genderPrefer']);
-    expect(user.friendType.rawValue, json['data']['friendType']['status']);
+    expect(user.friendType!.rawValue, json['data']['friendType']['status']);
     expect(user.allowMatching, json['data']['settings']['allowMatching']);
     expect(user.isPrivate, json['data']['settings']['isPrivate']);
     expect(user.showActive, json['data']['settings']['showActive']);
     expect(
-        user.socialProviders[0].id, json['data']['socialProviders'][0]['id']);
+        user.socialProviders![0].id, json['data']['socialProviders'][0]['id']);
   });
 
   test('Test to json', () {

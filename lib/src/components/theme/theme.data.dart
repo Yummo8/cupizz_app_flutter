@@ -4,8 +4,8 @@ ThemeData _themeData(
   Color primary,
   Color secondary, {
   bool isDark = false,
-  Color primaryVariant,
-  Color secondaryVariant,
+  Color? primaryVariant,
+  Color? secondaryVariant,
 }) {
   return ThemeData(
       primaryColor: primary,
@@ -14,17 +14,17 @@ ThemeData _themeData(
       colorScheme: !isDark
           ? ColorScheme.light(
               primary: primary,
-              primaryVariant: primaryVariant,
+              primaryVariant: primaryVariant!,
               secondary: secondary,
-              secondaryVariant: secondaryVariant,
+              secondaryVariant: secondaryVariant!,
               surface: Color(0xffE5E5E5),
               onSurface: Color(0xff6c6c6c),
             )
           : ColorScheme.dark(
               primary: primary,
-              primaryVariant: primaryVariant,
+              primaryVariant: primaryVariant!,
               secondary: secondary,
-              secondaryVariant: secondaryVariant,
+              secondaryVariant: secondaryVariant!,
               surface: Color(0xff6c6c6c),
               onSurface: Color(0xffE5E5E5),
             ));

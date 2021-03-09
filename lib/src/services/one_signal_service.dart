@@ -32,14 +32,14 @@ class OneSignalService extends GetxService {
     SystemController().fetchUnreadNoti();
     final data = notification.payload.additionalData;
 
-    if (data != null && data is Map) {
+    if (data is Map) {
       final type = NotificationType(rawValue: data['type']);
-      final String code = data['code'];
+      final String? code = data['code'];
 
       if (type == NotificationType.other) {
         if (code == 'deleteAnonymousChat') {
           Momentum.controller<AnonymousChatController>(
-                  AppConfig.navigatorKey.currentContext)
+                  AppConfig.navigatorKey.currentContext!)
               .getMyAnonymousChat();
         }
       }
@@ -51,11 +51,11 @@ class OneSignalService extends GetxService {
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       final data = result.notification.payload.additionalData;
 
-      if (data != null && data is Map) {
+      if (data is Map) {
         final type = NotificationType(rawValue: data['type']);
-        final String refUserId = data['refUserId'];
-        final String refConversationId = data['refConversationId'];
-        final String code = data['code'];
+        final String? refUserId = data['refUserId'];
+        final String? refConversationId = data['refConversationId'];
+        final String? code = data['code'];
 
         if (type == NotificationType.like ||
             type == NotificationType.matching) {

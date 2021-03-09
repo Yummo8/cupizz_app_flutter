@@ -4,9 +4,9 @@ import 'package:cupizz_app/src/base/base.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SuperLikeButton extends StatefulWidget {
-  final Function onPressed;
+  final Function? onPressed;
 
-  const SuperLikeButton({Key key, this.onPressed}) : super(key: key);
+  const SuperLikeButton({Key? key, this.onPressed}) : super(key: key);
 
   @override
   SuperLikeButtonState createState() => SuperLikeButtonState();
@@ -14,7 +14,7 @@ class SuperLikeButton extends StatefulWidget {
 
 class SuperLikeButtonState extends State<SuperLikeButton> {
   bool _showingRemain = false;
-  Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -50,10 +50,10 @@ class SuperLikeButtonState extends State<SuperLikeButton> {
     return MomentumBuilder(
         controllers: [CurrentUserController],
         builder: (context, snapshot) {
-          final model = snapshot<CurrentUserModel>();
+          final model = snapshot<CurrentUserModel>()!;
           return GestureDetector(
-            onTap: model.currentUser.getRemainingSuperLike > 0
-                ? widget.onPressed
+            onTap: model.currentUser!.getRemainingSuperLike > 0
+                ? widget.onPressed as void Function()?
                 : () {
                     Fluttertoast.showToast(
                       msg: Strings.error.outOfSuperLike,
@@ -67,13 +67,13 @@ class SuperLikeButtonState extends State<SuperLikeButton> {
               ),
               child: Container(
                 key: ValueKey<bool>(_showingRemain &&
-                    model.currentUser.getRemainingSuperLike > 0),
+                    model.currentUser!.getRemainingSuperLike > 0),
                 child: _showingRemain &&
-                        model.currentUser.getRemainingSuperLike > 0
+                        model.currentUser!.getRemainingSuperLike > 0
                     ? Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
-                          model.currentUser.getRemainingSuperLike.toString(),
+                          model.currentUser!.getRemainingSuperLike.toString(),
                           style: GoogleFonts.carterOne(
                             fontSize: 26,
                             color: Colors.yellow[800],
@@ -89,7 +89,7 @@ class SuperLikeButtonState extends State<SuperLikeButton> {
                       )
                     : Icon(
                         Icons.star,
-                        color: model.currentUser.getRemainingSuperLike > 0
+                        color: model.currentUser!.getRemainingSuperLike > 0
                             ? context.colorScheme.primary
                             : context.colorScheme.onSurface,
                         size: 30,

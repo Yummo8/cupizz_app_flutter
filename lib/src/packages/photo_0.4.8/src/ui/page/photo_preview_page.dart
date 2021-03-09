@@ -12,12 +12,12 @@ import '../../ui/page/photo_main_page.dart';
 
 class PhotoPreviewPage extends StatefulWidget {
   const PhotoPreviewPage({
-    Key key,
-    @required this.selectedProvider,
-    @required this.list,
-    @required this.changeProviderOnCheckChange,
-    @required this.result,
-    @required this.assetProvider,
+    Key? key,
+    required this.selectedProvider,
+    required this.list,
+    required this.changeProviderOnCheckChange,
+    required this.result,
+    required this.assetProvider,
     this.initIndex = 0,
     this.isPreview = false,
   }) : super(key: key);
@@ -44,14 +44,14 @@ class PhotoPreviewPage extends StatefulWidget {
 }
 
 class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
-  PhotoPickerProvider get config => PhotoPickerProvider.of(context);
+  PhotoPickerProvider? get config => PhotoPickerProvider.of(context);
   AssetProvider get assetProvider => widget.assetProvider;
 
-  Options get options => config.options;
+  Options? get options => config!.options;
 
-  Color get themeColor => options.themeColor;
+  Color? get themeColor => options!.themeColor;
 
-  Color get textColor => options.textColor;
+  Color? get textColor => options!.textColor;
 
   SelectedProvider get selectedProvider => widget.selectedProvider;
 
@@ -87,7 +87,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
     return _selectedList;
   }
 
-  PageController pageController;
+  PageController? pageController;
 
   @override
   void initState() {
@@ -111,7 +111,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    var totalCount = assetProvider.current?.assetCount ?? 0;
+    int? totalCount = assetProvider.current?.assetCount ?? 0;
     if (!widget.isPreview) {
       totalCount = assetProvider.current?.assetCount;
     } else {
@@ -120,27 +120,27 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
     final data = Theme.of(context);
     final textStyle = TextStyle(
-      color: options.textColor,
+      color: options!.textColor,
       fontSize: 14.0,
     );
     return Theme(
       data: data.copyWith(
-        primaryColor: options.themeColor,
+        primaryColor: options!.themeColor,
       ),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: config.options.themeColor,
+          backgroundColor: config!.options!.themeColor,
           leading: BackButton(
-            color: options.textColor,
+            color: options!.textColor,
           ),
-          title: StreamBuilder(
+          title: StreamBuilder<int>(
             stream: pageStream,
             initialData: widget.initIndex,
             builder: (ctx, snap) {
               return Text(
-                '${snap.data + 1}/$totalCount',
+                '${snap.data ?? 0 + 1}/$totalCount',
                 style: TextStyle(
-                  color: options.textColor,
+                  color: options!.textColor,
                 ),
               );
             },
@@ -151,9 +151,9 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
               builder: (ctx, s) => TextButton(
                 onPressed: selectedList.isEmpty ? null : sure,
                 child: Text(
-                  config.provider.getSureText(options, selectedList.length),
+                  config!.provider!.getSureText(options, selectedList.length),
                   style: selectedList.isEmpty
-                      ? textStyle.copyWith(color: options.disableColor)
+                      ? textStyle.copyWith(color: options!.disableColor)
                       : textStyle,
                 ),
               ),
@@ -196,7 +196,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
       constraints: const BoxConstraints(maxWidth: 200.0),
       child: StreamBuilder<int>(
         builder: (ctx, snapshot) {
-          final index = snapshot.data;
+          final index = snapshot.data!;
           final data = list[index];
           final checked = selectedList.contains(data);
           return Stack(
@@ -225,12 +225,12 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   Widget _buildCheckboxContent(bool checked, int index) {
-    return options.checkBoxBuilderDelegate.buildCheckBox(
+    return options!.checkBoxBuilderDelegate!.buildCheckBox(
       context,
       checked,
       index,
       options,
-      config.provider,
+      config!.provider,
     );
   }
 
@@ -281,7 +281,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   }
 
   Widget _buildLoadingWidget(AssetEntity entity) {
-    return options.loadingDelegate
+    return options!.loadingDelegate!
         .buildBigImageLoading(context, entity, themeColor);
   }
 
@@ -315,8 +315,8 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
               ImageItem(
                 themeColor: themeColor,
                 entity: item,
-                size: options.thumbSize,
-                loadingDelegate: options.loadingDelegate,
+                size: options!.thumbSize,
+                loadingDelegate: options!.loadingDelegate,
               ),
               IgnorePointer(
                 child: StreamBuilder(
@@ -341,7 +341,7 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
   void changeSelected(AssetEntity entity, int index) {
     final itemIndex = list.indexOf(entity);
     if (itemIndex != -1) {
-      pageController.jumpToPage(itemIndex);
+      pageController!.jumpToPage(itemIndex);
     }
   }
 
@@ -352,13 +352,13 @@ class _PhotoPreviewPageState extends State<PhotoPreviewPage> {
 
 class BigPhotoImage extends StatefulWidget {
   const BigPhotoImage({
-    Key key,
+    Key? key,
     this.assetEntity,
     this.loadingWidget,
   }) : super(key: key);
 
-  final AssetEntity assetEntity;
-  final Widget loadingWidget;
+  final AssetEntity? assetEntity;
+  final Widget? loadingWidget;
 
   @override
   _BigPhotoImageState createState() => _BigPhotoImageState();
@@ -377,8 +377,8 @@ class _BigPhotoImageState extends State<BigPhotoImage>
     final height = MediaQuery.of(context).size.height;
     return FutureBuilder(
       future:
-          widget.assetEntity.thumbDataWithSize(width.floor(), height.floor()),
-      builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
+          widget.assetEntity!.thumbDataWithSize(width.floor(), height.floor()),
+      builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
         final file = snapshot.data;
         if (snapshot.connectionState == ConnectionState.done && file != null) {
           return Image.memory(

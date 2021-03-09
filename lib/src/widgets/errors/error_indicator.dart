@@ -1,12 +1,12 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class ErrorIndicator extends StatefulWidget {
-  final String message;
-  final String moreErrorDetail;
-  final Function onReload;
+  final String? message;
+  final String? moreErrorDetail;
+  final Function? onReload;
 
   const ErrorIndicator(
-      {Key key, this.message, this.moreErrorDetail, this.onReload})
+      {Key? key, this.message, this.moreErrorDetail, this.onReload})
       : super(key: key);
 
   @override
@@ -32,22 +32,22 @@ class _ErrorIndicatorState extends State<ErrorIndicator> {
                       ? Strings.error.errorClick
                       : Strings.error.error),
               textAlign: TextAlign.center,
-              style: context.textTheme.bodyText2
+              style: context.textTheme.bodyText2!
                   .copyWith(color: context.colorScheme.error),
             ),
           ),
           isShowingDetail && widget.moreErrorDetail.isExistAndNotEmpty
               ? Text(
-                  widget.moreErrorDetail,
-                  style: context.textTheme.overline
+                  widget.moreErrorDetail!,
+                  style: context.textTheme.overline!
                       .copyWith(color: context.colorScheme.onSurface),
                 )
               : const SizedBox.shrink(),
           if (widget.onReload != null) ...[
             const SizedBox(height: 10),
             TextButton(
+              onPressed: widget.onReload as void Function()?,
               child: Text(Strings.button.reload),
-              onPressed: widget.onReload,
             )
           ]
         ],

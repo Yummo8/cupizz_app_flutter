@@ -4,8 +4,8 @@ import 'package:cupizz_app/src/base/base.dart';
 
 class Debouncer {
   Duration delay;
-  Timer _timer;
-  VoidCallback _callback;
+  Timer? _timer;
+  late VoidCallback _callback;
 
   Debouncer({this.delay = const Duration(milliseconds: 500)});
 
@@ -18,7 +18,7 @@ class Debouncer {
 
   void cancel() {
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
   }
 

@@ -28,7 +28,7 @@ class _SettingNotiBottomSheet {
           return MomentumBuilder(
               controllers: [CurrentUserController],
               builder: (context, snapshot) {
-                final model = snapshot<CurrentUserModel>();
+                final model = snapshot<CurrentUserModel>()!;
                 return Column(
                   children: [
                     ...NotificationType.getAll()
@@ -36,7 +36,7 @@ class _SettingNotiBottomSheet {
                               paddingAbove:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               paddingBelow: const EdgeInsets.all(10),
-                              title: e.shortTitle ?? '',
+                              title: e.shortTitle,
                               value: model.currentUser?.pushNotiSetting
                                       ?.contains(e) ??
                                   false,

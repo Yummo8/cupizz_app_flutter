@@ -9,13 +9,13 @@ class SelectQuestionScreen extends StatelessWidget {
   void selectQuesion(BuildContext context, Question question) {
     final controller =
         Momentum.controller<AnswerQuestionScreenController>(context);
-    if (controller.model.question == null) {
+    if (controller.model!.question == null) {
       Get.back();
       Get.toNamed(Routes.answer);
     } else {
       Get.back();
     }
-    controller.model.update(question: question);
+    controller.model!.update(question: question);
   }
 
   @override
@@ -25,17 +25,17 @@ class SelectQuestionScreen extends StatelessWidget {
           SelectQuestionScreenController,
         ],
         builder: (context, snapshot) {
-          final model = snapshot<SelectQuestionScreenModel>();
+          final model = snapshot<SelectQuestionScreenModel>()!;
           return PrimaryScaffold(
             appBar: BackAppBar(
               title: 'Chọn câu hỏi',
             ),
             body: GridView.builder(
               padding: EdgeInsets.all(10),
-              itemCount: model.data.data.length +
-                  (model.isLoading
+              itemCount: model.data.data!.length +
+                  (model.isLoading!
                       ? 10
-                      : !model.data.isLastPage
+                      : !model.data.isLastPage!
                           ? 2
                           : 0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -44,20 +44,20 @@ class SelectQuestionScreen extends StatelessWidget {
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10),
               itemBuilder: (context, index) {
-                final color = index <= model.data.data.length - 1
-                    ? model.data.data[index].color
+                final color = index <= model.data.data!.length - 1
+                    ? model.data.data![index].color
                     : ColorOfAnswer.defaultColor.color;
-                final gradient = index <= model.data.data.length - 1
-                    ? model.data.data[index].gradient
+                final gradient = index <= model.data.data!.length - 1
+                    ? model.data.data![index].gradient
                     : null;
-                final item = index <= model.data.data.length - 1
-                    ? model.data.data[index]
+                final item = index <= model.data.data!.length - 1
+                    ? model.data.data![index]
                     : null;
                 return Skeleton(
                   enabled: item == null,
                   child: InkWell(
                     onTap: () {
-                      selectQuesion(context, model.data.data[index]);
+                      selectQuesion(context, model.data.data![index]);
                     },
                     child: Container(
                         padding: EdgeInsets.all(10),
@@ -76,7 +76,7 @@ class SelectQuestionScreen extends StatelessWidget {
                           ],
                         ),
                         child: Text(item?.content ?? '',
-                            style: context.textTheme.bodyText1
+                            style: context.textTheme.bodyText1!
                                 .copyWith(color: item?.textColor))),
                   ),
                 );

@@ -3,7 +3,7 @@ import 'package:cupizz_app/src/base/base.dart';
 class CurrentUserModel extends MomentumModel<CurrentUserController> {
   CurrentUserModel(
     CurrentUserController controller, {
-    @required this.currentUser,
+    required this.currentUser,
     this.isLoading = false,
     this.isUpdatingCover = false,
     this.isUpdatingAvatar = false,
@@ -11,11 +11,11 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
     this.isAddingImage = false,
     this.isDeletingImage = false,
     this.isChangingPass = false,
-    List<UserImage> newOrderList,
+    List<UserImage>? newOrderList,
   })  : newOrderList = newOrderList ?? [],
         super(controller);
 
-  final User currentUser;
+  final User? currentUser;
   // State
   final bool isLoading;
   final bool isUpdatingCover;
@@ -28,15 +28,15 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
 
   @override
   void update({
-    User currentUser,
-    List<UserImage> newOrderList,
-    bool isLoading,
-    bool isUpdatingCover,
-    bool isUpdatingAvatar,
-    bool isUpdatingSetting,
-    bool isAddingImage,
-    bool isDeletingImage,
-    bool isChangingPass,
+    User? currentUser,
+    List<UserImage>? newOrderList,
+    bool? isLoading,
+    bool? isUpdatingCover,
+    bool? isUpdatingAvatar,
+    bool? isUpdatingSetting,
+    bool? isAddingImage,
+    bool? isDeletingImage,
+    bool? isChangingPass,
   }) {
     CurrentUserModel(
       controller,
@@ -53,17 +53,17 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
   }
 
   void resetNewOrderList() {
-    update(newOrderList: [...currentUser.userImages]);
+    update(newOrderList: [...currentUser!.userImages!]);
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return CurrentUserModel(
       controller,
       currentUser: json != null && json['currentUser'] != null
           ? Mapper.fromJson(json['currentUser']).toObject<User>()
           : null,
-      newOrderList: json['newOrderList'] != null
+      newOrderList: json!['newOrderList'] != null
           ? (json['newOrderList'] as List)
               .map((e) => Mapper.fromJson(e).toObject<UserImage>())
               .toList()
@@ -75,7 +75,7 @@ class CurrentUserModel extends MomentumModel<CurrentUserController> {
   Map<String, dynamic> toJson() {
     final result = {
       'currentUser': currentUser?.toJson(),
-      'newOrderList': newOrderList?.map((e) => e.toJson())?.toList() ?? [],
+      'newOrderList': newOrderList.map((e) => e.toJson()).toList(),
     };
     return result;
   }

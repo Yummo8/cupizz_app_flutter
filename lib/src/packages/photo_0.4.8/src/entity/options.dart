@@ -26,39 +26,39 @@ class Options {
     this.cropAspectRatio,
   });
 
-  final int rowCount;
+  final int? rowCount;
 
-  final int maxSelected;
+  final int? maxSelected;
 
-  final double padding;
+  final double? padding;
 
-  final double itemRadio;
+  final double? itemRadio;
 
-  final Color themeColor;
+  final Color? themeColor;
 
-  final Color dividerColor;
+  final Color? dividerColor;
 
-  final Color textColor;
+  final Color? textColor;
 
-  final Color disableColor;
+  final Color? disableColor;
 
-  final int thumbSize;
+  final int? thumbSize;
 
-  final SortDelegate sortDelegate;
+  final SortDelegate? sortDelegate;
 
-  final CheckBoxBuilderDelegate checkBoxBuilderDelegate;
+  final CheckBoxBuilderDelegate? checkBoxBuilderDelegate;
 
-  final LoadingDelegate loadingDelegate;
+  final LoadingDelegate? loadingDelegate;
 
-  final BadgeDelegate badgeDelegate;
+  final BadgeDelegate? badgeDelegate;
 
-  final PickType pickType;
+  final PickType? pickType;
 
-  final bool autoCloseOnSelectionLimit;
+  final bool? autoCloseOnSelectionLimit;
 
-  final bool isCropImage;
+  final bool? isCropImage;
 
-  final CropAspectRatio cropAspectRatio;
+  final CropAspectRatio? cropAspectRatio;
 }
 
 enum PickType {

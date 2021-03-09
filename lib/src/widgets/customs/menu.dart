@@ -1,20 +1,20 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class Menu {
-  final String title;
+  final String? title;
   final List<MenuItem> menuItems;
   final bool showCancel;
 
   Menu(this.menuItems, {this.showCancel = false, this.title});
 
-  Future<T> show<T>(BuildContext context) {
+  Future<T?> show<T>(BuildContext context) {
     return showCupertinoModalPopup<T>(
       context: context,
       builder: (context) {
         return CupertinoActionSheet(
           title: title.isExistAndNotEmpty
-              ? Text(title,
-                  style: context.textTheme.headline6.copyWith(
+              ? Text(title!,
+                  style: context.textTheme.headline6!.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.onSurface))
               : null,
@@ -22,10 +22,10 @@ class Menu {
             ...menuItems
                 .map(
                   (e) => CupertinoActionSheetAction(
-                    onPressed: e.onPressed,
-                    child: Text(e.title),
+                    onPressed: e.onPressed as void Function(),
                     isDefaultAction: e.isDefaultAction,
                     isDestructiveAction: e.isDestructiveAction,
+                    child: Text(e.title),
                   ),
                 )
                 .toList(),
@@ -36,8 +36,8 @@ class Menu {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(Strings.button.cancel),
                   isDestructiveAction: true,
+                  child: Text(Strings.button.cancel),
                 ),
         );
       },
@@ -52,16 +52,16 @@ class MenuItem {
   final bool isDestructiveAction;
 
   MenuItem({
-    @required this.title,
-    @required this.onPressed,
+    required this.title,
+    required this.onPressed,
     this.isDefaultAction = false,
     this.isDestructiveAction = false,
   });
 }
 
 class ViewImageMenuItem extends MenuItem {
-  ViewImageMenuItem(BuildContext context, List<FileModel> images,
-      {String title})
+  ViewImageMenuItem(BuildContext context, List<FileModel?> images,
+      {String? title})
       : super(
           title: title ?? 'Xem ảnh',
           onPressed: () {

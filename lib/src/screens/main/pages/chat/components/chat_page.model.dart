@@ -12,21 +12,21 @@ class ChatPageModel extends MomentumModel<ChatPageController> {
   }) : super(controller);
 
   final List<Conversation> conversations;
-  final double scrollOffset;
-  final int currentPage;
-  final bool isLastPage;
-  final int unreadMessageCount;
+  final double? scrollOffset;
+  final int? currentPage;
+  final bool? isLastPage;
+  final int? unreadMessageCount;
 
   final bool isLoading;
 
   @override
   void update({
-    List<Conversation> conversations,
-    double scrollOffset,
-    int currentPage,
-    int unreadMessageCount,
-    bool isLastPage,
-    bool isLoading,
+    List<Conversation>? conversations,
+    double? scrollOffset,
+    int? currentPage,
+    int? unreadMessageCount,
+    bool? isLastPage,
+    bool? isLoading,
   }) {
     ChatPageModel(
       controller,
@@ -40,10 +40,10 @@ class ChatPageModel extends MomentumModel<ChatPageController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return ChatPageModel(
       controller,
-      conversations: ((json['conversations'] ?? []) as List)
+      conversations: ((json!['conversations'] ?? []) as List)
           .map((e) => Mapper.fromJson(e).toObject<Conversation>())
           .toList(),
       scrollOffset: json['scrollOffset'],

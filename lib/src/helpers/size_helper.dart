@@ -2,10 +2,10 @@ import 'package:cupizz_app/src/base/base.dart';
 
 class SizeHelper {
   BuildContext context;
-  double _height;
-  double _width;
-  double _heightPadding;
-  double _widthPadding;
+  late double _height;
+  late double _width;
+  late double _heightPadding;
+  late double _widthPadding;
 
   SizeHelper(this.context) {
     final _queryData = MediaQuery.of(context);

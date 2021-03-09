@@ -24,7 +24,7 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
         child: MomentumBuilder(
             controllers: [PostPageController],
             builder: (context, snapshot) {
-              final model = snapshot<PostPageModel>();
+              final model = snapshot<PostPageModel>()!;
               return RefreshIndicator(
                 onRefresh: model.controller.refresh,
                 child: CustomScrollView(
@@ -51,11 +51,11 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
                         (context, index) => FadeIn(
                           delay: (100 * (index + 1)).milliseconds,
                           child: PostCard(
-                            post: model.posts.getAt(index),
+                            post: model.posts!.getAt(index),
                           ),
                         ),
                         childCount: (model.posts?.length ?? 0) +
-                            (!model.isLastPage ? 1 : 0),
+                            (!model.isLastPage! ? 1 : 0),
                       ))
                   ],
                 ),
@@ -87,7 +87,7 @@ class _SearchBox extends StatelessWidget {
       shadowColor: context.colorScheme.onBackground,
       color: context.colorScheme.background,
       child: TextFormField(
-        initialValue: controller.model.keyword ?? '',
+        initialValue: controller.model!.keyword ?? '',
         onChanged: controller.search,
         decoration: InputDecoration(
           hintText: 'Tìm kiếm confession',
@@ -131,8 +131,8 @@ class ListCategories extends StatelessWidget {
       child: MomentumBuilder(
           controllers: [SystemController, PostPageController],
           builder: (context, snapshot) {
-            final systemModel = snapshot<SystemModel>();
-            final model = snapshot<PostPageModel>();
+            final systemModel = snapshot<SystemModel>()!;
+            final model = snapshot<PostPageModel>()!;
             if (!systemModel.postCategories.isExistAndNotEmpty) {
               systemModel.controller.getPostCategories();
             }
@@ -141,7 +141,7 @@ class ListCategories extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               physics: BouncingScrollPhysics(),
               child: Row(
-                children: [
+                children: <PostCategory>[
                   PostCategory(value: 'Tất cả'),
                   PostCategory(
                     id: kIsMyPost,
@@ -150,13 +150,13 @@ class ListCategories extends StatelessWidget {
                   ),
                   ...(systemModel.postCategories ?? [])
                 ]
-                    ?.mapIndexed((e, i) => _buildItem(
+                    .mapIndexed(((e, i) => _buildItem(
                         context,
                         e,
                         i,
-                        e?.id == kIsMyPost && model.isMyPost ||
-                            model.selectedCategory?.id == e?.id))
-                    ?.toList(),
+                        e.id == kIsMyPost && model.isMyPost! ||
+                            model.selectedCategory?.id == e.id)))
+                    .toList(),
               ),
             );
           }),
@@ -185,7 +185,7 @@ class ListCategories extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Text(
                   data.value,
-                  style: context.textTheme.bodyText1.copyWith(color: color),
+                  style: context.textTheme.bodyText1!.copyWith(color: color),
                 ),
               ),
             ),

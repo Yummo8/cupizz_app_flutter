@@ -3,11 +3,11 @@ import 'package:cupizz_app/src/base/base.dart';
 class CustomGridView extends StatelessWidget {
   final double crossAxisSpacing;
   final double mainAxisSpacing;
-  final int crossAxisCount;
-  final List<Widget> children;
+  final int? crossAxisCount;
+  final List<Widget>? children;
 
   const CustomGridView(
-      {Key key,
+      {Key? key,
       this.crossAxisSpacing = 0,
       this.mainAxisSpacing = 0,
       this.crossAxisCount,
@@ -18,15 +18,15 @@ class CustomGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     final rows = <Widget>[];
 
-    for (var i = 0; i < children.length / crossAxisCount; i++) {
-      final endIndex = i * crossAxisCount + crossAxisCount;
-      final items = children.sublist(
-          i * crossAxisCount, endIndex > children.length ? null : endIndex);
+    for (var i = 0; i < children!.length / crossAxisCount!; i++) {
+      final endIndex = i * crossAxisCount! + crossAxisCount!;
+      final items = children!.sublist(
+          i * crossAxisCount!, endIndex > children!.length ? null : endIndex);
 
-      if (items.length < crossAxisCount) {
+      if (items.length < crossAxisCount!) {
         items.addAll(
           List.generate(
-            crossAxisCount - items.length,
+            crossAxisCount! - items.length,
             (i) => const SizedBox.shrink(),
           ),
         );
@@ -39,12 +39,13 @@ class CustomGridView extends StatelessWidget {
               .map((i, e) => MapEntry<int, Widget>(
                   i,
                   Expanded(
-                      child: Padding(
-                        child: e,
-                        padding: EdgeInsets.only(
-                            left: i == 0 ? 0 : crossAxisSpacing),
-                      ),
-                      flex: 1)))
+                    flex: 1,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(left: i == 0 ? 0 : crossAxisSpacing),
+                      child: e,
+                    ),
+                  )))
               .values
               .toList(),
         ),

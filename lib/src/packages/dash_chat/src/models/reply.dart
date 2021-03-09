@@ -3,11 +3,11 @@ part of dash_chat;
 /// Used for providing replies in quick replies
 class Reply {
   /// Message shown to the user
-  String title;
+  String? title;
 
   /// Actual value underneath the message
   /// It's an [optioanl] paramter
-  String value;
+  String? value;
 
   /// If no messageId is provided it will use [UUID v4] to
   /// set a default id for that message
@@ -15,7 +15,7 @@ class Reply {
 
   Reply({
     this.title,
-    String messageId,
+    String? messageId,
     this.value,
   }) {
     this.messageId = messageId ?? Uuid().v4().toString();

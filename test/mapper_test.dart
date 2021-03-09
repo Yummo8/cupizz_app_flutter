@@ -2,13 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:object_mapper/object_mapper.dart';
 
 class UnregisteredInfo with Mappable {
-  int id;
-  String name;
-  double rate;
-  List<int> numbers;
-  Map<String, dynamic> meta;
-  NestedInfo nested;
-  DateTime time;
+  int? id;
+  String? name;
+  double? rate;
+  List<int>? numbers;
+  Map<String, dynamic>? meta;
+  NestedInfo? nested;
+  DateTime? time;
 
   @override
   void mapping(Mapper map) {
@@ -22,7 +22,7 @@ class UnregisteredInfo with Mappable {
 }
 
 class NonCorrectTestInfo with Mappable {
-  bool isNothing;
+  bool? isNothing;
 
   @override
   void mapping(Mapper map) {
@@ -31,17 +31,17 @@ class NonCorrectTestInfo with Mappable {
 }
 
 class TestInfo with Mappable {
-  int id;
-  bool isAdmin;
-  String name;
-  double rate;
-  List<int> numbers;
-  Map<String, dynamic> meta;
-  NestedInfo nested;
-  List<NestedInfo> nests;
-  DateTime time;
-  List<DateTime> times;
-  bool likeNotification;
+  int? id;
+  bool? isAdmin;
+  String? name;
+  double? rate;
+  List<int>? numbers;
+  Map<String, dynamic>? meta;
+  late NestedInfo nested;
+  late List<NestedInfo> nests;
+  DateTime? time;
+  List<DateTime>? times;
+  bool? likeNotification;
 
   @override
   void mapping(Mapper map) {
@@ -61,15 +61,15 @@ class TestInfo with Mappable {
 }
 
 class NestedInfo with Mappable {
-  int id;
-  bool isAdmin;
-  String name;
-  double rate;
-  List<int> numbers;
-  Map<String, dynamic> meta;
-  DateTime time;
-  NestedInfo nested;
-  List<NestedInfo> nests;
+  int? id;
+  bool? isAdmin;
+  String? name;
+  double? rate;
+  List<int>? numbers;
+  Map<String, dynamic>? meta;
+  DateTime? time;
+  NestedInfo? nested;
+  List<NestedInfo>? nests;
 
   @override
   void mapping(Mapper map) {
@@ -93,7 +93,7 @@ void expectInfo(Map<String, dynamic> json, info) {
   expect(info.numbers, json['numbers']);
   expect(
       DateTime.fromMillisecondsSinceEpoch(json['time'] * 1000)
-          ?.compareTo(info.time),
+          .compareTo(info.time),
       0);
   expect(info.isAdmin, json['is_admin']);
   expect(info.meta['empty'], 'no');
@@ -198,7 +198,6 @@ void main() {
 
       // non-correct info
       final nonCorrectInfo = mapper.toObject<NonCorrectTestInfo>();
-      expect(nonCorrectInfo != null, true);
       expect(nonCorrectInfo.isNothing, null);
     });
 
@@ -211,15 +210,14 @@ void main() {
       expectInfo(json, info);
       expect(info.likeNotification, json['setting']['notification']['like']);
       expect(info.times, isNotNull);
-      expect(info.times.length, equals(json['times'].length));
-      expect(info.times.first.millisecondsSinceEpoch,
+      expect(info.times!.length, equals(json['times'].length));
+      expect(info.times!.first.millisecondsSinceEpoch,
           equals(json['times'][0] * 1000));
 
       final nested = info.nested;
       expectInfo(json['nested'], nested);
 
       final nests = info.nests;
-      expect(nests != null, true);
       expect(nests.length, json['nests'].length);
       nests.asMap().forEach((i, o) => expectInfo(json['nests'][i], o));
     });
@@ -273,7 +271,7 @@ void main() {
     expect(jsonOutput['times'], isNotNull);
     expect(jsonOutput['times'].length, equals(2));
     expect(
-        DateTime.tryParse(jsonOutput['times'][0])
+        DateTime.tryParse(jsonOutput['times'][0])!
             .compareTo(DateTime.fromMillisecondsSinceEpoch(324 * 1000)),
         0);
     expect(jsonOutput['setting']['notification']['like'], false);
@@ -282,7 +280,6 @@ void main() {
     expectJson(jsonOutput['nested'], nested);
 
     final nests = info.nests;
-    expect(nests != null, true);
     expect(jsonOutput['nests'].length, nests.length);
     nests.asMap().forEach((i, o) => expectJson(jsonOutput['nests'][i], o));
   });

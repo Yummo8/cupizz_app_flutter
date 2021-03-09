@@ -4,7 +4,7 @@ class FollowCard extends StatelessWidget {
   final title;
   final subtitle;
 
-  const FollowCard({Key key, this.title, this.subtitle}) : super(key: key);
+  const FollowCard({Key? key, this.title, this.subtitle}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(

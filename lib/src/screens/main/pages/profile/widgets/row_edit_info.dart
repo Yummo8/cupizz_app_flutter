@@ -2,13 +2,13 @@ part of '../edit_profile_screen.dart';
 
 class RowEditInfo extends StatelessWidget {
   final String semanticLabel;
-  final IconData iconData;
-  final String title;
-  final String value;
-  final Function onClick;
+  final IconData? iconData;
+  final String? title;
+  final String? value;
+  final Function? onClick;
 
   RowEditInfo(
-      {Key key,
+      {Key? key,
       this.semanticLabel = '',
       this.iconData,
       this.title,
@@ -20,7 +20,7 @@ class RowEditInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizeHelper = SizeHelper(context);
     return InkWell(
-      onTap: onClick,
+      onTap: onClick as void Function()?,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,7 +36,7 @@ class RowEditInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  title!,
                   style: context.textTheme.bodyText1,
                 ),
                 SizedBox(height: sizeHelper.rH(1)),

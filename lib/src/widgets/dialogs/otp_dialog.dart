@@ -7,11 +7,11 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpDialog {
   static Future show(BuildContext context,
-      {Future Function(String otp) onSubmit,
-      String email,
-      Future Function() resend}) async {
+      {Future Function(String otp)? onSubmit,
+      String? email,
+      Future Function()? resend}) async {
     var textEditingController = TextEditingController();
-    StreamController<ErrorAnimationType> errorController;
+    StreamController<ErrorAnimationType>? errorController;
     var hasError = false;
     var currentText = '';
     var isLoading = false;
@@ -85,7 +85,7 @@ class OtpDialog {
                             autovalidateMode: AutovalidateMode.disabled,
                             animationType: AnimationType.fade,
                             validator: (v) {
-                              if (v.length != 6) {
+                              if (v!.length != 6) {
                                 return 'Vui lòng nhập mã xác thực';
                               } else {
                                 return null;
@@ -105,7 +105,7 @@ class OtpDialog {
                             ),
                             cursorColor: context.colorScheme.onBackground,
                             animationDuration: Duration(milliseconds: 300),
-                            textStyle: context.textTheme.headline6
+                            textStyle: context.textTheme.headline6!
                                 .copyWith(height: 1.6),
                             enableActiveFill: true,
                             errorAnimationController: errorController,
@@ -121,7 +121,7 @@ class OtpDialog {
                         padding: const EdgeInsets.symmetric(horizontal: 30.0),
                         child: Text(
                           '*Hãy điền đủ 6 số',
-                          style: context.textTheme.bodyText1.copyWith(
+                          style: context.textTheme.bodyText1!.copyWith(
                               color: context.colorScheme.error,
                               fontWeight: FontWeight.w400),
                         ),
@@ -134,7 +134,7 @@ class OtpDialog {
                             setState(() {
                               isLoading = true;
                             });
-                            resend?.call()?.whenComplete(() => setState(() {
+                            resend?.call().whenComplete(() => setState(() {
                                   isLoading = false;
                                 }));
                           };
@@ -152,7 +152,8 @@ class OtpDialog {
                                           TextSpan(
                                               text: ' GỬI LẠI',
                                               recognizer: onTapRecognizer,
-                                              style: context.textTheme.subtitle1
+                                              style: context
+                                                  .textTheme.subtitle1!
                                                   .copyWith(
                                                 color:
                                                     context.colorScheme.primary,

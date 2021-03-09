@@ -36,65 +36,61 @@ class SettingsBottomSheet {
 
   Widget _buildFilter() {
     final controller = Momentum.controller<FriendPageController>(context);
-    final model = controller.model;
-    return model.filter == null
-        ? const SizedBox.shrink()
-        : _buildItem(
-            title: Strings.friendPage.filterTitle,
-            body: CustomGridView(
-              crossAxisSpacing: 10,
-              crossAxisCount: 2,
-              children: FriendQueryType.getAll()
-                  .asMap()
-                  .map((i, e) => MapEntry<int, Widget>(
-                      i,
-                      OptionButton(
-                        title: e.displayValue,
-                        isSelected: model.filter.rawValue == e.rawValue,
-                        onPressed: () {
-                          controller.updateSettings(filter: e);
-                        },
-                      )))
-                  .values
-                  .toList(),
-            ),
-          );
+    final model = controller.model!;
+    return _buildItem(
+      title: Strings.friendPage.filterTitle,
+      body: CustomGridView(
+        crossAxisSpacing: 10,
+        crossAxisCount: 2,
+        children: FriendQueryType.getAll()
+            .asMap()
+            .map((i, e) => MapEntry<int, Widget>(
+                i,
+                OptionButton(
+                  title: e.displayValue,
+                  isSelected: model.filter.rawValue == e.rawValue,
+                  onPressed: () {
+                    controller.updateSettings(filter: e);
+                  },
+                )))
+            .values
+            .toList(),
+      ),
+    );
   }
 
   Widget _buildSort() {
     final controller = Momentum.controller<FriendPageController>(context);
-    final model = controller.model;
-    return model.sort == null
-        ? const SizedBox.shrink()
-        : _buildItem(
-            title: Strings.friendPage.sortTitle,
-            body: Row(
-              children: FriendQueryOrderBy.getAll()
-                  .asMap()
-                  .map((i, e) => MapEntry(
-                      i,
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: i == 0 ? 0 : 10),
-                          child: OptionButton(
-                            title: e.displayValue,
-                            isSelected: model.sort.rawValue == e.rawValue,
-                            onPressed: () {
-                              controller.updateSettings(sort: e);
-                            },
-                          ),
-                        ),
-                      )))
-                  .values
-                  .toList(),
-            ),
-          );
+    final model = controller.model!;
+    return _buildItem(
+      title: Strings.friendPage.sortTitle,
+      body: Row(
+        children: FriendQueryOrderBy.getAll()
+            .asMap()
+            .map((i, e) => MapEntry(
+                i,
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: i == 0 ? 0 : 10),
+                    child: OptionButton(
+                      title: e.displayValue,
+                      isSelected: model.sort.rawValue == e.rawValue,
+                      onPressed: () {
+                        controller.updateSettings(sort: e);
+                      },
+                    ),
+                  ),
+                )))
+            .values
+            .toList(),
+      ),
+    );
   }
 
   Widget _buildItem({
-    @required String title,
-    Widget actions,
-    Widget body,
+    required String title,
+    Widget? actions,
+    Widget? body,
     bool showBottomSeparator = true,
   }) {
     return Column(
@@ -106,7 +102,7 @@ class SettingsBottomSheet {
           children: [
             Text(
               title,
-              style: context.textTheme.subtitle1
+              style: context.textTheme.subtitle1!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
             if (actions != null) actions

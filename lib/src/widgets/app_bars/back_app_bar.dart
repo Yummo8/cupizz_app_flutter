@@ -1,22 +1,22 @@
 import 'package:cupizz_app/src/base/base.dart';
 
 class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final List<Widget> actions;
-  final PreferredSizeWidget bottom;
-  final String title;
-  final Widget titleWidget;
-  final Function onBackPressed;
+  final List<Widget>? actions;
+  final PreferredSizeWidget? bottom;
+  final String? title;
+  final Widget? titleWidget;
+  final Function? onBackPressed;
   final bool isRouterPop;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final double elevation;
-  final Color shadowColor;
-  final Color textColor;
+  final Color? shadowColor;
+  final Color? textColor;
   final bool showBackButton;
   final bool centerTitle;
   final IconData backIcon;
 
   BackAppBar({
-    Key key,
+    Key? key,
     this.actions,
     this.bottom,
     this.title,
@@ -60,14 +60,14 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Navigator.pop(context);
                   }
                 } else {
-                  onBackPressed();
+                  onBackPressed!();
                 }
               },
             ),
       title: titleWidget ??
           Text(
             title ?? 'Cupizz',
-            style: context.textTheme.headline6
+            style: context.textTheme.headline6!
                 .copyWith(color: textColor ?? context.colorScheme.onBackground),
           ),
       actions: actions,

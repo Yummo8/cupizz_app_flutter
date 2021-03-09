@@ -4,8 +4,8 @@ import 'package:cupizz_app/src/screens/main/pages/post/components/post_page.cont
 import 'package:flutter/gestures.dart';
 
 class PostCard extends StatelessWidget {
-  final Post post;
-  const PostCard({Key key, this.post}) : super(key: key);
+  final Post? post;
+  const PostCard({Key? key, this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class PostCard extends StatelessWidget {
 }
 
 class _PostBody extends StatelessWidget {
-  final Post post;
-  const _PostBody({Key key, @required this.post}) : super(key: key);
+  final Post? post;
+  const _PostBody({Key? key, required this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final textColor = getTextColorFromColor(
@@ -54,13 +54,13 @@ class _PostBody extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(post?.content ?? '',
-                          style: context.textTheme.bodyText1
+                          style: context.textTheme.bodyText1!
                               .copyWith(color: textColor)),
                     ),
-                    if (post.images.isExistAndNotEmpty) ...[
+                    if (post!.images.isExistAndNotEmpty) ...[
                       const SizedBox(height: 10.0),
                       GroupImage(
-                          images: post.images,
+                          images: post!.images,
                           borderRadius: BorderRadius.circular(10)),
                     ],
                     const SizedBox(height: 10.0),
@@ -74,8 +74,8 @@ class _PostBody extends StatelessWidget {
 }
 
 class _PostHeader extends StatelessWidget {
-  final Post post;
-  const _PostHeader({Key key, @required this.post}) : super(key: key);
+  final Post? post;
+  const _PostHeader({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +87,9 @@ class _PostHeader extends StatelessWidget {
 }
 
 class _PostName extends StatelessWidget {
-  final Post post;
+  final Post? post;
 
-  const _PostName({Key key, @required this.post}) : super(key: key);
+  const _PostName({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,16 +108,16 @@ class _PostName extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: context.colorScheme.onBackground),
                 children: [
-                  TextSpan(text: post == null ? 'Loading' : '#${post.id} • '),
+                  TextSpan(text: post == null ? 'Loading' : '#${post!.id} • '),
                   TextSpan(
                       text:
-                          post == null ? 'Loading' : '${post.category?.value}',
+                          post == null ? 'Loading' : '${post!.category?.value}',
                       recognizer: TapGestureRecognizer()
                         ..onTap = post?.category == null
                             ? null
                             : () {
                                 Momentum.controller<PostPageController>(context)
-                                    .selectCategory(post.category);
+                                    .selectCategory(post!.category);
                               }),
                 ],
               ),
@@ -128,7 +128,7 @@ class _PostName extends StatelessWidget {
           ),
           SkeletonItem(
             child: Text(
-              post != null ? TimeAgo.format(post.createdAt) : 'Loading',
+              post != null ? TimeAgo.format(post!.createdAt!) : 'Loading',
               style: TextStyle(
                 color: context.colorScheme.onSurface,
               ),
@@ -141,16 +141,16 @@ class _PostName extends StatelessWidget {
 }
 
 class _PostAction extends StatelessWidget {
-  final Post post;
+  final Post? post;
 
-  const _PostAction({Key key, @required this.post}) : super(key: key);
+  const _PostAction({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final color = getTextColorFromColor(
         post?.category?.color ?? context.colorScheme.background);
-    var iconTextStyle = theme.textTheme.subtitle1.copyWith(color: color);
+    var iconTextStyle = theme.textTheme.subtitle1!.copyWith(color: color);
     return IntrinsicHeight(
       child: Row(
         children: [
@@ -158,14 +158,14 @@ class _PostAction extends StatelessWidget {
             onTap: (v) async {
               final _c = Momentum.controller<PostPageController>(context);
               if (!v) {
-                await _c.likePost(post);
+                await _c.likePost(post!);
               } else {
-                await _c.unlikePost(post);
+                await _c.unlikePost(post!);
               }
               return true;
             },
-            isLiked: post.myLikedPostType != null,
-            likeCount: post.totalReaction,
+            isLiked: post!.myLikedPostType != null,
+            likeCount: post!.totalReaction,
             likeBuilder: (isLiked) {
               return Icon(
                   isLiked ? Icons.favorite : Icons.favorite_border_sharp,
@@ -174,11 +174,12 @@ class _PostAction extends StatelessWidget {
             likeCountAnimationType: LikeCountAnimationType.all,
             likeCountPadding: EdgeInsets.only(left: 10),
             countBuilder: (likeCount, isLiked, text) {
-              return likeCount <= 0
+              return likeCount != null && likeCount <= 0
                   ? const SizedBox.shrink()
                   : Text(
                       text,
-                      style: context.textTheme.subtitle1.copyWith(color: color),
+                      style:
+                          context.textTheme.subtitle1!.copyWith(color: color),
                     );
             },
           ),
@@ -187,23 +188,24 @@ class _PostAction extends StatelessWidget {
             onTap: () {
               CommentBottomSheet(
                 context,
-                post: post,
-                totalLike: post.totalReaction,
+                post: post!,
+                totalLike: post!.totalReaction,
                 autoFocusInput: false,
               ).show();
             },
-            title: post.commentCount.toString(),
+            title: post!.commentCount.toString(),
             iconData: CupertinoIcons.chat_bubble_2,
             isHorizontal: true,
             color: color,
             titleStyle: iconTextStyle,
-            hasTitle: post.commentCount > 0,
+            hasTitle: post!.commentCount! > 0,
           ),
           Spacer(),
           IconButton(
               padding: EdgeInsets.zero,
               icon: Icon(Icons.share,
-                  color: post.category.color ?? context.colorScheme.background),
+                  color:
+                      post?.category?.color ?? context.colorScheme.background),
               onPressed: () {
                 Fluttertoast.showToast(msg: 'Tính năng đang phát triển mà 😞');
               })
@@ -225,14 +227,14 @@ class ActionIcon extends StatelessWidget {
     this.onTap,
   }) : assert(hasTitle == false || title != null);
 
-  final IconData iconData;
-  final double size;
+  final IconData? iconData;
+  final double? size;
   final Color color;
-  final String title;
-  final TextStyle titleStyle;
+  final String? title;
+  final TextStyle? titleStyle;
   final bool hasTitle;
   final bool isHorizontal;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -253,9 +255,9 @@ class ActionIcon extends StatelessWidget {
                     ? InkWell(
                         onTap: onTap,
                         child: Text(
-                          title,
+                          title!,
                           style: titleStyle ??
-                              theme.textTheme.bodyText1
+                              theme.textTheme.bodyText1!
                                   .copyWith(color: Colors.grey, fontSize: 14),
                         ),
                       )
@@ -277,9 +279,9 @@ class ActionIcon extends StatelessWidget {
                     ? InkWell(
                         onTap: onTap,
                         child: Text(
-                          title,
+                          title!,
                           style: titleStyle ??
-                              theme.textTheme.bodyText1
+                              theme.textTheme.bodyText1!
                                   .copyWith(color: Colors.grey, fontSize: 14),
                         ),
                       )

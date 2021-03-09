@@ -6,14 +6,14 @@ class EditGenderScreen extends StatefulWidget {
 }
 
 class _EditGenderScreenState extends State<EditGenderScreen> {
-  Gender selectedValue;
+  Gender? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       selectedValue = Momentum.controller<CurrentUserController>(context)
-          .model
+          .model!
           .currentUser
           ?.gender;
       setState(() {});
@@ -38,11 +38,11 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RadioButtonGroup<Gender>(
+              RadioButtonGroup<Gender?>(
                 spacing: 1.0,
                 items: Gender.getAll(),
                 selectedItems: [selectedValue],
-                valueToString: (v) => v.displayValue,
+                valueToString: (v) => v!.displayValue,
                 onItemPressed: (value) => setState(() {
                   selectedValue = value;
                 }),

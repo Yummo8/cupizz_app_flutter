@@ -22,24 +22,24 @@ class _ChatPageState extends State<ChatPage>
   static double _lastOffset = 0;
 
   @override
-  double get lastOffset => _lastOffset;
+  double get lastOffset => _ChatPageState._lastOffset;
 
   @override
   set lastOffset(double value) {
-    _lastOffset = value;
+    _ChatPageState._lastOffset = value;
   }
 
   final GlobalKey<CustomAnimatedListState> _key =
       GlobalKey<CustomAnimatedListState>();
 
-  int messageLength;
-  String selectId;
-  int selectAction;
+  int? messageLength;
+  String? selectId;
+  int? selectAction;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Momentum.controller<ChatPageController>(context).initState();
     });
   }
@@ -66,7 +66,7 @@ class _ChatPageState extends State<ChatPage>
         child: MomentumBuilder(
             controllers: [ChatPageController],
             builder: (context, snapshot) {
-              final model = snapshot<ChatPageModel>();
+              final model = snapshot<ChatPageModel>()!;
               return Column(
                 children: <Widget>[
                   buildHeadingBar(context),
@@ -80,8 +80,10 @@ class _ChatPageState extends State<ChatPage>
                                 children: [
                                   Text(
                                     'Hãy cập nhật thông tin cá nhân \nđể có thể ghép đôi với nhiều người hơn.',
-                                    style: context.textTheme.subtitle1.copyWith(
-                                        color: context.colorScheme.onSurface),
+                                    style: context.textTheme.subtitle1!
+                                        .copyWith(
+                                            color:
+                                                context.colorScheme.onSurface),
                                     textAlign: TextAlign.center,
                                   ),
                                   const SizedBox(height: 10),
@@ -97,7 +99,7 @@ class _ChatPageState extends State<ChatPage>
                                 controller: scrollController,
                                 padding: EdgeInsets.zero,
                                 itemCount: model.conversations.length +
-                                    (model.isLastPage ? 0 : 3),
+                                    (model.isLastPage! ? 0 : 3),
                                 itemExtent: null,
                                 shrinkWrap: true,
                                 physics: AlwaysScrollableScrollPhysics(
@@ -107,10 +109,10 @@ class _ChatPageState extends State<ChatPage>
                                     conversation:
                                         model.conversations.getAt(index),
                                     onHided: (_) {
-                                      _key.currentState.removeItem(index);
+                                      _key.currentState!.removeItem(index);
                                     },
                                     onDeleted: (_) {
-                                      _key.currentState.removeItem(index);
+                                      _key.currentState!.removeItem(index);
                                     },
                                   );
                                 },
@@ -155,7 +157,7 @@ class _ChatPageState extends State<ChatPage>
           children: <Widget>[
             Text(
               'Tin nhắn',
-              style: context.textTheme.headline4.copyWith(
+              style: context.textTheme.headline4!.copyWith(
                 color: context.colorScheme.onBackground,
                 fontWeight: FontWeight.bold,
               ),
@@ -164,7 +166,7 @@ class _ChatPageState extends State<ChatPage>
                 controllers: [ChatPageController],
                 builder: (context, snapshot) {
                   final unreadMessageCount =
-                      snapshot<ChatPageModel>().unreadMessageCount ?? 0;
+                      snapshot<ChatPageModel>()?.unreadMessageCount ?? 0;
                   return buildBadge(unreadMessageCount);
                 })
           ],
@@ -182,12 +184,6 @@ class _ChatPageState extends State<ChatPage>
       child: Row(
         children: <Widget>[
           Container(
-            child: Center(
-              child: Text(
-                'Công khai',
-                style: TextStyle(color: context.colorScheme.onPrimary),
-              ),
-            ),
             width: 80.0,
             height: 32.0,
             decoration: BoxDecoration(
@@ -198,6 +194,12 @@ class _ChatPageState extends State<ChatPage>
                 ],
                 color: context.colorScheme.secondary,
                 borderRadius: BorderRadius.circular(20.0)),
+            child: Center(
+              child: Text(
+                'Công khai',
+                style: TextStyle(color: context.colorScheme.onPrimary),
+              ),
+            ),
           ),
           SizedBox(width: 12.0),
           InkWell(

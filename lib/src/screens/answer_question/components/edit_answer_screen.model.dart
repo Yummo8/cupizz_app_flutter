@@ -11,23 +11,23 @@ class EditAnswerScreenModel extends MomentumModel<EditAnswerScreenController> {
     this.isSending = false,
   }) : super(controller);
 
-  final UserImage userImage;
-  final List<ColorOfAnswer> colors;
-  final ColorOfAnswer selectedColor;
-  final File backgroundImage;
-  final String content;
+  final UserImage? userImage;
+  final List<ColorOfAnswer>? colors;
+  final ColorOfAnswer? selectedColor;
+  final File? backgroundImage;
+  final String? content;
 
   final bool isSending;
 
   @override
   void update({
-    UserImage userImage,
-    List<ColorOfAnswer> colors,
-    ColorOfAnswer selectedColor,
-    File backgroundImage,
-    String content,
-    Question question,
-    bool isSending,
+    UserImage? userImage,
+    List<ColorOfAnswer>? colors,
+    ColorOfAnswer? selectedColor,
+    File? backgroundImage,
+    String? content,
+    Question? question,
+    bool? isSending,
   }) {
     EditAnswerScreenModel(
       controller,
@@ -63,10 +63,10 @@ class EditAnswerScreenModel extends MomentumModel<EditAnswerScreenController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return EditAnswerScreenModel(
       controller,
-      userImage: json['userImage'] != null
+      userImage: json!['userImage'] != null
           ? Mapper.fromJson(json['userImage']).toObject<UserImage>()
           : null,
       colors: ((json['colors'] ?? []) as List)
@@ -85,7 +85,7 @@ class EditAnswerScreenModel extends MomentumModel<EditAnswerScreenController> {
   @override
   Map<String, dynamic> toJson() => {
         'userImage': userImage?.toJson(),
-        'colors': colors?.map((e) => e.toJson())?.toList() ?? [],
+        'colors': colors?.map((e) => e.toJson()).toList() ?? [],
         'selectedColor': selectedColor?.toJson(),
         'backgroundImagePath': backgroundImage?.path,
         'content': content,

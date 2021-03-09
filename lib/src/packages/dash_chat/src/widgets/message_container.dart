@@ -1,23 +1,23 @@
 part of dash_chat;
 
 class MessageContainer extends StatelessWidget {
-  final Message message;
-  final DateFormat timeFormat;
-  final Widget Function(String, [Message]) messageTextBuilder;
-  final Widget Function(String, [Message]) messageImageBuilder;
-  final Widget Function(String, [Message]) messageTimeBuilder;
-  final BoxDecoration messageContainerDecoration;
+  final Message? message;
+  final DateFormat? timeFormat;
+  final Widget Function(String, [Message?])? messageTextBuilder;
+  final Widget Function(String?, [Message?])? messageImageBuilder;
+  final Widget Function(String, [Message?])? messageTimeBuilder;
+  final BoxDecoration? messageContainerDecoration;
   final List<MatchText> parsePatterns;
-  final bool isUser;
-  final List<Widget> buttons;
-  final List<Widget> Function(Message) messageButtonsBuilder;
-  final BoxConstraints constraints;
+  final bool? isUser;
+  final List<Widget>? buttons;
+  final List<Widget> Function(Message?)? messageButtonsBuilder;
+  final BoxConstraints? constraints;
   final EdgeInsets messagePadding;
   final bool textBeforeImage;
-  final BoxDecoration Function(Message, bool) messageDecorationBuilder;
+  final BoxDecoration Function(Message?, bool?)? messageDecorationBuilder;
 
   const MessageContainer({
-    @required this.message,
+    required this.message,
     this.timeFormat,
     this.constraints,
     this.messageImageBuilder,
@@ -42,16 +42,16 @@ class MessageContainer extends StatelessWidget {
     final createdAt = message?.createdAt ?? DateTime.now();
     final children = [
       _buildMessageImages(),
-      if (message == null || message.message.isExistAndNotEmpty)
+      if (message == null || message!.message.isExistAndNotEmpty)
         Container(
           decoration: messageDecorationBuilder != null && message != null
-              ? messageDecorationBuilder(message, isUser)
+              ? messageDecorationBuilder!(message, isUser)
               : messageContainerDecoration != null
-                  ? messageContainerDecoration.copyWith(
-                      color: messageContainerDecoration.color,
+                  ? messageContainerDecoration!.copyWith(
+                      color: messageContainerDecoration!.color,
                     )
                   : BoxDecoration(
-                      color: isUser
+                      color: isUser!
                           ? Theme.of(context).primaryColor
                           : context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(5.0),
@@ -63,30 +63,30 @@ class MessageContainer extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment:
-                isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                isUser! ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: <Widget>[
-              if (message == null || message.message != null)
+              if (message == null || message!.message != null)
                 _buildMessageText(context),
               if (buttons != null)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment:
-                      isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+                      isUser! ? MainAxisAlignment.end : MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: buttons,
+                  children: buttons!,
                 )
               else if (messageButtonsBuilder != null && message != null)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment:
-                      isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-                  children: messageButtonsBuilder(message),
+                      isUser! ? MainAxisAlignment.end : MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
+                  children: messageButtonsBuilder!(message),
                 ),
               if (messageTimeBuilder != null && message != null)
-                messageTimeBuilder(
+                messageTimeBuilder!(
                   timeFormat != null
-                      ? timeFormat.format(createdAt)
+                      ? timeFormat!.format(createdAt)
                       : DateFormat('HH:mm:ss').format(createdAt),
                   message,
                 )
@@ -95,11 +95,11 @@ class MessageContainer extends StatelessWidget {
                   padding: EdgeInsets.only(top: 5.0),
                   child: Text(
                     timeFormat != null
-                        ? timeFormat.format(createdAt.toLocal())
+                        ? timeFormat!.format(createdAt.toLocal())
                         : DateFormat('HH:mm:ss').format(createdAt.toLocal()),
                     style: TextStyle(
                       fontSize: 10.0,
-                      color: isUser
+                      color: isUser!
                           ? context.colorScheme.onPrimary
                           : context.colorScheme.onBackground,
                     ),
@@ -117,7 +117,7 @@ class MessageContainer extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment:
-              isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              isUser! ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: !textBeforeImage ? children.reversed.toList() : children,
         ),
       ),
@@ -126,14 +126,14 @@ class MessageContainer extends StatelessWidget {
 
   Widget _buildMessageText(BuildContext context) {
     if (messageTextBuilder != null) {
-      return messageTextBuilder(
+      return messageTextBuilder!(
           message?.message ?? 'Loading message...', message);
     } else {
       return ParsedText(
         parse: parsePatterns,
         text: message?.message ?? 'Loading message...',
         style: TextStyle(
-          color: isUser
+          color: isUser!
               ? context.colorScheme.onPrimary
               : context.colorScheme.onBackground,
         ),
@@ -142,20 +142,21 @@ class MessageContainer extends StatelessWidget {
   }
 
   Widget _buildMessageImages() {
-    if (message?.attachments != null && message.attachments.isNotEmpty) {
+    if (message?.attachments != null && message!.attachments!.isNotEmpty) {
       if (messageImageBuilder != null) {
-        return messageImageBuilder(message.attachments[0].thumbnail, message);
+        return messageImageBuilder!(
+            message!.attachments![0].thumbnail, message);
       } else {
-        final images = GroupImage(images: message.attachments);
+        final images = GroupImage(images: message!.attachments);
         return Padding(
           padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: SizedBox(
-              height: message.attachments.length > 1
-                  ? constraints.maxHeight * 0.3
+              height: message!.attachments!.length > 1
+                  ? constraints!.maxHeight * 0.3
                   : null,
-              width: constraints.maxWidth * 0.7,
+              width: constraints!.maxWidth * 0.7,
               child: images,
             ),
           ),

@@ -12,17 +12,17 @@ import './image_cropper_screen.dart';
 
 class PhotoApp extends StatelessWidget {
   const PhotoApp({
-    Key key,
+    Key? key,
     this.options,
     this.provider,
     this.photoList,
     this.pickedAssetList,
   }) : super(key: key);
 
-  final Options options;
-  final I18nProvider provider;
-  final List<AssetPathEntity> photoList;
-  final List<AssetEntity> pickedAssetList;
+  final Options? options;
+  final I18nProvider? provider;
+  final List<AssetPathEntity>? photoList;
+  final List<AssetEntity>? pickedAssetList;
 
 //  final List<AssetEntity> pickedAssetList;
 
@@ -34,8 +34,8 @@ class PhotoApp extends StatelessWidget {
       pickedAssetList: pickedAssetList,
       child: PhotoMainPage(
         onClose: (List<AssetEntity> value) async {
-          List<File> files;
-          if (options.isCropImage) {
+          List<File?>? files;
+          if (options!.isCropImage!) {
             final listFile =
                 await Future.wait(value.map((e) => e.file).toList());
             files = await Navigator.push(
@@ -43,7 +43,7 @@ class PhotoApp extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => ImagesCropperScreen(
                         files: listFile,
-                        aspectRatio: options.cropAspectRatio,
+                        aspectRatio: options!.cropAspectRatio,
                       )),
             );
           } else {

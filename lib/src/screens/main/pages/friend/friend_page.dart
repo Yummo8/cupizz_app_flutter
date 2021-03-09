@@ -27,10 +27,10 @@ class _FriendPageState extends MomentumState<FriendPage>
     lastScrollOffset = value;
   }
 
-  AnimationController animationController;
-  AnimationController topBarAnimationController;
+  AnimationController? animationController;
+  late AnimationController topBarAnimationController;
   bool multiple = true;
-  Animation<double> topBarAnimation;
+  late Animation<double> topBarAnimation;
 
   double topBarOpacity = 0.0;
 
@@ -71,19 +71,19 @@ class _FriendPageState extends MomentumState<FriendPage>
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Momentum.controller<FriendPageController>(context)
-        ..model.update(animationController: animationController)
+        ..model!.update(animationController: animationController)
         // ..refresh()
         ..listen<FriendPageEvent>(
           state: this,
           invoke: (data) {
             if (data.action == FriendPageEventAction.error) {
-              Fluttertoast.showToast(msg: data.message);
+              Fluttertoast.showToast(msg: data.message!);
             }
           },
         );
-      animationController.fling();
+      animationController!.fling();
     });
   }
 
@@ -94,7 +94,7 @@ class _FriendPageState extends MomentumState<FriendPage>
 
   @override
   void dispose() {
-    animationController.dispose();
+    animationController!.dispose();
     topBarAnimationController.dispose();
     super.dispose();
   }
@@ -107,10 +107,10 @@ class _FriendPageState extends MomentumState<FriendPage>
           child: MomentumBuilder(
               controllers: [FriendPageController],
               builder: (context, snapshot) {
-                final model = snapshot<FriendPageModel>();
+                final model = snapshot<FriendPageModel>()!;
                 final friendsList = [
                   ...model.friends,
-                  ...!model.isLastPage
+                  ...!model.isLastPage!
                       ? List.generate(
                           model.friends.length % 2 == 0 ? 2 : 3, (_) => null)
                       : []
@@ -123,7 +123,7 @@ class _FriendPageState extends MomentumState<FriendPage>
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         child: Text(
                           'Những người đã được ghép đôi, đã thích bạn hay bạn đã thích sẽ xuất hiện ở đây.',
-                          style: context.textTheme.subtitle1
+                          style: context.textTheme.subtitle1!
                               .copyWith(color: context.colorScheme.onSurface),
                           textAlign: TextAlign.center,
                         ),
@@ -143,6 +143,12 @@ class _FriendPageState extends MomentumState<FriendPage>
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   controller: scrollController,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: multiple ? 2 : 1,
+                    mainAxisSpacing: _PADDING,
+                    crossAxisSpacing: _PADDING,
+                    childAspectRatio: 1,
+                  ),
                   children: friendsList
                       .asMap()
                       .map((index, value) {
@@ -150,7 +156,7 @@ class _FriendPageState extends MomentumState<FriendPage>
                         final animation =
                             Tween<double>(begin: 0.0, end: 1.0).animate(
                           CurvedAnimation(
-                            parent: animationController,
+                            parent: animationController!,
                             curve: Interval((1 / count) * index, 1.0,
                                 curve: Curves.fastOutSlowIn),
                           ),
@@ -166,12 +172,6 @@ class _FriendPageState extends MomentumState<FriendPage>
                       })
                       .values
                       .toList(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: multiple ? 2 : 1,
-                    mainAxisSpacing: _PADDING,
-                    crossAxisSpacing: _PADDING,
-                    childAspectRatio: 1,
-                  ),
                 );
               }),
         ),
@@ -249,26 +249,26 @@ class _FriendPageState extends MomentumState<FriendPage>
 
 class HomeListView extends StatelessWidget {
   const HomeListView({
-    Key key,
+    Key? key,
     this.simpleUser,
     this.animationController,
     this.animation,
   }) : super(key: key);
 
-  final SimpleUser simpleUser;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final SimpleUser? simpleUser;
+  final AnimationController? animationController;
+  final Animation<dynamic>? animation;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
         return FadeTransition(
-          opacity: animation,
+          opacity: animation as Animation<double>,
           child: Transform(
             transform: Matrix4.translationValues(
-                0.0, 50 * (1.0 - animation.value), 0.0),
+                0.0, 50 * (1.0 - animation!.value), 0.0),
             child: UserItem(simpleUser: simpleUser),
           ),
         );

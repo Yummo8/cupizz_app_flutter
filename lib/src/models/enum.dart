@@ -3,15 +3,15 @@ import 'package:cupizz_app/src/base/base.dart';
 class FileType extends Enumerable<String> {
   @override
   final String rawValue;
-  const FileType({@required this.rawValue});
+  const FileType({required this.rawValue});
 
   static const image = FileType(rawValue: 'image');
 }
 
-class FriendType extends Enumerable<String> {
+class FriendType extends Enumerable<String?> {
   @override
-  final String rawValue;
-  const FriendType({@required this.rawValue});
+  final String? rawValue;
+  const FriendType({required this.rawValue});
 
   static const none = FriendType(rawValue: 'none');
   static const sent = FriendType(rawValue: 'sent');
@@ -20,13 +20,13 @@ class FriendType extends Enumerable<String> {
   static const me = FriendType(rawValue: 'me');
 }
 
-class FriendQueryType extends Enumerable<String> {
+class FriendQueryType extends Enumerable<String?> {
   @override
-  final String rawValue;
+  final String? rawValue;
   final String displayValue;
 
   const FriendQueryType({
-    @required this.rawValue,
+    required this.rawValue,
   }) : displayValue = rawValue == 'all'
             ? 'Tất cả'
             : rawValue == 'friend'
@@ -45,12 +45,12 @@ class FriendQueryType extends Enumerable<String> {
   static List<FriendQueryType> getAll() => [all, friend, sent, received];
 }
 
-class FriendQueryOrderBy extends Enumerable<String> {
+class FriendQueryOrderBy extends Enumerable<String?> {
   @override
-  final String rawValue;
+  final String? rawValue;
   final String displayValue;
 
-  const FriendQueryOrderBy({@required this.rawValue})
+  const FriendQueryOrderBy({required this.rawValue})
       : displayValue = rawValue == 'new'
             ? 'Mới nhất'
             : rawValue == 'login'
@@ -69,7 +69,7 @@ class FriendQueryOrderBy extends Enumerable<String> {
 class OnlineStatus extends Enumerable<String> {
   @override
   final String rawValue;
-  const OnlineStatus({@required this.rawValue});
+  const OnlineStatus({required this.rawValue});
 
   static const online = FileType(rawValue: 'online');
   static const offline = FileType(rawValue: 'offline');
@@ -80,7 +80,7 @@ class Gender extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  Gender({@required this.rawValue})
+  Gender({required this.rawValue})
       : displayValue = rawValue == 'male'
             ? Strings.common.man
             : rawValue == 'female'
@@ -99,7 +99,7 @@ class SocialProviderType extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  SocialProviderType({@required this.rawValue, String displayValue})
+  SocialProviderType({required this.rawValue, String? displayValue})
       : displayValue = displayValue ??
             getAll().firstWhere((e) => e.rawValue == rawValue).displayValue;
 
@@ -116,16 +116,20 @@ class SocialProviderType extends Enumerable<String> {
       [email, facebook, google, instagram];
 }
 
-class NotificationType extends Enumerable<String> {
+class NotificationType extends Enumerable<String?> {
   @override
-  final String rawValue;
+  final String? rawValue;
   final String shortTitle;
   final String title;
 
-  NotificationType({@required this.rawValue, String shortTitle, String title})
+  NotificationType({required this.rawValue, String? shortTitle, String? title})
       : shortTitle = shortTitle ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).shortTitle ??
-            rawValue,
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.shortTitle ??
+            rawValue!,
         title =
             title ?? getAll().firstWhere((e) => e.rawValue == rawValue).title;
 
@@ -160,9 +164,13 @@ class EducationLevel extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  EducationLevel({@required this.rawValue, String displayValue})
+  EducationLevel({required this.rawValue, String? displayValue})
       : displayValue = displayValue ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue ??
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.displayValue ??
             Strings.common.notDisclose;
 
   static final highSchool =
@@ -180,9 +188,13 @@ class UsualType extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  UsualType({@required this.rawValue, String displayValue})
+  UsualType({required this.rawValue, String? displayValue})
       : displayValue = displayValue ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue ??
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.displayValue ??
             Strings.common.notDisclose;
 
   static final never =
@@ -201,12 +213,20 @@ class HaveKids extends Enumerable<String> {
   final String displayValue;
   final String theirDisplay;
 
-  HaveKids({@required this.rawValue, String displayValue, String theirDisplay})
+  HaveKids({required this.rawValue, String? displayValue, String? theirDisplay})
       : displayValue = displayValue ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue ??
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.displayValue ??
             Strings.common.notDisclose,
         theirDisplay = theirDisplay ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).theirDisplay ??
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.theirDisplay ??
             Strings.common.notDisclose;
 
   static final dontHave = HaveKids(
@@ -226,9 +246,13 @@ class LookingFor extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  LookingFor({@required this.rawValue, String displayValue})
+  LookingFor({required this.rawValue, String? displayValue})
       : displayValue = displayValue ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue ??
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.displayValue ??
             Strings.common.notDisclose;
 
   static final chatting =
@@ -249,9 +273,13 @@ class Religious extends Enumerable<String> {
   final String rawValue;
   final String displayValue;
 
-  Religious({@required this.rawValue, String displayValue})
+  Religious({required this.rawValue, String? displayValue})
       : displayValue = displayValue ??
-            getAll().firstWhere((e) => e.rawValue == rawValue).displayValue ??
+            getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0)
+                ?.displayValue ??
             Strings.common.notDisclose;
 
   static final agnostic = Religious(
@@ -294,11 +322,14 @@ class LikeType extends Enumerable<String> {
   final String gifPath;
   final String iconPath;
 
-  factory LikeType({@required String rawValue}) {
-    return rawValue.isExistAndNotEmpty
-        ? LikeType.getAll().where((e) => e.rawValue == rawValue).first ??
+  factory LikeType({required String rawValue}) {
+    return rawValue.isNotEmpty
+        ? LikeType.getAll()
+                .where((e) => e.rawValue == rawValue)
+                .toList()
+                .getAt(0) ??
             LikeType.love
-        : null;
+        : LikeType.love;
   }
 
   const LikeType._(this.rawValue, this.gifPath, this.iconPath);
@@ -318,7 +349,7 @@ class CallStatus extends Enumerable<String> {
   @override
   final String rawValue;
 
-  const CallStatus({@required this.rawValue});
+  const CallStatus({required this.rawValue});
 
   static final ringing = CallStatus(rawValue: 'ringing');
   static final rejected = CallStatus(rawValue: 'rejected');

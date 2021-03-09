@@ -3,18 +3,18 @@ import 'package:simple_animations/simple_animations.dart';
 
 class LinearGradientAnimatedContainer extends StatelessWidget {
   final LinearGradient gradient;
-  final Widget child;
-  final AlignmentGeometry alignment;
-  final EdgeInsetsGeometry padding;
-  final Decoration foregroundDecoration;
-  final BoxConstraints constraints;
-  final EdgeInsetsGeometry margin;
-  final Matrix4 transform;
-  final AlignmentGeometry transformAlignment;
+  final Widget? child;
+  final AlignmentGeometry? alignment;
+  final EdgeInsetsGeometry? padding;
+  final Decoration? foregroundDecoration;
+  final BoxConstraints? constraints;
+  final EdgeInsetsGeometry? margin;
+  final Matrix4? transform;
+  final AlignmentGeometry? transformAlignment;
   final Clip clipBehavior;
 
   LinearGradientAnimatedContainer({
-    Key key,
+    Key? key,
     this.gradient = const LinearGradient(colors: []),
     this.alignment,
     this.padding,
@@ -24,9 +24,9 @@ class LinearGradientAnimatedContainer extends StatelessWidget {
     this.transformAlignment,
     this.child,
     this.clipBehavior = Clip.none,
-    double width,
-    double height,
-    BoxConstraints constraints,
+    double? width,
+    double? height,
+    BoxConstraints? constraints,
   })  : constraints = (width != null || height != null)
             ? constraints?.tighten(width: width, height: height) ??
                 BoxConstraints.tightFor(width: width, height: height)
@@ -58,7 +58,6 @@ class LinearGradientAnimatedContainer extends StatelessWidget {
             margin: margin,
             transform: transform,
             transformAlignment: transformAlignment,
-            child: child,
             clipBehavior: clipBehavior,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -69,6 +68,7 @@ class LinearGradientAnimatedContainer extends StatelessWidget {
               tileMode: gradient.tileMode,
               transform: gradient.transform,
             )),
+            child: child,
           );
         });
   }

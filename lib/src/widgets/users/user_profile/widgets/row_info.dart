@@ -1,13 +1,13 @@
 part of '../user_profile.dart';
 
 class RowInfo extends StatelessWidget {
-  final String semanticLabel;
-  final IconData iconData;
-  final String title;
-  final Function onClick;
+  final String? semanticLabel;
+  final IconData? iconData;
+  final String? title;
+  final Function? onClick;
 
   RowInfo({
-    Key key,
+    Key? key,
     this.semanticLabel,
     this.iconData,
     this.title,
@@ -18,7 +18,7 @@ class RowInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return SkeletonItem(
       child: InkWell(
-        onTap: onClick,
+        onTap: onClick as void Function()?,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

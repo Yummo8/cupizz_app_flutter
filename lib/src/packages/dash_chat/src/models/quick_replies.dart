@@ -4,10 +4,10 @@ part of dash_chat;
 /// be shown to the user
 class QuickReplies {
   /// [List] of replies that will be shown to the user
-  List<Reply> values;
+  List<Reply>? values;
 
   /// Should the quick replies be dismissable or persist
-  bool keepIt;
+  bool? keepIt;
 
   QuickReplies({
     this.keepIt,
@@ -32,7 +32,7 @@ class QuickReplies {
     final data = <String, dynamic>{};
 
     data['keepIt'] = keepIt;
-    data['values'] = values.map((e) => e.toJson()).toList();
+    data['values'] = values!.map((e) => e.toJson()).toList();
 
     return data;
   }

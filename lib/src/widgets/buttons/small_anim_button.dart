@@ -2,17 +2,17 @@ import 'package:cupizz_app/src/base/base.dart';
 
 class SmallAnimButton extends StatelessWidget {
   const SmallAnimButton({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.onPressed,
     this.height,
     this.width,
   }) : super(key: key);
 
   final String text;
-  final Future Function() onPressed;
-  final double width;
-  final double height;
+  final Future Function()? onPressed;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +48,6 @@ class SmallAnimButton extends StatelessWidget {
         borderRadius: 22.0,
         roundLoadingShape: false,
         color: Colors.transparent,
-        child: Text(
-          text,
-          style: TextStyle(
-              color: context.colorScheme.primary,
-              fontSize: 18,
-              fontWeight: FontWeight.w700),
-        ),
         loader: Center(
           child: LoadingIndicator(
             color: context.colorScheme.primaryVariant,
@@ -64,11 +57,18 @@ class SmallAnimButton extends StatelessWidget {
         onTap: (startLoading, stopLoading, btnState) async {
           startLoading();
           try {
-            if (onPressed != null) await onPressed();
+            if (onPressed != null) await onPressed!();
           } finally {
             stopLoading();
           }
         },
+        child: Text(
+          text,
+          style: TextStyle(
+              color: context.colorScheme.primary,
+              fontSize: 18,
+              fontWeight: FontWeight.w700),
+        ),
       ),
     );
   }

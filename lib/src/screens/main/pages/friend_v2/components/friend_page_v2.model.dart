@@ -1,11 +1,11 @@
 part of '../friend_page_v2.dart';
 
 class FriendV2TabData with Mappable {
-  List<FriendData> _friends = const [];
-  bool _isLastPage = false;
-  int _currentPage = 1;
-  FriendQueryOrderBy _sort = FriendQueryOrderBy.recent;
-  bool _isLoadingMore = false;
+  List<FriendData>? _friends = const [];
+  bool? _isLastPage = false;
+  int? _currentPage = 1;
+  FriendQueryOrderBy? _sort = FriendQueryOrderBy.recent;
+  bool? _isLoadingMore = false;
 
   List<FriendData> get friends => _friends ?? [];
   bool get isLastPage => _isLastPage ?? false;
@@ -14,11 +14,11 @@ class FriendV2TabData with Mappable {
   bool get isLoadingMore => _isLoadingMore ?? false;
 
   FriendV2TabData({
-    List<FriendData> friends,
-    bool isLastPage,
-    int currentPage,
-    FriendQueryOrderBy sort,
-    bool isLoadingMore,
+    List<FriendData>? friends,
+    bool? isLastPage,
+    int? currentPage,
+    FriendQueryOrderBy? sort,
+    bool? isLoadingMore,
   })  : _friends = friends,
         _isLastPage = isLastPage,
         _isLoadingMore = isLoadingMore,
@@ -27,20 +27,20 @@ class FriendV2TabData with Mappable {
 
   void addData(
     List<FriendData> data, {
-    bool isLastPage,
-    int currentPage,
+    bool? isLastPage,
+    int? currentPage,
   }) {
-    _friends.addAll(data);
+    _friends!.addAll(data);
     _currentPage = currentPage ?? this.currentPage;
     _isLastPage = isLastPage ?? this.isLastPage;
   }
 
   FriendV2TabData copyWith({
-    List<FriendData> friends,
-    bool isLastPage,
-    int currentPage,
-    FriendQueryOrderBy sort,
-    bool isLoadingMore,
+    List<FriendData>? friends,
+    bool? isLastPage,
+    int? currentPage,
+    FriendQueryOrderBy? sort,
+    bool? isLoadingMore,
   }) {
     _friends = friends ?? this.friends;
     _isLastPage = isLastPage ?? this.isLastPage;
@@ -63,8 +63,8 @@ class FriendV2TabData with Mappable {
 class FriendPageV2Model extends MomentumModel<FriendPageV2Controller> {
   FriendPageV2Model(
     FriendPageV2Controller controller, {
-    FriendV2TabData allFriends,
-    FriendV2TabData receivedFriends,
+    FriendV2TabData? allFriends,
+    FriendV2TabData? receivedFriends,
     this.scrollOffset = 0,
     this.animationController,
     this.currentTab = 0,
@@ -74,18 +74,18 @@ class FriendPageV2Model extends MomentumModel<FriendPageV2Controller> {
 
   final FriendV2TabData allFriends;
   final FriendV2TabData receivedFriends;
-  final double scrollOffset;
-  final int currentTab;
+  final double? scrollOffset;
+  final int? currentTab;
 
-  final AnimationController animationController;
+  final AnimationController? animationController;
 
   @override
   void update({
-    FriendV2TabData allFriends,
-    FriendV2TabData receivedFriends,
-    double scrollOffset,
-    AnimationController animationController,
-    int currentTab,
+    FriendV2TabData? allFriends,
+    FriendV2TabData? receivedFriends,
+    double? scrollOffset,
+    AnimationController? animationController,
+    int? currentTab,
   }) {
     FriendPageV2Model(
       controller,
@@ -98,10 +98,10 @@ class FriendPageV2Model extends MomentumModel<FriendPageV2Controller> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return FriendPageV2Model(
       controller,
-      allFriends: json['allFriends'] == null
+      allFriends: json!['allFriends'] == null
           ? FriendV2TabData()
           : Mapper.fromJson(json['allFriends']).toObject<FriendV2TabData>(),
       receivedFriends: json['receivedFriends'] == null
@@ -115,8 +115,8 @@ class FriendPageV2Model extends MomentumModel<FriendPageV2Controller> {
 
   @override
   Map<String, dynamic> toJson() => {
-        'allFriends': (allFriends ?? FriendV2TabData())?.toJson(),
-        'receivedFriends': (receivedFriends ?? FriendV2TabData())?.toJson(),
+        'allFriends': allFriends.toJson(),
+        'receivedFriends': receivedFriends.toJson(),
         'scrollOffset': scrollOffset,
         'currentTab': currentTab,
       };

@@ -11,37 +11,37 @@ class ForgotController extends MomentumController<ForgotPassModel> {
   Future sendOtp(String email) async {
     try {
       final service = Get.find<UserService>();
-      model.update(email: email, isSendingOtp: true);
+      model!.update(email: email, isSendingOtp: true);
       final token = await service.forgotPassword(email);
-      model.update(token: token);
+      model!.update(token: token);
     } catch (e) {
       await Fluttertoast.showToast(msg: e.toString());
       rethrow;
     } finally {
-      model.update(isSendingOtp: false);
+      model!.update(isSendingOtp: false);
     }
   }
 
   Future verifyOtp(String otp) async {
     try {
       final service = Get.find<UserService>();
-      model.update(isVerifingOtp: true);
-      final data = await service.validateForgotPasswordToken(model.token, otp);
-      model.update(data: data);
+      model!.update(isVerifingOtp: true);
+      final data = await service.validateForgotPasswordToken(model!.token, otp);
+      model!.update(data: data);
     } catch (e) {
       await Fluttertoast.showToast(msg: e.toString());
       rethrow;
     } finally {
-      model.update(isVerifingOtp: false);
+      model!.update(isVerifingOtp: false);
     }
   }
 
   Future changePass(String newPass) async {
     try {
       final service = Get.find<UserService>();
-      model.update(isChangingPass: true);
+      model!.update(isChangingPass: true);
       await service.changePasswordByForgotPasswordToken(
-          model.data?.token, newPass);
+          model!.data?.token, newPass);
       reset();
       await Fluttertoast.showToast(
           msg:
@@ -50,7 +50,7 @@ class ForgotController extends MomentumController<ForgotPassModel> {
       await Fluttertoast.showToast(msg: e.toString());
       rethrow;
     } finally {
-      model.update(isChangingPass: false);
+      model!.update(isChangingPass: false);
     }
   }
 }

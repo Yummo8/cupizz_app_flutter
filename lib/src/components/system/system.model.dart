@@ -11,21 +11,21 @@ class SystemModel extends MomentumModel<SystemController> {
     this.agoraAppId,
   }) : super(controller);
 
-  final List<PostCategory> postCategories;
-  final List<ColorOfAnswer> colorsOfAnswer;
+  final List<PostCategory>? postCategories;
+  final List<ColorOfAnswer>? colorsOfAnswer;
   final int unreadMessageCount;
   final int unreadReceiveFriendCount;
   final int unreadAcceptedFriendCount;
-  final String agoraAppId;
+  final String? agoraAppId;
 
   @override
   void update({
-    List<PostCategory> postCategories,
-    List<ColorOfAnswer> colorsOfAnswer,
-    int unreadMessageCount,
-    int unreadReceiveFriendCount,
-    int unreadAcceptedFriendCount,
-    String agoraAppId,
+    List<PostCategory>? postCategories,
+    List<ColorOfAnswer>? colorsOfAnswer,
+    int? unreadMessageCount,
+    int? unreadReceiveFriendCount,
+    int? unreadAcceptedFriendCount,
+    String? agoraAppId,
   }) {
     SystemModel(
       controller,
@@ -41,10 +41,10 @@ class SystemModel extends MomentumModel<SystemController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return SystemModel(
       controller,
-      postCategories: json['postCategories'] != null
+      postCategories: json!['postCategories'] != null
           ? (json['postCategories'] as List)
               .map((e) => Mapper.fromJson(e).toObject<PostCategory>())
               .toList()
@@ -63,13 +63,11 @@ class SystemModel extends MomentumModel<SystemController> {
 
   @override
   Map<String, dynamic> toJson() => {
-        'postCategories':
-            postCategories?.map((e) => e.toJson())?.toList() ?? [],
-        'colorsOfAnswer':
-            colorsOfAnswer?.map((e) => e.toJson())?.toList() ?? [],
-        'unreadMessageCount': unreadMessageCount ?? 0,
-        'unreadReceiveFriendCount': unreadReceiveFriendCount ?? 0,
-        'unreadAcceptedFriendCount': unreadAcceptedFriendCount ?? 0,
+        'postCategories': postCategories?.map((e) => e.toJson()).toList() ?? [],
+        'colorsOfAnswer': colorsOfAnswer?.map((e) => e.toJson()).toList() ?? [],
+        'unreadMessageCount': unreadMessageCount,
+        'unreadReceiveFriendCount': unreadReceiveFriendCount,
+        'unreadAcceptedFriendCount': unreadAcceptedFriendCount,
         'agoraAppId': agoraAppId,
       };
 }

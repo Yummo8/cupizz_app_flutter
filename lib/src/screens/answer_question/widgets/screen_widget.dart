@@ -6,25 +6,25 @@ import '../../../base/base.dart';
 part 'compose_bottom_icon_widget.dart';
 
 class AnswerScreenWidget extends StatelessWidget {
-  final String questionContent;
-  final String answerContent;
-  final Color color;
-  final Color textColor;
-  final List<Color> gradient;
-  final File imageFile;
-  final String imageUrl;
-  final Function onSave;
-  final Function onQuestionPressed;
-  final Function(String v) onValueChanged;
-  final Function(File v) onImageSelected;
-  final Function(ColorOfAnswer color) onColorChanged;
-  final Function onDeleteSelected;
+  final String? questionContent;
+  final String? answerContent;
+  final Color? color;
+  final Color? textColor;
+  final List<Color>? gradient;
+  final File? imageFile;
+  final String? imageUrl;
+  final Function? onSave;
+  final Function? onQuestionPressed;
+  final Function(String v)? onValueChanged;
+  final Function(File? v)? onImageSelected;
+  final Function(ColorOfAnswer color)? onColorChanged;
+  final Function? onDeleteSelected;
   final bool isSending;
-  final Function onBack;
-  final TextEditingController textEditingController;
+  final Function? onBack;
+  final TextEditingController? textEditingController;
 
   AnswerScreenWidget({
-    Key key,
+    Key? key,
     this.color,
     this.textColor,
     this.gradient,
@@ -54,9 +54,10 @@ class AnswerScreenWidget extends StatelessWidget {
             ? BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: imageFile != null
-                      ? FileImage(imageFile)
-                      : CachedNetworkImageProvider(imageUrl),
+                  image: (imageFile != null
+                          ? FileImage(imageFile!)
+                          : CachedNetworkImageProvider(imageUrl!))
+                      as ImageProvider<Object>,
                 ),
               )
             : null,
@@ -67,11 +68,11 @@ class AnswerScreenWidget extends StatelessWidget {
                 opacity: haveImageBackground ? Config.userImageOpacity : 1,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: gradient != null && gradient.length > 1
+                      color: gradient != null && gradient!.length > 1
                           ? null
                           : color,
-                      gradient: gradient != null && gradient.length > 1
-                          ? AnswerGradient(gradient)
+                      gradient: gradient != null && gradient!.length > 1
+                          ? AnswerGradient(gradient!)
                           : null),
                 ),
               ),
@@ -111,10 +112,10 @@ class AnswerScreenWidget extends StatelessWidget {
                               Flexible(
                                 fit: FlexFit.loose,
                                 child: InkWell(
-                                  onTap: onQuestionPressed,
+                                  onTap: onQuestionPressed as void Function()?,
                                   child: Text(
-                                    questionContent,
-                                    style: context.textTheme.bodyText1
+                                    questionContent!,
+                                    style: context.textTheme.bodyText1!
                                         .copyWith(color: textColor),
                                   ),
                                 ),
@@ -129,13 +130,13 @@ class AnswerScreenWidget extends StatelessWidget {
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               textAlign: TextAlign.center,
-                              style: context.textTheme.headline6
+                              style: context.textTheme.headline6!
                                   .copyWith(color: textColor),
                               controller: textEditingController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Câu trả lời ...',
-                                hintStyle: context.textTheme.headline6
+                                hintStyle: context.textTheme.headline6!
                                     .copyWith(color: textColor),
                               ),
                             ),

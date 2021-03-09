@@ -25,44 +25,38 @@ class BubbleTabIndicator extends Decoration {
     this.tabBarIndicatorSize = TabBarIndicatorSize.label,
     this.padding = const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
     this.insets = const EdgeInsets.symmetric(horizontal: 5.0),
-  })  : assert(indicatorHeight != null),
-        assert(indicatorColor != null),
-        assert(indicatorRadius != null),
-        assert(padding != null),
-        assert(insets != null);
+  });
 
   @override
-  Decoration lerpFrom(Decoration a, double t) {
+  Decoration? lerpFrom(Decoration? a, double t) {
     if (a is BubbleTabIndicator) {
       return BubbleTabIndicator(
-        padding: EdgeInsetsGeometry.lerp(a.padding, padding, t),
-        insets: EdgeInsetsGeometry.lerp(a.insets, insets, t),
+        padding: EdgeInsetsGeometry.lerp(a.padding, padding, t)!,
+        insets: EdgeInsetsGeometry.lerp(a.insets, insets, t)!,
       );
     }
     return super.lerpFrom(a, t);
   }
 
   @override
-  Decoration lerpTo(Decoration b, double t) {
+  Decoration? lerpTo(Decoration? b, double t) {
     if (b is BubbleTabIndicator) {
       return BubbleTabIndicator(
-        padding: EdgeInsetsGeometry.lerp(padding, b.padding, t),
-        insets: EdgeInsetsGeometry.lerp(insets, b.insets, t),
+        padding: EdgeInsetsGeometry.lerp(padding, b.padding, t)!,
+        insets: EdgeInsetsGeometry.lerp(insets, b.insets, t)!,
       );
     }
     return super.lerpTo(b, t);
   }
 
   @override
-  _BubblePainter createBoxPainter([VoidCallback onChanged]) {
+  _BubblePainter createBoxPainter([VoidCallback? onChanged]) {
     return _BubblePainter(this, onChanged);
   }
 }
 
 class _BubblePainter extends BoxPainter {
-  _BubblePainter(this.decoration, VoidCallback onChanged)
-      : assert(decoration != null),
-        super(onChanged);
+  _BubblePainter(this.decoration, VoidCallback? onChanged) : super(onChanged);
 
   final BubbleTabIndicator decoration;
 
@@ -74,9 +68,6 @@ class _BubblePainter extends BoxPainter {
   TabBarIndicatorSize get tabBarIndicatorSize => decoration.tabBarIndicatorSize;
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
-    assert(rect != null);
-    assert(textDirection != null);
-
     var indicator = padding.resolve(textDirection).inflateRect(rect);
 
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
@@ -93,12 +84,11 @@ class _BubblePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    assert(configuration != null);
     assert(configuration.size != null);
     final rect = Offset(
-            offset.dx, (configuration.size.height / 2) - indicatorHeight / 2) &
-        Size(configuration.size.width, indicatorHeight);
-    final textDirection = configuration.textDirection;
+            offset.dx, (configuration.size!.height / 2) - indicatorHeight / 2) &
+        Size(configuration.size!.width, indicatorHeight);
+    final textDirection = configuration.textDirection!;
     final indicator = _indicatorRectFor(rect, textDirection);
     final paint = Paint();
     paint.color = indicatorColor;

@@ -32,17 +32,17 @@ class EditAnswerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Momentum.controller<EditAnswerScreenController>(context);
     final textEditingController =
-        TextEditingController(text: controller.model.content);
-    final EditAnswerScreenParams params = Get.arguments;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (params?.userImage == null && controller.model.userImage == null) {
+        TextEditingController(text: controller.model!.content);
+    final EditAnswerScreenParams? params = Get.arguments;
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      if (params?.userImage == null && controller.model!.userImage == null) {
         Get.back();
         Fluttertoast.showToast(msg: 'Đã xảy ra lỗi, vui lòng thử lại.');
       } else if (params?.userImage != null) {
-        if (params.userImage != controller.model.userImage) {
+        if (params!.userImage != controller.model!.userImage) {
           controller.reset();
-          controller.model.update(userImage: params.userImage);
-          textEditingController.text = params.userImage.answer.content;
+          controller.model!.update(userImage: params.userImage);
+          textEditingController.text = params.userImage.answer!.content!;
         }
       }
     });
@@ -50,7 +50,7 @@ class EditAnswerScreen extends StatelessWidget {
     return MomentumBuilder(
         controllers: [EditAnswerScreenController],
         builder: (context, snapshot) {
-          final model = snapshot<EditAnswerScreenModel>();
+          final model = snapshot<EditAnswerScreenModel>()!;
           final colors = model.selectedColor ??
               model.userImage?.colors ??
               ColorOfAnswer.defaultColor;

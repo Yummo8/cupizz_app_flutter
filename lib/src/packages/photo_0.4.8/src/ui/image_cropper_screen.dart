@@ -8,8 +8,8 @@ import '../../../../base/base.dart';
 class ImagesCropperScreen extends StatefulWidget {
   const ImagesCropperScreen({this.files, this.aspectRatio});
 
-  final List<File> files;
-  final CropAspectRatio aspectRatio;
+  final List<File?>? files;
+  final CropAspectRatio? aspectRatio;
 
   @override
   _ImagesCropperScreenState createState() => _ImagesCropperScreenState();
@@ -19,9 +19,9 @@ class _ImagesCropperScreenState extends State<ImagesCropperScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.files.length == 1) {
-        cropImage(context, widget.files[0], widget.aspectRatio)
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.files!.length == 1) {
+        cropImage(context, widget.files![0]!, widget.aspectRatio)
             .then((v) => Navigator.pop(context, [v]));
       }
     });
@@ -43,7 +43,7 @@ class _ImagesCropperScreenState extends State<ImagesCropperScreen> {
       body: Container(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: GridView.builder(
-          itemCount: widget.files.length,
+          itemCount: widget.files!.length,
           scrollDirection: Axis.vertical,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -55,7 +55,7 @@ class _ImagesCropperScreenState extends State<ImagesCropperScreen> {
                 height: context.width / 2,
                 width: context.width / 2,
                 child: Image.file(
-                  widget.files[index],
+                  widget.files![index]!,
                   height: context.width / 2,
                   width: context.width / 2,
                   fit: BoxFit.cover,
@@ -67,10 +67,10 @@ class _ImagesCropperScreenState extends State<ImagesCropperScreen> {
                 child: InkWell(
                   onTap: () async {
                     final croppedFile = await cropImage(
-                        context, widget.files[index], widget.aspectRatio);
+                        context, widget.files![index]!, widget.aspectRatio);
                     if (croppedFile != null) {
                       setState(() {
-                        widget.files[index] = File(croppedFile.path);
+                        widget.files![index] = File(croppedFile.path);
                       });
                     }
                   },

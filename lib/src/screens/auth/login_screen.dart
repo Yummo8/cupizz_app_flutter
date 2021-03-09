@@ -22,20 +22,20 @@ class _LoginScreenState extends State<LoginScreen> {
       email.text = 'test12@gmail.com';
       password.text = '123456789';
     } else {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
         Get.find<StorageService>().getLoginEmail.then((value) => setState(() {
-              email.text = value;
+              email.text = value!;
             }));
       });
     }
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Momentum.controller<AuthController>(context)
           .navigateToHomeIfAutheticated();
     });
   }
 
   void _onForgotPass() {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       final controller = Momentum.controller<ForgotController>(context);
       controller.sendOtp(email.text).then(
             (value) => OtpDialog.show(
@@ -48,13 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 await controller.verifyOtp(otp);
               },
             ).then((v) {
-              if (controller.model.data != null) {
+              if (controller.model!.data != null) {
                 ChangePassDialog.show(
                   context,
-                  avatar: controller.model.data?.avatar?.thumbnail,
-                  nickName: controller.model.data?.nickName,
+                  avatar: controller.model!.data?.avatar?.thumbnail,
+                  nickName: controller.model!.data?.nickName,
                   requireOldPass: false,
-                  isLoading: controller.model.isChangingPass,
+                  isLoading: controller.model!.isChangingPass,
                   onSend: (oldPass, newPass) async {
                     await controller.changePass(newPass);
                   },
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _onLogin() async {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       final authCtl = Momentum.of<AuthController>(context);
       try {
         await authCtl.loginEmail(email.text, password.text);
@@ -90,7 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
       RegisterScreen(),
       transition: Transition.rightToLeft,
       duration: Duration(milliseconds: 800),
-    ).then((_) {
+    )!
+        .then((_) {
       Future.delayed(Duration(milliseconds: 300), () {
         setState(() {
           width = 190;
@@ -110,8 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return MomentumBuilder(
         controllers: [AuthController, ForgotController],
         builder: (context, snapshot) {
-          final model = snapshot<AuthModel>();
-          final modelForgot = snapshot<ForgotPassModel>();
+          final model = snapshot<AuthModel>()!;
+          final modelForgot = snapshot<ForgotPassModel>()!;
           return PrimaryScaffold(
             isLoading: model.isLoading ?? modelForgot.isSendingOtp ?? false,
             body: SingleChildScrollView(
@@ -163,9 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               validator: Validator.email,
                             ),
                           ),
-                          SizedBox(
-                            height: 22,
-                          ),
+                          const SizedBox(height: 22),
                           Container(
                             child: TextFieldWidget(
                               hintText: Strings.common.password,
@@ -248,6 +247,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 65.0,
                           width: width,
                           duration: Duration(milliseconds: 1000),
+                          curve: Curves.linear,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              topLeft: Radius.circular(40),
+                            ),
+                            color: context.colorScheme.primaryVariant,
+                          ),
                           child: Row(
                             children: <Widget>[
                               Container(
@@ -291,14 +298,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ],
-                          ),
-                          curve: Curves.linear,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(40),
-                              topLeft: Radius.circular(40),
-                            ),
-                            color: context.colorScheme.primaryVariant,
                           ),
                         ),
                       ),

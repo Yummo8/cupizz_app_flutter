@@ -7,11 +7,11 @@ class CallModel extends MomentumModel<CallController> {
       {this.currentIncomingCall, this.currentCall})
       : super(controller);
 
-  final Message currentIncomingCall;
-  final Message currentCall;
+  final Message? currentIncomingCall;
+  final Message? currentCall;
 
   @override
-  void update({Message currentIncomingCall, Message currentCall}) {
+  void update({Message? currentIncomingCall, Message? currentCall}) {
     CallModel(
       controller,
       currentIncomingCall: currentIncomingCall ?? this.currentIncomingCall,
@@ -29,7 +29,7 @@ class CallModel extends MomentumModel<CallController> {
   }
 
   @override
-  MomentumModel<MomentumController> fromJson(Map<String, dynamic> json) {
+  MomentumModel<MomentumController> fromJson(Map<String, dynamic>? json) {
     return CallModel(controller);
   }
 

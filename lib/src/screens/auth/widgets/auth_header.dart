@@ -2,8 +2,8 @@ part of '../index.dart';
 
 class AuthHeader extends StatelessWidget {
   const AuthHeader({
-    Key key,
-    @required this.controls,
+    Key? key,
+    required this.controls,
   }) : super(key: key);
 
   final FlareControls controls;

@@ -2,14 +2,14 @@ import 'package:badges/badges.dart';
 import 'package:cupizz_app/src/base/base.dart';
 
 class OpacityIconButton extends StatelessWidget {
-  final IconData icon;
-  final Widget iconWidget;
-  final Function onPressed;
+  final IconData? icon;
+  final Widget? iconWidget;
+  final Function? onPressed;
   final EdgeInsets padding;
   final int badgeNumber;
 
   const OpacityIconButton({
-    Key key,
+    Key? key,
     this.onPressed,
     this.icon,
     this.iconWidget,
@@ -23,13 +23,14 @@ class OpacityIconButton extends StatelessWidget {
     return CupertinoButton(
       padding: padding,
       color: Colors.transparent,
+      onPressed: onPressed as void Function()?,
       child: Badge(
         badgeColor: Colors.red.shade100,
         elevation: 0,
         showBadge: badgeNumber > 0,
         badgeContent: Text(
           badgeNumber.toString(),
-          style: context.textTheme.caption.copyWith(color: Colors.red.shade900),
+          style: context.textTheme.caption!.copyWith(color: Colors.red.shade900),
         ),
         child: Container(
           padding: EdgeInsets.all(10),
@@ -44,7 +45,6 @@ class OpacityIconButton extends StatelessWidget {
               ),
         ),
       ),
-      onPressed: onPressed,
     );
   }
 }
