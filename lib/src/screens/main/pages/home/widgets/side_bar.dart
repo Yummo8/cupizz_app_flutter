@@ -66,38 +66,46 @@ class _SideBarState extends State<SideBar>
       right: isMenuOpen ? 0 : -screenWidth,
       child: ClipPath(
         clipper: HierenMenuClipper(),
-        child: PlasmaRenderer(
-          particles: 10,
-          color: context.colorScheme.primary.withOpacity(0.9),
-          size: 1.00,
-          speed: 6.00,
-          offset: 0.00,
-          blendMode: BlendMode.dstATop,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topRight,
-                child: GestureDetector(
-                  onTap: onIconPressed,
-                  child: Container(
-                    width: 55,
-                    height: 100,
-                    margin: EdgeInsets.only(top: 50),
-                    alignment: Alignment.centerRight,
-                    child: AnimatedIcon(
-                      progress: _animationController.view,
-                      icon: AnimatedIcons.menu_close,
-                      color: context.colorScheme.onBackground,
-                      size: 25,
+        child: Container(
+          color: context.colorScheme.background.withOpacity(0.9),
+          child: PlasmaRenderer(
+            type: PlasmaType.infinity,
+            particles: 10,
+            color: context.colorScheme.primary.withOpacity(0.9),
+            blur: 0.5,
+            size: 1.00,
+            speed: 6.00,
+            blendMode: BlendMode.dstATop,
+            variation1: 0,
+            variation2: 0,
+            variation3: 0,
+            rotation: 0,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: onIconPressed,
+                    child: Container(
+                      width: 55,
+                      height: 100,
+                      margin: EdgeInsets.only(top: 50),
+                      alignment: Alignment.centerRight,
+                      child: AnimatedIcon(
+                        progress: _animationController.view,
+                        icon: AnimatedIcons.menu_close,
+                        color: context.colorScheme.onBackground,
+                        size: 25,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: _buildBody(),
-              ),
-            ],
+                Expanded(
+                  child: _buildBody(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -465,9 +473,6 @@ class _SideBarState extends State<SideBar>
 class CustomMenuClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    var paint = Paint();
-    paint.color = Colors.white;
-
     final width = size.width;
     final height = size.height;
 
@@ -490,9 +495,6 @@ class CustomMenuClipper extends CustomClipper<Path> {
 class HierenMenuClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    var paint = Paint();
-    paint.color = Colors.white;
-
     var path_0 = Path();
     // path_0.moveTo(size.width * 0.14, 0);
     // path_0.lineTo(size.width, 0);
