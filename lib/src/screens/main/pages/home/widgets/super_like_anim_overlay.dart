@@ -53,10 +53,9 @@ class SuperLikeOverlay extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            Assets.icons.star,
-                            height: 50,
-                            width: 50,
+                          CustomPaint(
+                            size: Size(50, 50),
+                            painter: StarCustomPainter(),
                           ),
                           const Text(
                             'Super Like',

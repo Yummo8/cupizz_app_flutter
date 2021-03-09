@@ -562,8 +562,9 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    child: SvgPicture.asset(Assets.icons.dislikeUser,
-                        color: Colors.black54),
+                    child: CustomPaint(
+                        painter:
+                            DislikeUserCustomPainter(color: Colors.black54)),
                   ),
                 ),
               ),
@@ -590,8 +591,9 @@ class _CCardState extends State<CCard> with TickerProviderStateMixin {
                               topLeft: Radius.circular(15))),
                       width: 100,
                       height: 100,
-                      child: SvgPicture.asset(Assets.icons.likeUser,
-                          color: Colors.white.withOpacity(0.3)),
+                      child: CustomPaint(
+                          painter:
+                              LikeUserCustomPainter(color: Colors.white30)),
                     )),
               )
             ],
