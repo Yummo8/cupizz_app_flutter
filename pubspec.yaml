@@ -42,7 +42,7 @@ dependencies:
   object_mapper:
     git:
       url: https://github.com/hienlh/object_mapper.git
-      ref: v2.0.0
+      ref: v2.0.1
   flutter_beautiful_popup:
     git:
       url: https://github.com/hienlh/Flutter_beautiful_popup.git

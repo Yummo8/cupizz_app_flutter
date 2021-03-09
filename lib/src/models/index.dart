@@ -38,6 +38,7 @@ void objectMapping() {
     ForgotPassOutput: () => ForgotPassOutput(),
     FriendData: () => FriendData(),
     FriendV2TabData: () => FriendV2TabData(),
+    FriendQueryOrderBy: (v) => FriendQueryOrderBy(rawValue: v),
     FriendType: (v) => FriendType(rawValue: v),
     Gender: (v) => Gender(rawValue: v),
     HaveKids: (v) => HaveKids(rawValue: v),

@@ -638,11 +638,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v2.0.0"
-      resolved-ref: "6e5c7e81d8512e24feaec5c4d52f686fc0563c2b"
+      ref: "v2.0.1"
+      resolved-ref: "06e27899ae264a86faac04197adfb8510e295aa4"
       url: "https://github.com/hienlh/object_mapper.git"
     source: git
-    version: "2.0.0+3"
+    version: "2.0.1+4"
   octo_image:
     dependency: transitive
     description:
