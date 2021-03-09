@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:cupizz_app/src/base/base.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -32,7 +34,11 @@ class GraphqlService extends GetxService {
       ),
     );
 
-    final link = authLink.concat(httpLink).concat(_socketLink!);
+    final link = Link.split(
+      (request) => request.isSubscription,
+      _socketLink!,
+      authLink.concat(httpLink),
+    );
 
     _client = GraphQLClient(
       cache: GraphQLCache(store: HiveStore()),
@@ -53,7 +59,7 @@ class GraphqlService extends GetxService {
     debugPrint(result.data?.keys.toString());
     if (result.hasException) {
       if (result.exception!.linkException != null) {
-        debugPrint(result.exception!.linkException.toString());
+        log(result.exception!.linkException.toString(), name: 'linkException');
         throw result.exception!.linkException!;
       } else if (result.exception!.graphqlErrors.isNotEmpty) {
         final unauthenticatedError = result.exception!.graphqlErrors
