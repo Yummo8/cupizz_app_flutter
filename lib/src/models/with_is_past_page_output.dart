@@ -6,7 +6,7 @@ class WithIsLastPageOutput<T extends Mappable> {
 
   List<T>? get data => _data;
   bool? get isLastPage => _isLastPage;
-  T? get last => _data?.getAt(_data?.length ?? 0);
+  T? get last => _data?.getAt((_data?.length ?? 1) - 1);
   T? get first => _data?.getAt(0);
 
   WithIsLastPageOutput({
