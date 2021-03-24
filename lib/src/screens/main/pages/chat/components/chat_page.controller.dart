@@ -23,6 +23,7 @@ class ChatPageController extends MomentumController<ChatPageModel> {
   Future<void> bootstrapAsync() async {
     await _reload();
     _connectSubsciption();
+    return super.bootstrapAsync();
   }
 
   void initState() async {

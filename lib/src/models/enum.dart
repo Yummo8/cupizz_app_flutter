@@ -8,9 +8,9 @@ class FileType extends Enumerable<String> {
   static const image = FileType(rawValue: 'image');
 }
 
-class FriendType extends Enumerable<String?> {
+class FriendType extends Enumerable<String> {
   @override
-  final String? rawValue;
+  final String rawValue;
   const FriendType({required this.rawValue});
 
   static const none = FriendType(rawValue: 'none');
@@ -20,9 +20,9 @@ class FriendType extends Enumerable<String?> {
   static const me = FriendType(rawValue: 'me');
 }
 
-class FriendQueryType extends Enumerable<String?> {
+class FriendQueryType extends Enumerable<String> {
   @override
-  final String? rawValue;
+  final String rawValue;
   final String displayValue;
 
   const FriendQueryType({
@@ -45,9 +45,9 @@ class FriendQueryType extends Enumerable<String?> {
   static List<FriendQueryType> getAll() => [all, friend, sent, received];
 }
 
-class FriendQueryOrderBy extends Enumerable<String?> {
+class FriendQueryOrderBy extends Enumerable<String> {
   @override
-  final String? rawValue;
+  final String rawValue;
   final String displayValue;
 
   const FriendQueryOrderBy({required this.rawValue})
@@ -116,9 +116,9 @@ class SocialProviderType extends Enumerable<String> {
       [email, facebook, google, instagram];
 }
 
-class NotificationType extends Enumerable<String?> {
+class NotificationType extends Enumerable<String> {
   @override
-  final String? rawValue;
+  final String rawValue;
   final String shortTitle;
   final String title;
 
@@ -129,7 +129,7 @@ class NotificationType extends Enumerable<String?> {
                 .toList()
                 .getAt(0)
                 ?.shortTitle ??
-            rawValue!,
+            rawValue,
         title =
             title ?? getAll().firstWhere((e) => e.rawValue == rawValue).title;
 

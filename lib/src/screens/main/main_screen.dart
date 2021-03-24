@@ -1,7 +1,6 @@
 library main_screen;
 
 import 'package:badges/badges.dart';
-import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart' hide Router;
 
 import '../../base/base.dart';
@@ -63,8 +62,7 @@ class _MainScreenState extends MomentumState<MainScreen>
           : MomentumBuilder(
               controllers: [MainScreenController],
               builder: (context, snapshot) {
-                return ExtendedTabBarView(
-                  cacheExtent: _tabs.length,
+                return TabBarView(
                   physics: [0, 2].contains(_tabController!.index)
                       ? NeverScrollableScrollPhysics()
                       : BouncingScrollPhysics(),

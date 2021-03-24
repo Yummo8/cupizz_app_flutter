@@ -28,12 +28,17 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   final _drawerController = OptionsDrawerController();
   final _cardController = CCardController();
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return PrimaryScaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         return SizedBox(

@@ -63,7 +63,7 @@ class AuthController extends MomentumController<AuthModel> {
       } else if (type == SocialProviderType.facebook) {
         try {
           var accessToken = await FacebookAuth.instance.login();
-          if (accessToken == null || !accessToken.token.isExistAndNotEmpty) {
+          if (!accessToken.token.isExistAndNotEmpty) {
             return;
           }
           await Get.find<AuthService>().loginSocial(

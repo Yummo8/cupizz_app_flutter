@@ -11,7 +11,11 @@ class PostPage extends StatefulWidget {
   _PostPageState createState() => _PostPageState();
 }
 
-class _PostPageState extends State<PostPage> with LoadmoreMixin {
+class _PostPageState extends State<PostPage>
+    with LoadmoreMixin, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void onLoadMore() {
     Momentum.controller<PostPageController>(context).loadMore();
@@ -19,6 +23,7 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return PrimaryScaffold(
       body: SafeArea(
         child: MomentumBuilder(
@@ -55,7 +60,7 @@ class _PostPageState extends State<PostPage> with LoadmoreMixin {
                           ),
                         ),
                         childCount: (model.posts?.length ?? 0) +
-                            (!model.isLastPage! ? 1 : 0),
+                            (!(model.isLastPage ?? false) ? 1 : 0),
                       ))
                   ],
                 ),

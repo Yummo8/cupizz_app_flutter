@@ -4,26 +4,17 @@
             "name": "Prod",
             "type": "dart",
             "request": "launch",
-            "args": [
-                "--no-sound-null-safety"
-            ],
             "program": "lib/main.dart"
         },
         {
             "name": "Dev",
             "type": "dart",
             "request": "launch",
-            "args": [
-                "--no-sound-null-safety"
-            ],
             "program": "lib/main_dev.dart"
         },
         {
             "name": "Local",
             "type": "dart",
-            "args": [
-                "--no-sound-null-safety"
-            ],
             "request": "launch",
             "program": "lib/main_local.dart"
         }

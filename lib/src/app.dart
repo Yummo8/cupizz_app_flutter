@@ -24,6 +24,7 @@ import 'widgets/index.dart';
 Momentum momentum({bool isTesting = false}) {
   return Momentum(
     key: UniqueKey(),
+    enableLogging: true,
     maxTimeTravelSteps: 200,
     restartCallback: () {
       runApp(AppConfig.instance.copyWith(child: App()));
@@ -33,7 +34,7 @@ Momentum momentum({bool isTesting = false}) {
       AnswerQuestionScreenController()..config(lazy: true),
       AuthController(),
       CurrentUserController(),
-      ChatPageController()..config(lazy: true),
+      ChatPageController(),
       EditAnswerScreenController()..config(lazy: true),
       ForgotController(),
       FriendPageController()..config(lazy: true),

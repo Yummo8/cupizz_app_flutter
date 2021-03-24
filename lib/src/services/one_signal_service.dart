@@ -32,7 +32,7 @@ class OneSignalService extends GetxService {
     SystemController().fetchUnreadNoti();
     final data = notification.payload.additionalData;
 
-    if (data is Map) {
+    if (data != null) {
       final type = NotificationType(rawValue: data['type']);
       final String? code = data['code'];
 
@@ -51,7 +51,7 @@ class OneSignalService extends GetxService {
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       final data = result.notification.payload.additionalData;
 
-      if (data is Map) {
+      if (data != null) {
         final type = NotificationType(rawValue: data['type']);
         final String? refUserId = data['refUserId'];
         final String? refConversationId = data['refConversationId'];

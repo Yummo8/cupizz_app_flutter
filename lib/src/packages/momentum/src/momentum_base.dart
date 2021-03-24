@@ -523,8 +523,7 @@ abstract class MomentumController<M> with _ControllerBase {
         modelRawJson = momentum._syncPersistGet(_mRootContext, persistenceKey);
       } else {
         modelRawJson = await tryasync(
-          (() async => await _persistGet!(_mRootContext, persistenceKey))
-              as Future<String> Function(),
+          () async => await _persistGet!(_mRootContext, persistenceKey) ?? '',
         );
       }
       if (modelRawJson == null || modelRawJson.isEmpty) {
@@ -1192,7 +1191,8 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var nonLazyControllers = widget.controllers.where((e) {
       return !e._lazy;
     });
-    var futures = nonLazyControllers.map<Future>((e) => e._bootstrapAsync());
+    var futures =
+        nonLazyControllers.map<Future>((e) => e._bootstrapAsync()).toList();
     await Future.wait(futures);
     var finished = DateTime.now().millisecondsSinceEpoch;
     var diff = finished - started;
