@@ -1,16 +1,9 @@
-# cupizz_app
+# Cupizz App
 
-Cupizz App
+<p align="center">
+<img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcf.cupizz.cupizz_app%26l%3D%24name%26m%3D%24installs%2520installs" width="50%">
+</p>
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p align="center"><a href="https://play.google.com/store/apps/details?id=cf.cupizz.cupizz_app" target="_blank">
+<img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="50%">
+</a></p>
